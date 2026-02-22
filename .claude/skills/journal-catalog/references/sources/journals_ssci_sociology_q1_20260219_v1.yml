@@ -1,0 +1,12 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Sociology
+  quartile: Q1
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260218_Sociology_260218_normalized.csv
+  generated_at: 2026-02-19T02:36:47.420Z
+  date_tag: "20260219"
+  version: 1
+  count_q1_rows: 60
+  count_unique_journals: 0
+  quartile_column: quartile
+journals: []

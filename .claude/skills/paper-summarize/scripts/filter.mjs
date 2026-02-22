@@ -1,0 +1,471 @@
+#!/usr/bin/env node
+/**
+ * filter.mjs
+ * Interactive filter for journal-search outputs.
+ *
+ * Input:  outputs/<topic>/01_raw/papers_<YYYYMMDD>_vN.md
+ * Output: outputs/<topic>/02_clean/papers_clean_<YYYYMMDD>_vN.md + papers_clean_latest.md
+ *
+ * Usage:
+ *   node .claude/skills/paper-summarize/scripts/filter.mjs artificial_intelligence
+ *   node .claude/skills/paper-summarize/scripts/filter.mjs artificial_intelligence --in outputs/artificial_intelligence/01_raw/papers_20260221_v3.md
+ *
+ * Fixes / improvements in this version:
+ * 1) Robust table row splitting:
+ *    - If a title/abstract contains "|" and breaks column count, we merge overflow back into the last column.
+ * 2) Relevance gate strengthened:
+ *    - Weak keywords: derived from topic (e.g., "artificial intelligence", "artificial", "intelligence")
+ *    - Strong keywords: optional extra keywords; if provided, requires at least one strong hit (in title+abstract; if abstract empty, title only)
+ *    - This reduces false positives where "intelligence" appears but is irrelevant.
+ * 3) Cleaner I/O checks and clearer logging.
+ */
+
+import fs from "node:fs";
+import path from "node:path";
+import readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
+
+// ---- helpers ----
+function exists(p) {
+  try {
+    fs.accessSync(p, fs.constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function ensureDir(dir) {
+  fs.mkdirSync(dir, { recursive: true });
+}
+
+function todayYYYYMMDD() {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}${mm}${dd}`;
+}
+
+function parseArgs(argv) {
+  const args = { topic: null, inPath: null };
+  const rest = argv.slice(2);
+
+  for (let i = 0; i < rest.length; i++) {
+    const a = rest[i];
+    if (!args.topic && !a.startsWith("--")) {
+      args.topic = a;
+      continue;
+    }
+    if (a === "--in") {
+      args.inPath = rest[i + 1];
+      i++;
+      continue;
+    }
+  }
+  return args;
+}
+
+function findLatestRawFile(rawDir) {
+  if (!exists(rawDir)) return null;
+  const files = fs
+    .readdirSync(rawDir)
+    .filter((f) => /^papers_\d{8}_v\d+\.md$/i.test(f))
+    .map((f) => ({
+      name: f,
+      full: path.join(rawDir, f),
+      mtime: fs.statSync(path.join(rawDir, f)).mtimeMs,
+    }))
+    .sort((a, b) => b.mtime - a.mtime);
+
+  return files.length ? files[0].full : null;
+}
+
+function nextVersionedPath(cleanDir, baseNameNoExt) {
+  // baseNameNoExt example: papers_clean_20260221
+  ensureDir(cleanDir);
+  const existing = fs
+    .readdirSync(cleanDir)
+    .filter((f) => new RegExp(`^${baseNameNoExt}_v\\d+\\.md$`, "i").test(f));
+
+  let maxV = 0;
+  for (const f of existing) {
+    const m = f.match(/_v(\d+)\.md$/i);
+    if (m) maxV = Math.max(maxV, Number(m[1]));
+  }
+  const v = maxV + 1;
+  return path.join(cleanDir, `${baseNameNoExt}_v${v}.md`);
+}
+
+function extractYear(s) {
+  if (!s) return null;
+  const m = String(s).match(/(19\d{2}|20\d{2})/);
+  return m ? Number(m[1]) : null;
+}
+
+// ---- markdown table parsing ----
+function parseMarkdownTable(md) {
+  const lines = md.split(/\r?\n/);
+
+  // find the first markdown table header line that contains pipes
+  let headerIdx = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].trim().startsWith("|") && lines[i].includes("|")) {
+      // next line should be separator
+      if (i + 1 < lines.length && /^\s*\|?\s*:?-{2,}/.test(lines[i + 1])) {
+        headerIdx = i;
+        break;
+      }
+    }
+  }
+  if (headerIdx === -1) {
+    return { pre: lines, header: null, sep: null, rows: [], post: [] };
+  }
+
+  const pre = lines.slice(0, headerIdx);
+  const header = lines[headerIdx];
+  const sep = lines[headerIdx + 1];
+
+  // data rows until a blank line or non-table line
+  const rows = [];
+  let endIdx = headerIdx + 2;
+  for (; endIdx < lines.length; endIdx++) {
+    const l = lines[endIdx];
+    if (!l.trim().startsWith("|")) break;
+    rows.push(l);
+  }
+  const post = lines.slice(endIdx);
+
+  return { pre, header, sep, rows, post };
+}
+
+/**
+ * Robust splitRow:
+ * - Splits by "|"
+ * - If expectedCols is provided and we have too many cells (because title/abstract includes "|"),
+ *   merge overflow back into the last column.
+ */
+function splitRow(rowLine, expectedCols = null) {
+  const core = rowLine.trim().replace(/^\|/, "").replace(/\|$/, "");
+  let cells = core.split("|").map((c) => c.trim());
+
+  if (expectedCols && Number.isInteger(expectedCols) && expectedCols >= 2) {
+    if (cells.length > expectedCols) {
+      const head = cells.slice(0, expectedCols - 1);
+      const tail = cells.slice(expectedCols - 1).join(" | ");
+      cells = [...head, tail];
+    } else if (cells.length < expectedCols) {
+      while (cells.length < expectedCols) cells.push("");
+    }
+  }
+
+  return cells;
+}
+
+function joinRow(cells) {
+  return `| ${cells.join(" | ")} |`;
+}
+
+function findDateColumnIndex(headerLine, expectedCols) {
+  const cells = splitRow(headerLine, expectedCols).map((c) => c.toLowerCase());
+  const candidates = [
+    "publication_date",
+    "publication date",
+    "pub_date",
+    "pub date",
+    "date",
+    "year",
+    "published",
+  ];
+  for (let i = 0; i < cells.length; i++) {
+    const h = cells[i];
+    if (candidates.some((k) => h === k || h.includes(k))) return i;
+  }
+  return -1;
+}
+
+function applyYearFilter(table, mode, y1, y2, expectedCols) {
+  if (!table.header) {
+    return { kept: [], dropped: 0, reason: "No markdown table detected." };
+  }
+  const dateIdx = findDateColumnIndex(table.header, expectedCols);
+  if (dateIdx < 0) {
+    return {
+      kept: [],
+      dropped: table.rows.length,
+      reason: "No date column detected in header.",
+    };
+  }
+
+  const kept = [];
+  let dropped = 0;
+
+  for (const row of table.rows) {
+    const cells = splitRow(row, expectedCols);
+    const year = extractYear(cells[dateIdx]);
+    if (year == null) {
+      dropped++;
+      continue;
+    }
+
+    let ok = true;
+    if (mode === "before") ok = year < y1;
+    if (mode === "after") ok = year > y1;
+    if (mode === "between") ok = year >= y1 && year <= y2;
+
+    if (ok) kept.push(joinRow(cells));
+    else dropped++;
+  }
+
+  return { kept, dropped, reason: null };
+}
+
+// ---- relevance gate ----
+function normalizeTopicToKeywords(topic) {
+  const base = String(topic || "")
+    .trim()
+    .replace(/[_\s]+/g, " ")
+    .toLowerCase();
+
+  if (!base) return [];
+
+  // include whole phrase + split parts (len >= 2)
+  const parts = base.split(" ").filter((w) => w.length >= 2);
+  return [...new Set([base, ...parts])];
+}
+
+/**
+ * If extraKeys (strong) provided:
+ *   require (weak hit) AND (strong hit) in (title+abstract, or title only if abstract empty)
+ * Else:
+ *   require (weak hit)
+ */
+function applyKeywordFilter(rows, weakKeys, strongKeys, titleIdx, abstractIdx, expectedCols) {
+  const kept = [];
+  let dropped_keyword_mismatch = 0;
+
+  const hasStrong = Array.isArray(strongKeys) && strongKeys.length > 0;
+  const weak = (weakKeys || []).map((s) => String(s || "").toLowerCase()).filter(Boolean);
+  const strong = (strongKeys || []).map((s) => String(s || "").toLowerCase()).filter(Boolean);
+
+  for (const row of rows) {
+    const cells = splitRow(row, expectedCols);
+
+    const title = (cells[titleIdx] || "").toLowerCase();
+    const absRaw = cells[abstractIdx] || "";
+    const abs = absRaw.toLowerCase();
+
+    // If abstract empty, only use title to avoid false deletions.
+    const hay = absRaw.trim() ? `${title}\n${abs}` : title;
+
+    const weakHit = weak.length ? weak.some((k) => k && hay.includes(k)) : true;
+    const strongHit = hasStrong ? strong.some((k) => k && hay.includes(k)) : true;
+
+    const ok = weakHit && strongHit;
+    if (ok) kept.push(joinRow(cells));
+    else dropped_keyword_mismatch++;
+  }
+
+  return { kept, dropped_keyword_mismatch };
+}
+
+// ---- main ----
+async function main() {
+  const args = parseArgs(process.argv);
+  const rl = readline.createInterface({ input, output });
+
+  try {
+    const topic =
+      args.topic ||
+      (await rl.question("Topic (e.g., artificial_intelligence): ")).trim();
+
+    if (!topic) {
+      console.error("ERROR: topic is required.");
+      process.exitCode = 1;
+      return;
+    }
+
+    const outputsDir = path.resolve(process.cwd(), "outputs");
+    const topicDir = path.join(outputsDir, topic);
+    const rawDir = path.join(topicDir, "01_raw");
+    const cleanDir = path.join(topicDir, "02_clean");
+
+    let inPath = args.inPath ? path.resolve(process.cwd(), args.inPath) : null;
+    if (!inPath) inPath = findLatestRawFile(rawDir);
+
+    if (!inPath || !exists(inPath)) {
+      console.error(`ERROR: input file not found. Checked: ${inPath || rawDir}`);
+      process.exitCode = 1;
+      return;
+    }
+
+    console.log("\n[filter] Input:", inPath);
+
+    // Safety check: ensure input file belongs to outputs/<topic>/01_raw/
+    const expectedRawPrefix = path.join(outputsDir, topic, "01_raw") + path.sep;
+    const resolvedIn = path.resolve(inPath);
+
+    if (!resolvedIn.startsWith(expectedRawPrefix)) {
+      console.error("ERROR: topic mismatch between <topic> and --in input path.");
+      console.error("  topic:", topic);
+      console.error("  expected input under:", expectedRawPrefix);
+      console.error("  got inPath:", resolvedIn);
+      process.exitCode = 1;
+      return;
+    }
+
+    console.log("\nChoose time filter mode:");
+    console.log("  1) Earlier than a year (year < X)");
+    console.log("  2) Later than a year   (year > X)");
+    console.log("  3) Between years (X <= year <= Y)");
+
+    const modeChoice = (await rl.question("Enter 1/2/3: ")).trim();
+    let mode = null;
+    if (modeChoice === "1") mode = "before";
+    if (modeChoice === "2") mode = "after";
+    if (modeChoice === "3") mode = "between";
+    if (!mode) {
+      console.error("ERROR: invalid choice.");
+      process.exitCode = 1;
+      return;
+    }
+
+    const y1s = (await rl.question("Enter year X (e.g., 2020): ")).trim();
+    const y1 = Number(y1s);
+    if (!Number.isInteger(y1) || y1 < 1900 || y1 > 2100) {
+      console.error("ERROR: invalid year X.");
+      process.exitCode = 1;
+      return;
+    }
+
+    let y2 = null;
+    if (mode === "between") {
+      const y2s = (await rl.question("Enter year Y (>= X): ")).trim();
+      y2 = Number(y2s);
+      if (!Number.isInteger(y2) || y2 < y1 || y2 > 2100) {
+        console.error("ERROR: invalid year Y.");
+        process.exitCode = 1;
+        return;
+      }
+    }
+
+    const md = fs.readFileSync(inPath, "utf-8");
+    const table = parseMarkdownTable(md);
+
+    if (!table.header) {
+      console.error("ERROR: No markdown table detected in input.");
+      process.exitCode = 1;
+      return;
+    }
+
+    // Expected column count from header
+    const expectedCols = splitRow(table.header).length;
+
+    const yearRes = applyYearFilter(table, mode, y1, y2, expectedCols);
+    if (yearRes.reason) {
+      console.error("ERROR:", yearRes.reason);
+      process.exitCode = 1;
+      return;
+    }
+
+    let keptRows = yearRes.kept;
+    let droppedTotal = yearRes.dropped;
+
+    // --- Relevance gate (optional) ---
+    let useGate = (await rl
+      .question("Enable topic relevance gate (title+abstract keywords)? (Y/n) [default=Y]: "))
+      .trim()
+      .toLowerCase();
+
+    if (!useGate || useGate === "y" || useGate === "yes") {
+      const headerCells = splitRow(table.header, expectedCols).map((c) => c.toLowerCase());
+      const titleIdx = headerCells.findIndex((h) => h === "title" || h.includes("title"));
+      const abstractIdx = headerCells.findIndex((h) => h === "abstract" || h.includes("abstract"));
+
+      if (titleIdx < 0 || abstractIdx < 0) {
+        console.warn("[filter] Relevance gate skipped: title/abstract column not found.");
+      } else {
+        const weakKeys = normalizeTopicToKeywords(topic);
+        console.log("[filter] Weak keywords (from topic):", weakKeys.join(", "));
+
+        const extra = (await rl.question(
+          "Strong keywords (comma-separated, optional; if provided, requires at least one strong hit): "
+        )).trim();
+
+        const strongKeys = extra
+          ? extra
+              .split(",")
+              .map((s) => s.trim().toLowerCase())
+              .filter(Boolean)
+          : [];
+
+        if (strongKeys.length) {
+          console.log("[filter] Strong keywords:", strongKeys.join(", "));
+        } else {
+          console.log("[filter] No strong keywords provided; using weak keywords only.");
+        }
+
+        const kwRes = applyKeywordFilter(
+          keptRows,
+          weakKeys,
+          strongKeys,
+          titleIdx,
+          abstractIdx,
+          expectedCols
+        );
+
+        keptRows = kwRes.kept;
+        droppedTotal += kwRes.dropped_keyword_mismatch;
+      }
+    }
+
+    ensureDir(cleanDir);
+
+    const base = `papers_clean_${todayYYYYMMDD()}`;
+    const outPath = nextVersionedPath(cleanDir, base);
+    const latestPath = path.join(cleanDir, "papers_clean_latest.md");
+
+    const filterDesc =
+      mode === "before"
+        ? `year < ${y1}`
+        : mode === "after"
+        ? `year > ${y1}`
+        : `${y1}–${y2}`;
+
+    const headerNote = [
+      `# Cleaned papers (${topic})`,
+      ``,
+      `- Source: ${path.relative(process.cwd(), inPath)}`,
+      `- Filter: ${filterDesc}`,
+      `- Kept: ${keptRows.length}`,
+      `- Dropped: ${droppedTotal}`,
+      `- Generated: ${new Date().toISOString()}`,
+      ``,
+    ].join("\n");
+
+    const outLines = [
+      ...table.pre,
+      ...(table.pre.length ? [""] : []),
+      headerNote,
+      table.header,
+      table.sep,
+      ...keptRows,
+      ...table.post,
+    ].join("\n");
+
+    fs.writeFileSync(outPath, outLines, "utf-8");
+    fs.writeFileSync(latestPath, outLines, "utf-8");
+
+    console.log("\n[filter] Done.");
+    console.log("  Output:", outPath);
+    console.log("  Latest:", latestPath);
+    console.log(`  Kept: ${keptRows.length}, Dropped: ${droppedTotal}\n`);
+  } finally {
+    rl.close();
+  }
+}
+
+main().catch((err) => {
+  console.error("FATAL:", err);
+  process.exitCode = 1;
+});

@@ -1,0 +1,121 @@
+{
+  "id": "paper-summarize",
+  "name": "论文摘要结构化生成",
+  "entry": ".claude/skills/paper-summarize/scripts/summarize.mjs",
+  "version": "1.1.0",
+  "description": "将 journal-search / paper-filter 生成的论文表格（02_clean 优先，01_raw 兜底）转换为结构化摘要文档，并可选补抓缺失 abstract。",
+
+  "execution": {
+    "type": "node",
+    "commandTemplate": "node {entry} \"{topic}\" {flags}"
+  },
+
+  "inputs": [
+    {
+      "name": "topic",
+      "label": "主题目录名",
+      "type": "string",
+      "required": true,
+      "description": "对应 outputs/<topic>/ 目录名"
+    }
+  ],
+
+  "options": [
+    {
+      "name": "in",
+      "label": "指定输入文件",
+      "type": "string",
+      "required": false,
+      "cliFlag": "--in",
+      "description": "手动指定输入文件路径；若不填写则优先使用 02_clean 的 latest/最新文件，不存在则回退至 01_raw 最新版本"
+    },
+    {
+      "name": "date",
+      "label": "输出日期标签",
+      "type": "string",
+      "required": false,
+      "cliFlag": "--date",
+      "default": "today_yyyymmdd",
+      "description": "用于输出文件命名的日期标签（格式 YYYYMMDD）"
+    },
+    {
+      "name": "v",
+      "label": "输出版本号",
+      "type": "string",
+      "required": false,
+      "cliFlag": "--v",
+      "default": "auto_increment",
+      "description": "指定输出版本号；若不指定则自动递增"
+    },
+    {
+      "name": "fillAbstract",
+      "label": "补抓缺失摘要",
+      "type": "boolean",
+      "required": false,
+      "cliFlag": "--fillAbstract",
+      "default": false,
+      "description": "若为 true，则尝试通过 DOI / OpenAlex / 出版社页面补抓缺失 abstract（可能受外部 API 配额或访问控制影响）"
+    },
+    {
+      "name": "sleepMs",
+      "label": "抓取延迟毫秒",
+      "type": "number",
+      "required": false,
+      "cliFlag": "--sleepMs",
+      "default": 500,
+      "description": "补抓摘要时的请求间隔，避免频率过高"
+    },
+    {
+      "name": "json",
+      "label": "JSON 输出模式",
+      "type": "boolean",
+      "required": false,
+      "cliFlag": "--json",
+      "default": false,
+      "description": "若为 true，则以 JSON 格式输出执行结果，供 UI 读取"
+    }
+  ],
+
+  "outputs": [
+    {
+      "name": "summariesMarkdown",
+      "type": "file",
+      "pathTemplate": "outputs/{topic}/03_summaries/summaries_{date}_v{v}.md",
+      "description": "结构化摘要 Markdown 文件"
+    },
+    {
+      "name": "summariesLatest",
+      "type": "file",
+      "pathTemplate": "outputs/{topic}/03_summaries/summaries_latest.md",
+      "description": "指向最新 summaries 的 Markdown 指针文件"
+    },
+    {
+      "name": "manifest",
+      "type": "file",
+      "pathTemplate": "outputs/{topic}/_runs/paper-summarize_{date}_v{v}.json",
+      "description": "本次运行的元数据记录文件（若脚本实现）"
+    }
+  ],
+
+  "defaultInputResolution": {
+    "strategy": "preferred_paths_then_fallback_latest",
+    "preferredPaths": [
+      "outputs/{topic}/02_clean/papers_clean_latest.md",
+      "outputs/{topic}/02_clean/papers_clean.md"
+    ],
+    "fallback": {
+      "strategy": "latest_version",
+      "directory": "outputs/{topic}/01_raw/",
+      "pattern": "papers_(\\d{8})_v(\\d+)\\.md",
+      "description": "若 02_clean 不存在，则自动选择 01_raw 目录下日期最大且版本号最大的文件"
+    }
+  },
+
+  "deterministic": true,
+
+  "notes": [
+    "该技能不执行过滤或去重操作",
+    "过滤应由 paper-filter 负责",
+    "输入文件必须包含 journal | year | title | DOI | OpenAlex | abstract 列"
+  ]
+}

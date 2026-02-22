@@ -1,0 +1,101 @@
+sociology_protected_phrases:
+  # --- Core political economy / STS ---
+  - algorithmic governance
+  - algorithmic intermediation
+  - algorithmic ecologies
+  - algorithmic bias
+  - algorithmic discrimination
+  - algorithmic decision making
+  - digital capitalism
+  - surveillance capitalism
+  - political economy
+  - data justice
+  - datafication
+  - quantification
+  - classificatory systems
+  - classification systems
+  - attention economy
+  - platform economy
+  - platform capitalism
+  - platform governance
+  - global south
+  - social inequality
+  - class relations
+  - social closure
+
+  # --- Labor process / work / class ---
+  - labor process
+  - digital labor
+  - managerial control
+  - occupational jurisdiction
+  - informal coaching
+  - hiring discrimination
+  - gender segregation
+  - glass walls
+  - coding elite
+  - cybertariat
+  - actuarial logics
+  - behavioral surplus
+  - instrumentarian power
+  - workplace surveillance
+  - gig economy
+  - platform labor
+  - labor platform
+  - automation of work
+  - deskilling
+
+  # --- Governance / decision systems ---
+  - predictive policing
+  - risk scoring
+  - credit scoring
+  - automated decision systems
+  - public sector algorithms
+  - algorithmic accountability
+  - audit culture
+  - governance by numbers
+
+  # --- AI / technical objects as social objects ---
+  - machine learning
+  - large language model
+  - training data
+  - data infrastructure
+  - technical expertise
+  - expert systems
+  # 可选：如果你不希望“AI总词”占主题，把这一条移除并放到 stopwords/domain-noise
+  - artificial intelligence
+  - big data
+  - pre-training
+  - post-training
+  - fine-tuning
+  - prompt engineering
+  - prompt design
+  - prompt development
+  - prompt testing
+  - prompt evaluation
+  - prompt optimization
+  - prompt improvement
+  - vibe coding
+  - reinforcement learning
+  - self-supervised learning
+  - self-training
+  - self-evaluation
+  - self-improvement
+  - self-optimization
+  - self-regulation
+  - self-control
+  - self-regulation
+
+  # --- Platform / media (kept minimal, non-marketing) ---
+  - social media
+  - social media platform
+  - content moderation
+  - digital divide
+  - digital inequality
+  - digital exclusion
+  - digital inclusion
+
+  # --- Meaning / classification processes (protected compounds) ---
+  - decision making
+  - class making
+  - sense making
+  - meaning making

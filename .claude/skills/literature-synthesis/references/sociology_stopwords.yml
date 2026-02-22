@@ -1,0 +1,182 @@
+sociology_stopwords:
+  # --- discipline-constant / low-discrimination ---
+  - social
+  - society
+  - societal
+  - sociological
+  - sociality
+  - sociology
+  - sociologist
+  - sociologists
+  - social science
+  - social sciences
+
+  # --- broad, weakly-informative academic framing ---
+  - contemporary
+  - modern
+  - recent
+  - current
+  - broader
+  - broad
+  - general
+  - overall
+  - growing
+  - significant
+  - important
+  - crucial
+
+  # --- generic institutional/vocabulary shells (often too broad) ---
+  - domain
+  - domains
+  - institution
+  - institutions
+  - institutional
+  - organization
+  - organizations
+  - organizational
+  - structure
+  - structures
+  - structural
+  - system
+  - systems
+  - systemic
+  - context
+  - contexts
+  - contextual
+  - framework
+  - frameworks
+  - perspective
+  - perspectives
+
+  # --- paper-genre boilerplate (IMRaD / academic voice) ---
+  - research
+  - study
+  - studies
+  - paper
+  - papers
+  - article
+  - articles
+  - review
+  - reviews
+  - literature
+  - literatures
+  - scholarship
+  - scholars
+  - academic
+  - academia
+
+  # --- rhetorical / discourse verbs (very common, low signal) ---
+  - discuss
+  - discusses
+  - discussed
+  - arguing
+  - argue
+  - argues
+  - argued
+  - propose
+  - proposes
+  - proposed
+  - examine
+  - examines
+  - examined
+  - explore
+  - explores
+  - explored
+  - outline
+  - outlines
+  - outlined
+  - show
+  - shows
+  - showed
+  - suggest
+  - suggests
+  - suggested
+  - consider
+  - considers
+  - considered
+  - analyze
+  - analyzes
+  - analysed
+  - focus
+  - focuses
+  - focused
+  - highlight
+  - highlights
+  - highlighted
+  - describe
+  - describes
+  - described
+  - identify
+  - identifies
+  - identified
+  - reveal
+  - reveals
+  - revealed
+  - demonstrate
+  - demonstrates
+  - demonstrated
+
+  # --- generic method words (too common) ---
+  - approach
+  - approaches
+  - method
+  - methods
+  - methodology
+  - methodologies
+  - analysis
+  - analyses
+  - data
+  - dataset
+  - datasets
+  - evidence
+  - empirical
+  - empirically
+  - qualitative
+  - quantitatively
+  - quantitative
+
+  # --- common filler verbs / auxiliaries in abstracts ---
+  - not
+  - using
+  - use
+  - used
+  - make
+  - makes
+  - made
+  - making
+  - provide
+  - provides
+  - provided
+  - offer
+  - offers
+  - offered
+  - enable
+  - enables
+  - enabled
+
+  # --- vague outcome shells ---
+  - transformation
+  - transformations
+  - change
+  - changes
+  - changing
+  - implications
+  - implication
+  - impact
+  - impacts
+  - influence
+  - influences
+  - effect
+  - effects
+
+  # --- meta / novelty claims ---
+  - new
+  - novel
+  - increasingly
+  - emerging
+
+  # --- role/process shells (can be noisy) ---
+  - role
+  - roles
+  - process
+  - processes

@@ -1,0 +1,484 @@
+meta:
+  generated_at: 2026-02-19T07:56:08.321Z
+  date_tag: "20260219"
+  version: 3
+  input: .claude/skills/journal-catalog/references/system/journals.yml
+  checked_with_site: 59
+  changed: 0
+  fixed_oup_root: 0
+  notes: Normalized journals[].site (https, remove trailing '/', keep essential
+    query keys for Cambridge/T&F/Sage, OUP oxfordjournals->academic mapping;
+    optional OpenAlex-based fix for OUP root).
+journals:
+  - name: AGRICULTURE AND HUMAN VALUES
+    short: AGR HUM VALUES
+    issn: 0889048X
+    eissn: "15728366"
+    site: https://link.springer.com/journal/10460
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S78512408
+    openalex_source_display_name: Agriculture and Human Values
+  - name: AMERICAN JOURNAL OF SOCIOLOGY
+    short: AM J SOCIOL
+    issn: "00029602"
+    eissn: "15375390"
+    site: https://www.journals.uchicago.edu/toc/ajs/current
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S122471516
+    openalex_source_display_name: American Journal of Sociology
+  - name: AMERICAN SOCIOLOGICAL REVIEW
+    short: AM SOCIOL REV
+    issn: "00031224"
+    eissn: "19398271"
+    site: https://journals.sagepub.com/home/asr
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S157620343
+    openalex_source_display_name: American Sociological Review
+  - name: ANNALS OF TOURISM RESEARCH
+    short: ANN TOURISM RES
+    issn: "01607383"
+    eissn: "18737722"
+    site: https://www.journals.elsevier.com/annals-of-tourism-research
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S51885707
+    openalex_source_display_name: Annals of Tourism Research
+  - name: Annual Review of Law and Social Science
+    short: ANNU REV LAW SOC SCI
+    issn: "15503585"
+    eissn: "15503631"
+    site: https://www.annualreviews.org/loi/lawsocsci
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: https://openalex.org/S59069355
+    openalex_source_display_name: Annual Review of Law and Social Science
+  - name: Annual Review of Sociology
+    short: ANNU REV SOCIOL
+    issn: "03600572"
+    eissn: "15452115"
+    site: https://www.annualreviews.org/content/journals/soc
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: https://openalex.org/S61274580
+    openalex_source_display_name: Annual Review of Sociology
+  - name: ANTHROZOOS
+    short: ANTHROZOOS
+    issn: "08927936"
+    eissn: "17530377"
+    site: https://www.tandfonline.com/toc/rfan20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S179102905
+    openalex_source_display_name: Anthrozoös
+  - name: BRITISH JOURNAL OF SOCIOLOGY
+    short: BRIT J SOCIOL
+    issn: "00071315"
+    eissn: "14684446"
+    site: https://onlinelibrary.wiley.com/journal/14684446
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S173252385
+    openalex_source_display_name: British Journal of Sociology
+  - name: BRITISH JOURNAL OF SOCIOLOGY OF EDUCATION
+    short: BRIT J SOCIOL EDUC
+    issn: "01425692"
+    eissn: "14653346"
+    site: https://www.tandfonline.com/toc/cbse20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S187274487
+    openalex_source_display_name: British Journal of Sociology of Education
+  - name: Chinese Sociological Review
+    short: CSR
+    issn: "21620555"
+    eissn: "21620563"
+    site: https://www.tandfonline.com/journals/mcsa20
+    notes: Taylor & Francis
+    openalex_source_id: https://openalex.org/S2764722375
+    openalex_source_display_name: Chinese Sociological Review
+  - name: City & Community
+    short: CITY COMMUNITY
+    issn: "15356841"
+    eissn: "15406040"
+    site: https://journals.sagepub.com/home/ctya
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S161221444
+    openalex_source_display_name: City and Community
+  - name: Cornell Hospitality Quarterly
+    short: CORNELL HOSP Q
+    issn: "19389655"
+    eissn: "19389663"
+    site: https://cqx.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S140551370
+    openalex_source_display_name: Cornell Hospitality Quarterly
+  - name: DISCOURSE & SOCIETY
+    short: DISCOURSE SOC
+    issn: "09579265"
+    eissn: "14603624"
+    site: https://www.sagepub.com/en-us/nam/discourse-society/journal200873
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S192935290
+    openalex_source_display_name: Discourse & Society
+  - name: ECONOMY AND SOCIETY
+    short: ECON SOC
+    issn: "03085147"
+    eissn: "14695766"
+    site: https://www.tandfonline.com/toc/reso20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S25250876
+    openalex_source_display_name: Economy and Society
+  - name: EUROPEAN SOCIETIES
+    short: EUR SOC
+    issn: "14616696"
+    eissn: "14698307"
+    site: https://www.tandfonline.com/toc/reus20/current
+    notes: WOS/JCR; MIT PRESS
+    openalex_source_id: https://openalex.org/S118409008
+    openalex_source_display_name: European Societies
+  - name: EUROPEAN SOCIOLOGICAL REVIEW
+    short: EUR SOCIOL REV
+    issn: "02667215"
+    eissn: "14682672"
+    site: https://academic.oup.com/esr/pages/about
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S159327246
+    openalex_source_display_name: European Sociological Review
+  - name: GENDER & SOCIETY
+    short: GENDER SOC
+    issn: "08912432"
+    eissn: "15523977"
+    site: https://gas.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S113116626
+    openalex_source_display_name: Gender & Society
+  - name: GLOBAL NETWORKS-A JOURNAL OF TRANSNATIONAL AFFAIRS
+    short: GLOBAL NETW
+    issn: "14702266"
+    eissn: "14710374"
+    site: https://onlinelibrary.wiley.com/journal/14710374
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S135713760
+    openalex_source_display_name: Global Networks
+  - name: Health Sociology Review
+    short: HEALTH SOCIOL REV
+    issn: "14461242"
+    eissn: "18393551"
+    site: https://www.tandfonline.com/toc/rhsr20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S50321101
+    openalex_source_display_name: Health Sociology Review
+  - name: Information Communication & Society
+    short: INFORM COMMUN SOC
+    issn: 1369118X
+    eissn: "14684462"
+    site: https://www.tandfonline.com/toc/rics20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S70010600
+    openalex_source_display_name: Information Communication & Society
+  - name: International Journal of Intercultural Relations
+    short: INT J INTERCULT REL
+    issn: "01471767"
+    eissn: "18737552"
+    site: https://www.journals.elsevier.com/international-journal-of-intercultural-relations
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S174538591
+    openalex_source_display_name: International Journal of Intercultural Relations
+  - name: International Political Sociology
+    short: INT POLIT SOCIOL
+    issn: "17495679"
+    eissn: "17495687"
+    site: https://academic.oup.com/ips
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S55069968
+    openalex_source_display_name: International Political Sociology
+  - name: International Review for the Sociology of Sport
+    short: INT REV SOCIOL SPORT
+    issn: "10126902"
+    eissn: "14617218"
+    site: https://irs.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S144178814
+    openalex_source_display_name: International Review for the Sociology of Sport
+  - name: Journal of Consumer Culture
+    short: J CONSUM CULT
+    issn: "14695405"
+    eissn: "17412900"
+    site: https://joc.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S10063912
+    openalex_source_display_name: Journal of Consumer Culture
+  - name: JOURNAL OF HEALTH AND SOCIAL BEHAVIOR
+    short: J HEALTH SOC BEHAV
+    issn: "00221465"
+    eissn: "21506000"
+    site: https://www.sagepub.com/journals/Journal201971/title
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S122290859
+    openalex_source_display_name: Journal of Health and Social Behavior
+  - name: JOURNAL OF MARRIAGE AND FAMILY
+    short: J MARRIAGE FAM
+    issn: "00222445"
+    eissn: "17413737"
+    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1741-3737
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S146344
+    openalex_source_display_name: Journal of Marriage and the Family
+  - name: LANGUAGE IN SOCIETY
+    short: LANG SOC
+    issn: "00474045"
+    eissn: "14698013"
+    site: https://journals.cambridge.org/action/displayJournal
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S123019783
+    openalex_source_display_name: Language in Society
+  - name: LAW & SOCIETY REVIEW
+    short: LAW SOC REV
+    issn: "00239216"
+    eissn: "15405893"
+    site: https://www.cambridge.org/lsr
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S44706263
+    openalex_source_display_name: Law & Society Review
+  - name: MEDIA CULTURE & SOCIETY
+    short: MEDIA CULT SOC
+    issn: "01634437"
+    eissn: "14603675"
+    site: https://www.sagepub.com/journals/Journal200958/title
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S18522216
+    openalex_source_display_name: Media Culture & Society
+  - name: New Directions for Child and Adolescent Development
+    short: NEW DIR CHILD ADOLES
+    issn: "15203247"
+    eissn: "15348687"
+    site: https://onlinelibrary.wiley.com/journal/15348687
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S31771912
+    openalex_source_display_name: New Directions for Child and Adolescent Development
+  - name: POLITICS & SOCIETY
+    short: POLIT SOC
+    issn: "00323292"
+    eissn: "15527514"
+    site: https://journals.sagepub.com/home/pas
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S49968029
+    openalex_source_display_name: Politics & Society
+  - name: POPULATION AND DEVELOPMENT REVIEW
+    short: POPUL DEV REV
+    issn: "00987921"
+    eissn: "17284457"
+    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1728-4457
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S32314625
+    openalex_source_display_name: Population and Development Review
+  - name: Qualitative Research
+    short: QUAL RES
+    issn: "14687941"
+    eissn: "17413109"
+    site: https://us.sagepub.com/en-us/nam/journal/qualitative-research
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S136099329
+    openalex_source_display_name: Qualitative Research
+  - name: Qualitative Sociology
+    short: QUAL SOCIOL
+    issn: "01620436"
+    eissn: "15737837"
+    site: https://www.springerlink.com/(xnnb5345uwemez55somc4b55)/app/home/journal.asp
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S143967217
+    openalex_source_display_name: Qualitative Sociology
+  - name: RACE & CLASS
+    short: RACE CLASS
+    issn: "03063968"
+    eissn: "17413125"
+    site: https://www.sagepub.com/journalsProdDesc.nav
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S180716411
+    openalex_source_display_name: Race & Class
+  - name: Scandinavian Journal of Hospitality and Tourism
+    short: SCAND J HOSP TOUR
+    issn: "15022250"
+    eissn: "15022269"
+    site: https://www.tandfonline.com/toc/sjht20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S127704935
+    openalex_source_display_name: Scandinavian Journal of Hospitality and Tourism
+  - name: SOCIAL FORCES
+    short: SOC FORCES
+    issn: "00377732"
+    eissn: "15347605"
+    site: https://academic.oup.com/sf
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: https://openalex.org/S130611943
+    openalex_source_display_name: Social Forces
+  - name: SOCIAL INDICATORS RESEARCH
+    short: SOC INDIC RES
+    issn: "03038300"
+    eissn: "15730921"
+    site: https://www.springer.com/journal/11205
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S112952035
+    openalex_source_display_name: Social Indicators Research
+  - name: Social Movement Studies
+    short: SOC MOVEMENT STUD
+    issn: "14742837"
+    eissn: "14742829"
+    site: https://www.tandfonline.com/action/journalInformation
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S135892541
+    openalex_source_display_name: Social movement studies
+  - name: SOCIAL NETWORKS
+    short: SOC NETWORKS
+    issn: "03788733"
+    eissn: "18792111"
+    site: https://www.journals.elsevier.com/social-networks
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S26186134
+    openalex_source_display_name: Social Networks
+  - name: SOCIAL PROBLEMS
+    short: SOC PROBL
+    issn: "00377791"
+    eissn: "15338533"
+    site: https://academic.oup.com/
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: https://openalex.org/S129389861
+    openalex_source_display_name: Social Problems
+  - name: SOCIAL PSYCHOLOGY QUARTERLY
+    short: SOC PSYCHOL QUART
+    issn: "01902725"
+    eissn: "19398999"
+    site: https://spq.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S131591925
+    openalex_source_display_name: Social Psychology Quarterly
+  - name: SOCIAL SCIENCE RESEARCH
+    short: SOC SCI RES
+    issn: 0049089X
+    eissn: "10960317"
+    site: https://www.journals.elsevier.com/social-science-research
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: https://openalex.org/S59311786
+    openalex_source_display_name: Social Science Research
+  - name: Society and Mental Health
+    short: SOC MENT HEALTH
+    issn: "21568693"
+    eissn: "21568731"
+    site: https://us.sagepub.com/en-us/nam/journal/society-and-mental-health
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S2764909113
+    openalex_source_display_name: Society and Mental Health
+  - name: Socio-Economic Review
+    short: SOCIO-ECON REV
+    issn: "14751461"
+    eissn: 1475147X
+    site: https://academic.oup.com/
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S147547362
+    openalex_source_display_name: Socio-Economic Review
+  - name: SOCIOLOGIA RURALIS
+    short: SOCIOL RURALIS
+    issn: "00380199"
+    eissn: "14679523"
+    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9523
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S66322501
+    openalex_source_display_name: Sociologia Ruralis
+  - name: Sociological Methodology
+    short: SOCIOL METHODOL
+    issn: "00811750"
+    eissn: "14679531"
+    site: https://www.asanet.org/journals/sm/sm.cfm
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S181883320
+    openalex_source_display_name: Sociological Methodology
+  - name: SOCIOLOGICAL METHODS & RESEARCH
+    short: SOCIOL METHOD RES
+    issn: "00491241"
+    eissn: "15528294"
+    site: https://smr.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S9536269
+    openalex_source_display_name: Sociological Methods & Research
+  - name: SOCIOLOGICAL REVIEW
+    short: SOCIOL REV
+    issn: "00380261"
+    eissn: 1467954X
+    site: https://journals.sagepub.com/home/sora
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S181098927
+    openalex_source_display_name: The Sociological Review
+  - name: Sociological Science
+    short: SOCIOL SCI
+    issn: ""
+    eissn: "23306696"
+    site: https://www.sociologicalscience.com/
+    notes: WOS/JCR; SOC SOCIOLOGICAL SCIENCE
+    openalex_source_id: https://openalex.org/S2739021930
+    openalex_source_display_name: Sociological Science
+  - name: SOCIOLOGICAL THEORY
+    short: SOCIOL THEOR
+    issn: "07352751"
+    eissn: "14679558"
+    site: https://us.sagepub.com/en-us/nam/journal/sociological-theory
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S60621485
+    openalex_source_display_name: Sociological Theory
+  - name: Sociology Compass
+    short: SOCIOL COMPASS
+    issn: "17519020"
+    eissn: "17519020"
+    site: https://onlinelibrary.wiley.com/journal/17519020
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S100176667
+    openalex_source_display_name: Sociology Compass
+  - name: SOCIOLOGY OF EDUCATION
+    short: SOCIOL EDUC
+    issn: "00380407"
+    eissn: "19398573"
+    site: https://soe.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S36718530
+    openalex_source_display_name: Sociology of Education
+  - name: SOCIOLOGY OF HEALTH & ILLNESS
+    short: SOCIOL HEALTH ILL
+    issn: "01419889"
+    eissn: "14679566"
+    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9566
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S123166236
+    openalex_source_display_name: Sociology of Health & Illness
+  - name: Sociology of Race and Ethnicity
+    short: SOCIOL RACE ETHNIC
+    issn: "23326492"
+    eissn: "23326506"
+    site: https://us.sagepub.com/en-us/nam/sociology-of-race-and-ethnicity/journal202282
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S4210239474
+    openalex_source_display_name: Sociology of Race and Ethnicity
+  - name: SOCIOLOGY OF SPORT JOURNAL
+    short: SOCIOL SPORT J
+    issn: "07411235"
+    eissn: "15432785"
+    site: https://journals.humankinetics.com/journal/ssj
+    notes: WOS/JCR; HUMAN KINETICS PUBL INC
+    openalex_source_id: https://openalex.org/S12205661
+    openalex_source_display_name: Sociology of Sport Journal
+  - name: SOCIOLOGY-THE JOURNAL OF THE BRITISH SOCIOLOGICAL ASSOCIATION
+    short: SOCIOLOGY
+    issn: "00380385"
+    eissn: "14698684"
+    site: https://www.uk.sagepub.com/journalsProdDesc.nav
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S79135273
+    openalex_source_display_name: Sociology
+  - name: WORK AND OCCUPATIONS
+    short: WORK OCCUPATION
+    issn: "07308884"
+    eissn: "15528464"
+    site: https://wox.sagepub.com/
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S51211322
+    openalex_source_display_name: Work and Occupations
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: https://journals.sagepub.com/home/wes
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S60510972
+    openalex_source_display_name: Work Employment and Society

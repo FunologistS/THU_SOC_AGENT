@@ -1,0 +1,108 @@
+# lemmatization.yml
+# Map variant tokens/phrases to a canonical form (concept standard name).
+
+tokens:
+  # ----- General morphology -----
+  models: model
+  modeling: model
+  modelled: model
+  algorithms: algorithm
+  algorithmic: algorithm
+  robots: robot
+  automated: automation
+  automating: automation
+  automations: automation
+  technologies: technology
+  technological: technology
+  inequalities: inequality
+  datasets: dataset
+  interviews: interview
+  ethnographies: ethnography
+  experiments: experiment
+  surveys: survey
+
+  # ----- AI domain -----
+  llms: llm
+  lmm: llm
+  gpt: llm
+  chatgpt: llm
+  genai: generative_ai
+
+  # ----- Tech occupation -----
+  programmer: programmer
+  programmers: programmer
+  developer: programmer
+  developers: programmer
+  engineers: programmer
+  engineer: programmer
+  coding: programmer
+  coder: programmer
+
+  # ----- China & related -----
+  chinese: china
+  prc: china
+  mainland: china
+  beijing: china
+
+  hongkong: hong_kong
+  taiwanese: taiwan
+  taipei: taiwan
+  macao: macau
+  macanese: macau
+
+  # ----- United States -----
+  american: usa
+  americans: usa
+  us: usa
+  usa: usa
+  united_states: usa
+  washington: usa
+
+  # ----- United Kingdom -----
+  british: uk
+  britain: uk
+  england: uk
+  scotland: uk
+  wales: uk
+  london: uk
+
+  # ----- France -----
+  french: france
+  paris: france
+
+  # ----- Germany -----
+  german: germany
+  berlin: germany
+
+  # ----- Italy -----
+  italian: italy
+  rome: italy
+
+  # ----- Japan -----
+  japanese: japan
+  tokyo: japan
+
+  # ----- Russia -----
+  russian: russia
+  moscow: russia
+
+phrases:
+  
+  # ----- Tech occupation -----
+  "software engineer": programmer
+  "software engineers": programmer
+  "ai developer": programmer
+  "ai developers": programmer
+  
+  # multi-word / phrase mapping (applied only if your pipeline supports it)
+  "large language models": llm
+  "generative ai": generative_ai
+  "artificial intelligence": ai
+  "machine learning": ml
+  "deep learning": dl
+  "natural language processing": nlp
+
+  # optional: multiword place names (ONLY if they appear as phrases in text)
+  "hong kong": hong_kong
+  "united states": usa
+  "united kingdom": uk
