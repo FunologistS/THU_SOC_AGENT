@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * concept_synthesize.mjs
+ * concept_synthesis.mjs
  *
  * Purpose:
  *   Conceptual synthesis on top of clustering results, focused on sociology.
@@ -10,26 +10,35 @@
  *     - (optional) outputs/<topic>/05_report/concept_appendix_YYYYMMDD_vN.md + concept_appendix_latest.md
  *
  * Usage:
- *   node .claude/skills/literature-synthesis/scripts/concept_synthesize_gpt.mjs <topic> \
+ *   node .claude/skills/literature-synthesis/scripts/concept_synthesis.mjs <topic> \
  *     [--meta-clusters outputs/<topic>/04_meta/meta_clusters_latest.md] \
  *     [--briefing outputs/<topic>/04_meta/briefing_latest.md] \
  *     [--summaries outputs/<topic>/03_summaries/summaries_latest.md] \
  *     [--date YYYYMMDD] [--v N] \
- *     [--model gpt-5.2] \
+ *     [--model glm-4.7-flash] \
  *     [--no-appendix] \
  *     [--max-papers-per-cluster 999] \
  *     [--only-clusters "0,3,5"] \
  *     [--dry-run] [--debug] [--test-api]
+ *
+ * Env:
+ *   ZHIPU_API_KEY   (required unless --dry-run)
+ *   ZHIPU_MODEL     (optional default model)
+ *   ZHIPU_BASE_URL  (optional, default https://open.bigmodel.cn/api/paas/v4)
+ *
+ * Notes:
+ *   - Zhipu/BigModel uses an OpenAI-compatible-ish /chat/completions endpoint:
+ *     POST {BASE_URL}/chat/completions with Authorization: Bearer <API_KEY>.
  */
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { OpenAI } from 'openai'; // 引入 OpenAI 客户端
 
-// 获取项目根目录
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Project root: scripts/ -> literature-synthesis/ -> skills/ -> .claude/ -> project
 let PROJECT_ROOT = path.resolve(__dirname, "..", "..", "..", "..");
+// Fallback: if outputs/ doesn't exist, try cwd (e.g. when run from Cursor with different cwd)
 if (!fs.existsSync(path.join(PROJECT_ROOT, "outputs"))) {
   const cwdRoot = process.cwd();
   if (fs.existsSync(path.join(cwdRoot, "outputs"))) {
@@ -108,16 +117,10 @@ function clamp(s, n) {
   return t.slice(0, n).trim() + "…";
 }
 
-function toInt(x, fallback = 0) {
-  const s = String(x ?? "").trim();
-  if (s === "") return fallback;
-  const n = Number(s);
-  return Number.isFinite(n) ? n : fallback;
-}
-
 /** ---------------- Parse meta_clusters_latest.md ---------------- **/
 
 function parseMetaClusters(md) {
+  // Format: ## Cluster N (M papers)\n**Theme: ...**\n- **Title (Year)** - Journal | DOI: ...
   const clusters = [];
   const clusterRe = /^## Cluster (\d+)\s+\((\d+)\s+papers?\)\s*$/;
   const themeRe = /^\*\*Theme:\s*(.+?)\*\*\s*$/;
@@ -171,6 +174,7 @@ function parseSummariesMarkdown(md) {
 
     const journal = (b.match(/^- Journal:\s*(.*)$/m)?.[1] ?? "").trim();
     const doi = (b.match(/^- DOI:\s*(.*)$/m)?.[1] ?? "").trim();
+    const openalex = (b.match(/^- OpenAlex:\s*(.*)$/m)?.[1] ?? "").trim();
 
     const rq =
       (b.match(/\*\*Research question\*\*:\s*([\s\S]*?)(?:\n\n|\n\*\*Data \/ material\*\*|$)/m)?.[1] ??
@@ -195,32 +199,27 @@ function parseSummariesMarkdown(md) {
       (b.match(/\*\*Abstract\*\*:\s*([\s\S]*?)(?:\n\n|\n\*\*Research question\*\*|$)/m)?.[1] ??
         "").trim();
 
-    // 作者：若 summaries 中有 - Author(s): 或 **Author(s)**: 则解析，否则用 Unknown
-    const authors = (
-      b.match(/^- Authors?:\s*(.+)$/m)?.[1] ??
-      b.match(/\*\*Authors?\*\*:\s*(.+?)(?:\n|$)/m)?.[1] ??
-      ""
-    ).trim() || null;
-
-    // 引用格式：(Author, Year) 或 (Author & Author, Year)
-    const citation = authors ? `${authors}, ${year}` : `Unknown, ${year}`;
+    const manual = /\[MANUAL\]/.test(b);
 
     items.push({
       title,
       year,
       journal,
       doi,
+      openalex,
       rq,
       data_material: data,
       method,
       findings,
       contribution,
       abstract,
-      citation, // 加入引文
+      manual,
     });
   }
   return items;
 }
+
+/** ---------------- Join meta_table + summaries ---------------- **/
 
 function normalizeTitleKey(s) {
   return String(s || "")
@@ -264,29 +263,92 @@ function buildIndexByDoi(items) {
   return m;
 }
 
-/** ---------------- OpenAI Client ---------------- **/
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  baseURL: "https://api.gptsapi.net/v1",
-});
-
-// OpenAI 调用函数
-async function openAIChat(messages, modelOverride) {
-  const model = modelOverride || "gpt-5.2";
-  try {
-    const response = await client.chat.completions.create({
-      model,
-      messages,
-    });
-    return response.choices[0].message.content;
-  } catch (error) {
-    console.error("[concept_synthesis] OpenAI API 错误:", error?.message || error);
-    return null;
-  }
+function toInt(x, fallback = 0) {
+  const s = String(x ?? "").trim();
+  if (s === "") return fallback;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : fallback;
 }
 
-/** ---------------- Prompt builders ---------------- **/
+/** ---------------- LLM Client (Zhipu / BigModel Chat Completions) ---------------- **/
+
+async function zhipuChat({
+  apiKey,
+  baseURL,
+  model,
+  messages,
+  temperature = 0.2,
+  maxTokens = 1800,
+  retries = 3,
+  debug = false,
+  timeoutMs = 120000,
+}) {
+  // Docs show: POST /paas/v4/chat/completions, Authorization: Bearer <API_KEY>
+  const url = `${String(baseURL).replace(/\/+$/, "")}/chat/completions`;
+
+  let lastErr = null;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), timeoutMs);
+
+    try {
+      const resp = await fetch(url, {
+        method: "POST",
+        signal: ac.signal,
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "zh-CN,zh",
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          temperature,
+          max_tokens: maxTokens,
+          stream: false,
+        }),
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text();
+        // 内容审核/敏感词 (400 + 1301)：不抛错，返回占位并继续下一个聚类
+        if (resp.status === 400 && (txt.includes("1301") || txt.includes("contentFilter") || txt.includes("敏感"))) {
+          console.warn(`[concept_synthesis] 本聚类因内容审核被拒绝，已跳过并写入占位，继续下一聚类`);
+          return "## 本聚类\n\n（因接口内容审核未通过，未生成摘要。可稍后重试或调整聚类内论文表述后重跑。）";
+        }
+        throw new Error(`ZHIPU HTTP ${resp.status}: ${txt.slice(0, 800)}`);
+      }
+
+      const data = await resp.json();
+      const firstChoice = data?.choices?.[0];
+      let content = firstChoice?.message?.content ?? "";
+
+      if (debug) {
+        console.log(`[zhipu] ok, content chars=${content.length}`);
+      }
+      // 接口返回空内容时用占位，避免报告缺段（智谱有时 200 但 content 为空，相当于软拒绝）
+      if (typeof content !== "string" || content.trim().length < 50) {
+        const finishReason = firstChoice?.finish_reason ?? "unknown";
+        console.warn(`[concept_synthesis] 本聚类接口返回内容为空或过短（finish_reason=${finishReason}），已写入占位并继续`);
+        if (debug && firstChoice) {
+          console.warn(`[zhipu] choices[0] keys: ${Object.keys(firstChoice).join(", ")}`);
+        }
+        content = "## 本聚类\n\n（接口返回内容为空，未生成摘要。可稍后重试。）";
+      }
+      return content;
+    } catch (e) {
+      lastErr = e;
+      const waitMs = 700 * attempt;
+      if (debug) console.warn(`[zhipu] attempt ${attempt} failed: ${e?.message || e}. wait ${waitMs}ms`);
+      await new Promise((r) => setTimeout(r, waitMs));
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw lastErr || new Error("Zhipu call failed");
+}
+
+/** ---------------- Card formatting ---------------- **/
 
 function formatCardForLLM(c) {
   const parts = [];
@@ -297,9 +359,10 @@ function formatCardForLLM(c) {
   if (c.findings) parts.push(`- 主要发现：${clamp(c.findings, 500)}`);
   if (c.contribution) parts.push(`- 贡献：${clamp(c.contribution, 300)}`);
   if (c.abstract && !c.findings) parts.push(`- 摘要：${clamp(c.abstract, 400)}`);
-  if (c.citation) parts.push(`- 引用：(${c.citation})`); // 添加引用
   return parts.join("\n");
 }
+
+/** ---------------- Prompt builders ---------------- **/
 
 function buildClusterPrompt({ topic, clusterId, clusterSize, cards, wantAppendix, theme, briefingSnippet }) {
   const system = `
@@ -331,9 +394,6 @@ ${context ? `\n背景信息：\n${context}\n` : ""}
 **主要的视角/视角框架（2-5个要点）：**
 - 使用的理论：[例如：劳动过程理论、SCOT、数字二重性等]
 - 关键视角：[例如：社会经济影响、技术决定论与产品决定论等]
-
-**研究方法（基于卡片中的“数据/材料”与“方法”字段，2-4个要点）：**
-- 请根据每篇论文的数据类型（调查、访谈、实验、文本等）与方法（量化/质性/混合）做简要归纳，便于读者比较方法学差异。
 
 **重复的主张/结论（2-5个要点）：**
 - 研究常常指出[插入常见的结论]。
@@ -390,40 +450,11 @@ if (!topic || !String(topic).trim()) {
 
 const date = String(args.date || todayYYYYMMDD());
 const debug = !!args.debug;
-const dryRun = !!args["dry-run"];
-const testApi = !!args["test-api"];
-const v = args.v ? Number(args.v) : null;
 
-const model = args.model || "gpt-5.2"; // 默认使用 GPT-5.2，可通过 --model 覆盖
+const model = args.model || process.env.ZHIPU_MODEL || "glm-4.7-flash";
+const apiKey = process.env.ZHIPU_API_KEY || "";
+const baseURL = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
 
-const apiKey = process.env.OPENAI_API_KEY || ""; // 从环境变量读取 API 密钥
-
-// --test-api：仅测试 API 连通性，不读文件、不写报告；执行后必须 exit，主流程放在 else 中
-if (testApi) {
-  if (!apiKey) {
-    console.error("[concept_synthesis] --test-api 需要设置 OPENAI_API_KEY");
-    process.exit(1);
-  }
-  console.log("[concept_synthesis] 正在测试 OpenAI API (model:", model, ")...");
-  openAIChat(
-    [{ role: "user", content: "回复：OK" }],
-    model
-  )
-    .then((content) => {
-      if (content == null) {
-        console.error("[concept_synthesis] API 返回为空");
-        process.exit(1);
-      }
-      console.log("[concept_synthesis] API 调用成功，回复长度:", content.length);
-      console.log("[concept_synthesis] 回复内容:", content.slice(0, 200));
-      process.exit(0);
-    })
-    .catch((err) => {
-      console.error("[concept_synthesis] API 调用失败:", err?.message || err);
-      process.exit(1);
-    });
-} else {
-// ========== 以下为正常流程（非 --test-api）==========
 const metaClustersPath =
   args["meta-clusters"] || path.join(PROJECT_ROOT, "outputs", topic, "04_meta", "meta_clusters_latest.md");
 const briefingInputPath =
@@ -436,7 +467,40 @@ const onlyClustersRaw = args["only-clusters"] ? String(args["only-clusters"]) : 
 const onlyClusters = onlyClustersRaw
   ? onlyClustersRaw.split(",").map((s) => toInt(s.trim(), -1)).filter((n) => n >= 0)
   : null;
+const dryRun = !!args["dry-run"];
+const testApi = !!args["test-api"];
+const v = args.v ? Number(args.v) : null;
 
+// 仅测试智谱 API 是否可用（不读文件、不写报告）
+if (testApi) {
+  const apiKey = process.env.ZHIPU_API_KEY || "";
+  const baseURL = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
+  const model = args.model || process.env.ZHIPU_MODEL || "glm-4.7-flash";
+  if (!apiKey) {
+    console.error("[concept_synthesis] --test-api 需要设置 ZHIPU_API_KEY");
+    process.exit(1);
+  }
+  console.log("[concept_synthesis] 正在测试智谱 API...");
+  zhipuChat({
+    apiKey,
+    baseURL,
+    model,
+    messages: [
+      { role: "user", content: "回复：OK" },
+    ],
+    maxTokens: 10,
+  })
+    .then((content) => {
+      console.log("[concept_synthesis] API 调用成功，模型回复长度:", content?.length ?? 0);
+      console.log("[concept_synthesis] 回复内容:", (content || "").slice(0, 200));
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error("[concept_synthesis] API 调用失败:", err?.message || err);
+      process.exit(1);
+    });
+} else {
+// ========== 以下为正常流程（非 --test-api）==========
 const outDir = path.join(PROJECT_ROOT, "outputs", topic, "05_report");
 ensureDir(outDir);
 
@@ -464,6 +528,10 @@ const clusters = parseMetaClusters(readText(metaClustersPath));
 const totalPapersFromClusters = clusters.reduce((acc, c) => acc + c.papers.length, 0);
 if (totalPapersFromClusters === 0) {
   console.error(`[concept_synthesis] ERROR: meta_clusters 中未解析到任何论文行。`);
+  console.error(`[concept_synthesis] 请确认 ${metaClustersPath} 格式为：`);
+  console.error(`   ## Cluster N (M papers)\n**Theme: ...**\n- **Title (Year)** - Journal | DOI: ...`);
+  const snippet = readText(metaClustersPath).slice(0, 600);
+  console.error(`[concept_synthesis] 文件开头 600 字符：\n---\n${snippet}\n---`);
   process.exit(1);
 }
 
@@ -472,6 +540,7 @@ const summaryItems = parseSummariesMarkdown(readText(summariesPath));
 const summaryByTitle = buildIndexByTitle(summaryItems);
 const summaryByDoi = buildIndexByDoi(summaryItems);
 
+// For each cluster, join papers with summaries by title. Store in array by index so loop uses same ref.
 const clusterData = [];
 let totalJoined = 0;
 for (const c of clusters) {
@@ -487,16 +556,16 @@ for (const c of clusters) {
       findings: sum?.findings ?? "",
       contribution: sum?.contribution ?? "",
       abstract: sum?.abstract ?? "",
-      citation: sum?.citation ?? "",
     });
     if (sum) totalJoined++;
   }
   clusterData.push({ cid: String(c.clusterId), theme: c.theme, papers: joined });
 }
 
-const toProcess = onlyClusters
-  ? clusterData.filter((d) => onlyClusters.includes(Number(d.cid)))
-  : clusterData;
+const toProcess =
+  onlyClusters
+    ? clusterData.filter((d) => onlyClusters.includes(Number(d.cid)))
+    : clusterData;
 
 const papersPerCluster = toProcess.map((d) => `cluster ${d.cid}: ${d.papers.length}`).join(", ");
 console.log(
@@ -514,7 +583,16 @@ if (clustersWithPapers.length === 0) {
 
 if (dryRun) {
   console.log(`[concept_synthesis] DRY RUN: would process clusters ${toProcess.map((d) => d.cid).join(", ")}`);
+  for (const d of toProcess) {
+    const matched = d.papers.filter((p) => p.rq || p.findings || p.abstract).length;
+    console.log(`  cluster ${d.cid}: ${d.papers.length} papers (${matched} with summary content)`);
+  }
   process.exit(0);
+}
+
+if (!apiKey) {
+  console.error("[ERROR] Missing ZHIPU_API_KEY. Please set it in your environment.");
+  process.exit(1);
 }
 
 const briefingParts = [];
@@ -541,16 +619,15 @@ for (let i = 0; i < toProcess.length; i++) {
     findings: p.findings,
     contribution: p.contribution,
     abstract: p.abstract,
-    citation: p.citation, // 引用部分
   }));
 
   if (cards.length === 0) {
-    console.warn(`[concept_synthesis] Cluster ${cid}: 0 papers, skipping OpenAI call`);
+    console.warn(`[concept_synthesis] Cluster ${cid}: 0 papers, skipping LLM call`);
     briefingParts.push(`## Cluster ${cid}\n\n（该聚类无论文）`);
     continue;
   }
 
-  console.log(`[concept_synthesis] Cluster ${cid} (${cards.length} papers) -> OpenAI...`);
+  console.log(`[concept_synthesis] Cluster ${cid} (${cards.length} papers) -> LLM...`);
   const { messages } = buildClusterPrompt({
     topic,
     clusterId: cid,
@@ -561,14 +638,33 @@ for (let i = 0; i < toProcess.length; i++) {
     briefingSnippet: briefingText,
   });
 
-  const content = await openAIChat(messages, model);
-  if (content == null) {
-    console.error(`[concept_synthesis] Cluster ${cid} API 返回为空，已写入占位`);
-    briefingParts.push(`## Cluster ${cid}\n\n（调用失败，请检查 API 或重试）`);
-  } else {
-    briefingParts.push(content);
-  }
+  const content = await zhipuChat({
+    apiKey,
+    baseURL,
+    model,
+    messages,
+    debug,
+    maxTokens: 4000,
+    timeoutMs: 180000,
+  });
+
+  briefingParts.push(content);
   if (i < toProcess.length - 1) briefingParts.push(``);
+}
+
+const hasRealContent = briefingParts.some(
+  (part) =>
+    part.length > 50 &&
+    !part.includes("（该聚类无论文）") &&
+    !part.includes("（无匹配论文") &&
+    !part.includes("（因接口内容审核") &&
+    !part.includes("（接口返回内容为空")
+);
+if (!hasRealContent) {
+  console.error(
+    `[concept_synthesis] ERROR: 未生成任何聚类内容（全部为占位符）。请确认：\n  1) 在项目根目录运行，或使用绝对路径指定 --meta-clusters / --summaries\n  2) meta_clusters_latest.md 与 summaries_latest.md 为当前 topic 的版本\n  3) 使用 --debug 查看实际读取的文件路径`
+  );
+  process.exit(1);
 }
 
 const version = v ?? nextVersion(outDir, "report", date);
