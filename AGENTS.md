@@ -18,6 +18,8 @@ Usage notes:
 - Only use skills listed in <available_skills> below
 - Do not invoke a skill that is already loaded in your context
 - Each skill invocation is stateless
+
+Project pipeline: The five project skills (journal-catalog → journal-search → paper-summarize → literature-synthesis → paper-writing) form a literature pipeline; see .claude/skills/README.md for data flow and outputs layout.
 </usage>
 
 <available_skills>
@@ -152,6 +154,25 @@ update literature, fetch recent articles, or perform journal-based literature se
 Generate structured summaries from versioned paper lists. 
 Reads papers_*.md and produces summaries_*.md using standardized prompts. 
 Use when synthesizing retrieved literature into readable summaries.
+</description>
+<location>global</location>
+</skill>
+
+<skill>
+<name>literature-synthesis</name>
+<description>
+Literature synthesis via clustering and concept extraction for sociology. 
+Produces structured reports and briefings from summaries; outputs go to 04_meta and 05_report. 
+Trigger when user wants theme clustering, concept reports, or synthesis from summaries.
+</description>
+<location>global</location>
+</skill>
+
+<skill>
+<name>paper-writing</name>
+<description>
+Transcribe PDF/DOCX to Markdown; rewrite outputs/&lt;topic&gt;/05_report (prefer chunks) into paragraph review under academic style samples. 
+Use for input_to_md (transcription) or writing_under_style (styled review → 06_review).
 </description>
 <location>global</location>
 </skill>
