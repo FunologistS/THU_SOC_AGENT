@@ -1,0 +1,315 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========== 清华视觉识别 · 标准色 + 辅助色 · 现代网页风格 ==========
+ * 校色：紫、白。辅助色：玫红。规范：https://vi.tsinghua.edu.cn/gk/xxbz/scgf.htm
+ */
+:root {
+  /* 标准色 · 清华紫 */
+  --thu-purple: #660874;
+  --thu-purple-light: #8b3d96;
+  --thu-purple-dark: #4d0559;
+  --thu-purple-subtle: rgba(102, 8, 116, 0.07);
+  --thu-purple-focus: rgba(102, 8, 116, 0.2);
+  /* 辅助色 · 玫红 */
+  --accent: #d93379;
+  --accent-light: #e85a9a;
+  --accent-subtle: rgba(217, 51, 121, 0.1);
+  --gradient-thu: linear-gradient(135deg, var(--thu-purple) 0%, var(--accent) 100%);
+  --gradient-thu-soft: linear-gradient(90deg, rgba(102, 8, 116, 0.1) 0%, rgba(217, 51, 121, 0.06) 100%);
+  /* 背景 · 更干净 */
+  --bg-page: #f8f7fa;
+  --bg-sidebar: #f5f3f8;
+  --bg-card: #ffffff;
+  --border: #e8e5ee;
+  --border-soft: #eeecf2;
+  --text: #1c1924;
+  --text-muted: #6d6575;
+  /* 现代阴影与圆角 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --shadow-sm: 0 1px 2px rgba(102, 8, 116, 0.04);
+  --shadow-md: 0 4px 12px rgba(102, 8, 116, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 28px rgba(102, 8, 116, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card: var(--shadow-md);
+  --shadow-dialog: 0 24px 48px rgba(102, 8, 116, 0.1), 0 8px 16px rgba(0, 0, 0, 0.06);
+  --overlay: rgba(28, 25, 36, 0.45);
+}
+
+/* 顶栏 · 轻量玻璃感 + 与 logo 规范一致的留白 */
+.header-brand {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
+  backdrop-filter: blur(12px);
+}
+
+body {
+  color: var(--text);
+  background: var(--bg-page);
+  background-image:
+    radial-gradient(ellipse 100% 60% at 50% -10%, rgba(102, 8, 116, 0.06), transparent 50%),
+    radial-gradient(ellipse 80% 40% at 80% 50%, rgba(217, 51, 121, 0.03), transparent 50%);
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 侧栏 · 极淡圆形底纹（呼应系徽圆形） */
+.aside-brand {
+  position: relative;
+}
+.aside-brand::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  right: -60px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 8, 116, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* 全局焦点环 · 清华紫 */
+*:focus-visible {
+  outline: 2px solid var(--thu-purple);
+  outline-offset: 2px;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* 表单控件 · 现代圆角与焦点 */
+.thu-input {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.thu-input::placeholder {
+  color: var(--text-muted);
+}
+.thu-input:focus {
+  border-color: var(--thu-purple);
+  box-shadow: 0 0 0 3px var(--thu-purple-focus);
+  outline: none;
+}
+
+/* 文档预览区：更舒适的阅读排版（不依赖 @tailwindcss/typography） */
+.prose-reader {
+  max-width: none;
+  color: var(--text);
+}
+.prose-reader h1,
+.prose-reader h2,
+.prose-reader h3,
+.prose-reader h4 {
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.prose-reader h1 { font-size: 1.5rem; }
+.prose-reader h2 { font-size: 1.25rem; margin-top: 1.75em; }
+.prose-reader h3 { font-size: 1.125rem; }
+.prose-reader p {
+  line-height: 1.8;
+  color: var(--text);
+  margin: 0.6em 0 1em;
+  text-align: justify;
+  hyphens: auto;
+}
+.prose-reader ul,
+.prose-reader ol {
+  margin: 0.75em 0;
+  padding-left: 1.5em;
+}
+.prose-reader li {
+  margin: 0.25em 0;
+}
+.prose-reader a {
+  color: var(--thu-purple);
+  text-decoration: none;
+}
+.prose-reader a:hover {
+  text-decoration: underline;
+}
+.prose-reader strong { font-weight: 600; }
+.prose-reader code {
+  font-size: 0.9em;
+  padding: 0.15em 0.35em;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sidebar);
+}
+.prose-reader pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-sidebar);
+  margin: 0.75em 0;
+  border: 1px solid var(--border-soft);
+}
+.prose-reader blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 1em;
+  margin: 0.75em 0;
+  color: var(--text-muted);
+}
+
+/* 顶栏标题 · 与 logo 规范一致的字重与字距 */
+.header-title {
+  letter-spacing: -0.02em;
+}
+/* 副标题「综合智能体」· 略小、略灰，与主标题层次分明 */
+.header-subtitle {
+  margin-top: 0.125rem;
+}
+
+/* 侧栏区块标题 · 徽标式：圆点 + 左侧紫条（呼应系徽圆形） */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--thu-purple);
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.section-head::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gradient-thu);
+  flex-shrink: 0;
+}
+
+/* 现代卡片 · 圆角 + 阴影 */
+.card-modern {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-soft);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.card-modern:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* 细渐变线 */
+.gradient-thu-line {
+  background: var(--gradient-thu);
+  opacity: 0.4;
+}
+
+/* Logo：外围渐变光带（紫→玫红）持续旋转 + 悬停时 logo 自转 */
+@keyframes thu-logo-ring-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.thu-logo-ring {
+  flex-shrink: 0;
+  position: relative;
+  border-radius: 50%;
+  padding: 3px;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: conic-gradient(
+    from 0deg,
+    var(--thu-purple),
+    var(--accent),
+    var(--thu-purple-light),
+    var(--accent-light),
+    var(--thu-purple)
+  );
+  background-size: 100% 100%;
+  animation: thu-logo-ring-rotate 8s linear infinite;
+}
+.thu-logo-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  box-shadow: var(--shadow-thu-soft);
+  transition: transform 4s linear;
+}
+.thu-logo-ring:hover .thu-logo-inner {
+  transform: rotate(360deg);
+}
+
+/* 说明书 · 简介与章节标题 */
+.manual-view .manual-h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+/* 说明书 · 本页功能一览表（主题色表格） */
+.manual-table-wrap {
+  border-color: var(--border-soft);
+}
+.manual-table-head-row {
+  background: linear-gradient(135deg, var(--thu-purple-subtle) 0%, var(--accent-subtle) 100%);
+  border-bottom: 2px solid var(--thu-purple);
+}
+.manual-table-th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  color: var(--thu-purple);
+  text-transform: uppercase;
+}
+.manual-table-th-area {
+  white-space: nowrap;
+  width: 6.5rem;
+  min-width: 6.5rem;
+}
+.manual-table-body-row {
+  border-bottom: 1px solid var(--border-soft);
+  transition: background-color 0.15s ease;
+}
+.manual-table-body-row:last-child {
+  border-bottom: none;
+}
+.manual-table-body-row:hover {
+  background-color: var(--thu-purple-subtle);
+}
+.manual-table-td {
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  color: var(--text);
+}
+.manual-table-td-area {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  width: 6.5rem;
+  min-width: 6.5rem;
+  border-right: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.6);
+}
+.manual-table-td-desc {
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* 技能工作台卡片：说明书悬停时高亮（清华紫→玫红渐变感） */
+.skill-card-highlight {
+  background: linear-gradient(135deg, var(--thu-purple-subtle) 0%, var(--accent-subtle) 100%) !important;
+  box-shadow: 0 0 0 1px rgba(102, 8, 116, 0.15), var(--shadow-md);
+}

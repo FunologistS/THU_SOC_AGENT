@@ -68,7 +68,9 @@ if (!fs.existsSync(path.join(PROJECT_ROOT, "outputs"))) {
   if (fs.existsSync(path.join(cwd, "outputs"))) PROJECT_ROOT = cwd;
 }
 
-const REFERENCES_ACADEMIC = path.join(PAPER_WRITING_ROOT, "references", "academic");
+const REFERENCE_STYLE = (process.env.REFERENCE_STYLE || "academic").toLowerCase();
+const REFERENCES_DIR = path.join(PAPER_WRITING_ROOT, "references", REFERENCE_STYLE);
+const REFERENCES_ACADEMIC = REFERENCES_DIR;
 
 /** ---------- env ---------- **/
 const API_KEY = process.env.OPENAI_API_KEY;

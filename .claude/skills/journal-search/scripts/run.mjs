@@ -6,6 +6,8 @@
  *   Use OpenAlex to search works by topic across a curated journal list (OpenAlex sources),
  *   optionally fill missing/invalid abstracts via publisher landing page + Firecrawl + Crossref fallback,
  *   and export a versioned Markdown table to outputs/<topic>/01_raw/.
+ *   On each run, the script scaffolds the full topic tree under outputs/<topic>/:
+ *   01_raw, 02_clean, 03_summaries, 04_meta, 05_report, 06_review (downstream skills write into these).
  *
  * Usage:
  *   # Fast (no abstract fallback)
@@ -867,8 +869,13 @@ async function main() {
   console.table(domainRows);
 
   const date = getArg("--date", yyyymmddChina());
-  const outDir = path.join(projectRoot, "outputs", topicSlug, "01_raw");
-  fs.mkdirSync(outDir, { recursive: true });
+  const topicRoot = path.join(projectRoot, "outputs", topicSlug);
+  const STAGE_DIRS = ["01_raw", "02_clean", "03_summaries", "04_meta", "05_report", "06_review"];
+  for (const stage of STAGE_DIRS) {
+    fs.mkdirSync(path.join(topicRoot, stage), { recursive: true });
+  }
+  console.log(`[scaffold] outputs/${topicSlug}/ { ${STAGE_DIRS.join(", ")} }`);
+  const outDir = path.join(topicRoot, "01_raw");
 
   function nextVersionedPath(dir, base, yyyymmdd) {
     const re = new RegExp(`^${base}_${yyyymmdd}_v(\\d+)\\.md$`);
@@ -901,7 +908,9 @@ async function main() {
   }
 
   fs.writeFileSync(outPath, md, "utf8");
-  console.log(`Wrote: ${outPath}\nRows: ${rows.length}`);
+  const latestPath = path.join(outDir, "papers_latest.md");
+  fs.copyFileSync(outPath, latestPath);
+  console.log(`Wrote: ${outPath}\nLatest: ${latestPath}\nRows: ${rows.length}`);
 }
 
 main().catch((e) => {

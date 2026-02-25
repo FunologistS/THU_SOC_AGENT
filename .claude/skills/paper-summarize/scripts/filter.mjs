@@ -7,8 +7,10 @@
  * Output: outputs/<topic>/02_clean/papers_clean_<YYYYMMDD>_vN.md + papers_clean_latest.md
  *
  * Usage:
- *   node .claude/skills/paper-summarize/scripts/filter.mjs artificial_intelligence
- *   node .claude/skills/paper-summarize/scripts/filter.mjs artificial_intelligence --in outputs/artificial_intelligence/01_raw/papers_20260221_v3.md
+ *   node filter.mjs artificial_intelligence
+ *   node filter.mjs artificial_intelligence --in outputs/<topic>/01_raw/papers_20260221_v3.md
+ *   node filter.mjs artificial_intelligence --no-interactive   # 无交互，用于管线：仅做主题/关键词相关性过滤，写 02_clean
+ *   node filter.mjs artificial_intelligence --no-interactive --year-from 2023 --year-to 2025 --strong-keywords "digital labor"
  *
  * Fixes / improvements in this version:
  * 1) Robust table row splitting:
@@ -48,7 +50,14 @@ function todayYYYYMMDD() {
 }
 
 function parseArgs(argv) {
-  const args = { topic: null, inPath: null };
+  const args = {
+    topic: null,
+    inPath: null,
+    noInteractive: false,
+    yearFrom: null,
+    yearTo: null,
+    strongKeywords: [],
+  };
   const rest = argv.slice(2);
 
   for (let i = 0; i < rest.length; i++) {
@@ -62,12 +71,39 @@ function parseArgs(argv) {
       i++;
       continue;
     }
+    if (a === "--no-interactive" || a === "--batch") {
+      args.noInteractive = true;
+      continue;
+    }
+    if (a === "--year-from") {
+      const v = Number(rest[i + 1]);
+      if (Number.isInteger(v)) args.yearFrom = v;
+      i++;
+      continue;
+    }
+    if (a === "--year-to") {
+      const v = Number(rest[i + 1]);
+      if (Number.isInteger(v)) args.yearTo = v;
+      i++;
+      continue;
+    }
+    if (a === "--strong-keywords") {
+      const raw = rest[i + 1] || "";
+      args.strongKeywords = raw
+        .split(",")
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean);
+      i++;
+      continue;
+    }
   }
   return args;
 }
 
 function findLatestRawFile(rawDir) {
   if (!exists(rawDir)) return null;
+  const latestPath = path.join(rawDir, "papers_latest.md");
+  if (exists(latestPath)) return latestPath;
   const files = fs
     .readdirSync(rawDir)
     .filter((f) => /^papers_\d{8}_v\d+\.md$/i.test(f))
@@ -269,9 +305,219 @@ function applyKeywordFilter(rows, weakKeys, strongKeys, titleIdx, abstractIdx, e
   return { kept, dropped_keyword_mismatch };
 }
 
+/**
+ * Core filter logic: year filter + keyword relevance, write to 02_clean.
+ * Returns { success, outPath, latestPath, kept, dropped } or { success: false, error }.
+ */
+function runFilterLogic({
+  topic,
+  inPath,
+  mode,
+  y1,
+  y2,
+  weakKeys,
+  strongKeys,
+  table,
+  expectedCols,
+  cleanDir,
+}) {
+  const yearRes = applyYearFilter(table, mode, y1, y2, expectedCols);
+  if (yearRes.reason) {
+    return { success: false, error: yearRes.reason };
+  }
+
+  let keptRows = yearRes.kept;
+  let droppedTotal = yearRes.dropped;
+
+  const headerCells = splitRow(table.header, expectedCols).map((c) => c.toLowerCase());
+  const titleIdx = headerCells.findIndex((h) => h === "title" || h.includes("title"));
+  const abstractIdx = headerCells.findIndex((h) => h === "abstract" || h.includes("abstract"));
+
+  if (titleIdx >= 0 && abstractIdx >= 0 && (weakKeys?.length || strongKeys?.length)) {
+    const kwRes = applyKeywordFilter(
+      keptRows,
+      weakKeys || [],
+      strongKeys || [],
+      titleIdx,
+      abstractIdx,
+      expectedCols
+    );
+    keptRows = kwRes.kept;
+    droppedTotal += kwRes.dropped_keyword_mismatch;
+  }
+
+  ensureDir(cleanDir);
+  const base = `papers_clean_${todayYYYYMMDD()}`;
+  const outPath = nextVersionedPath(cleanDir, base);
+  const latestPath = path.join(cleanDir, "papers_clean_latest.md");
+
+  const filterDesc =
+    mode === "before"
+      ? `year < ${y1}`
+      : mode === "after"
+      ? `year > ${y1}`
+      : mode === "between"
+      ? `${y1}–${y2}`
+      : "none";
+
+  const headerNote = [
+    `# Cleaned papers (${topic})`,
+    ``,
+    `- Source: ${path.relative(process.cwd(), inPath)}`,
+    `- Filter: ${filterDesc}`,
+    `- Kept: ${keptRows.length}`,
+    `- Dropped: ${droppedTotal}`,
+    `- Generated: ${new Date().toISOString()}`,
+    ``,
+  ].join("\n");
+
+  const outLines = [
+    ...table.pre,
+    ...(table.pre.length ? [""] : []),
+    headerNote,
+    table.header,
+    table.sep,
+    ...keptRows,
+    ...table.post,
+  ].join("\n");
+
+  fs.writeFileSync(outPath, outLines, "utf-8");
+  fs.writeFileSync(latestPath, outLines, "utf-8");
+
+  return { success: true, outPath, latestPath, kept: keptRows.length, dropped: droppedTotal };
+}
+
 // ---- main ----
 async function main() {
   const args = parseArgs(process.argv);
+
+  const outputsDir = path.resolve(process.cwd(), "outputs");
+
+  // ---- No-interactive (batch) mode: for pipeline / UI ----
+  if (args.noInteractive) {
+    const topic = args.topic?.trim();
+    if (!topic) {
+      console.error("ERROR: topic is required (e.g. filter.mjs <topic> --no-interactive).");
+      process.exit(1);
+    }
+
+    const topicDir = path.join(outputsDir, topic);
+    const rawDir = path.join(topicDir, "01_raw");
+    const cleanDir = path.join(topicDir, "02_clean");
+
+    let inPath = args.inPath ? path.resolve(process.cwd(), args.inPath) : null;
+    if (!inPath) inPath = findLatestRawFile(rawDir);
+
+    if (!inPath || !exists(inPath)) {
+      console.error(`ERROR: input file not found. Checked: ${inPath || rawDir}`);
+      process.exit(1);
+    }
+
+    const expectedRawPrefix = path.join(outputsDir, topic, "01_raw") + path.sep;
+    if (!path.resolve(inPath).startsWith(expectedRawPrefix)) {
+      console.error("ERROR: topic mismatch between <topic> and --in input path.");
+      process.exit(1);
+    }
+
+    const md = fs.readFileSync(inPath, "utf-8");
+    const table = parseMarkdownTable(md);
+    if (!table.header) {
+      console.error("ERROR: No markdown table detected in input.");
+      process.exit(1);
+    }
+
+    const expectedCols = splitRow(table.header).length;
+    let mode = "none";
+    let y1 = 1900;
+    let y2 = 2100;
+    if (args.yearFrom != null && args.yearTo != null) {
+      mode = "between";
+      y1 = Math.min(args.yearFrom, args.yearTo);
+      y2 = Math.max(args.yearFrom, args.yearTo);
+    } else if (args.yearFrom != null) {
+      mode = "after";
+      y1 = args.yearFrom;
+    } else if (args.yearTo != null) {
+      mode = "before";
+      y1 = args.yearTo;
+    }
+
+    const weakKeys = normalizeTopicToKeywords(topic);
+    const strongKeys = args.strongKeywords || [];
+
+    if (mode === "none") {
+      // No year filter: keep all rows, apply only relevance (topic + strong keywords)
+      const allRows = table.rows.map((r) => joinRow(splitRow(r, expectedCols)));
+      const headerCells = splitRow(table.header, expectedCols).map((c) => c.toLowerCase());
+      const titleIdx = headerCells.findIndex((h) => h === "title" || h.includes("title"));
+      const abstractIdx = headerCells.findIndex((h) => h === "abstract" || h.includes("abstract"));
+      let keptRows = allRows;
+      let droppedTotal = 0;
+      if (titleIdx >= 0 && abstractIdx >= 0 && (weakKeys.length || strongKeys.length)) {
+        const kwRes = applyKeywordFilter(
+          keptRows,
+          weakKeys,
+          strongKeys,
+          titleIdx,
+          abstractIdx,
+          expectedCols
+        );
+        keptRows = kwRes.kept;
+        droppedTotal = allRows.length - keptRows.length;
+      }
+      ensureDir(cleanDir);
+      const base = `papers_clean_${todayYYYYMMDD()}`;
+      const outPath = nextVersionedPath(cleanDir, base);
+      const latestPath = path.join(cleanDir, "papers_clean_latest.md");
+      const headerNote = [
+        `# Cleaned papers (${topic})`,
+        ``,
+        `- Source: ${path.relative(process.cwd(), inPath)}`,
+        `- Filter: relevance (topic + strong keywords)`,
+        `- Kept: ${keptRows.length}`,
+        `- Dropped: ${droppedTotal}`,
+        `- Generated: ${new Date().toISOString()}`,
+        ``,
+      ].join("\n");
+      const outLines = [
+        ...table.pre,
+        ...(table.pre.length ? [""] : []),
+        headerNote,
+        table.header,
+        table.sep,
+        ...keptRows,
+        ...table.post,
+      ].join("\n");
+      fs.writeFileSync(outPath, outLines, "utf-8");
+      fs.writeFileSync(latestPath, outLines, "utf-8");
+      console.log("[filter] Done (batch). Kept:", keptRows.length, "Dropped:", droppedTotal);
+      console.log("  Latest:", latestPath);
+      return;
+    }
+
+    const result = runFilterLogic({
+      topic,
+      inPath,
+      mode,
+      y1,
+      y2,
+      weakKeys,
+      strongKeys,
+      table,
+      expectedCols,
+      cleanDir,
+    });
+
+    if (!result.success) {
+      console.error("ERROR:", result.error);
+      process.exit(1);
+    }
+    console.log("[filter] Done (batch). Kept:", result.kept, "Dropped:", result.dropped);
+    console.log("  Latest:", result.latestPath);
+    return;
+  }
+
+  // ---- Interactive mode ----
   const rl = readline.createInterface({ input, output });
 
   try {
@@ -285,7 +531,6 @@ async function main() {
       return;
     }
 
-    const outputsDir = path.resolve(process.cwd(), "outputs");
     const topicDir = path.join(outputsDir, topic);
     const rawDir = path.join(topicDir, "01_raw");
     const cleanDir = path.join(topicDir, "02_clean");
@@ -301,7 +546,6 @@ async function main() {
 
     console.log("\n[filter] Input:", inPath);
 
-    // Safety check: ensure input file belongs to outputs/<topic>/01_raw/
     const expectedRawPrefix = path.join(outputsDir, topic, "01_raw") + path.sep;
     const resolvedIn = path.resolve(inPath);
 
@@ -358,7 +602,6 @@ async function main() {
       return;
     }
 
-    // Expected column count from header
     const expectedCols = splitRow(table.header).length;
 
     const yearRes = applyYearFilter(table, mode, y1, y2, expectedCols);
@@ -368,98 +611,59 @@ async function main() {
       return;
     }
 
-    let keptRows = yearRes.kept;
-    let droppedTotal = yearRes.dropped;
-
-    // --- Relevance gate (optional) ---
-    let useGate = (await rl
+    let weakKeys = [];
+    let strongKeys = [];
+    const useGate = (await rl
       .question("Enable topic relevance gate (title+abstract keywords)? (Y/n) [default=Y]: "))
       .trim()
       .toLowerCase();
 
-    if (!useGate || useGate === "y" || useGate === "yes") {
+    if (useGate && useGate !== "n" && useGate !== "no") {
       const headerCells = splitRow(table.header, expectedCols).map((c) => c.toLowerCase());
       const titleIdx = headerCells.findIndex((h) => h === "title" || h.includes("title"));
       const abstractIdx = headerCells.findIndex((h) => h === "abstract" || h.includes("abstract"));
 
-      if (titleIdx < 0 || abstractIdx < 0) {
-        console.warn("[filter] Relevance gate skipped: title/abstract column not found.");
-      } else {
-        const weakKeys = normalizeTopicToKeywords(topic);
+      if (titleIdx >= 0 && abstractIdx >= 0) {
+        weakKeys = normalizeTopicToKeywords(topic);
         console.log("[filter] Weak keywords (from topic):", weakKeys.join(", "));
 
         const extra = (await rl.question(
           "Strong keywords (comma-separated, optional; if provided, requires at least one strong hit): "
         )).trim();
 
-        const strongKeys = extra
-          ? extra
-              .split(",")
-              .map((s) => s.trim().toLowerCase())
-              .filter(Boolean)
+        strongKeys = extra
+          ? extra.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)
           : [];
 
         if (strongKeys.length) {
           console.log("[filter] Strong keywords:", strongKeys.join(", "));
-        } else {
-          console.log("[filter] No strong keywords provided; using weak keywords only.");
         }
-
-        const kwRes = applyKeywordFilter(
-          keptRows,
-          weakKeys,
-          strongKeys,
-          titleIdx,
-          abstractIdx,
-          expectedCols
-        );
-
-        keptRows = kwRes.kept;
-        droppedTotal += kwRes.dropped_keyword_mismatch;
       }
     }
 
-    ensureDir(cleanDir);
+    const result = runFilterLogic({
+      topic,
+      inPath,
+      mode,
+      y1,
+      y2: y2 ?? y1,
+      weakKeys,
+      strongKeys,
+      table,
+      expectedCols,
+      cleanDir,
+    });
 
-    const base = `papers_clean_${todayYYYYMMDD()}`;
-    const outPath = nextVersionedPath(cleanDir, base);
-    const latestPath = path.join(cleanDir, "papers_clean_latest.md");
-
-    const filterDesc =
-      mode === "before"
-        ? `year < ${y1}`
-        : mode === "after"
-        ? `year > ${y1}`
-        : `${y1}–${y2}`;
-
-    const headerNote = [
-      `# Cleaned papers (${topic})`,
-      ``,
-      `- Source: ${path.relative(process.cwd(), inPath)}`,
-      `- Filter: ${filterDesc}`,
-      `- Kept: ${keptRows.length}`,
-      `- Dropped: ${droppedTotal}`,
-      `- Generated: ${new Date().toISOString()}`,
-      ``,
-    ].join("\n");
-
-    const outLines = [
-      ...table.pre,
-      ...(table.pre.length ? [""] : []),
-      headerNote,
-      table.header,
-      table.sep,
-      ...keptRows,
-      ...table.post,
-    ].join("\n");
-
-    fs.writeFileSync(outPath, outLines, "utf-8");
-    fs.writeFileSync(latestPath, outLines, "utf-8");
+    if (!result.success) {
+      console.error("ERROR:", result.error);
+      process.exitCode = 1;
+      return;
+    }
 
     console.log("\n[filter] Done.");
-    console.log("  Output:", outPath);
-    console.log("  Latest:", latestPath);
-    console.log(`  Kept: ${keptRows.length}, Dropped: ${droppedTotal}\n`);
+    console.log("  Output:", result.outPath);
+    console.log("  Latest:", result.latestPath);
+    console.log(`  Kept: ${result.kept}, Dropped: ${result.dropped}\n`);
   } finally {
     rl.close();
   }

@@ -1,0 +1,73 @@
+/**
+ * 清华主题 · 标准色 #660874 + 辅助色 #d93379 · 现代网页风格
+ */
+.thu-title {
+  color: #660874 !important;
+  letter-spacing: -0.02em;
+}
+
+/* 主按钮 · 圆角 + 渐变 hover 融入玫红 */
+.thu-btn-primary {
+  background: #660874 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s !important;
+  box-shadow: 0 2px 8px rgba(102, 8, 116, 0.25) !important;
+}
+.thu-btn-primary:hover {
+  background: linear-gradient(135deg, #550660 0%, #8b2d5a 100%) !important;
+  box-shadow: 0 4px 14px rgba(102, 8, 116, 0.3), 0 0 0 1px rgba(217, 51, 121, 0.15) !important;
+}
+.thu-btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* 次按钮 · 紫边 + hover 玫红底边 */
+.thu-btn-secondary {
+  position: relative;
+  border: 1.5px solid #660874 !important;
+  color: #660874 !important;
+  background: #fff !important;
+  border-radius: 10px !important;
+  transition: border-color 0.2s, color 0.2s, background 0.2s !important;
+}
+.thu-btn-secondary:hover {
+  background: rgba(217, 51, 121, 0.06) !important;
+  border-color: #d93379 !important;
+  color: #d93379 !important;
+}
+.thu-btn-secondary:hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #660874, #d93379);
+  border-radius: 0 0 10px 10px;
+}
+
+/* 左侧分区 · 双线徽标感（呼应 logo 绳纹边框） */
+.thu-panel-left {
+  border-left: 4px solid #660874;
+  box-shadow: inset 2px 0 0 0 rgba(217, 51, 121, 0.15);
+  border-radius: 0 2px 2px 0;
+}
+.thu-heading {
+  color: #660874 !important;
+}
+
+/* 顶栏光感条 · 紫→玫红渐变 + 柔和光晕 */
+.gradient-thu-bar {
+  height: 4px;
+  background: linear-gradient(90deg, #660874 0%, #8b3d96 35%, #d93379 100%);
+  box-shadow: 0 2px 12px rgba(102, 8, 116, 0.2);
+  border-radius: 0;
+}
+
+/* 阴影工具类（与 globals 变量一致） */
+.shadow-thu-soft {
+  box-shadow: 0 4px 12px rgba(102, 8, 116, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+}

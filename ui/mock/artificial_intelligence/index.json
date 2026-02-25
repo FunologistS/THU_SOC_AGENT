@@ -1,0 +1,42 @@
+{
+  "topic": "artificial_intelligence",
+  "label": "人工智能与社会",
+  "stages": [
+    {
+      "id": "01_raw",
+      "label": "01_raw 原始论文",
+      "files": [
+        { "name": "papers_latest.md", "path": "01_raw/papers_latest.md" }
+      ]
+    },
+    {
+      "id": "03_summaries",
+      "label": "03_summaries 摘要",
+      "files": [
+        { "name": "summaries_latest.md", "path": "03_summaries/summaries_latest.md" }
+      ]
+    },
+    {
+      "id": "04_meta",
+      "label": "04_meta 元分析",
+      "files": [
+        { "name": "briefing_latest.md", "path": "04_meta/briefing_latest.md" },
+        { "name": "meta_clusters_latest.md", "path": "04_meta/meta_clusters_latest.md" }
+      ]
+    },
+    {
+      "id": "05_report",
+      "label": "05_report 报告",
+      "files": [
+        { "name": "report_latest.md", "path": "05_report/report_latest.md" }
+      ]
+    },
+    {
+      "id": "06_review",
+      "label": "06_review 综述",
+      "files": [
+        { "name": "review_latest.md", "path": "06_review/review_latest.md" }
+      ]
+    }
+  ]
+}

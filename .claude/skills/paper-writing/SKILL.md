@@ -286,7 +286,37 @@ chunk 模式会将每个改写后的 chunk 写入：
 
 ---
 
-## 8）触发建议（给智能体：什么时候应该用这个 Skill）
+## 8）RAG：用 chunks 检索并生成文献段落（rag_from_chunks.mjs）
+
+在已有 `06_review/chunks_styled/*.md` 的前提下，可以用这些 chunk 做 **RAG**：按主题/问题检索相关段落，并可选地让模型**仅依据检索结果**生成新的综述段落，减少幻觉。
+
+### 8.1 检索（不生成）
+
+- **关键词检索**（默认，无需 API）  
+  按查询词在 chunk 中的出现情况排序，取 top-k：
+
+      node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "算法治理" --top 3
+
+- **向量检索**（需 `OPENAI_API_KEY`，使用 embedding 模型）  
+  语义相似度排序，适合“意思相近但用词不同”的查询：
+
+      node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "LLM 与社会科学方法论" --top 3 --embed
+
+### 8.2 检索 + 生成文献段落
+
+在检索结果基础上，让模型**只根据**这些 chunk 写一段连贯综述（不编造文献）：
+
+    node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "自动化与劳动" --top 3 --generate
+
+将生成段落写入文件：
+
+    node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "自动化与劳动" --top 3 --generate --out outputs/artificial_intelligence/06_review/rag_paragraph.md
+
+环境变量与 `writing_under_style.mjs` 一致（`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`）；向量检索/生成会用到 API。未传 `--query` 时仅打印用法与当前 chunk 数量。
+
+---
+
+## 9）触发建议（给智能体：什么时候应该用这个 Skill）
 
 当用户提出以下需求，优先触发 paper-writing：
 
@@ -295,10 +325,11 @@ chunk 模式会将每个改写后的 chunk 写入：
 - “用我之前的文章风格，把 report/chunks 改写成综述段落”
 - “不要列表，要成段落、像论文综述那样写”
 - “我 merge 阶段 520 了，别重跑 chunks，帮我 merge-only”
+- “用我现有的 chunks 做 RAG 生成一段文献” / “按主题从 chunks 里检索并生成段落”
 
 ---
 
-## 9）可选扩展（不影响当前使用）
+## 10）可选扩展（不影响当前使用）
 
 - 增加 `references/academic/index.yml`：把“风格组合”命名（如 `qnyj_combo: [a.md,b.md]`），并在脚本中按 `--style-set qnyj_combo` 读取
 - 为 `input_to_md.mjs` 扩展：支持 `.md` 直接入库、`.txt` 清洗入库
