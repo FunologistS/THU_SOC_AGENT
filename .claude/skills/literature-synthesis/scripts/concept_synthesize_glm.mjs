@@ -597,6 +597,7 @@ if (!apiKey) {
 
 const briefingParts = [];
 briefingParts.push(`# 概念简报：${topic}`);
+briefingParts.push(`模型：智谱 ${model}`);
 briefingParts.push(`来源：meta_clusters + briefing + summaries`);
 briefingParts.push(`日期：${date}`);
 briefingParts.push(`输出文件：report_${date}_v*.md / report_latest.md`);

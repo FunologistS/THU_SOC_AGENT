@@ -57,19 +57,23 @@ export async function GET(request: Request) {
     const stageDir = path.join(topicDir, stageId);
     if (!fs.existsSync(stageDir) || !fs.statSync(stageDir).isDirectory()) continue;
     const entries = fs.readdirSync(stageDir, { withFileTypes: true });
-    const files: { name: string; path: string }[] = [];
+    const mdFiles: { name: string; path: string; sortKey: string }[] = [];
     for (const e of entries) {
       if (!e.isFile() || !e.name.endsWith(".md")) continue;
-      if (e.name.includes("_latest.")) {
-        files.push({ name: e.name, path: `${stageId}/${e.name}` });
-      }
+      const pathRel = `${stageId}/${e.name}`;
+      const isLatest = e.name.includes("_latest.");
+      const versioned = e.name.match(/^(.+?)_(\d{8})_v(\d+)\.md$/);
+      const sortKey = isLatest
+        ? "9_latest"   // 9 使 _latest 排在最前（desc 时 9 > 1）
+        : versioned
+          ? `1_${versioned[2]}_${versioned[3].padStart(4, "0")}` // 日期+版本
+          : `2_${e.name}`;
+      mdFiles.push({ name: e.name, path: pathRel, sortKey });
     }
+    mdFiles.sort((a, b) => b.sortKey.localeCompare(a.sortKey)); // _latest 第一，再按日期版本新→旧
+    const files = mdFiles.map(({ name, path: p }) => ({ name, path: p }));
     if (files.length > 0) {
-      stages.push({
-        id: stageId,
-        label: stageId,
-        files,
-      });
+      stages.push({ id: stageId, label: stageId, files });
     }
   }
 

@@ -125,7 +125,19 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 ---
 
-### 4.3 指定 topic（推荐做法）
+### 4.3 选择模型（OpenAI / 智谱 GLM）
+
+    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --provider gpt
+    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --provider glm
+
+- **gpt**（默认）：使用 `OPENAI_API_KEY`、`OPENAI_MODEL`（默认 gpt-5.2）
+- **glm**：使用 `ZHIPU_API_KEY`、`ZHIPU_MODEL`（默认 glm-4.7-flash），适合节省 OpenAI 用量或偏好中文表现
+
+环境变量 `WRITING_PROVIDER=gpt|glm` 也可覆盖，无需在命令行写 `--provider`。
+
+---
+
+### 4.4 指定 topic（推荐做法）
 
     node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic>
 
@@ -135,7 +147,7 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 ---
 
-### 4.4 强制 single-doc：指定输入报告路径
+### 4.5 强制 single-doc：指定输入报告路径
 
     node .claude/skills/paper-writing/scripts/writing_under_style.mjs outputs/<topic>/05_report/report_latest.md
 
@@ -143,7 +155,7 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 ---
 
-### 4.5 覆盖风格样本（两种写法：旧兼容 + 新推荐）
+### 4.6 覆盖风格样本（两种写法：旧兼容 + 新推荐）
 
 **旧兼容**（位置参数追加风格文件名）：
 
@@ -162,7 +174,7 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 ---
 
-### 4.6 断点续跑（chunk 模式最关键的稳定性设计）
+### 4.7 断点续跑（chunk 模式最关键的稳定性设计）
 
 chunk 模式会将每个改写后的 chunk 写入：
 
@@ -176,7 +188,7 @@ chunk 模式会将每个改写后的 chunk 写入：
 
 ---
 
-### 4.7 merge-only（只合并，不再调 N 次 chunk API）
+### 4.8 merge-only（只合并，不再调 N 次 chunk API）
 
 适用场景：
 

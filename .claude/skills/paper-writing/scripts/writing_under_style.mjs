@@ -28,6 +28,8 @@
  *      => 仅从已有 06_review/chunks_styled/*.md 合并为最终综述
  *
  * 新增 flags：
+ *  - --provider gpt | glm
+ *      => 使用 OpenAI（gpt，默认）或智谱 GLM（glm）。glm 时需 ZHIPU_API_KEY，模型默认 glm-4.7-flash
  *  - --force
  *      => chunk 模式强制重跑所有 chunk（无视已有 chunks_styled）
  *  - --styled-dir <dir>
@@ -72,10 +74,27 @@ const REFERENCE_STYLE = (process.env.REFERENCE_STYLE || "academic").toLowerCase(
 const REFERENCES_DIR = path.join(PAPER_WRITING_ROOT, "references", REFERENCE_STYLE);
 const REFERENCES_ACADEMIC = REFERENCES_DIR;
 
-/** ---------- env ---------- **/
-const API_KEY = process.env.OPENAI_API_KEY;
-const BASE_URL = process.env.OPENAI_BASE_URL || "https://api.gptsapi.net/v1";
-const MODEL = process.env.OPENAI_MODEL || "gpt-5.2";
+/** ---------- env / provider ---------- **/
+const providerRaw = (() => {
+  const idx = process.argv.indexOf("--provider");
+  if (idx >= 0 && process.argv[idx + 1]) return process.argv[idx + 1];
+  return process.env.WRITING_PROVIDER || "gpt";
+})();
+const PROVIDER = providerRaw === "glm" ? "glm" : "gpt";
+
+let API_KEY;
+let BASE_URL;
+let MODEL;
+if (PROVIDER === "glm") {
+  API_KEY = process.env.ZHIPU_API_KEY;
+  BASE_URL = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
+  MODEL = process.env.ZHIPU_MODEL || "glm-4.7-flash";
+} else {
+  API_KEY = process.env.OPENAI_API_KEY;
+  BASE_URL = process.env.OPENAI_BASE_URL || "https://api.gptsapi.net/v1";
+  MODEL = process.env.OPENAI_MODEL || "gpt-5.2";
+}
+const MODEL_LABEL = PROVIDER === "glm" ? "智谱 GLM-4.7-Flash" : "OpenAI GPT-5.2";
 
 const MAX_STYLE_CHARS = Number(process.env.MAX_STYLE_CHARS) || 1000;
 const CHUNK_MAX_CHARS = Number(process.env.CHUNK_MAX_CHARS) || 16000;
@@ -100,6 +119,7 @@ const hasMergeOnly = argv.includes("--merge-only");
 const hasForce = argv.includes("--force");
 const styleFlagValue = getFlagValue("--style"); // e.g. "a.md,b.md"
 const styledDirFlag = getFlagValue("--styled-dir"); // directory path for merge-only
+const userPromptFlag = getFlagValue("--user-prompt"); // 用户额外提示词（UI 传入）
 
 function getFlagValue(flag) {
   const idx = argv.indexOf(flag);
@@ -350,11 +370,16 @@ function isTransientError(err) {
   return false;
 }
 
+function systemWithUserHint(systemText) {
+  if (!userPromptFlag || !String(userPromptFlag).trim()) return systemText;
+  return systemText + "\n\n用户额外要求：" + String(userPromptFlag).trim();
+}
+
 async function chatComplete({ client, system, user, maxTokens, temperature }) {
   const response = await client.chat.completions.create({
     model: MODEL,
     messages: [
-      { role: "system", content: system },
+      { role: "system", content: systemWithUserHint(system) },
       { role: "user", content: user },
     ],
     max_tokens: maxTokens,
@@ -483,7 +508,8 @@ async function doMergeAndOptionalSmooth({ client, styleSamples, mergedDraft, out
     ).trim();
   }
 
-  fs.writeFileSync(outputFile, finalText + "\n", "utf8");
+  const withHeader = `模型：${MODEL_LABEL}\n\n` + finalText;
+  fs.writeFileSync(outputFile, withHeader + "\n", "utf8");
   console.log(`已保存: ${outputFile}`);
   writeLatestCopy(outputFile, outputDir);
 }
@@ -557,9 +583,10 @@ function checkFilePath(filePath) {
 /** ---------- main ---------- **/
 async function main() {
   if (!API_KEY) {
-    console.error("请设置环境变量 OPENAI_API_KEY");
+    console.error(PROVIDER === "glm" ? "请设置环境变量 ZHIPU_API_KEY" : "请设置环境变量 OPENAI_API_KEY");
     process.exit(1);
   }
+  console.log("[writing_under_style] provider:", PROVIDER, "model:", MODEL);
   if (MERGE_MAX_CHARS < 500) {
     console.error("[writing_under_style] MERGE_MAX_CHARS 过小（<500），请设置合理上限（如 15000）。");
     process.exit(1);
@@ -745,7 +772,8 @@ async function main() {
       { tries: 4, backoffMs: 1500 }
     );
 
-    fs.writeFileSync(outputFile, content.trim() + "\n", "utf8");
+    const withHeader = `模型：${MODEL_LABEL}\n\n` + content.trim();
+    fs.writeFileSync(outputFile, withHeader + "\n", "utf8");
     console.log(`已保存: ${outputFile}`);
     writeLatestCopy(outputFile, OUTPUT_DIR);
   } catch (err) {

@@ -7,10 +7,27 @@ const WOS_RAW_PATH = path.join(
   getRepoRoot(),
   ".claude/skills/journal-catalog/assets/01_raw/WOS_SSCI_260216.csv"
 );
-const WOS_NORMALIZED_PATH = path.join(
+const WOS_NORMALIZED_DIR = path.join(
   getRepoRoot(),
-  ".claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260218_Sociology_260218_normalized.csv"
+  ".claude/skills/journal-catalog/assets/02_normalize"
 );
+
+/** 学科名 → 归一化文件名后缀（与 JCR 导出 Category 一致，如 Sociology、Economics） */
+function normalizedFileSlug(discipline: string): string {
+  return discipline
+    .trim()
+    .replace(/\s*[|,]\s*/g, "_")
+    .replace(/\s+/g, "_")
+    .replace(/[^a-zA-Z0-9_]/g, "")
+    .replace(/_+/g, "_")
+    .replace(/^_|_$/g, "") || "Sociology";
+}
+
+/** 某学科归一化 CSV 路径，若存在则可用于该学科的分区筛选 */
+function normalizedPathForDiscipline(discipline: string): string {
+  const slug = normalizedFileSlug(discipline);
+  return path.join(WOS_NORMALIZED_DIR, `WOS_JCR_260218_${slug}_260218_normalized.csv`);
+}
 
 /** Parse a single CSV row with quoted fields (handles commas inside quotes) */
 function parseCsvRow(line: string): string[] {
@@ -57,6 +74,79 @@ function normalizeIssn(issn: string): string {
   return String(issn || "").replace(/\D/g, "");
 }
 
+/** 归一化 CSV 单行详情（用于期刊弹窗） */
+export interface WosJournalDetail {
+  quartile?: string;
+  jif?: string;
+  jci?: string;
+  oa_citable_pct?: string;
+  total_citations?: string;
+  jcr_abbrev?: string;
+}
+
+/** 从归一化 CSV 读出 ISSN → quartile（Q1–Q4） */
+function loadQuartileByIssn(normalizedPath: string): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (!fs.existsSync(normalizedPath)) return out;
+  const raw = fs.readFileSync(normalizedPath, "utf-8");
+  const lines = raw.split(/\r?\n/).filter((l) => l.trim());
+  if (lines.length < 2) return out;
+  const header = parseCsvRow(lines[0]).map((h) => h.trim().replace(/^"|"$/g, ""));
+  const qIdx = header.findIndex((h) => /quartile/i.test(h));
+  const ipIdx = header.findIndex((h) => /issn_print/i.test(h));
+  const ieIdx = header.findIndex((h) => /issn_e/i.test(h));
+  if (qIdx < 0 || (ipIdx < 0 && ieIdx < 0)) return out;
+  for (let i = 1; i < lines.length; i++) {
+    const row = parseCsvRow(lines[i]);
+    const q = (row[qIdx] ?? "").trim().toUpperCase();
+    if (!q || !/^Q[1-4]$/.test(q)) continue;
+    if (ipIdx >= 0) {
+      const ip = normalizeIssn(row[ipIdx] ?? "");
+      if (ip) out[ip] = q;
+    }
+    if (ieIdx >= 0) {
+      const ie = normalizeIssn(row[ieIdx] ?? "");
+      if (ie) out[ie] = q;
+    }
+  }
+  return out;
+}
+
+/** 从归一化 CSV 读出 ISSN → 完整 JCR 行（用于期刊详情弹窗） */
+function loadDetailByIssn(normalizedPath: string): Record<string, WosJournalDetail> {
+  const out: Record<string, WosJournalDetail> = {};
+  if (!fs.existsSync(normalizedPath)) return out;
+  const raw = fs.readFileSync(normalizedPath, "utf-8");
+  const lines = raw.split(/\r?\n/).filter((l) => l.trim());
+  if (lines.length < 2) return out;
+  const header = parseCsvRow(lines[0]).map((h) => h.trim().replace(/^"|"$/g, ""));
+  const getIdx = (name: string) => header.findIndex((h) => new RegExp(name, "i").test(h));
+  const ipIdx = getIdx("issn_print");
+  const ieIdx = getIdx("issn_e");
+  const qIdx = getIdx("quartile");
+  const jifIdx = getIdx("jif");
+  const jciIdx = getIdx("jci");
+  const oaIdx = getIdx("oa_citable");
+  const citIdx = getIdx("total_citations");
+  const abbrIdx = getIdx("jcr_abbrev");
+  if (ipIdx < 0 && ieIdx < 0) return out;
+  for (let i = 1; i < lines.length; i++) {
+    const row = parseCsvRow(lines[i]);
+    const detail: WosJournalDetail = {};
+    if (qIdx >= 0) detail.quartile = (row[qIdx] ?? "").trim().toUpperCase() || undefined;
+    if (jifIdx >= 0) detail.jif = (row[jifIdx] ?? "").trim() || undefined;
+    if (jciIdx >= 0) detail.jci = (row[jciIdx] ?? "").trim() || undefined;
+    if (oaIdx >= 0) detail.oa_citable_pct = (row[oaIdx] ?? "").trim() || undefined;
+    if (citIdx >= 0) detail.total_citations = (row[citIdx] ?? "").trim() || undefined;
+    if (abbrIdx >= 0) detail.jcr_abbrev = (row[abbrIdx] ?? "").trim() || undefined;
+    const ip = normalizeIssn(row[ipIdx] ?? "");
+    const ie = normalizeIssn(row[ieIdx] ?? "");
+    if (ip) out[ip] = detail;
+    if (ie) out[ie] = detail;
+  }
+  return out;
+}
+
 export interface WosJournalRow {
   title: string;
   issn: string;
@@ -64,6 +154,11 @@ export interface WosJournalRow {
   publisher: string;
   categories: string[];
   quartile?: string;
+  jif?: string;
+  jci?: string;
+  oa_citable_pct?: string;
+  total_citations?: string;
+  jcr_abbrev?: string;
 }
 
 /** GET /api/journals-wos?discipline=...&quartile=...&publisher=... — 3000+ WOS SSCI 期刊，学科 + 分区 */
@@ -120,41 +215,33 @@ export async function GET(request: Request) {
 
   const disciplines = Array.from(disciplinesSet).sort();
 
-  let quartileByIssn: Record<string, string> = {};
-  if (fs.existsSync(WOS_NORMALIZED_PATH)) {
-    const norm = fs.readFileSync(WOS_NORMALIZED_PATH, "utf-8");
-    const normLines = norm.split(/\r?\n/).filter((l) => l.trim());
-    const normHeader = parseCsvRow(normLines[0]).map((h) => h.trim().replace(/^"|"$/g, ""));
-    const nameIdx = normHeader.findIndex((h) => /journal_name/i.test(h));
-    const qIdx = normHeader.findIndex((h) => /quartile/i.test(h));
-    const ipIdx = normHeader.findIndex((h) => /issn_print/i.test(h));
-    const ieIdx = normHeader.findIndex((h) => /issn_e/i.test(h));
-    if (qIdx >= 0 && (ipIdx >= 0 || ieIdx >= 0)) {
-      for (let i = 1; i < normLines.length; i++) {
-        const row = parseCsvRow(normLines[i]);
-        const q = (row[qIdx] ?? "").trim().toUpperCase();
-        if (!q || !/^Q[1-4]$/.test(q)) continue;
-        const ip = normalizeIssn(row[ipIdx] ?? "");
-        const ie = normalizeIssn(row[ieIdx] ?? "");
-        if (ip) quartileByIssn[ip] = q;
-        if (ie) quartileByIssn[ie] = q;
-      }
-    }
-  }
-
-  const journals: WosJournalRow[] = journalsRaw.map((j) => {
-    const q =
-      quartileByIssn[normalizeIssn(j.issn)] ?? quartileByIssn[normalizeIssn(j.eissn)];
-    return { ...j, quartile: q };
-  });
-
-  const publishersSet = new Set(journals.map((j) => j.publisher).filter(Boolean));
-  const publishers = Array.from(publishersSet).sort();
-
   const { searchParams } = new URL(request.url);
   const discipline = searchParams.get("discipline")?.trim() || "";
   const quartile = searchParams.get("quartile")?.trim().toUpperCase() || "";
   const publisherFilter = searchParams.get("publisher")?.trim() || "";
+
+  // 仅当选择了学科时，尝试加载该学科的 JCR 归一化文件并填充分区与详情（JIF、JCI、OA 等）
+  const quartilePath = discipline ? normalizedPathForDiscipline(discipline) : "";
+  const quartileByIssn = quartilePath ? loadQuartileByIssn(quartilePath) : {};
+  const detailByIssn = quartilePath ? loadDetailByIssn(quartilePath) : {};
+  const journals: WosJournalRow[] = journalsRaw.map((j) => {
+    const nip = normalizeIssn(j.issn);
+    const nie = normalizeIssn(j.eissn);
+    const q = quartileByIssn[nip] ?? quartileByIssn[nie];
+    const detail = detailByIssn[nip] ?? detailByIssn[nie];
+    return {
+      ...j,
+      quartile: q,
+      jif: detail?.jif,
+      jci: detail?.jci,
+      oa_citable_pct: detail?.oa_citable_pct,
+      total_citations: detail?.total_citations,
+      jcr_abbrev: detail?.jcr_abbrev,
+    };
+  });
+
+  const publishersSet = new Set(journals.map((j) => j.publisher).filter(Boolean));
+  const publishers = Array.from(publishersSet).sort();
 
   let filtered = journals;
   if (discipline) {

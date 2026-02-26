@@ -197,7 +197,9 @@ function parseSummariesMarkdown(md) {
 
     // 作者：若 summaries 中有 - Author(s): 或 **Author(s)**: 则解析，否则用 Unknown
     const authors = (
+      b.match(/^- Author\(s\):\s*(.+)$/m)?.[1] ??
       b.match(/^- Authors?:\s*(.+)$/m)?.[1] ??
+      b.match(/\*\*Author\(s\)\*\*:\s*(.+?)(?:\n|$)/m)?.[1] ??
       b.match(/\*\*Authors?\*\*:\s*(.+?)(?:\n|$)/m)?.[1] ??
       ""
     ).trim() || null;
@@ -519,6 +521,7 @@ if (dryRun) {
 
 const briefingParts = [];
 briefingParts.push(`# 概念简报：${topic}`);
+briefingParts.push(`模型：OpenAI ${model}`);
 briefingParts.push(`来源：meta_clusters + briefing + summaries`);
 briefingParts.push(`日期：${date}`);
 briefingParts.push(`输出文件：report_${date}_v*.md / report_latest.md`);

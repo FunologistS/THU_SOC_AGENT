@@ -15,7 +15,7 @@ const REPO_ROOT = getRepoRoot();
 
 const JOB_WHITELIST: Record<
   JobType,
-  { script: string; args: (topic: string, extra?: string[], journalsPath?: string) => string[] }
+  { script: string; scriptGpt?: string; args: (topic: string, extra?: string[], journalsPath?: string) => string[] }
 > = {
   journal_search: {
     script: path.join(REPO_ROOT, ".claude/skills/journal-search/scripts/run.mjs"),
@@ -48,6 +48,10 @@ const JOB_WHITELIST: Record<
       REPO_ROOT,
       ".claude/skills/literature-synthesis/scripts/concept_synthesize_glm.mjs"
     ),
+    scriptGpt: path.join(
+      REPO_ROOT,
+      ".claude/skills/literature-synthesis/scripts/concept_synthesize_gpt.mjs"
+    ),
     args: (topic) => [topic],
   },
   upload_and_writing: {
@@ -59,6 +63,7 @@ const JOB_WHITELIST: Record<
       topic,
       (extra && extra[0]) || "academic",
       (extra && extra[1]) || "",
+      (extra && extra[2]) || "gpt",
     ],
   },
   writing_under_style: {
@@ -66,7 +71,8 @@ const JOB_WHITELIST: Record<
       REPO_ROOT,
       ".claude/skills/paper-writing/scripts/writing_under_style.mjs"
     ),
-    args: (topic) => [topic],
+    args: (topic, extra) =>
+      extra?.[0] ? [topic, "--user-prompt", String(extra[0])] : [topic],
   },
 };
 
@@ -90,6 +96,8 @@ export async function POST(request: Request) {
     args?: string[];
     journalSourceIds?: string[];
     journalIssns?: string[];
+    conceptSynthesizeModel?: "gpt" | "glm";
+    writingModel?: "gpt" | "glm";
   };
   try {
     body = await request.json();
@@ -97,7 +105,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { jobType, topic, args: extraArgs, journalSourceIds, journalIssns } = body;
+  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModel, writingModel } = body;
+  let extraArgs = Array.isArray(extraArgsRaw) ? [...extraArgsRaw] : undefined;
+  if (jobType === "upload_and_writing" && writingModel) {
+    extraArgs = extraArgs ?? [];
+    if (extraArgs.length < 3) extraArgs.push(writingModel);
+    else extraArgs[2] = writingModel;
+  }
   if (!jobType || !topic) {
     return NextResponse.json(
       { error: "Missing jobType or topic" },
@@ -120,9 +134,14 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!fs.existsSync(config.script)) {
+  const scriptToRun =
+    jobType === "concept_synthesize" && conceptSynthesizeModel === "gpt" && config.scriptGpt
+      ? config.scriptGpt
+      : config.script;
+
+  if (!fs.existsSync(scriptToRun)) {
     return NextResponse.json(
-      { error: `Script not found: ${config.script}` },
+      { error: `Script not found: ${scriptToRun}` },
       { status: 500 }
     );
   }
@@ -186,7 +205,11 @@ export async function POST(request: Request) {
     args = config.args(topic, extraArgs) as string[];
   }
 
-  const child = spawn("node", [config.script, ...args], {
+  if (jobType === "writing_under_style" && writingModel === "glm") {
+    args.push("--provider", "glm");
+  }
+
+  const child = spawn("node", [scriptToRun, ...args], {
     cwd: REPO_ROOT,
     stdio: ["ignore", "pipe", "pipe"],
     shell: false,

@@ -828,11 +828,22 @@ async function main() {
       }
     }
 
+    const authorNames = (w.authorships || [])
+      .map((a) => a.author?.display_name)
+      .filter(Boolean);
+    const authorsStr =
+      authorNames.length <= 2
+        ? authorNames.join(" & ")
+        : authorNames.slice(0, 2).join(" & ") + " et al.";
+    const openalexId = (w.id || "").replace(/^https?:\/\/openalex\.org\//, "").trim() || "";
+
     const row = {
       short,
       journal: journalName,
       year,
       title,
+      authors: authorsStr || "",
+      openalex_id: openalexId,
       doi: doiUrl,
       url,
       abstract: abs,
@@ -895,14 +906,14 @@ async function main() {
   md += `- with_abstract: ${WITH_ABSTRACT ? "true" : "false"}\n`;
   md += `- rows: ${rows.length}\n\n`;
 
-  md += `| journal | year | title | DOI | OpenAlex | abstract |\n|---|---:|---|---|---|---|\n`;
+  md += `| journal | year | title | authors | DOI | OpenAlex | abstract |\n|---|---:|---|---|---|---|---|\n`;
 
   for (const r of rows) {
     const doiLink = r.doi ? `[${mdEscape(r.doi)}](${r.doi})` : "";
     const openalexLink = r.url ? `[link](${r.url})` : "";
     const j = r.short ? `${r.short} / ${r.journal}` : r.journal;
 
-    md += `| ${mdEscape(j)} | ${mdEscape(r.year)} | ${mdEscape(r.title)} | ${doiLink} | ${openalexLink} | ${mdEscape(
+    md += `| ${mdEscape(j)} | ${mdEscape(r.year)} | ${mdEscape(r.title)} | ${mdEscape(r.authors || "")} | ${doiLink} | ${openalexLink} | ${mdEscape(
       r.abstract
     )} |\n`;
   }

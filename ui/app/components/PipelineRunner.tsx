@@ -4,10 +4,10 @@ import { useState } from "react";
 import type { JobType } from "@/app/types";
 
 const JOB_LABELS: Record<JobType, string> = {
-  journal_search: "主题搜索 (journal_search)",
+  journal_search: "检索范围筛选",
   paper_summarize: "文章归纳 (paper_summarize)",
   synthesize: "文献整合 (synthesize)",
-  concept_synthesize: "概念合成 (concept_synthesize_glm)",
+  concept_synthesize: "概念合成 (荟萃分析)",
   writing_under_style: "综述仿写 (writing_under_style)",
 };
 
@@ -19,6 +19,7 @@ export function PipelineRunner({
   onJumpToOutputs?: () => void;
 }) {
   const [jobType, setJobType] = useState<JobType>("concept_synthesize");
+  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm">("glm");
   const [jobId, setJobId] = useState<string | null>(null);
   const [log, setLog] = useState("");
   const [done, setDone] = useState(false);
@@ -34,10 +35,15 @@ export function PipelineRunner({
     setExitCode(undefined);
     setRunning(true);
     try {
+      const body: { jobType: string; topic: string; conceptSynthesizeModel?: "gpt" | "glm" } = {
+        jobType,
+        topic,
+      };
+      if (jobType === "concept_synthesize") body.conceptSynthesizeModel = conceptSynthesizeModel;
       const res = await fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobType, topic }),
+        body: JSON.stringify(body),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -78,6 +84,34 @@ export function PipelineRunner({
             </option>
           ))}
         </select>
+        {jobType === "concept_synthesize" && (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setConceptSynthesizeModel("gpt")}
+              className={`flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-all ${
+                conceptSynthesizeModel === "gpt"
+                  ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)]"
+                  : "border-[var(--border)] bg-white"
+              }`}
+            >
+              <img src="/llm/chatgpt_logo.png" alt="" className="h-4 w-4 object-contain" />
+              <span>OpenAI GPT-5.2</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setConceptSynthesizeModel("glm")}
+              className={`flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-all ${
+                conceptSynthesizeModel === "glm"
+                  ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)]"
+                  : "border-[var(--border)] bg-white"
+              }`}
+            >
+              <img src="/llm/zhipu_z_icon.svg" alt="" className="h-4 w-4 object-contain" />
+              <span>智谱 GLM-4.7-Flash</span>
+            </button>
+          </div>
+        )}
         <span className="text-sm text-[var(--text-muted)]">topic: {topic}</span>
         <button
           onClick={run}
@@ -92,6 +126,20 @@ export function PipelineRunner({
       )}
       {jobId && (
         <>
+          {running && (
+            <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
+              <div
+                className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
+                aria-hidden
+              />
+              <div>
+                <p className="text-xs font-medium text-[var(--text)]">正在运行…</p>
+                <p className="text-[11px] text-[var(--text-muted)]">
+                  预计{jobType === "concept_synthesize" ? " 2–5" : jobType === "writing_under_style" ? " 3–10" : " 数"}分钟（{JOB_LABELS[jobType]}）
+                </p>
+              </div>
+            </div>
+          )}
           <pre className="text-xs bg-white border border-[var(--border)] rounded p-2 max-h-48 overflow-auto whitespace-pre-wrap">
             {log || "（等待日志…）"}
           </pre>

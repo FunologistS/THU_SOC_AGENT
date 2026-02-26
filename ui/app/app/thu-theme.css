@@ -67,6 +67,19 @@
   border-radius: 0;
 }
 
+/* 首页按钮 · 清华渐变色 + 白字 + 房屋图标 */
+.home-btn-thu {
+  background: linear-gradient(90deg, #660874 0%, #8b3d96 35%, #d93379 100%) !important;
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(102, 8, 116, 0.3);
+}
+.home-btn-thu:hover {
+  box-shadow: 0 4px 16px rgba(102, 8, 116, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+.home-btn-thu:active {
+  transform: scale(0.98);
+}
+
 /* 阴影工具类（与 globals 变量一致） */
 .shadow-thu-soft {
   box-shadow: 0 4px 12px rgba(102, 8, 116, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);

@@ -72,10 +72,10 @@ function parseArgs(argv) {
 
 /**
  * Parse Markdown table rows.
- * Expected columns: Journal | Year | Title | DOI | OpenAlex | Abstract
- *
- * NOTE: This assumes your rows are formatted with " | " separators
- * (which your pipeline currently does).
+ * Supports:
+ *   - 7 columns: Journal | Year | Title | Authors | DOI | OpenAlex | Abstract
+ *   - 6 columns (legacy): Journal | Year | Title | DOI | OpenAlex | Abstract (authors empty)
+ * Cells are separated by " | " (space-pipe-space); content after the last expected column is merged into abstract.
  */
 function parseMdTable(md) {
   const lines = md.split(/\r?\n/);
@@ -83,24 +83,43 @@ function parseMdTable(md) {
   if (tableLines.length < 3) return [];
 
   const dataLines = tableLines.slice(2); // skip header + separator
-  const rows = [];
+  const headerLine = tableLines[0];
+  const coreHeader = headerLine.trim().replace(/^\|/, "").replace(/\|$/, "");
+  const headerParts = coreHeader.split(" | ").map((x) => x.trim().toLowerCase());
+  const hasAuthors = headerParts.some((h) => h === "authors" || h.includes("author"));
+  const expectedCols = hasAuthors ? 7 : 6;
+  const dataRows = [];
 
   for (const line of dataLines) {
     const core = line.trim().replace(/^\|/, "").replace(/\|$/, "");
-    const parts = core.split(" | ", 6).map((x) => x.trim());
-    while (parts.length < 6) parts.push("");
-    const [journal, year, title, doiCell, openalexCell, abstractCell] = parts;
-
-    rows.push({
+    const parts = core.split(" | ");
+    if (parts.length < expectedCols) continue;
+    const journal = (parts[0] || "").trim();
+    const year = parts[1] ? Number(parts[1].trim()) : null;
+    const title = (parts[2] || "").trim();
+    let authors = "";
+    let doiCell, openalexCell, abstractCell;
+    if (hasAuthors && parts.length >= 7) {
+      authors = (parts[3] || "").trim();
+      doiCell = (parts[4] || "").trim();
+      openalexCell = (parts[5] || "").trim();
+      abstractCell = parts.slice(6).join(" | ").trim();
+    } else {
+      doiCell = (parts[3] || "").trim();
+      openalexCell = (parts[4] || "").trim();
+      abstractCell = parts.slice(5).join(" | ").trim();
+    }
+    dataRows.push({
       journal,
-      year: year ? Number(year) : null,
+      year,
       title,
+      authors,
       doiCell,
       openalexCell,
       abstractRaw: abstractCell || "",
     });
   }
-  return rows;
+  return dataRows;
 }
 
 function mdLinkUrl(cell) {
@@ -214,6 +233,7 @@ function buildSummary({ idx, row, maxAbstractChars }) {
   return `## ${idx}. ${row.title || "(No title)"} (${row.year || "NA"})
 
 - Journal: ${row.journal || "NA"}
+- Author(s): ${row.authors || "Unknown"}
 - DOI: ${doiUrl || "NA"}
 - OpenAlex: ${oaUrl || "link"}
 

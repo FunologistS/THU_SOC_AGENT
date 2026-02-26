@@ -1,21 +1,41 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, Suspense } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { SkillPanel } from "@/components/SkillPanel";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
 import { JournalCatalog } from "@/components/JournalCatalog";
+import { ManualAbstractPanel } from "@/components/ManualAbstractPanel";
 import { ThuLogo } from "@/components/ThuLogo";
 import { ManualView } from "@/components/ManualView";
+import { SettingsModal } from "@/components/SettingsModal";
 import {
   stageDisplayLabel,
   fileDisplayName,
   sourceDisplayLabel,
 } from "@/lib/displayLabels";
 import type { TopicMeta } from "../types";
+import type { JobType } from "../types";
+
+/** 技能对应的产出阶段（「查看产出」时跳转到该阶段的首个文件） */
+const SKILL_TO_STAGE: Record<JobType, string> = {
+  journal_search: "01_raw",
+  filter: "02_clean",
+  paper_summarize: "03_summaries",
+  synthesize: "04_meta",
+  concept_synthesize: "05_report",
+  upload_and_writing: "06_review",
+  writing_under_style: "06_review",
+};
 
 const DEFAULT_TOPIC = "artificial_intelligence";
 const DEFAULT_SOURCE = "mock";
+
+/** 始终可选的预设主题（与 outputs 实际目录合并后供技能工作台切换） */
+const PRESET_TOPICS: { topic: string; label: string }[] = [
+  { topic: "artificial_intelligence", label: "Artificial Intelligence" },
+  { topic: "digital_labor", label: "Digital Labor" },
+];
 
 /** 加载中占位：与正式布局一致，避免闪烁 */
 function HomeFallback() {
@@ -31,7 +51,7 @@ function HomeFallback() {
               <span className="mx-2 text-[var(--text-muted)] font-normal" aria-hidden>｜</span>
               <span className="font-medium text-[var(--text-muted)]">综合智能体</span>
             </h1>
-            <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">批量检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 文献简报</p>
+            <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">检索范围筛选 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述</p>
           </div>
         </div>
       </header>
@@ -50,6 +70,14 @@ function HomeContent() {
   const source = searchParams?.get("source") ?? DEFAULT_SOURCE;
 
   const [topics, setTopics] = useState<{ topic: string; label: string }[]>([]);
+  const availableTopicsForPanel = useMemo(() => {
+    const byTopic = new Map<string, string>();
+    for (const t of PRESET_TOPICS) byTopic.set(t.topic, t.label);
+    for (const t of topics) byTopic.set(t.topic, t.label);
+    return Array.from(byTopic.entries())
+      .map(([topic, label]) => ({ topic, label }))
+      .sort((a, b) => a.topic.localeCompare(b.topic));
+  }, [topics]);
   const [meta, setMeta] = useState<TopicMeta | null>(null);
   const [metaRefreshKey, setMetaRefreshKey] = useState(0);
   const [content, setContent] = useState("");
@@ -77,6 +105,15 @@ function HomeContent() {
   const [journalSearchDone, setJournalSearchDone] = useState(false);
   const [journalSearchExitCode, setJournalSearchExitCode] = useState<number | undefined>();
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [pendingJumpToOutputs, setPendingJumpToOutputs] = useState(false);
+  const [lastCompletedSkillId, setLastCompletedSkillId] = useState<JobType | null>(null);
+  const [fileMenuPath, setFileMenuPath] = useState<string | null>(null);
+  const [renameModal, setRenameModal] = useState<{ path: string; name: string } | null>(null);
+  const [renameValue, setRenameValue] = useState("");
+  const [renameError, setRenameError] = useState<string | null>(null);
+  const [journalDataSourceLabel, setJournalDataSourceLabel] = useState<string | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
 
   const setUrl = useCallback(
     (updates: { topic?: string; stage?: string; file?: string; source?: string }) => {
@@ -109,16 +146,19 @@ function HomeContent() {
       .catch(() => setMeta(null));
   }, [topic, source, metaRefreshKey]);
 
+  const pathForApi = (filePath: string) =>
+    filePath.startsWith(topic + "/") ? filePath : `${topic}/${filePath}`;
+
   const deleteFile = useCallback(
     async (filePath: string) => {
       if (source !== "outputs") return;
-      const pathForApi = filePath.startsWith(topic + "/") ? filePath : `${topic}/${filePath}`;
+      setFileMenuPath(null);
       setDeleteError(null);
       try {
         const res = await fetch("/api/delete-file", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ path: pathForApi }),
+          body: JSON.stringify({ path: pathForApi(filePath) }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -127,7 +167,7 @@ function HomeContent() {
         }
         setMetaRefreshKey((k) => k + 1);
         const wasCurrent =
-          file === filePath || file === pathForApi || file === `${topic}/${filePath}`;
+          file === filePath || file === pathForApi(filePath) || file === `${topic}/${filePath}`;
         if (wasCurrent) setUrl({ stage: "", file: "" });
       } catch (e) {
         setDeleteError(e instanceof Error ? e.message : "请求失败");
@@ -135,6 +175,66 @@ function HomeContent() {
     },
     [source, topic, file, setUrl]
   );
+
+  const renameFile = useCallback(
+    async (filePath: string, newName: string) => {
+      if (!newName.trim().toLowerCase().endsWith(".md")) {
+        setRenameError("文件名须以 .md 结尾");
+        return;
+      }
+      setRenameError(null);
+      try {
+        const res = await fetch("/api/rename-file", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: pathForApi(filePath), newName: newName.trim() }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setRenameError(data.error || "重命名失败");
+          return;
+        }
+        setMetaRefreshKey((k) => k + 1);
+        const wasCurrent = file === filePath || file === `${topic}/${filePath}`;
+        if (wasCurrent) setUrl({ file: (data.path as string) ?? filePath });
+        setRenameModal(null);
+      } catch (e) {
+        setRenameError(e instanceof Error ? e.message : "请求失败");
+      }
+    },
+    [topic, file, setUrl]
+  );
+
+  // 点击「查看产出」后：先刷新 meta，再根据「刚完成的技能」跳转到对应阶段的首个文件
+  useEffect(() => {
+    if (!pendingJumpToOutputs || !meta?.stages?.length) return;
+    setPendingJumpToOutputs(false);
+    const targetStageId =
+      lastCompletedSkillId && SKILL_TO_STAGE[lastCompletedSkillId]
+        ? SKILL_TO_STAGE[lastCompletedSkillId]
+        : null;
+    const stageMeta = targetStageId
+      ? meta.stages.find((s) => s.id === targetStageId)
+      : null;
+    const files = stageMeta?.files ?? [];
+    const versionedFile = files.find((f) => /_\d{8}_v\d+\.md$/.test(f.name));
+    const firstFile = versionedFile ?? files[0];
+    if (firstFile) {
+      setUrl({ stage: stageMeta!.id, file: firstFile.path });
+      return;
+    }
+    // 无对应阶段或未记录技能时：回退到 06_review 或 05_report
+    const reviewStage = meta.stages.find((s) => s.id === "06_review");
+    const reportStage = meta.stages.find((s) => s.id === "05_report");
+    const reviewFile = reviewStage?.files?.[0];
+    const reportFile = reportStage?.files?.[0];
+    const fallback = reviewFile
+      ? { stage: reviewStage!.id, file: reviewFile.path }
+      : reportFile
+        ? { stage: reportStage!.id, file: reportFile.path }
+        : null;
+    if (fallback) setUrl({ stage: fallback.stage, file: fallback.file });
+  }, [pendingJumpToOutputs, meta, lastCompletedSkillId, setUrl]);
 
   useEffect(() => {
     if (!topic || !file) {
@@ -171,13 +271,15 @@ function HomeContent() {
       : "";
 
   const jumpToOutputsPreview = useCallback(() => {
-    setUrl({
-      source: "outputs",
-      topic,
-      stage: "06_review",
-      file: "06_review/review_latest.md",
-    });
+    setUrl({ source: "outputs", topic, stage: "", file: "" });
+    setPendingJumpToOutputs(true);
+    setMetaRefreshKey((k) => k + 1);
   }, [topic, setUrl]);
+
+  const handleJobComplete = useCallback((skillId: JobType) => {
+    setLastCompletedSkillId(skillId);
+    setMetaRefreshKey((k) => k + 1);
+  }, []);
 
   const changeTopic = useCallback(
     (newTopic: string) => {
@@ -257,11 +359,38 @@ function HomeContent() {
               <span className="font-medium text-[var(--text-muted)]">综合智能体</span>
             </h1>
             <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
-              批量检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 文献简报
+              检索范围筛选 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述
             </p>
           </div>
+          <button
+            type="button"
+            onClick={() => setSettingsOpen(true)}
+            className="flex-shrink-0 inline-flex items-center justify-center rounded-[10px] p-2 text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors"
+            aria-label="设置"
+            title="基本变量与 API Key"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setUrl({ stage: "", file: "" });
+              mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="home-btn-thu flex-shrink-0 inline-flex items-center gap-2 rounded-[10px] px-4 py-2 text-sm font-medium text-white shadow-thu-soft transition-all duration-200 hover:opacity-95 hover:shadow-lg"
+          >
+            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              <path d="M9 22V12h6v10" />
+            </svg>
+            首页
+          </button>
         </div>
       </header>
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
 
       <div className="flex flex-1 min-h-0">
         <aside className="aside-brand flex w-80 flex-shrink-0 flex-col overflow-y-auto overflow-x-hidden border-r border-[var(--border-soft)] bg-[var(--bg-sidebar)]">
@@ -272,19 +401,32 @@ function HomeContent() {
               runLog={journalSearchLog}
               runDone={journalSearchDone}
               runExitCode={journalSearchExitCode}
+              onDataSourceChange={setJournalDataSourceLabel}
             />
           </section>
           <section className="flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
             <h2 className="section-head mb-3 text-sm">技能工作台</h2>
             <SkillPanel
               topic={topic}
+              availableTopics={availableTopicsForPanel}
               onTopicChange={changeTopic}
               onJumpToOutputs={jumpToOutputsPreview}
+              onJobComplete={handleJobComplete}
               highlightedCardIds={highlightedCardIds}
+              topicMeta={meta}
+              journalDataSourceLabel={journalDataSourceLabel}
             />
           </section>
+          {source === "outputs" && topic && (
+            <section className="flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
+              <ManualAbstractPanel
+                topic={topic}
+                onSaved={() => setMetaRefreshKey((k) => k + 1)}
+              />
+            </section>
+          )}
           <section className="flex-shrink-0 p-4">
-            <h2 className="section-head mb-3 text-sm">文献目录</h2>
+            <h2 className="section-head mb-3 text-sm">文档目录</h2>
             <div className="mb-3 flex gap-2">
               <button
                 type="button"
@@ -336,31 +478,74 @@ function HomeContent() {
                         {s.files?.map((f) => {
                           const isActive =
                             file === f.path || file === f.name || file === `${s.id}/${f.name}`;
+                          const menuOpen = fileMenuPath === f.path;
                           return (
                             <li key={f.path} className="group flex items-center gap-1">
                               <button
                                 type="button"
-                                onClick={() => setUrl({ stage: s.id, file: f.path })}
+                                onClick={() => { setUrl({ stage: s.id, file: f.path }); setFileMenuPath(null); }}
                                 className={`min-w-0 flex-1 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${isActive ? "thu-btn-primary" : "text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)]"}`}
                                 title={f.name}
                               >
                                 {fileDisplayName(f.name)}
                               </button>
                               {source === "outputs" && (
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (window.confirm(`确定将「${fileDisplayName(f.name)}」移至废纸篓？`)) {
-                                      setDeleteError(null);
-                                      deleteFile(f.path);
-                                    }
-                                  }}
-                                  className="flex-shrink-0 rounded p-1 text-[var(--text-muted)] hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] transition-colors"
-                                  title="移至废纸篓"
-                                >
-                                  <span className="text-xs">删</span>
-                                </button>
+                                <div className="relative flex-shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); setFileMenuPath(menuOpen ? null : f.path); }}
+                                    className="rounded p-1 text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)] transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                    title="更多操作"
+                                    aria-expanded={menuOpen}
+                                  >
+                                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                      <circle cx="12" cy="5" r="1.5" />
+                                      <circle cx="12" cy="12" r="1.5" />
+                                      <circle cx="12" cy="19" r="1.5" />
+                                    </svg>
+                                  </button>
+                                  {menuOpen && (
+                                    <>
+                                      <div className="fixed inset-0 z-10" aria-hidden onClick={() => setFileMenuPath(null)} />
+                                      <ul className="absolute right-0 top-full z-20 mt-0.5 min-w-[8rem] rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] py-1 shadow-thu-soft">
+                                        <li>
+                                          <a
+                                            href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1`}
+                                            download={f.name}
+                                            className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                                            onClick={() => setFileMenuPath(null)}
+                                          >
+                                            导出文档
+                                          </a>
+                                        </li>
+                                        <li>
+                                          <button
+                                            type="button"
+                                            className="w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                                            onClick={() => { setRenameModal({ path: f.path, name: f.name }); setRenameValue(f.name); setRenameError(null); setFileMenuPath(null); }}
+                                          >
+                                            重命名
+                                          </button>
+                                        </li>
+                                        <li>
+                                          <button
+                                            type="button"
+                                            className="w-full px-3 py-2 text-left text-sm text-[var(--accent)] hover:bg-[var(--accent-subtle)]"
+                                            onClick={() => {
+                                              if (window.confirm(`确定将「${fileDisplayName(f.name)}」移至废纸篓？`)) {
+                                                setDeleteError(null);
+                                                deleteFile(f.path);
+                                              }
+                                              setFileMenuPath(null);
+                                            }}
+                                          >
+                                            删除文档
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </>
+                                  )}
+                                </div>
                               )}
                             </li>
                           );
@@ -382,7 +567,40 @@ function HomeContent() {
           </section>
         </aside>
 
-        <main className="flex-1 min-w-0 overflow-auto bg-[var(--bg-page)]">
+        {renameModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" role="dialog" aria-modal="true" aria-labelledby="rename-title">
+            <div className="mx-4 w-full max-w-sm rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
+              <h3 id="rename-title" className="mb-3 text-sm font-medium text-[var(--text)]">重命名文档</h3>
+              <p className="mb-2 text-xs text-[var(--text-muted)]">当前：{renameModal.name}</p>
+              <input
+                type="text"
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                className="mb-2 w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text)] focus:border-[var(--thu-purple)] focus:outline-none"
+                placeholder="新文件名（如 report_20260224_v1.md）"
+              />
+              {renameError && <p className="mb-2 text-xs text-[var(--accent)]">{renameError}</p>}
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => { setRenameModal(null); setRenameError(null); }}
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)]"
+                >
+                  取消
+                </button>
+                <button
+                  type="button"
+                  onClick={() => renameFile(renameModal.path, renameValue)}
+                  className="rounded-lg bg-[var(--thu-purple)] px-3 py-2 text-sm font-medium text-white shadow-thu-soft hover:opacity-90"
+                >
+                  确定
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <main ref={mainRef} className="flex-1 min-w-0 overflow-auto bg-[var(--bg-page)]">
           <div className="sticky top-0 z-10 border-b border-[var(--border-soft)] bg-[var(--bg-card)]/90 px-6 py-3 shadow-thu-soft backdrop-blur-md min-h-[3.25rem] flex items-center">
             <div className="absolute inset-x-0 bottom-0 h-px gradient-thu-line" aria-hidden />
             <div className="text-sm text-[var(--text-muted)]">
@@ -407,12 +625,21 @@ function HomeContent() {
               )}
             </div>
           </div>
-          <div className="p-6">
-            <div className="mx-auto max-w-3xl">
+          <div className="p-6 min-w-0 overflow-x-hidden flex-1">
+            <div className="mx-auto max-w-3xl min-w-0 w-full">
               {loading && (
                 <p className="text-sm text-[var(--text-muted)]">加载中…</p>
               )}
-              {!loading && file && <MarkdownPreview content={content} />}
+              {!loading && file && (
+                <MarkdownPreview
+                  content={content}
+                  emptyPlaceholder={
+                    source === "outputs"
+                      ? "该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
+                      : undefined
+                  }
+                />
+              )}
               {!loading && !file && (
                 manualData ? (
                   <ManualView

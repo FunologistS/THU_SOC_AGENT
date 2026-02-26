@@ -55,6 +55,31 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* 首页（未启动时）· 底纹与主色统一 */
+.start-page-root {
+  background: var(--bg-page);
+  background-image:
+    radial-gradient(ellipse 120% 70% at 50% 20%, rgba(102, 8, 116, 0.08), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 20% 60%, rgba(217, 51, 121, 0.05), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 85% 70%, rgba(102, 8, 116, 0.04), transparent 50%);
+}
+.start-page-main {
+  position: relative;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(102, 8, 116, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(217, 51, 121, 0.035) 0%, transparent 35%);
+}
+.start-page-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(102, 8, 116, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(102, 8, 116, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
 /* 侧栏 · 极淡圆形底纹（呼应系徽圆形） */
 .aside-brand {
   position: relative;
@@ -83,6 +108,24 @@ body {
   }
 }
 
+/* 运行中状态：旋转 + 每 10 秒连闪 2 次（每次约 0.5s）提示仍在运转 */
+@keyframes run-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes run-flash {
+  /* 第 1 个 0.5s 闪光 */
+  0% { box-shadow: 0 0 24px 8px rgba(102, 8, 116, 0.4); filter: brightness(1.2); }
+  5% { box-shadow: 0 0 0 0 transparent; filter: brightness(1); }
+  /* 第 2 个 0.5s 闪光 */
+  10% { box-shadow: 0 0 24px 8px rgba(102, 8, 116, 0.4); filter: brightness(1.2); }
+  15% { box-shadow: 0 0 0 0 transparent; filter: brightness(1); }
+  15.01%, 100% { box-shadow: 0 0 0 0 transparent; filter: brightness(1); }
+}
+.run-status-spinner {
+  animation: run-spin 1.8s linear infinite, run-flash 10s ease-in-out infinite;
+}
+
 /* 表单控件 · 现代圆角与焦点 */
 .thu-input {
   border: 1px solid var(--border);
@@ -102,7 +145,8 @@ body {
 
 /* 文档预览区：更舒适的阅读排版（不依赖 @tailwindcss/typography） */
 .prose-reader {
-  max-width: none;
+  max-width: 100%;
+  min-width: 0;
   color: var(--text);
 }
 .prose-reader h1,
@@ -160,6 +204,94 @@ body {
   padding-left: 1em;
   margin: 0.75em 0;
   color: var(--text-muted);
+}
+
+/* 我的产出 · 表格：随屏宽自适应、横向滑动、abstract 列更宽且可内滚、点击展开 */
+.prose-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+.prose-output-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.prose-output-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: linear-gradient(135deg, var(--thu-purple-subtle) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border-bottom: 2px solid var(--border);
+}
+.prose-output-table th {
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  border-bottom: 2px solid var(--border);
+}
+/* year 列稍宽，避免 2026 换行 */
+.prose-output-table th:nth-child(2),
+.prose-output-table td:nth-child(2) {
+  min-width: 4.5rem;
+  white-space: nowrap;
+}
+.prose-output-table td {
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text);
+  word-break: break-word;
+}
+/* 最后一列（多为 abstract）更宽，内容可内滚 */
+.prose-output-table td:last-child {
+  min-width: 20em;
+  max-width: 36em;
+}
+.prose-cell-scroll {
+  max-height: 8rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.25rem;
+}
+.prose-output-table td:last-child .prose-cell-scroll {
+  max-height: 10rem;
+  min-width: 18em;
+}
+.prose-cell-expand {
+  margin-top: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--thu-purple);
+  background: var(--thu-purple-subtle);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+/* 仅最后一列（abstract）显示展开按钮 */
+.prose-output-table td:not(:last-child) .prose-cell-expand {
+  display: none;
+}
+.prose-cell-expand:hover {
+  background: var(--thu-purple);
+  color: white;
+}
+.prose-output-table tbody tr:hover {
+  background-color: var(--thu-purple-subtle);
+}
+.prose-output-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 /* 顶栏标题 · 与 logo 规范一致的字重与字距 */
@@ -231,6 +363,16 @@ body {
   );
   background-size: 100% 100%;
   animation: thu-logo-ring-rotate 8s linear infinite;
+}
+/* 首页未启动时：不旋转，悬停也不转 */
+.thu-logo-ring--static {
+  animation: none;
+}
+.thu-logo-ring--static .thu-logo-inner {
+  transition: none;
+}
+.thu-logo-ring--static:hover .thu-logo-inner {
+  transform: none;
 }
 .thu-logo-inner {
   width: 100%;

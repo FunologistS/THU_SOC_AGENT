@@ -7,8 +7,9 @@
  *   4) rag_from_chunks.mjs --index  可选：建 RAG 索引
  *
  * 用法（从项目根）：
- *   node .claude/skills/paper-writing/scripts/upload_then_writing.mjs <topic> <style> <savedFileName>
+ *   node .claude/skills/paper-writing/scripts/upload_then_writing.mjs <topic> <style> <savedFileName> [provider]
  * 其中 style = academic | colloquial，savedFileName 为 assets/<style>/ 下的文件名（如 uuid-sample.docx）。
+ * provider 可选：gpt（默认）| glm，传给 writing_under_style 的 WRITING_PROVIDER。
  */
 
 import path from "node:path";
@@ -37,6 +38,7 @@ function run(name, cmd, args, env = {}) {
 const topic = process.argv[2];
 const style = (process.argv[3] || "academic").toLowerCase();
 const savedFileName = process.argv[4];
+const provider = (process.argv[5] || "gpt").toLowerCase() === "glm" ? "glm" : "gpt";
 
 if (!topic || !savedFileName) {
   console.error("用法: node upload_then_writing.mjs <topic> <academic|colloquial> <savedFileName>");
@@ -73,7 +75,7 @@ run("compact_report", "node", [
 run(
   "writing_under_style",
   "node",
-  [path.join(PAPER_WRITING, "scripts", "writing_under_style.mjs"), topic],
+  [path.join(PAPER_WRITING, "scripts", "writing_under_style.mjs"), topic, "--provider", provider],
   { REFERENCE_STYLE: style }
 );
 
