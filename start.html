@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>启动 · 社会科学文献处理综合智能体</title>
+  <link rel="icon" href="ui/design/thu-assets/department/社会学系logo.png" type="image/png" />
+  <style>
+    :root {
+      --thu-purple: #660874;
+      --thu-purple-subtle: rgba(102, 8, 116, 0.07);
+      --bg-page: #f8f7fa;
+      --bg-card: #ffffff;
+      --bg-sidebar: #f5f3f8;
+      --border-soft: #eeecf2;
+      --text: #1c1924;
+      --text-muted: #6d6575;
+      --radius-lg: 14px;
+      --shadow: 0 4px 12px rgba(102, 8, 116, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg-page);
+      background-image:
+        radial-gradient(ellipse 120% 70% at 50% 20%, rgba(102, 8, 116, 0.08), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 20% 60%, rgba(217, 51, 121, 0.05), transparent 50%);
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border-soft);
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .logo {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      padding: 3px;
+      background: conic-gradient(from 0deg, var(--thu-purple), #d93379, #8b3d96, #e85a9a, var(--thu-purple));
+      flex-shrink: 0;
+    }
+    .logo img { width: 100%; height: 100%; border-radius: 50%; object-fit: contain; background: var(--bg-card); padding: 4px; }
+    .header h1 { font-size: 1.25rem; font-weight: 600; margin: 0; letter-spacing: -0.02em; }
+    .header h1 .muted { color: var(--text-muted); font-weight: 500; }
+    .header .tagline { margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.1em; }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+    }
+    main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(102, 8, 116, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(102, 8, 116, 0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+    .hint {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .hint strong { color: var(--text); }
+    .box {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+    .box-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .cmd-block {
+      cursor: pointer;
+      overflow-x: auto;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text);
+      background: var(--bg-sidebar);
+      border-radius: 10px;
+      margin: 0;
+      white-space: pre;
+      transition: background 0.15s;
+    }
+    .cmd-block:hover { background: var(--thu-purple-subtle); }
+    .cmd-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.375rem; }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-family: inherit;
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--thu-purple); color: white; box-shadow: var(--shadow); }
+    .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border-soft); }
+    .btn-secondary:hover { background: var(--thu-purple-subtle); }
+    .footer-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .footer-note a { color: var(--thu-purple); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><img src="ui/app/public/thu-soc-logo.png" alt="清华大学社会学系" onerror="this.style.display='none'" /></div>
+    <div>
+      <h1>社会科学文献处理 <span class="muted">｜ 综合智能体</span></h1>
+      <p class="tagline">批量检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <p class="hint">
+        <strong>无需访问任何网站</strong>：本文件在您电脑上的项目文件夹里。双击本文件（start.html）即可用浏览器打开本页。<br />
+        请在本机<strong>终端</strong>执行下方命令以启动智能体。
+      </p>
+
+      <div class="box">
+        <p class="box-label">一条命令完成安装并启动（在项目根目录执行）</p>
+        <pre id="cmd" class="cmd-block" role="button" tabindex="0" title="点击复制命令"></pre>
+        <p class="cmd-hint">点击上方命令可复制</p>
+      </div>
+
+      <div class="buttons">
+        <button type="button" id="copyBtn" class="btn btn-primary">一键复制命令</button>
+        <a href="http://localhost:3001" class="btn btn-secondary">已启动，进入应用</a>
+      </div>
+
+      <p class="footer-note">
+        复制命令后粘贴到终端执行；看到 “Ready” 或 “localhost:3001” 后，在浏览器访问 <a href="http://localhost:3001">http://localhost:3001</a> 即可使用。
+      </p>
+    </div>
+  </main>
+
+  <script>
+    (function() {
+      var path = location.pathname || '';
+      path = path.replace(/\/[^/]*$/, '');
+      try { path = decodeURIComponent(path); } catch (e) {}
+      var appDir = path + '/ui/app';
+      var cmd = 'cd "' + appDir + '" && npm install && npm run dev';
+      var el = document.getElementById('cmd');
+      el.textContent = cmd;
+
+      function copy() {
+        navigator.clipboard.writeText(cmd).then(function() {
+          var btn = document.getElementById('copyBtn');
+          btn.textContent = '已复制';
+          setTimeout(function() { btn.textContent = '一键复制命令'; }, 2000);
+        });
+      }
+      document.getElementById('copyBtn').onclick = copy;
+      el.onclick = copy;
+      el.onkeydown = function(e) { if (e.key === 'Enter') copy(); };
+    })();
+  </script>
+</body>
+</html>
