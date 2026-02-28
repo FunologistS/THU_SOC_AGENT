@@ -21,6 +21,17 @@ const SKILLS: { step: number; id: SkillId; label: string; desc: string }[] = [
   { step: 5, id: "writing_under_style", label: "一键综述", desc: "若用户未上传则采用默认样本作为参考，若用户上传写作样本则以用户新上传样本为参考，将文献简报改写为成文综述" },
 ];
 
+/** 各技能预估耗时（秒），用于进度条时间基准；完成时以 100% 为准 */
+const SKILL_ESTIMATED_SECONDS: Record<SkillId, number> = {
+  journal_search: 180,
+  filter: 120,
+  paper_summarize: 300,
+  synthesize: 120,
+  concept_synthesize: 210,
+  upload_and_writing: 600,
+  writing_under_style: 390,
+};
+
 function hasStageFiles(meta: TopicMeta | null, stageId: string): boolean {
   if (!meta?.stages) return false;
   const stage = meta.stages.find((s) => s.id === stageId);
@@ -76,6 +87,22 @@ export function SkillPanel({
   const [conceptSynthesizeModelOpen, setConceptSynthesizeModelOpen] = useState(false);
   const [writingModel, setWritingModel] = useState<"gpt" | "glm">("glm");
   const [writingModelOpen, setWritingModelOpen] = useState(false);
+  const [runStartTime, setRunStartTime] = useState<number | null>(null);
+  const [progress, setProgress] = useState(0);
+
+  // 运行中按预估时间推进进度条（约每秒更新），完成时由 poll 设为 100%
+  useEffect(() => {
+    if (!jobId || done || runStartTime == null || !runningSkill) return;
+    const estimatedSec = SKILL_ESTIMATED_SECONDS[runningSkill] ?? 180;
+    const tick = () => {
+      const elapsed = (Date.now() - runStartTime) / 1000;
+      const pct = Math.min(95, (elapsed / estimatedSec) * 100);
+      setProgress(pct);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [jobId, done, runStartTime, runningSkill]);
 
   const applyTopic = () => {
     const raw = topicInput.trim();
@@ -96,7 +123,7 @@ export function SkillPanel({
   const runOne = (
     jobType: JobType,
     extraArgs?: string[],
-    options?: { conceptSynthesizeModel?: "gpt" | "glm"; writingModel?: "gpt" | "glm" }
+    options?: { conceptSynthesizeModel?: "gpt" | "glm"; writingModel?: "gpt" | "glm"; qualityOnly?: boolean }
   ): Promise<boolean> => {
     return new Promise((resolve) => {
       const body: {
@@ -105,10 +132,12 @@ export function SkillPanel({
         args?: string[];
         conceptSynthesizeModel?: "gpt" | "glm";
         writingModel?: "gpt" | "glm";
+        qualityOnly?: boolean;
       } = { jobType, topic };
       if (Array.isArray(extraArgs) && extraArgs.length > 0) body.args = extraArgs;
       if (jobType === "concept_synthesize" && options?.conceptSynthesizeModel)
         body.conceptSynthesizeModel = options.conceptSynthesizeModel;
+      if (jobType === "concept_synthesize" && options?.qualityOnly === true) body.qualityOnly = true;
       if ((jobType === "writing_under_style" || jobType === "upload_and_writing") && options?.writingModel)
         body.writingModel = options.writingModel;
       fetch("/api/run", {
@@ -125,6 +154,8 @@ export function SkillPanel({
           }
           setJobId(data.jobId);
           setLog("");
+          setRunStartTime(Date.now());
+          setProgress(0);
           const poll = () => {
             fetch(`/api/logs?jobId=${data.jobId}`)
               .then((l) => l.json())
@@ -132,10 +163,13 @@ export function SkillPanel({
                 setLog(ld.content ?? "");
                 setDone(ld.done);
                 setExitCode(ld.exitCode);
-                if (!ld.done) setTimeout(poll, 800);
-                else {
+                if (ld.done) {
+                  setProgress(100);
+                  setRunStartTime(null);
                   if (ld.exitCode === 0) onJobComplete?.(jobType);
                   resolve(ld.exitCode === 0);
+                } else {
+                  setTimeout(poll, 800);
                 }
               });
           };
@@ -188,16 +222,35 @@ export function SkillPanel({
       return;
     }
 
+    let qualityOnly = false;
+    if (skillId === "concept_synthesize" && topic) {
+      try {
+        const qaRes = await fetch(`/api/qa-report-summary?topic=${encodeURIComponent(topic)}`);
+        const qa = await qaRes.json();
+        if (qa && typeof qa.total === "number" && typeof qa.outOfScopeCandidates === "number" && qa.total >= 100 && qa.outOfScopeCandidates > 0) {
+          const inScope = qa.inScopeCount ?? Math.max(0, qa.total - qa.outOfScopeCandidates);
+          const go = window.confirm(
+            `当前 context 量较大（共 ${qa.total} 篇，其中 ${qa.outOfScopeCandidates} 篇为质检疑似跑题）。\n\n是否只使用质检报告中的优质论文进行综述？（将使用另外 ${inScope} 篇）`
+          );
+          qualityOnly = go;
+        }
+      } catch {
+        // 忽略 QA 接口失败，按全部论文运行
+      }
+    }
+
     setJobId(null);
     setLog("");
     setDone(false);
     setExitCode(undefined);
     setRunningSkill(skillId);
+    setRunStartTime(null);
+    setProgress(0);
 
     try {
       const ok =
         skillId === "concept_synthesize"
-          ? await runOne(skillId, undefined, { conceptSynthesizeModel })
+          ? await runOne(skillId, undefined, { conceptSynthesizeModel, qualityOnly })
           : await runOne(skillId);
       if (ok) onJobComplete?.(skillId);
       setRunningSkill(null);
@@ -215,6 +268,8 @@ export function SkillPanel({
     setDone(false);
     setExitCode(undefined);
     setRunningSkill("upload_and_writing");
+    setRunStartTime(null);
+    setProgress(0);
 
     const ext = uploadFile.name.slice(uploadFile.name.lastIndexOf(".")).toLowerCase();
     if (ext !== ".pdf" && ext !== ".docx") {
@@ -259,6 +314,8 @@ export function SkillPanel({
     setDone(false);
     setExitCode(undefined);
     setRunningSkill("writing_under_style");
+    setRunStartTime(null);
+    setProgress(0);
     runOne(
       "writing_under_style",
       promptToUse ? [promptToUse] : undefined,
@@ -618,29 +675,42 @@ export function SkillPanel({
       {jobId && (
         <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2.5">
           {!done && (
-            <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
-              <div
-                className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
-                aria-hidden
-              />
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-medium text-[var(--text)]">正在运行…</p>
-                <p className="text-[11px] text-[var(--text-muted)]">
-                  预计{(() => {
-                    const eta: Record<string, string> = {
-                      journal_search: "约 1–5 分钟",
-                      paper_summarize: "约 2–8 分钟",
-                      synthesize: "约 1–3 分钟",
-                      concept_synthesize: "约 2–5 分钟",
-                      upload_and_writing: "约 5–15 分钟",
-                      writing_under_style: "约 3–10 分钟",
-                    };
-                    const dur = runningSkill ? eta[runningSkill] ?? "数" : "数";
-                    const label = runningSkill ? SKILLS.find((s) => s.id === runningSkill)?.label ?? runningSkill : "";
-                    return label ? ` ${dur}分钟（${label}）` : ` ${dur}分钟`;
-                  })()}
-                </p>
+            <div className="mb-2 space-y-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
+              <div className="flex items-center gap-2">
+                <div
+                  className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
+                  aria-hidden
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-medium text-[var(--text)]">正在运行 · {runningSkill ? SKILLS.find((s) => s.id === runningSkill)?.label ?? runningSkill : ""}</p>
+                  <p className="text-[11px] text-[var(--text-muted)]">
+                    {runStartTime != null && runningSkill && (() => {
+                      const estSec = SKILL_ESTIMATED_SECONDS[runningSkill] ?? 180;
+                      const estMin = Math.round(estSec / 60);
+                      const elapsedSec = Math.floor((Date.now() - runStartTime) / 1000);
+                      return `预估约 ${estMin} 分钟 · 已用 ${elapsedSec} 秒 · 进度 ${Math.round(progress)}%`;
+                    })()}
+                  </p>
+                </div>
               </div>
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
+                <div
+                  className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out"
+                  style={{ width: `${Math.round(progress)}%` }}
+                  role="progressbar"
+                  aria-valuenow={Math.round(progress)}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                />
+              </div>
+            </div>
+          )}
+          {done && (
+            <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-2.5 py-1.5">
+              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-sidebar)]">
+                <div className="h-full w-full rounded-full bg-[var(--thu-purple)]" style={{ width: "100%" }} role="progressbar" aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} />
+              </div>
+              <span className="text-[11px] font-medium text-[var(--text-muted)]">100%</span>
             </div>
           )}
           <div className="mb-1 text-[11px] font-medium text-[var(--text-muted)]">运行日志</div>

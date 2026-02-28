@@ -30,7 +30,7 @@ const SKILL_TO_STAGE: Record<JobType, string> = {
 };
 
 const DEFAULT_TOPIC = "artificial_intelligence";
-const DEFAULT_SOURCE = "mock";
+const DEFAULT_SOURCE = "outputs";
 
 /** 始终可选的预设主题（与 outputs 实际目录合并后供技能工作台切换） */
 const PRESET_TOPICS: { topic: string; label: string }[] = [
@@ -115,6 +115,7 @@ function HomeContent() {
   const [journalDataSourceLabel, setJournalDataSourceLabel] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [gitSaving, setGitSaving] = useState(false);
+  const [lastCommitIso, setLastCommitIso] = useState<string | null>(null);
   const mainRef = useRef<HTMLElement>(null);
 
   const setUrl = useCallback(
@@ -133,7 +134,7 @@ function HomeContent() {
   useEffect(() => {
     fetch(`/api/topics?source=${source}`)
       .then((r) => r.json())
-      .then((d) => setTopics(d.topics || []))
+      .then((d) => setTopics((d.topics || []).filter((t: { topic: string }) => t.topic !== "system")))
       .catch(() => setTopics([]));
   }, [source]);
 
@@ -239,6 +240,13 @@ function HomeContent() {
   }, [pendingJumpToOutputs, meta, lastCompletedSkillId, setUrl]);
 
   useEffect(() => {
+    fetch("/api/git-info")
+      .then((r) => r.json())
+      .then((d) => (d?.ok && d?.lastCommitIso ? setLastCommitIso(d.lastCommitIso) : null))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     if (!topic || !file) {
       setContent("");
       return;
@@ -298,6 +306,12 @@ function HomeContent() {
         data.message ||
         (data.committed ? "已完成 git 提交（未执行 push）。" : "当前没有需要保存的改动。");
       window.alert(msg);
+      if (data.committed) {
+        fetch("/api/git-info")
+          .then((r) => r.json())
+          .then((d) => (d?.ok && d?.lastCommitIso ? setLastCommitIso(d.lastCommitIso) : null))
+          .catch(() => {});
+      }
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Git 保存请求失败。";
       window.alert(msg);
@@ -370,6 +384,27 @@ function HomeContent() {
     : file
       ? fileDisplayName(file.split("/").pop() ?? file)
       : "";
+
+  /** 将 ISO 时间格式化为北京时间（精确到分钟） */
+  const lastUpdateBeijing =
+    lastCommitIso
+      ? (() => {
+          try {
+            const d = new Date(lastCommitIso);
+            return d.toLocaleString("zh-CN", {
+              timeZone: "Asia/Shanghai",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            });
+          } catch {
+            return null;
+          }
+        })()
+      : null;
 
   return (
     <div className="flex h-screen flex-col bg-[var(--bg-page)]">
@@ -475,22 +510,6 @@ function HomeContent() {
           )}
           <section className="flex-shrink-0 p-4">
             <h2 className="section-head mb-3 text-sm">文档目录</h2>
-            <div className="mb-3 flex gap-2">
-              <button
-                type="button"
-                onClick={() => setUrl({ source: "mock" })}
-                className={`rounded-[10px] px-3 py-2 text-sm font-medium transition-all duration-200 ${source === "mock" ? "thu-btn-primary shadow-thu-soft" : "bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] border border-[var(--border-soft)]"}`}
-              >
-                示例数据
-              </button>
-              <button
-                type="button"
-                onClick={() => setUrl({ source: "outputs" })}
-                className={`rounded-[10px] px-3 py-2 text-sm font-medium transition-all duration-200 ${source === "outputs" ? "thu-btn-primary shadow-thu-soft" : "bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] border border-[var(--border-soft)]"}`}
-              >
-                我的产出
-              </button>
-            </div>
             <p className="mb-2 text-xs text-[var(--text-muted)]">主题</p>
             <ul className="max-h-28 overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
               {topics.length === 0 && (
@@ -681,6 +700,11 @@ function HomeContent() {
               {!loading && file && (
                 <MarkdownPreview
                   content={content}
+                  citationLinkTopic={
+                    source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review"))
+                      ? topic
+                      : undefined
+                  }
                   emptyPlaceholder={
                     source === "outputs"
                       ? "该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
@@ -702,6 +726,13 @@ function HomeContent() {
           </div>
         </main>
       </div>
+      <footer className="flex-shrink-0 border-t border-[var(--border-soft)] bg-[var(--bg-card)] px-6 py-3">
+        {lastUpdateBeijing && (
+          <p className="text-right text-xs text-[var(--text-muted)]">
+            最后更新：{lastUpdateBeijing} 北京时间
+          </p>
+        )}
+      </footer>
       <SessionLogPanel />
     </div>
   );

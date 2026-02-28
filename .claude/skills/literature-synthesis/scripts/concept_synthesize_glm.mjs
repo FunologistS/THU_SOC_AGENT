@@ -148,12 +148,31 @@ function parseMetaClusters(md) {
           year: Number(pm[2]),
           journal: pm[3].trim(),
           doi: doiM ? (doiM[1] || doiM[0]).trim() : "",
+          outOfScope: line.includes("⚑out_of_scope"),
         });
       }
     }
     clusters.push({ clusterId, theme, papers });
   }
   return clusters.sort((a, b) => a.clusterId - b.clusterId);
+}
+
+/** 将作者串转为文内引用格式：如 "Wu, Sun" -> "Wu & Sun"，"Wu, Sun, Li" -> "Wu et al."；已含 &/et al. 的串先按逗号拆分再格式化。 */
+function toInTextCitation(authorsStr, year) {
+  const y =
+    year != null && Number.isFinite(Number(year)) && String(year).trim() !== ""
+      ? String(Number(year))
+      : "?";
+  const raw = authorsStr != null ? String(authorsStr).trim() : "";
+  if (!raw) return `(Unknown, ${y})`;
+  const parts = raw
+    .split(/[,，、;；]/)
+    .map((s) => s.replace(/\s*&\s*|\s+et\s+al\.?/gi, " ").trim())
+    .filter(Boolean);
+  if (parts.length === 0) return `(Unknown, ${y})`;
+  if (parts.length === 1) return `(${parts[0]}, ${y})`;
+  if (parts.length === 2) return `(${parts[0]} & ${parts[1]}, ${y})`;
+  return `(${parts[0]} et al., ${y})`;
 }
 
 /** ---------------- Parse summaries_latest.md ---------------- **/
@@ -166,11 +185,12 @@ function parseSummariesMarkdown(md) {
 
   const items = [];
   for (const b of blocks) {
-    const h = b.match(/^##\s+\d+\.\s+(.*)\s+\((\d{4})\)\s*$/m);
+    const h = b.match(/^##\s+(\d+)\.\s+(.*)\s+\((\d{4})\)\s*$/m);
     if (!h) continue;
-
-    const title = h[1].trim();
-    const year = Number(h[2]);
+    const paperId = parseInt(h[1], 10);
+    if (!Number.isFinite(paperId) || paperId < 1) continue;
+    const title = h[2].trim();
+    const year = Number(h[3]);
 
     const journal = (b.match(/^- Journal:\s*(.*)$/m)?.[1] ?? "").trim();
     const doi = (b.match(/^- DOI:\s*(.*)$/m)?.[1] ?? "").trim();
@@ -201,7 +221,18 @@ function parseSummariesMarkdown(md) {
 
     const manual = /\[MANUAL\]/.test(b);
 
+    const authors = (
+      b.match(/^- Author\(s\):\s*(.+)$/m)?.[1] ??
+      b.match(/^- Authors?:\s*(.+)$/m)?.[1] ??
+      b.match(/\*\*Author\(s\)\*\*:\s*(.+?)(?:\n|$)/m)?.[1] ??
+      b.match(/\*\*Authors?\*\*:\s*(.+?)(?:\n|$)/m)?.[1] ??
+      ""
+    ).trim() || null;
+    const citation = authors ? `${authors}, ${year}` : `Unknown, ${year}`;
+    const inTextCitation = toInTextCitation(authors || null, year);
+
     items.push({
+      id: paperId,
       title,
       year,
       journal,
@@ -214,6 +245,8 @@ function parseSummariesMarkdown(md) {
       contribution,
       abstract,
       manual,
+      citation,
+      inTextCitation,
     });
   }
   return items;
@@ -352,7 +385,9 @@ async function zhipuChat({
 
 function formatCardForLLM(c) {
   const parts = [];
-  parts.push(`(ID=${c.id}) **${c.title || "（无标题）"}** (${c.year || "?"}) — ${c.journal || "（未指定）"}`);
+  const citeLabel = c.inTextCitation || (c.citation ? `(${c.citation})` : "");
+  parts.push(`**${c.title || "（无标题）"}** (${c.year || "?"}) — ${c.journal || "（未指定）"}`);
+  if (citeLabel) parts.push(`- 文内引用：${citeLabel}（ID=${c.id}，用于链接锚点 #paper-${c.id}）`);
   if (c.rq) parts.push(`- 问题：${clamp(c.rq, 400)}`);
   if (c.data_material) parts.push(`- 数据/材料：${clamp(c.data_material, 200)}`);
   if (c.method) parts.push(`- 方法：${clamp(c.method, 200)}`);
@@ -371,6 +406,9 @@ function buildClusterPrompt({ topic, clusterId, clusterSize, cards, wantAppendix
 不要编造作者、理论、数据集、样本大小、国家或摘要中没有明确提到的发现。
 如果某个细节缺失，请说“在摘要/总结中未指定”或类似表达。
 你的写作风格应简洁、实质性强，适合研究简报，并融入社会学理论与视角。
+
+**引用纪律（必须遵守）**：简报中的每条论述若来自某一篇或某几篇具体文献，必须“有理有据”——在该句或该要点末尾（或句中合适处）标明文内引用。不得出现“有研究指出”“部分文献认为”等无引用支撑的概括句；每条基于文献的论断都要带引用。
+**可点击引用（必须遵守）**：正文与各小节中出现的每一处文内引用，都必须写成 Markdown 可点击链接形式，以便读者点击查看文献详情。格式为 [(Author & Author, Year)](#paper-<id>) 或 [(Author et al., Year)](#paper-<id>)，其中 <id> 为该文献在下方卡片中的 ID（数字）。多篇文献时每篇单独成链接，例如：[(Wu & Sun, 2026)](#paper-1)；[(Li et al., 2025)](#paper-2)。不要写纯括号 (Author, Year)，一律用带 #paper-id 的链接形式。
 `;
 
   const context = [
@@ -381,7 +419,7 @@ function buildClusterPrompt({ topic, clusterId, clusterSize, cards, wantAppendix
     .join("\n");
 
   const user = `
-任务：为主题"${topic}"，聚类=${clusterId}（n=${clusterSize}）创建一个聚类级别的“简报小评审”。
+任务：为主题"${topic}"，聚类=${clusterId}（n=${clusterSize}）创建一个聚类级别的“简报小评审”。每条基于具体文献的论述都必须带文内引用，做到有理有据。
 ${context ? `\n背景信息：\n${context}\n` : ""}
 
 你必须输出严格的Markdown格式，结构如下：
@@ -389,30 +427,26 @@ ${context ? `\n背景信息：\n${context}\n` : ""}
 ## <主题标题（概念性、理论友好；此处不应有聚类ID）>
 
 **该主题的主要内容（2-4句话）：**
-- 该主题涉及[插入关键社会学理论，例如：数字劳动、不确定性再生产等]及其对[特定社会学方面]的影响。
+- 每句若概括自具体文献，须在句末用可点击引用标注，格式为 [(Author, Year)](#paper-<id>)。例：该主题涉及数字劳动与平台治理 [(Wu & Sun, 2026)](#paper-1)；[(Li et al., 2025)](#paper-2)。
 
 **主要的视角/视角框架（2-5个要点）：**
-- 使用的理论：[例如：劳动过程理论、SCOT、数字二重性等]
-- 关键视角：[例如：社会经济影响、技术决定论与产品决定论等]
+- 每个要点若来自某篇/某几篇文献，须用可点击引用标明，如 [(Smith, 2025)](#paper-3)；[(Chen & Wang, 2026)](#paper-4)。
 
 **重复的主张/结论（2-5个要点）：**
-- 研究常常指出[插入常见的结论]。
-- [插入论文中反复出现的主题]。
+- 每个结论必须注明来自哪篇/哪几篇，用可点击引用，如：……[(A, 2025)](#paper-1)；[(B & C, 2026)](#paper-2)。不得写无引用的“研究指出……”。
 
 **从摘要中可见的限制（2-5个要点）：**
-- 只使用可以从摘要/总结中推断出的内容。
-- 采用软性评估：“通常”，“倾向于”，“摘要中很少提到……”等。
-- 不要声称你阅读了完整的文本。
+- 只使用可从摘要推断的内容，并用可点击引用标注 [(Author, Year)](#paper-<id>)。采用软性表述：“通常”“倾向于”“摘要中很少提到……”。
 
 **研究空白/下一步研究方向（2-5个要点）：**
-- [插入基于社会学研究需求的下一步和研究空白]。
+- 若某条基于某篇文献的局限或建议，用可点击引用标注该文献 [(Author, Year)](#paper-<id>)。
 
-### 该主题的论文（每篇论文一句话总结；必须覆盖所有论文；按年份降序排列，标题相同的按字母顺序排列）
-- (ID=<id>) **<标题> (<年份>) — <期刊>**: <基于卡片的一句总结>
+### 该主题的论文（每篇论文一句话总结；必须覆盖所有论文；按年份降序排列；使用可点击引用）
+- [(文内引用)](#paper-<id>): <基于卡片的一句总结>
 
 ${wantAppendix ? `
-### 附录：论文卡片（每篇论文3行；必须覆盖所有论文）
-- (ID=<id>) **<标题> (<年份>) — <期刊>**
+### 附录：论文卡片（每篇论文3行；必须覆盖所有论文；使用文内引用）
+- **<标题> (<年份>) — <期刊>** （(文内引用)）
   - 问题：...
   - 方法：...
   - 主要主张：...
@@ -423,8 +457,10 @@ ${wantAppendix ? `
 - 一句话总结不超过35个字。
 - 如果期刊缺失，则不应显示。
 - 如果你找不到方法/数据/主张，应该说“未指定”而不是猜测。
+- **引用规范（强制）**：正文与各小节中，凡基于某篇或某几篇文献的论述，必须用可点击链接形式标注：[(Author, Year)](#paper-<id>)，多篇时每篇单独一个链接。不要写纯括号 (Author, Year)，不要写 ID=xx。无引用支撑的文献性论断不允许出现。
+- **该主题的论文**列表中，每行必须使用可点击引用：[(文内引用)](#paper-<id>): 一句话总结，其中 <id> 为卡片中的 ID（数字）。
 
-现在，这里是论文卡片（每篇论文一个）：
+现在，这里是论文卡片（每篇论文一个；文内引用与 ID 用于生成符合学术规范的引用与链接）：
 ${cards.map((c) => `\n---\n${formatCardForLLM(c)}\n`).join("")}
 `;
 
@@ -443,7 +479,7 @@ const topic = args._[0];
 
 if (!topic || !String(topic).trim()) {
   console.error(
-    `Usage: node concept_synthesize.mjs <topic> [--meta-clusters path] [--briefing path] [--summaries path] [--date YYYYMMDD] [--v N] [--model MODEL] [--no-appendix] [--max-papers-per-cluster N] [--only-clusters "0,3,5"] [--dry-run] [--debug] [--test-api]`
+    `Usage: node concept_synthesize.mjs <topic> [--meta-clusters path] [--briefing path] [--summaries path] [--date YYYYMMDD] [--v N] [--model MODEL] [--no-appendix] [--exclude-out-of-scope] [--max-papers-per-cluster N] [--only-clusters "0,3,5"] [--dry-run] [--debug] [--test-api]`
   );
   process.exit(1);
 }
@@ -462,6 +498,7 @@ const briefingInputPath =
 const summariesPath =
   args.summaries || path.join(PROJECT_ROOT, "outputs", topic, "03_summaries", "summaries_latest.md");
 const wantAppendix = args["no-appendix"] !== true;
+const excludeOutOfScope = !!args["exclude-out-of-scope"];
 const maxPapersPerCluster = toInt(args["max-papers-per-cluster"], 999);
 const onlyClustersRaw = args["only-clusters"] ? String(args["only-clusters"]) : "";
 const onlyClusters = onlyClustersRaw
@@ -525,6 +562,18 @@ if (debug) {
 }
 
 const clusters = parseMetaClusters(readText(metaClustersPath));
+if (excludeOutOfScope) {
+  let excluded = 0;
+  for (const c of clusters) {
+    const before = c.papers.length;
+    c.papers = c.papers.filter((p) => !p.outOfScope);
+    excluded += before - c.papers.length;
+  }
+  const inScope = clusters.reduce((acc, c) => acc + c.papers.length, 0);
+  console.log(
+    `[concept_synthesis] 已排除质检疑似跑题论文 ${excluded} 篇，仅使用优质论文 ${inScope} 篇进行综述（--exclude-out-of-scope）`
+  );
+}
 const totalPapersFromClusters = clusters.reduce((acc, c) => acc + c.papers.length, 0);
 if (totalPapersFromClusters === 0) {
   console.error(`[concept_synthesis] ERROR: meta_clusters 中未解析到任何论文行。`);
@@ -550,12 +599,15 @@ for (const c of clusters) {
     if (!sum && p.doi) sum = summaryByDoi.get(normalizeDoi(p.doi));
     joined.push({
       ...p,
+      paperId: sum?.id ?? null,
       rq: sum?.rq ?? "",
       data_material: sum?.data_material ?? "",
       method: sum?.method ?? "",
       findings: sum?.findings ?? "",
       contribution: sum?.contribution ?? "",
       abstract: sum?.abstract ?? "",
+      citation: sum?.citation ?? "",
+      inTextCitation: sum?.inTextCitation ?? (sum?.citation ? `(${sum.citation})` : ""),
     });
     if (sum) totalJoined++;
   }
@@ -610,7 +662,7 @@ for (let i = 0; i < toProcess.length; i++) {
   const limited = papers.slice(0, maxPapersPerCluster);
 
   const cards = limited.map((p, idx) => ({
-    id: idx + 1,
+    id: p.paperId != null ? p.paperId : idx + 1,
     title: p.title,
     year: p.year,
     journal: p.journal,
@@ -620,6 +672,8 @@ for (let i = 0; i < toProcess.length; i++) {
     findings: p.findings,
     contribution: p.contribution,
     abstract: p.abstract,
+    citation: p.citation,
+    inTextCitation: p.inTextCitation || (p.citation ? `(${p.citation})` : ""),
   }));
 
   if (cards.length === 0) {

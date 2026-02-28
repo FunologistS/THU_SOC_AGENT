@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { JobType } from "@/app/types";
 
 const JOB_LABELS: Record<JobType, string> = {
@@ -9,6 +9,16 @@ const JOB_LABELS: Record<JobType, string> = {
   synthesize: "文献整合 (synthesize)",
   concept_synthesize: "概念合成 (荟萃分析)",
   writing_under_style: "综述仿写 (writing_under_style)",
+};
+
+const JOB_ESTIMATED_SEC: Record<JobType, number> = {
+  journal_search: 180,
+  filter: 120,
+  paper_summarize: 300,
+  synthesize: 120,
+  concept_synthesize: 210,
+  upload_and_writing: 600,
+  writing_under_style: 390,
 };
 
 export function PipelineRunner({
@@ -26,6 +36,8 @@ export function PipelineRunner({
   const [exitCode, setExitCode] = useState<number | undefined>();
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [runStartTime, setRunStartTime] = useState<number | null>(null);
+  const [progress, setProgress] = useState(0);
 
   const run = async () => {
     setError(null);
@@ -33,6 +45,8 @@ export function PipelineRunner({
     setLog("");
     setDone(false);
     setExitCode(undefined);
+    setRunStartTime(null);
+    setProgress(0);
     setRunning(true);
     try {
       const body: { jobType: string; topic: string; conceptSynthesizeModel?: "gpt" | "glm" } = {
@@ -52,14 +66,21 @@ export function PipelineRunner({
         return;
       }
       setJobId(data.jobId);
+      setRunStartTime(Date.now());
+      setProgress(0);
       const poll = async () => {
         const lres = await fetch(`/api/logs?jobId=${data.jobId}`);
         const ldata = await lres.json();
         setLog(ldata.content);
         setDone(ldata.done);
         setExitCode(ldata.exitCode);
-        if (!ldata.done) setTimeout(poll, 800);
-        else setRunning(false);
+        if (ldata.done) {
+          setProgress(100);
+          setRunStartTime(null);
+          setRunning(false);
+        } else {
+          setTimeout(poll, 800);
+        }
       };
       poll();
     } catch (e) {
@@ -67,6 +88,18 @@ export function PipelineRunner({
       setRunning(false);
     }
   };
+
+  useEffect(() => {
+    if (!jobId || done || runStartTime == null) return;
+    const estimatedSec = JOB_ESTIMATED_SEC[jobType] ?? 180;
+    const tick = () => {
+      const elapsed = (Date.now() - runStartTime) / 1000;
+      setProgress(Math.min(95, (elapsed / estimatedSec) * 100));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [jobId, done, runStartTime, jobType]);
 
   return (
     <div className="border border-[var(--border)] rounded-lg bg-[var(--bg-sidebar)] p-3 space-y-2">
@@ -126,18 +159,31 @@ export function PipelineRunner({
       )}
       {jobId && (
         <>
-          {running && (
-            <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
-              <div
-                className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
-                aria-hidden
-              />
-              <div>
-                <p className="text-xs font-medium text-[var(--text)]">正在运行…</p>
-                <p className="text-[11px] text-[var(--text-muted)]">
-                  预计{jobType === "concept_synthesize" ? " 2–5" : jobType === "writing_under_style" ? " 3–10" : " 数"}分钟（{JOB_LABELS[jobType]}）
-                </p>
+          {running && runStartTime != null && (
+            <div className="mb-2 space-y-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
+              <div className="flex items-center gap-2">
+                <div
+                  className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
+                  aria-hidden
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-medium text-[var(--text)]">正在运行 · {JOB_LABELS[jobType]}</p>
+                  <p className="text-[11px] text-[var(--text-muted)]">
+                    预估约 {Math.round((JOB_ESTIMATED_SEC[jobType] ?? 180) / 60)} 分钟 · 已用 {Math.floor((Date.now() - runStartTime) / 1000)} 秒 · 进度 {Math.round(progress)}%
+                  </p>
+                </div>
               </div>
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
+                <div className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out" style={{ width: `${Math.round(progress)}%` }} role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} />
+              </div>
+            </div>
+          )}
+          {done && (
+            <div className="mb-2 flex items-center gap-2">
+              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-card)]">
+                <div className="h-full w-full rounded-full bg-[var(--thu-purple)]" style={{ width: "100%" }} role="progressbar" aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} />
+              </div>
+              <span className="text-[11px] font-medium text-[var(--text-muted)]">100%</span>
             </div>
           )}
           <pre className="text-xs bg-white border border-[var(--border)] rounded p-2 max-h-48 overflow-auto whitespace-pre-wrap">

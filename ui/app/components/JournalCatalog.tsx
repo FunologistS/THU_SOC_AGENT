@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 
 export interface JournalItem {
   name?: string;
@@ -63,7 +63,11 @@ export function JournalCatalog({
   const [useWos, setUseWos] = useState(true);
   const [loadingCatalog, setLoadingCatalog] = useState(true);
   const [detailJournal, setDetailJournal] = useState<JournalItem | null>(null);
+  const [journalSearchQuery, setJournalSearchQuery] = useState("");
   const fetchingRef = useRef(false);
+  const [runStartTime, setRunStartTime] = useState<number | null>(null);
+  const [progress, setProgress] = useState(0);
+  const JOURNAL_SEARCH_ESTIMATED_SEC = 180;
 
   const fetchWos = useCallback(() => {
     const params = new URLSearchParams();
@@ -128,6 +132,27 @@ export function JournalCatalog({
   useEffect(() => {
     onDataSourceChange?.(DATA_SOURCE_LABELS[useWos ? "wos" : "yml"] ?? (useWos ? "SSCI完整目录（3540）" : "OpenAlex解析社会学Q1期刊目录（58+1）"));
   }, [useWos, onDataSourceChange]);
+
+  // 检索任务开始：记录开始时间并启动进度条
+  useEffect(() => {
+    if (runJobId && !runDone) {
+      setRunStartTime((t) => t ?? Date.now());
+    } else {
+      setRunStartTime(null);
+      setProgress(runDone ? 100 : 0);
+    }
+  }, [runJobId, runDone]);
+
+  useEffect(() => {
+    if (!runJobId || runDone || runStartTime == null) return;
+    const tick = () => {
+      const elapsed = (Date.now() - runStartTime) / 1000;
+      setProgress(Math.min(95, (elapsed / JOURNAL_SEARCH_ESTIMATED_SEC) * 100));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [runJobId, runDone, runStartTime]);
 
   const toSlug = (s: string) => {
     const slug = s
@@ -196,6 +221,43 @@ export function JournalCatalog({
       .replace(/\b\w/g, (c) => c.toUpperCase());
   const displayTitle = (j: JournalItem) => toTitleCase(displayName(j));
 
+  const getTitle = (j: JournalItem) =>
+    toTitleCase(j.display_name || j.name || j.short || j.title || "");
+
+  /** 按搜索框过滤后的期刊列表（标题包含关键词，不区分大小写） */
+  const filteredJournals = useMemo(() => {
+    const q = journalSearchQuery.trim().toLowerCase();
+    if (!q) return journals;
+    return journals.filter((j) => getTitle(j).toLowerCase().includes(q));
+  }, [journals, journalSearchQuery]);
+
+  /** 按标题 A–Z 排序，并按首字母分组，用于字母索引与快速定位 */
+  const { indexLetters, groups } = useMemo(() => {
+    const sorted = [...filteredJournals].sort((a, b) =>
+      getTitle(a).localeCompare(getTitle(b), "en", { sensitivity: "base" })
+    );
+    const g = new Map<string, JournalItem[]>();
+    for (const j of sorted) {
+      const t = getTitle(j);
+      const first = (t[0] || "").toUpperCase();
+      const key = /[A-Z]/.test(first) ? first : "#";
+      if (!g.has(key)) g.set(key, []);
+      g.get(key)!.push(j);
+    }
+    const letters = [...g.keys()].sort((a, b) => (a === "#" ? 1 : b === "#" ? -1 : a.localeCompare(b)));
+    return { indexLetters: letters, groups: g };
+  }, [filteredJournals]);
+
+  const journalListRef = useRef<HTMLDivElement>(null);
+  const scrollToLetter = useCallback((letter: string) => {
+    const el = document.getElementById(`journal-letter-${letter}`);
+    if (el && journalListRef.current) {
+      const container = journalListRef.current;
+      const y = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+      container.scrollTo({ top: Math.max(0, y - 4), behavior: "instant" });
+    }
+  }, []);
+
   return (
     <div className="space-y-4">
       <h3 className="thu-heading text-xs font-medium uppercase tracking-wider">
@@ -260,9 +322,24 @@ export function JournalCatalog({
             ))}
           </select>
         </div>
+        <label className="block">
+          <span className="mb-1 block text-[11px] text-[var(--text-muted)]">搜索期刊</span>
+          <input
+            type="search"
+            value={journalSearchQuery}
+            onChange={(e) => setJournalSearchQuery(e.target.value)}
+            placeholder="输入期刊名称关键词…"
+            className="thu-input w-full rounded-lg px-3 py-2 text-sm placeholder:text-[var(--text-muted)]"
+            aria-label="按期刊名称搜索"
+          />
+        </label>
         <div className="space-y-1 text-xs text-[var(--text-muted)]">
           <p className="font-medium text-[var(--text)]">
-            {loadingCatalog ? "加载期刊列表…" : `共 ${journals.length} 本期刊`}
+            {loadingCatalog
+              ? "加载期刊列表…"
+              : journalSearchQuery.trim()
+                ? `共 ${journals.length} 本，匹配 ${filteredJournals.length} 本`
+                : `共 ${journals.length} 本期刊（按 A–Z 排序，右侧字母可快速定位）`}
           </p>
           {useWos && !loadingCatalog && (
             <p className="leading-relaxed text-[11px]">
@@ -275,31 +352,93 @@ export function JournalCatalog({
             </p>
           )}
         </div>
-        <div className="max-h-52 overflow-y-auto rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
-          <ul className="divide-y divide-[var(--border-soft)]">
-            {journals.map((j, i) => (
-              <li
-                key={j.issn || j.openalex_source_id || i}
-                className="px-3 py-2 text-sm leading-snug"
-              >
-                <button
-                  type="button"
-                  onClick={() => setDetailJournal(j)}
-                  className="w-full text-left hover:bg-[var(--thu-purple-subtle)] rounded-lg -mx-1 px-1 py-0.5 transition-colors"
-                  title="点击查看指标"
-                >
-                  <span className="break-words text-[var(--text)]">
-                    {displayTitle(j)}
-                  </span>
-                  {(j.quartile || (!useWos && (j as { has_jcr?: boolean }).has_jcr)) && (
-                    <span className="ml-1.5 inline-flex shrink-0 text-[10px] font-medium uppercase tracking-wide text-[var(--text-muted)]">
-                      {j.quartile || "JCR"}
-                    </span>
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
+        <div className="flex gap-0 rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
+          <div
+            ref={journalListRef}
+            className="min-h-0 min-w-0 max-h-80 flex-1 overflow-y-auto"
+            role="list"
+          >
+            {indexLetters.length > 0 ? (
+              indexLetters.map((letter) => (
+                <div key={letter} id={`journal-letter-${letter}`}>
+                  <div className="sticky top-0 z-[1] bg-[var(--bg-card)] px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--thu-purple)] border-b border-[var(--border-soft)]">
+                    {letter}
+                  </div>
+                  <ul className="divide-y divide-[var(--border-soft)]">
+                    {(groups.get(letter) ?? []).map((j, i) => (
+                      <li
+                        key={j.issn || (j as { openalex_source_id?: string }).openalex_source_id || i}
+                        className="px-3 py-2 text-sm leading-snug"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setDetailJournal(j)}
+                          className="w-full text-left hover:bg-[var(--thu-purple-subtle)] rounded-lg -mx-1 px-1 py-0.5 transition-colors"
+                          title="点击查看指标"
+                        >
+                          <span className="break-words text-[var(--text)]">
+                            {displayTitle(j)}
+                          </span>
+                          {(j.quartile || (!useWos && (j as { has_jcr?: boolean }).has_jcr)) && (
+                            <span className="ml-1.5 inline-flex shrink-0 text-[10px] font-medium uppercase tracking-wide text-[var(--text-muted)]">
+                              {j.quartile || "JCR"}
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            ) : filteredJournals.length === 0 ? (
+              <p className="px-3 py-4 text-center text-sm text-[var(--text-muted)]">
+                {journalSearchQuery.trim() ? "无匹配期刊，请调整关键词" : "暂无期刊"}
+              </p>
+            ) : (
+              <ul className="divide-y divide-[var(--border-soft)]">
+                {filteredJournals.map((j, i) => (
+                  <li
+                    key={j.issn || (j as { openalex_source_id?: string }).openalex_source_id || i}
+                    className="px-3 py-2 text-sm leading-snug"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setDetailJournal(j)}
+                      className="w-full text-left hover:bg-[var(--thu-purple-subtle)] rounded-lg -mx-1 px-1 py-0.5 transition-colors"
+                      title="点击查看指标"
+                    >
+                      <span className="break-words text-[var(--text)]">{displayTitle(j)}</span>
+                      {(j.quartile || (!useWos && (j as { has_jcr?: boolean }).has_jcr)) && (
+                        <span className="ml-1.5 inline-flex shrink-0 text-[10px] font-medium uppercase tracking-wide text-[var(--text-muted)]">
+                          {j.quartile || "JCR"}
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {indexLetters.length > 1 && (
+            <div
+              className="flex max-h-80 w-8 shrink-0 flex-col overflow-y-auto border-l border-[var(--border-soft)] bg-[var(--bg-card)] py-1 pr-1"
+              aria-label="按首字母快速定位"
+            >
+              <div className="grid grid-cols-2 gap-x-0.5 gap-y-0 text-[9px] font-medium leading-tight text-[var(--text-muted)]">
+                {indexLetters.map((letter) => (
+                  <button
+                    key={letter}
+                    type="button"
+                    onClick={() => scrollToLetter(letter)}
+                    className="flex min-h-0 items-center justify-center py-0.5 hover:text-[var(--thu-purple)] hover:bg-[var(--thu-purple-subtle)] rounded transition-colors"
+                    title={`跳转到 ${letter}`}
+                  >
+                    {letter}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-2 pt-0.5">
           <button
@@ -312,6 +451,31 @@ export function JournalCatalog({
         </div>
         {runJobId && (
           <div className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2 shadow-thu-soft">
+            {!runDone && runStartTime != null && (
+              <div className="mb-2 space-y-1.5">
+                <p className="text-[11px] text-[var(--text-muted)]">
+                  预估约 {Math.round(JOURNAL_SEARCH_ESTIMATED_SEC / 60)} 分钟 · 已用 {Math.floor((Date.now() - runStartTime) / 1000)} 秒 · 进度 {Math.round(progress)}%
+                </p>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
+                  <div
+                    className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out"
+                    style={{ width: `${Math.round(progress)}%` }}
+                    role="progressbar"
+                    aria-valuenow={Math.round(progress)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                  />
+                </div>
+              </div>
+            )}
+            {runDone && (
+              <div className="mb-2 flex items-center gap-2">
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-card)]">
+                  <div className="h-full w-full rounded-full bg-[var(--thu-purple)]" style={{ width: "100%" }} role="progressbar" aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} />
+                </div>
+                <span className="text-[11px] font-medium text-[var(--text-muted)]">100%</span>
+              </div>
+            )}
             <div className="mb-1 text-xs font-medium text-[var(--text-muted)]">
               运行日志
             </div>

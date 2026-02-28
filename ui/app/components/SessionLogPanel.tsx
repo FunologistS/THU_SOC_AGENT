@@ -5,11 +5,14 @@ import { useState, useEffect, useRef } from "react";
 const POLL_MS = 1500;
 const DEFAULT_HEIGHT_PX = 220;
 
-/** 常驻运行日志面板：新日志追加显示，不覆盖；可折叠、清空 */
+/** 常驻运行日志面板：新日志追加显示，不覆盖；可折叠、清空；支持归档与清理任务日志 */
 export function SessionLogPanel() {
   const [content, setContent] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [clearing, setClearing] = useState(false);
+  const [jobCount, setJobCount] = useState<number | null>(null);
+  const [manageMsg, setManageMsg] = useState("");
+  const [managing, setManaging] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
@@ -25,6 +28,14 @@ export function SessionLogPanel() {
   }, []);
 
   useEffect(() => {
+    if (!expanded) return;
+    fetch("/api/logs/jobs")
+      .then((r) => r.json())
+      .then((d) => setJobCount(Array.isArray(d.jobs) ? d.jobs.length : 0))
+      .catch(() => setJobCount(null));
+  }, [expanded]);
+
+  useEffect(() => {
     if (!expanded || !preRef.current) return;
     preRef.current.scrollTop = preRef.current.scrollHeight;
   }, [content, expanded]);
@@ -36,6 +47,36 @@ export function SessionLogPanel() {
       .then(() => setContent(""))
       .catch(() => {})
       .finally(() => setClearing(false));
+  };
+
+  const runManage = async (
+    action: "archive" | "cleanup",
+    body: { olderThanDays?: number; keepLast?: number }
+  ) => {
+    setManaging(true);
+    setManageMsg("");
+    const url = action === "archive" ? "/api/logs/archive" : "/api/logs/cleanup";
+    try {
+      const r = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await r.json();
+      if (r.ok) {
+        setManageMsg(data.message ?? (action === "archive" ? "已归档" : "已清理"));
+        fetch("/api/logs/jobs")
+          .then((res) => res.json())
+          .then((d) => setJobCount(Array.isArray(d.jobs) ? d.jobs.length : 0))
+          .catch(() => {});
+      } else {
+        setManageMsg(data.error ?? "操作失败");
+      }
+    } catch {
+      setManageMsg("请求失败");
+    } finally {
+      setManaging(false);
+    }
   };
 
   const lineCount = content ? content.trim().split(/\n/).length : 0;
@@ -66,7 +107,7 @@ export function SessionLogPanel() {
       </button>
       {expanded && (
         <>
-          <div className="flex items-center justify-end gap-2 px-3 pb-1">
+          <div className="flex flex-wrap items-center justify-end gap-2 px-3 pb-1">
             <button
               type="button"
               onClick={clearLog}
@@ -75,6 +116,31 @@ export function SessionLogPanel() {
             >
               {clearing ? "清空中…" : "清空"}
             </button>
+          </div>
+          <div className="border-t border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+              <span>日志管理：</span>
+              {jobCount !== null && <span>当前 {jobCount} 条任务日志</span>}
+              <button
+                type="button"
+                onClick={() => runManage("archive", { olderThanDays: 3 })}
+                disabled={managing}
+                className="rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1 font-medium hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
+              >
+                {managing ? "处理中…" : "归档 3 天前"}
+              </button>
+              <button
+                type="button"
+                onClick={() => runManage("cleanup", { keepLast: 30 })}
+                disabled={managing}
+                className="rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1 font-medium hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
+              >
+                仅保留最近 30 条
+              </button>
+            </div>
+            {manageMsg && (
+              <p className="mt-1.5 text-[11px] text-[var(--accent)]">{manageMsg}</p>
+            )}
           </div>
           <pre
             ref={preRef}

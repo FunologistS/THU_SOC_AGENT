@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 import path from "node:path";
 import fs from "node:fs";
-
-function getJobsDir(): string {
-  const appDir = process.cwd();
-  const uiDir = path.dirname(appDir);
-  return path.join(uiDir, ".tmp", "jobs");
-}
+import { getJobsDir } from "@/lib/jobsDir";
 
 /** GET /api/logs/session — 读取常驻运行日志（追加式，不覆盖） */
 export async function GET() {

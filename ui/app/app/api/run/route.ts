@@ -4,6 +4,7 @@ import path from "node:path";
 import fs from "node:fs";
 import YAML from "yaml";
 import { getRepoRoot, isSafeTopic } from "@/lib/pathSafety";
+import { ensureJobsDir } from "@/lib/jobsDir";
 import type { JobType } from "@/app/types";
 
 const DEFAULT_JOURNALS_PATH = path.join(
@@ -52,7 +53,7 @@ const JOB_WHITELIST: Record<
       REPO_ROOT,
       ".claude/skills/literature-synthesis/scripts/concept_synthesize_gpt.mjs"
     ),
-    args: (topic) => [topic],
+    args: (topic, extra?: string[]) => [topic, ...(Array.isArray(extra) ? extra : [])],
   },
   upload_and_writing: {
     script: path.join(
@@ -76,14 +77,6 @@ const JOB_WHITELIST: Record<
   },
 };
 
-function ensureJobsDir(): string {
-  const appDir = process.cwd();
-  const uiDir = path.dirname(appDir);
-  const tmpDir = path.join(uiDir, ".tmp", "jobs");
-  fs.mkdirSync(tmpDir, { recursive: true });
-  return tmpDir;
-}
-
 function normalizeIssn(issn: string): string {
   return String(issn ?? "").replace(/\D/g, "");
 }
@@ -98,6 +91,7 @@ export async function POST(request: Request) {
     journalIssns?: string[];
     conceptSynthesizeModel?: "gpt" | "glm";
     writingModel?: "gpt" | "glm";
+    qualityOnly?: boolean;
   };
   try {
     body = await request.json();
@@ -105,8 +99,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModel, writingModel } = body;
+  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModel, writingModel, qualityOnly } = body;
   let extraArgs = Array.isArray(extraArgsRaw) ? [...extraArgsRaw] : undefined;
+  if (jobType === "concept_synthesize" && qualityOnly === true) {
+    extraArgs = [...(extraArgs ?? []), "--exclude-out-of-scope"];
+  }
   if (jobType === "upload_and_writing" && writingModel) {
     extraArgs = extraArgs ?? [];
     if (extraArgs.length < 3) extraArgs.push(writingModel);

@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 import path from "node:path";
 import fs from "node:fs";
-
-function getJobsDir(): string {
-  const appDir = process.cwd();
-  const uiDir = path.dirname(appDir);
-  return path.join(uiDir, ".tmp", "jobs");
-}
+import { getJobsDir } from "@/lib/jobsDir";
 
 /** GET /api/logs?jobId=... — 读取日志内容与完成状态 */
 export async function GET(request: Request) {
@@ -18,8 +13,25 @@ export async function GET(request: Request) {
   }
 
   const jobsDir = getJobsDir();
-  const logPath = path.join(jobsDir, `${jobId}.log`);
-  const metaPath = path.join(jobsDir, `${jobId}.meta.json`);
+  let logPath = path.join(jobsDir, `${jobId}.log`);
+  let metaPath = path.join(jobsDir, `${jobId}.meta.json`);
+
+  if (!fs.existsSync(logPath)) {
+    const archiveDir = path.join(jobsDir, "archive");
+    if (fs.existsSync(archiveDir)) {
+      const subdirs = fs.readdirSync(archiveDir, { withFileTypes: true })
+        .filter((d) => d.isDirectory())
+        .map((d) => path.join(archiveDir, d.name));
+      for (const dir of subdirs) {
+        const p = path.join(dir, `${jobId}.log`);
+        if (fs.existsSync(p)) {
+          logPath = p;
+          metaPath = path.join(dir, `${jobId}.meta.json`);
+          break;
+        }
+      }
+    }
+  }
 
   let content = "";
   let done = false;
