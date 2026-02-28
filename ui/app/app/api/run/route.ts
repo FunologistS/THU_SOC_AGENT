@@ -166,6 +166,9 @@ export async function POST(request: Request) {
   const jobId = `job_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const jobsDir = ensureJobsDir();
   const logPath = path.join(jobsDir, `${jobId}.log`);
+  const sessionLogPath = path.join(jobsDir, "session.log");
+  const sessionStream = fs.createWriteStream(sessionLogPath, { flags: "a" });
+  sessionStream.write(`\n====== ${jobId} started ======\n`);
 
   let args: string[];
   if (jobType === "journal_search") {
@@ -217,14 +220,20 @@ export async function POST(request: Request) {
 
   const logStream = fs.createWriteStream(logPath, { flags: "a" });
   const write = (chunk: Buffer, prefix: string) => {
-    logStream.write(prefix + chunk.toString());
+    const text = prefix + chunk.toString();
+    logStream.write(text);
+    sessionStream.write(text);
   };
   child.stdout?.on("data", (chunk) => write(chunk, ""));
   child.stderr?.on("data", (chunk) => write(chunk, "[stderr] "));
 
   child.on("close", (code, signal) => {
-    logStream.write(`\n[exit] code=${code} signal=${signal}\n`);
+    const exitLine = `\n[exit] code=${code} signal=${signal}\n`;
+    logStream.write(exitLine);
     logStream.end();
+    sessionStream.write(exitLine);
+    sessionStream.write(`====== ${jobId} finished code=${code} ======\n`);
+    sessionStream.end();
     const metaPath = path.join(jobsDir, `${jobId}.meta.json`);
     fs.writeFileSync(
       metaPath,
@@ -233,8 +242,11 @@ export async function POST(request: Request) {
   });
 
   child.on("error", (err) => {
-    logStream.write(`[error] ${err.message}\n`);
+    const errLine = `[error] ${err.message}\n`;
+    logStream.write(errLine);
     logStream.end();
+    sessionStream.write(errLine);
+    sessionStream.end();
   });
 
   return NextResponse.json({ jobId });

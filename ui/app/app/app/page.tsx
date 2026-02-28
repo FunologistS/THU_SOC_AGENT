@@ -9,6 +9,7 @@ import { ManualAbstractPanel } from "@/components/ManualAbstractPanel";
 import { ThuLogo } from "@/components/ThuLogo";
 import { ManualView } from "@/components/ManualView";
 import { SettingsModal } from "@/components/SettingsModal";
+import { SessionLogPanel } from "@/components/SessionLogPanel";
 import {
   stageDisplayLabel,
   fileDisplayName,
@@ -701,6 +702,7 @@ function HomeContent() {
           </div>
         </main>
       </div>
+      <SessionLogPanel />
     </div>
   );
 }
