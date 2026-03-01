@@ -183,7 +183,7 @@ export const LiteratureSearchPanel = forwardRef<
         </h3>
       )}
       <p className="text-[11px] text-[var(--text-muted)]">
-        数据来源：OpenAlex 解析期刊（社会学 / 人类学 / 经济学）。可选 1～3 个学科后设置主题与年份进行检索。
+        当前数据源：OpenAlex 解析（Sociology, Anthropology, Economics的Q1期刊）。可选 1～3 个学科后设置主题与年份进行检索。
       </p>
 
       <div className="space-y-2">

@@ -16,6 +16,9 @@ const SKILLS: { step: number; id: SkillId; label: string; desc: string }[] = [
   { step: 5, id: "writing_under_style", label: "一键综述", desc: "若用户未上传则采用默认样本作为参考，若用户上传写作样本则以用户新上传样本为参考，将文献简报改写为成文综述" },
 ];
 
+/** 未在 SKILLS 中的 job 的展示名（如从一键综述内触发的上传写作样本） */
+const EXTRA_RUNNING_LABELS: Record<string, string> = { upload_and_writing: "上传写作样本" };
+
 /** 各技能预估耗时（秒），用于进度条时间基准；完成时以 100% 为准 */
 const SKILL_ESTIMATED_SECONDS: Record<SkillId, number> = {
   journal_search: 180,
@@ -256,65 +259,55 @@ export function SkillPanel({
     }
   };
 
-  const runUploadAndWriting = async () => {
-    if (!uploadFile || !topic) return;
-    const go = await thuConfirm("确定要执行「上传写作样本」吗？");
-    if (!go) return;
+  /** 上传写作样本并执行 upload_and_writing，返回成功后的 savedFileName；失败返回 null */
+  const uploadStyleFileAndRun = async (file: File): Promise<string | null> => {
+    const ext = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+    if (ext !== ".pdf" && ext !== ".docx") {
+      setUploadError("仅支持 .pdf 与 .docx");
+      return null;
+    }
+    const form = new FormData();
+    form.set("file", file);
+    form.set("style", uploadStyle);
+    const uploadRes = await fetch("/api/upload-style-file", { method: "POST", body: form });
+    const uploadData = await uploadRes.json();
+    if (!uploadRes.ok) {
+      setUploadError(uploadData.error || "上传失败");
+      return null;
+    }
+    const savedFileName = uploadData.savedFileName as string;
+    const ok = await runOne("upload_and_writing", [uploadStyle, savedFileName], { writingModel });
+    if (ok) onJobComplete?.("upload_and_writing");
+    return ok ? savedFileName : null;
+  };
+
+  const topicDisplay = topic ? topic.replace(/_/g, " ") : "—";
+
+  const startWritingReview = async (withPrompt: string | null) => {
+    setWritingReviewModalOpen(false);
+    const promptToUse = withPrompt?.trim() || null;
+    setWritingReviewPrompt("");
     setUploadError(null);
     setError(null);
     setJobId(null);
     setLog("");
     setDone(false);
     setExitCode(undefined);
-    setRunningSkill("upload_and_writing");
     setRunStartTime(null);
     setProgress(0);
 
-    const ext = uploadFile.name.slice(uploadFile.name.lastIndexOf(".")).toLowerCase();
-    if (ext !== ".pdf" && ext !== ".docx") {
-      setUploadError("仅支持 .pdf 与 .docx");
-      setRunningSkill(null);
-      return;
-    }
-
-    try {
-      const form = new FormData();
-      form.set("file", uploadFile);
-      form.set("style", uploadStyle);
-      const uploadRes = await fetch("/api/upload-style-file", {
-        method: "POST",
-        body: form,
-      });
-      const uploadData = await uploadRes.json();
-      if (!uploadRes.ok) {
-        setUploadError(uploadData.error || "上传失败");
+    const fileToUpload = uploadFile ?? null;
+    if (fileToUpload) {
+      setRunningSkill("upload_and_writing");
+      const saved = await uploadStyleFileAndRun(fileToUpload);
+      setUploadFile(null);
+      if (saved == null) {
         setRunningSkill(null);
         return;
       }
-      const savedFileName = uploadData.savedFileName as string;
-      const ok = await runOne("upload_and_writing", [uploadStyle, savedFileName], { writingModel });
-      if (ok) onJobComplete?.("upload_and_writing");
-      setUploadFile(null);
-      setRunningSkill(null);
-    } catch (e) {
-      setUploadError(e instanceof Error ? e.message : "请求失败");
-      setRunningSkill(null);
     }
-  };
 
-  const topicDisplay = topic ? topic.replace(/_/g, " ") : "—";
-
-  const startWritingReview = (withPrompt: string | null) => {
-    setWritingReviewModalOpen(false);
-    const promptToUse = withPrompt?.trim() || null;
-    setWritingReviewPrompt("");
-    setJobId(null);
-    setLog("");
-    setDone(false);
-    setExitCode(undefined);
     setRunningSkill("writing_under_style");
-    setRunStartTime(null);
-    setProgress(0);
     runOne(
       "writing_under_style",
       promptToUse ? [promptToUse] : undefined,
@@ -328,9 +321,7 @@ export function SkillPanel({
     <div ref={panelRef} className="space-y-3">
       {journalDataSourceLabel && (
         <p className="text-[11px] text-[var(--text-muted)] leading-snug">
-          当前数据源：{journalDataSourceLabel}
-          <br />
-          <span className="text-[10px]">如需更改检索学科，请前往「文献检索」侧栏选择社会学 / 人类学 / 经济学。</span>
+          当前数据源：OpenAlex 解析（Sociology, Anthropology, Economics的Q1期刊)。如需更改检索学科，请前往「文献检索」侧栏重新选择。
         </p>
       )}
       <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2">
@@ -358,7 +349,7 @@ export function SkillPanel({
         )}
       </div>
       <p className="text-[11px] text-[var(--text-muted)] leading-snug">
-        顺序：① 重新检索 → ② 清洗规整 → ③ 主题聚类 → ④ 荟萃分析 → 上传写作样本 → ⑤ 一键综述
+        顺序：① 重新检索 → ② 清洗规整 → ③ 主题聚类 → ④ 荟萃分析 → ⑤ 一键综述（可选在弹窗内上传写作样本）
       </p>
       <div className="grid gap-1.5">
         {SKILLS.slice(0, 3).map((s) => (
@@ -472,72 +463,7 @@ export function SkillPanel({
             )}
           </div>
         </div>
-        <div
-          data-skill-id="upload_and_writing"
-          className={`card-modern rounded-[var(--radius-md)] border p-2.5 space-y-2 transition-all duration-200 ${
-            highlightSet.has("upload_and_writing")
-              ? "skill-card-highlight border-[var(--thu-purple)]"
-              : "border-[var(--border-soft)] bg-[var(--bg-card)]"
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-[10px] font-medium text-white shadow-sm">
-              ·
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-[var(--text)]">上传写作样本</div>
-              <div className="text-[11px] text-[var(--text-muted)] leading-tight">
-                上传 PDF/Word，选学术型或通俗型，依次执行：转录 → 压缩分块 → 风格改写 → RAG 索引
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={runUploadAndWriting}
-              disabled={!!runningSkill || !topic || !uploadFile}
-              className="thu-btn-primary flex-shrink-0 self-center rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
-            >
-              {runningSkill === "upload_and_writing" ? "…" : "运行"}
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2 items-center">
-            <label className="flex items-center gap-1.5 text-xs cursor-pointer">
-              <input
-                type="radio"
-                name="uploadStyle"
-                checked={uploadStyle === "academic"}
-                onChange={() => setUploadStyle("academic")}
-                className="rounded-full border-[var(--border)]"
-              />
-              <span>学术型</span>
-            </label>
-            <label className="flex items-center gap-1.5 text-xs cursor-pointer">
-              <input
-                type="radio"
-                name="uploadStyle"
-                checked={uploadStyle === "colloquial"}
-                onChange={() => setUploadStyle("colloquial")}
-                className="rounded-full border-[var(--border)]"
-              />
-              <span>通俗型</span>
-            </label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="file"
-              accept=".pdf,.docx"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                setUploadFile(f ?? null);
-                setUploadError(null);
-              }}
-              className="text-[11px] text-[var(--text)] file:mr-2 file:rounded file:border-0 file:bg-[var(--thu-purple-subtle)] file:px-2 file:py-1 file:text-xs file:font-medium file:text-[var(--thu-purple)]"
-            />
-          </div>
-          {uploadError && (
-            <p className="text-xs text-[var(--accent)]">{uploadError}</p>
-          )}
-        </div>
-        {/* ⑤ 一键综述：可选 GPT / GLM */}
+        {/* ⑤ 一键综述：可选 GPT / GLM，弹窗内可选项上传写作样本 */}
         <div
           data-skill-id="writing_under_style"
           className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
@@ -691,7 +617,46 @@ export function SkillPanel({
         <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="writing-review-modal-title">
           <div className="thu-modal-card mx-4 w-full max-w-md p-5">
             <h3 id="writing-review-modal-title" className="thu-modal-title mb-3 text-base">一键综述</h3>
-            <p className="mb-3 text-xs text-[var(--text-muted)]">选择直接生成，或输入额外提示词后再生成。</p>
+            <p className="mb-3 text-xs text-[var(--text-muted)]">选择直接生成，或输入额外提示词后再生成。可选项：先上传写作样本再生成。</p>
+            {/* 可选项：上传写作样本 */}
+            <div className="mb-4 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2.5">
+              <div className="mb-2 text-[11px] font-medium text-[var(--text-muted)]">上传写作样本（可选）</div>
+              <p className="mb-2 text-[11px] text-[var(--text-muted)] leading-snug">若上传则先处理样本再生成综述，否则使用默认样本。</p>
+              <div className="mb-2 flex flex-wrap gap-2 items-center">
+                <label className="flex items-center gap-1.5 text-xs cursor-pointer">
+                  <input
+                    type="radio"
+                    name="modalUploadStyle"
+                    checked={uploadStyle === "academic"}
+                    onChange={() => setUploadStyle("academic")}
+                    className="rounded-full border-[var(--border)]"
+                  />
+                  <span>学术型</span>
+                </label>
+                <label className="flex items-center gap-1.5 text-xs cursor-pointer">
+                  <input
+                    type="radio"
+                    name="modalUploadStyle"
+                    checked={uploadStyle === "colloquial"}
+                    onChange={() => setUploadStyle("colloquial")}
+                    className="rounded-full border-[var(--border)]"
+                  />
+                  <span>通俗型</span>
+                </label>
+              </div>
+              <input
+                type="file"
+                accept=".pdf,.docx"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  setUploadFile(f ?? null);
+                  setUploadError(null);
+                }}
+                className="text-[11px] text-[var(--text)] file:mr-2 file:rounded file:border-0 file:bg-[var(--thu-purple-subtle)] file:px-2 file:py-1 file:text-xs file:font-medium file:text-[var(--thu-purple)]"
+              />
+              {uploadFile && <span className="ml-2 text-[11px] text-[var(--text-muted)]">{uploadFile.name}</span>}
+              {uploadError && <p className="mt-1.5 text-xs text-[var(--accent)]">{uploadError}</p>}
+            </div>
             <div className="mb-4 flex flex-col gap-2">
               <button
                 type="button"
@@ -720,7 +685,7 @@ export function SkillPanel({
             </div>
             <button
               type="button"
-              onClick={() => { setWritingReviewModalOpen(false); setWritingReviewPrompt(""); }}
+              onClick={() => { setWritingReviewModalOpen(false); setWritingReviewPrompt(""); setUploadError(null); }}
               className="thu-modal-btn-secondary mt-2 rounded-lg px-3 py-1.5 text-xs"
             >
               取消
@@ -741,7 +706,7 @@ export function SkillPanel({
                   aria-hidden
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs font-medium text-[var(--text)]">正在运行 · {runningSkill ? SKILLS.find((s) => s.id === runningSkill)?.label ?? runningSkill : ""}</p>
+                  <p className="text-xs font-medium text-[var(--text)]">正在运行 · {runningSkill ? (SKILLS.find((s) => s.id === runningSkill)?.label ?? EXTRA_RUNNING_LABELS[runningSkill] ?? runningSkill) : ""}</p>
                   <p className="text-[11px] text-[var(--text-muted)]">
                     {runStartTime != null && runningSkill && (() => {
                       const estSec = SKILL_ESTIMATED_SECONDS[runningSkill] ?? 180;
