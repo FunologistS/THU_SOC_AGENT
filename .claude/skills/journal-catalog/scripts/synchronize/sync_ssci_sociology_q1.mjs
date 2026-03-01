@@ -240,12 +240,33 @@ function isSociology(v) {
   return norm(v).toUpperCase() === "SOCIOLOGY";
 }
 
+function parseArgv() {
+  const args = process.argv.slice(2);
+  const out = { input: null, prefix: null, category: null };
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--input" && args[i + 1]) {
+      out.input = args[++i];
+    } else if (args[i] === "--prefix" && args[i + 1]) {
+      out.prefix = args[++i];
+    } else if (args[i] === "--category" && args[i + 1]) {
+      out.category = args[++i].trim().toUpperCase();
+    }
+  }
+  return out;
+}
+
 // =====================
 // MAIN
 // =====================
-const inputPath = INPUT_EXPLICIT
-  ? path.join(ROOT, INPUT_EXPLICIT)
-  : autoPickLatestNormalizedCsv(NORMALIZED_DIR);
+const argv = parseArgv();
+const effectivePrefix = argv.prefix || PREFIX;
+const effectiveCategory = argv.category ?? (REQUIRE_CATEGORY_SOCIOLOGY ? "SOCIOLOGY" : null);
+
+const inputPath = argv.input
+  ? path.isAbsolute(argv.input) ? argv.input : path.join(ROOT, argv.input)
+  : INPUT_EXPLICIT
+    ? path.join(ROOT, INPUT_EXPLICIT)
+    : autoPickLatestNormalizedCsv(NORMALIZED_DIR);
 
 if (!inputPath || !fs.existsSync(inputPath)) {
   console.error("[sync_ssci_sociology_q1] INPUT not found.");
@@ -257,8 +278,8 @@ if (!inputPath || !fs.existsSync(inputPath)) {
 ensureDir(OUT_DIR);
 
 const DATE_TAG = getTodayYYYYMMDD();
-const VERSION = getNextVersion(OUT_DIR, PREFIX, DATE_TAG);
-const outputPath = path.join(OUT_DIR, `${PREFIX}_${DATE_TAG}_v${VERSION}.yml`);
+const VERSION = getNextVersion(OUT_DIR, effectivePrefix, DATE_TAG);
+const outputPath = path.join(OUT_DIR, `${effectivePrefix}_${DATE_TAG}_v${VERSION}.yml`);
 
 const csvText = fs.readFileSync(inputPath, "utf-8");
 const { header, rows } = toRowObjects(csvText);
@@ -279,12 +300,12 @@ for (const need of ["nameKey", "quartileKey", "editionKey"]) {
   }
 }
 
-// Filter rows: SSCI + Q1 (+ optionally SOCIOLOGY)
+// Filter rows: SSCI + Q1 (+ optionally by category, e.g. SOCIOLOGY / ANTHROPOLOGY / ECONOMICS)
 const filtered = rows.filter(r => {
   const okEdition = isSSCI(r[keys.editionKey]);
   const okQuartile = isQ1(r[keys.quartileKey]);
-  const okCategory = REQUIRE_CATEGORY_SOCIOLOGY && keys.categoryKey
-    ? isSociology(r[keys.categoryKey])
+  const okCategory = effectiveCategory && keys.categoryKey
+    ? norm(r[keys.categoryKey]).toUpperCase() === effectiveCategory
     : true;
   return okEdition && okQuartile && okCategory;
 });
@@ -330,11 +351,11 @@ journals.sort((a, b) => a.name.localeCompare(b.name));
 const payload = {
   meta: {
     source: "WOS/JCR",
-    dataset: "SSCI Sociology",
+    dataset: effectiveCategory ? `SSCI ${effectiveCategory.charAt(0) + effectiveCategory.slice(1).toLowerCase()}` : "SSCI",
     filter: {
       edition: "SSCI",
       quartile: "Q1",
-      ...(REQUIRE_CATEGORY_SOCIOLOGY ? { category: "SOCIOLOGY" } : {})
+      ...(effectiveCategory ? { category: effectiveCategory } : {})
     },
     input: path.relative(ROOT, inputPath).replaceAll("\\", "/"),
     generated_at: new Date().toISOString(),
@@ -351,7 +372,7 @@ fs.writeFileSync(outputPath, YAML.stringify(payload), "utf-8");
 
 console.log("[sync_ssci_sociology_q1] input =", path.relative(ROOT, inputPath));
 console.log("[sync_ssci_sociology_q1] filter edition=SSCI quartile=Q1",
-  REQUIRE_CATEGORY_SOCIOLOGY ? "category=SOCIOLOGY" : "");
+  effectiveCategory ? `category=${effectiveCategory}` : "");
 console.log("[sync_ssci_sociology_q1] filtered rows =", filtered.length);
 console.log("[sync_ssci_sociology_q1] unique journals =", journals.length);
 console.log("[sync_ssci_sociology_q1] wrote =", path.relative(ROOT, outputPath));

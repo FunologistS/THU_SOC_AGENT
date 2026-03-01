@@ -1,20 +1,15 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
 import type { JobType } from "@/app/types";
 import type { TopicMeta } from "@/app/types";
-
-const TOPIC_REGEX = /^[a-z0-9_/-]+$/;
-function isValidTopicSlug(s: string): boolean {
-  const t = s.trim();
-  return t.length > 0 && t.length <= 120 && TOPIC_REGEX.test(t);
-}
 
 /** 5 步：层层递进，对应后端 jobType */
 export type SkillId = JobType;
 
 const SKILLS: { step: number; id: SkillId; label: string; desc: string }[] = [
-  { step: 1, id: "journal_search", label: "检索范围筛选", desc: "选期刊数据源（学科/分区/年份）与主题，批量抓取论文（01_raw）" },
+  { step: 1, id: "journal_search", label: "重新检索", desc: "选期刊数据源（学科/分区/年份）与主题，批量抓取论文（01_raw）" },
   { step: 2, id: "paper_summarize", label: "清洗规整", desc: "清洗去噪（02_clean），并生成结构化摘要（03_summaries）" },
   { step: 3, id: "synthesize", label: "主题聚类", desc: "基于结构化摘要做主题聚类，梳理主要研究方向，生成元数据（04_meta）" },
   { step: 4, id: "concept_synthesize", label: "荟萃分析", desc: "在元数据的基础上作荟萃分析，生成文献简报（05_report）" },
@@ -48,6 +43,8 @@ export function SkillPanel({
   highlightedCardIds = [],
   topicMeta = null,
   journalDataSourceLabel = null,
+  onFocusLiteratureSearch,
+  onRequestJournalSearchRun,
 }: {
   topic: string;
   availableTopics?: { topic: string; label: string }[];
@@ -58,8 +55,12 @@ export function SkillPanel({
   highlightedCardIds?: string[];
   /** 当前主题的产出 meta，用于依赖检查（未完成前置步骤时提示） */
   topicMeta?: TopicMeta | null;
-  /** 当前期刊数据源展示名（来自检索范围筛选 / 期刊数据库），用于灰色提示 */
+  /** 当前期刊数据源展示名（来自文献检索 / 期刊数据库），用于灰色提示 */
   journalDataSourceLabel?: string | null;
+  /** 点击「重新检索」运行时的「去设置」：聚焦/展开侧栏文献检索区块 */
+  onFocusLiteratureSearch?: () => void;
+  /** 点击「重新检索」运行时的「使用当前设置并运行」：用当前检索选项直接开始检索 */
+  onRequestJournalSearchRun?: () => void;
 }) {
   const highlightSet = new Set(highlightedCardIds);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -69,9 +70,6 @@ export function SkillPanel({
     const el = panelRef.current.querySelector(`[data-skill-id="${first}"]`);
     (el as HTMLElement)?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [highlightedCardIds]);
-  const [topicInput, setTopicInput] = useState("");
-  const [topicError, setTopicError] = useState<string | null>(null);
-  const [applyEmptyError, setApplyEmptyError] = useState(false);
   const [runningSkill, setRunningSkill] = useState<SkillId | null>(null);
   const [jobId, setJobId] = useState<string | null>(null);
   const [log, setLog] = useState("");
@@ -89,6 +87,9 @@ export function SkillPanel({
   const [writingModelOpen, setWritingModelOpen] = useState(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
+  const [journalSearchConfirmOpen, setJournalSearchConfirmOpen] = useState(false);
+  const [abortConfirmOpen, setAbortConfirmOpen] = useState(false);
+  const { confirm: thuConfirm, confirmThree: thuConfirmThree } = useThUAlertConfirm();
 
   // 运行中按预估时间推进进度条（约每秒更新），完成时由 poll 设为 100%
   useEffect(() => {
@@ -103,22 +104,6 @@ export function SkillPanel({
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [jobId, done, runStartTime, runningSkill]);
-
-  const applyTopic = () => {
-    const raw = topicInput.trim();
-    setTopicError(null);
-    setApplyEmptyError(false);
-    if (!raw) {
-      setApplyEmptyError(true);
-      return;
-    }
-    if (!isValidTopicSlug(raw)) {
-      setTopicError("主题仅允许小写字母、数字、下划线、连字符与斜杠");
-      return;
-    }
-    onTopicChange?.(raw);
-    setTopicInput("");
-  };
 
   const runOne = (
     jobType: JobType,
@@ -185,8 +170,17 @@ export function SkillPanel({
   const run = async (skillId: SkillId) => {
     setError(null);
 
+    const label = SKILLS.find((s) => s.id === skillId)?.label ?? skillId;
+    const go = await thuConfirm(`确定要执行「${label}」吗？`);
+    if (!go) return;
+
+    if (skillId === "journal_search") {
+      setJournalSearchConfirmOpen(true);
+      return;
+    }
+
     if (skillId === "paper_summarize" && !hasStageFiles(topicMeta, "01_raw")) {
-      setError("尚未完成「检索范围筛选」，请先运行该步骤。");
+      setError("尚未完成「重新检索」，请先运行该步骤。");
       return;
     }
     if (skillId === "synthesize") {
@@ -199,8 +193,8 @@ export function SkillPanel({
         const data = await res.json();
         const missing = data?.missing;
         if (Array.isArray(missing) && missing.length > 0) {
-          const go = window.confirm(
-            "当前摘要中存在空缺条目，建议先完成「摘要空缺须手动补录」再继续。\n\n是否仍要继续？"
+          const go = await thuConfirm(
+            "当前摘要中存在空缺条目，建议先完成「手动补录空缺摘要」再继续。\n\n是否仍要继续？"
           );
           if (!go) return;
         }
@@ -229,10 +223,12 @@ export function SkillPanel({
         const qa = await qaRes.json();
         if (qa && typeof qa.total === "number" && typeof qa.outOfScopeCandidates === "number" && qa.total >= 100 && qa.outOfScopeCandidates > 0) {
           const inScope = qa.inScopeCount ?? Math.max(0, qa.total - qa.outOfScopeCandidates);
-          const go = window.confirm(
-            `当前 context 量较大（共 ${qa.total} 篇，其中 ${qa.outOfScopeCandidates} 篇为质检疑似跑题）。\n\n是否只使用质检报告中的优质论文进行综述？（将使用另外 ${inScope} 篇）`
+          const choice = await thuConfirmThree(
+            `当前 context 量较大（共 ${qa.total} 篇，其中 ${qa.outOfScopeCandidates} 篇为质检疑似跑题）。\n\n请选择：取消运行、仍按全部文章运行、或仅用优质论文（${inScope} 篇）运行。`,
+            { confirmLabel: "仅用优质论文运行" }
           );
-          qualityOnly = go;
+          if (choice === "cancel") return;
+          qualityOnly = choice === "confirm";
         }
       } catch {
         // 忽略 QA 接口失败，按全部论文运行
@@ -261,6 +257,8 @@ export function SkillPanel({
 
   const runUploadAndWriting = async () => {
     if (!uploadFile || !topic) return;
+    const go = await thuConfirm("确定要执行「上传写作样本」吗？");
+    if (!go) return;
     setUploadError(null);
     setError(null);
     setJobId(null);
@@ -331,7 +329,7 @@ export function SkillPanel({
         <p className="text-[11px] text-[var(--text-muted)] leading-snug">
           当前数据源：{journalDataSourceLabel}
           <br />
-          <span className="text-[10px]">如需更改数据源，请前往「检索范围筛选」选择期刊数据库。</span>
+          <span className="text-[10px]">如需更改检索学科，请前往「文献检索」侧栏选择社会学 / 人类学 / 经济学。</span>
         </p>
       )}
       <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2">
@@ -345,11 +343,7 @@ export function SkillPanel({
               value={topic}
               onChange={(e) => {
                 const v = e.target.value;
-                if (v) {
-                  setTopicError(null);
-                  setApplyEmptyError(false);
-                  onTopicChange(v);
-                }
+                if (v) onTopicChange(v);
               }}
               className="thu-input w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]"
             >
@@ -361,36 +355,9 @@ export function SkillPanel({
             </select>
           </div>
         )}
-        {onTopicChange && (
-          <div className="mt-2 flex gap-2">
-            <input
-              type="text"
-              value={topicInput}
-              onChange={(e) => {
-                setTopicInput(e.target.value);
-                setApplyEmptyError(false);
-              }}
-              onKeyDown={(e) => e.key === "Enter" && applyTopic()}
-              placeholder="新主题，如 digital_labor"
-              className={`thu-input min-w-0 flex-1 rounded-lg px-2 py-1.5 text-sm ${applyEmptyError ? "border-[var(--accent)] ring-1 ring-[var(--accent)]" : ""}`}
-            />
-            <button
-              type="button"
-              onClick={applyTopic}
-              className="thu-btn-primary flex-shrink-0 rounded-lg px-2 py-1.5 text-sm font-medium"
-            >
-              应用
-            </button>
-          </div>
-        )}
-        {(topicError || applyEmptyError) && (
-          <p className="mt-1 text-xs text-[var(--accent)]">
-            {applyEmptyError ? "必须输入内容" : topicError}
-          </p>
-        )}
       </div>
       <p className="text-[11px] text-[var(--text-muted)] leading-snug">
-        顺序：① 检索范围筛选 → ② 清洗规整 → ③ 主题聚类 → ④ 荟萃分析 → 上传写作样本 → ⑤ 一键综述
+        顺序：① 重新检索 → ② 清洗规整 → ③ 主题聚类 → ④ 荟萃分析 → 上传写作样本 → ⑤ 一键综述
       </p>
       <div className="grid gap-1.5">
         {SKILLS.slice(0, 3).map((s) => (
@@ -628,16 +595,81 @@ export function SkillPanel({
           </div>
         </div>
       </div>
+      {abortConfirmOpen && jobId && (
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="abort-confirm-title">
+          <div className="thu-modal-card mx-4 w-full max-w-md p-5">
+            <h3 id="abort-confirm-title" className="thu-modal-title mb-3 text-base">暂停运行</h3>
+            <p className="mb-4 text-sm text-[var(--text)]">是否中止当前技能运行？</p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setAbortConfirmOpen(false)}
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                继续运行
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  setAbortConfirmOpen(false);
+                  try {
+                    await fetch("/api/run/abort", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ jobId }),
+                    });
+                  } catch {
+                    // 忽略网络错误，轮询会得到 done
+                  }
+                }}
+                className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                取消运行
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {journalSearchConfirmOpen && (
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="journal-search-confirm-title">
+          <div className="thu-modal-card mx-4 w-full max-w-md p-5">
+            <h3 id="journal-search-confirm-title" className="thu-modal-title mb-3 text-base">重新检索</h3>
+            <p className="mb-4 text-xs text-[var(--text-muted)]">是否需要重新设置检索选项（年份、主题、提示词）？</p>
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setJournalSearchConfirmOpen(false);
+                  onFocusLiteratureSearch?.();
+                }}
+                className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                去设置
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setJournalSearchConfirmOpen(false);
+                  onRequestJournalSearchRun?.();
+                }}
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                使用当前设置并运行
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {writingReviewModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" role="dialog" aria-modal="true" aria-labelledby="writing-review-modal-title">
-          <div className="mx-4 w-full max-w-md rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
-            <h3 id="writing-review-modal-title" className="mb-3 text-sm font-medium text-[var(--text)]">一键综述</h3>
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="writing-review-modal-title">
+          <div className="thu-modal-card mx-4 w-full max-w-md p-5">
+            <h3 id="writing-review-modal-title" className="thu-modal-title mb-3 text-base">一键综述</h3>
             <p className="mb-3 text-xs text-[var(--text-muted)]">选择直接生成，或输入额外提示词后再生成。</p>
             <div className="mb-4 flex flex-col gap-2">
               <button
                 type="button"
                 onClick={() => startWritingReview(null)}
-                className="rounded-lg bg-[var(--thu-purple)] px-3 py-2 text-sm font-medium text-white shadow-thu-soft hover:opacity-90"
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
               >
                 直接生成综述
               </button>
@@ -653,7 +685,7 @@ export function SkillPanel({
                 <button
                   type="button"
                   onClick={() => startWritingReview(writingReviewPrompt)}
-                  className="rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                  className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
                 >
                   带提示词生成
                 </button>
@@ -662,7 +694,7 @@ export function SkillPanel({
             <button
               type="button"
               onClick={() => { setWritingReviewModalOpen(false); setWritingReviewPrompt(""); }}
-              className="text-xs text-[var(--text-muted)] hover:text-[var(--text)]"
+              className="thu-modal-btn-secondary mt-2 rounded-lg px-3 py-1.5 text-xs"
             >
               取消
             </button>
@@ -692,6 +724,13 @@ export function SkillPanel({
                     })()}
                   </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setAbortConfirmOpen(true)}
+                  className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium"
+                >
+                  暂停运行
+                </button>
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
                 <div

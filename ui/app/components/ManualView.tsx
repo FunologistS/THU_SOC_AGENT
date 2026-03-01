@@ -10,13 +10,19 @@ export interface ManualData {
   skills: { id: string; label: string; content: string }[];
 }
 
-/** 说明书技能项悬停时通知父组件，用于高亮左侧技能工作台对应模块 */
+/** 说明书技能项悬停时通知父组件，用于高亮左侧技能工作台对应模块；点击功能一览中的区域名可展开并滚动侧栏对应板块；点击技能工作台详情某项可展开侧栏并定位到该技能 */
 export function ManualView({
   data,
   onSkillHover,
+  onAreaClick,
+  onSkillClick,
 }: {
   data: ManualData;
   onSkillHover?: (skillId: string | null) => void;
+  /** 点击「本页功能一览」表格中的区域名时调用，用于展开侧栏对应板块并滚动到该板块顶部 */
+  onAreaClick?: (area: string) => void;
+  /** 点击「技能工作台详情」中某一技能时调用，用于展开侧栏技能工作台并定位到对应技能卡片 */
+  onSkillClick?: (skillId: string) => void;
 }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -31,23 +37,6 @@ export function ManualView({
 
       <section id="overview" className="manual-overview">
         <h2 className="manual-h2">本页功能一览</h2>
-        <div className="manual-toc mb-4 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
-          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
-            目录
-          </p>
-          <ul className="space-y-1 text-sm">
-            {data.toc.map((t) => (
-              <li key={t.id}>
-                <a
-                  href={`#${t.id}`}
-                  className="text-[var(--thu-purple)] hover:underline"
-                >
-                  {t.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
         <div className="manual-table-wrap overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
           <table className="manual-table w-full border-collapse text-sm">
             <thead>
@@ -59,7 +48,19 @@ export function ManualView({
             <tbody>
               {data.overviewRows.map((row) => (
                 <tr key={row.area} className="manual-table-body-row">
-                  <td className="manual-table-td manual-table-td-area">{row.area}</td>
+                  <td className="manual-table-td manual-table-td-area">
+                    {onAreaClick ? (
+                      <button
+                        type="button"
+                        onClick={() => onAreaClick(row.area)}
+                        className="text-left font-medium text-[var(--thu-purple)] hover:underline focus:outline-none focus:underline"
+                      >
+                        {row.area}
+                      </button>
+                    ) : (
+                      row.area
+                    )}
+                  </td>
                   <td className="manual-table-td manual-table-td-desc">{row.description}</td>
                 </tr>
               ))}
@@ -69,9 +70,9 @@ export function ManualView({
       </section>
 
       <section id="skills" className="manual-skills">
-        <h2 className="manual-h2">技能说明</h2>
+        <h2 className="manual-h2">技能工作台详情</h2>
         <p className="mb-3 text-sm text-[var(--text-muted)]">
-          以下为管线中各环节的详细说明，需要时点击展开。
+          以下为管线中各环节的详细说明，需要时点击展开；点击某项时侧栏将展开「技能工作台」并定位到对应技能。
         </p>
         <ul className="space-y-2">
           {data.skills.map((s) => {
@@ -83,7 +84,10 @@ export function ManualView({
               >
                 <button
                   type="button"
-                  onClick={() => setOpenId(isOpen ? null : s.id)}
+                  onClick={() => {
+                    setOpenId(isOpen ? null : s.id);
+                    onSkillClick?.(s.id);
+                  }}
                   onMouseEnter={() => onSkillHover?.(s.id)}
                   onMouseLeave={() => onSkillHover?.(null)}
                   className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"

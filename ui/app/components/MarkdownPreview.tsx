@@ -156,20 +156,20 @@ export function MarkdownPreview({
       </ReactMarkdown>
       {expandedCell != null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-label="放大查看"
           onClick={() => setExpandedCell(null)}
         >
           <div
-            className="prose-expand-modal max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-5 shadow-lg"
+            className="thu-modal-card prose-expand-modal max-h-[85vh] w-full max-w-2xl overflow-y-auto p-5"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="prose-reader text-sm">{expandedCell}</div>
             <button
               type="button"
-              className="mt-4 rounded-lg bg-[var(--thu-purple)] px-4 py-2 text-sm font-medium text-white"
+              className="thu-modal-btn-primary mt-4 px-4 py-2 text-sm font-medium"
               onClick={() => setExpandedCell(null)}
             >
               关闭
@@ -181,14 +181,14 @@ export function MarkdownPreview({
       {/* 引用论文详情弹窗 */}
       {(citationLoading || citationPaper != null) && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-label="论文详情"
           onClick={() => !citationLoading && setCitationPaper(null)}
         >
           <div
-            className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-5 shadow-lg text-sm"
+            className="thu-modal-card max-h-[85vh] w-full max-w-2xl overflow-y-auto p-5 text-sm"
             onClick={(e) => e.stopPropagation()}
           >
             {citationLoading && (

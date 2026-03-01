@@ -1,10 +1,19 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
 
 type EnvVar = { key: string; label: string; hint?: string; set: boolean; masked: string };
 
-export function SettingsModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function SettingsModal({
+  open,
+  onClose,
+  onGitSaveSuccess,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onGitSaveSuccess?: () => void;
+}) {
   const [vars, setVars] = useState<EnvVar[]>([]);
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
@@ -12,6 +21,12 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
   const [pin, setPin] = useState("");
   const [pinError, setPinError] = useState<string | null>(null);
   const [storedPinHash, setStoredPinHash] = useState<string | null>(null);
+  const [gitSavePrompt, setGitSavePrompt] = useState(false);
+  const [gitSavePin, setGitSavePin] = useState("");
+  const [gitSaveError, setGitSaveError] = useState<string | null>(null);
+  const [gitSaving, setGitSaving] = useState(false);
+  const [gitSavePinRequired, setGitSavePinRequired] = useState(false);
+  const { alert: thuAlert } = useThUAlertConfirm();
 
   const fetchEnv = useCallback(() => {
     if (!open) return;
@@ -20,6 +35,7 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
       .then((r) => r.json())
       .then((d) => {
         setVars(d.vars ?? []);
+        setGitSavePinRequired(Boolean(d.gitSavePinRequired));
       })
       .catch(() => setVars([]))
       .finally(() => setLoading(false));
@@ -44,7 +60,7 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
     const p = window.prompt("设置查看密码（用于今后验证后查看完整 Key 说明）：");
     if (p == null) return;
     if (p.length < 4) {
-      alert("密码至少 4 位");
+      thuAlert("密码至少 4 位");
       return;
     }
     hashPin(p).then((h) => {
@@ -80,29 +96,86 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
     });
   };
 
+  const runGitSave = async (pinValue?: string) => {
+    setGitSaving(true);
+    try {
+      const res = await fetch("/api/git-save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(pinValue != null ? { pin: pinValue } : {}),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401 || data?.error === "密码错误") {
+        setGitSaveError("密码错误");
+        return;
+      }
+      if (!res.ok || !data?.ok) {
+        const errMsg = data?.error || "Git 保存失败";
+        let withDetail = data?.detail ? `${errMsg}\n\n${data.detail}` : errMsg;
+        if (data?.hint) withDetail += `\n\n${data.hint}`;
+        await thuAlert(withDetail);
+        return;
+      }
+      const msg: string =
+        data.message ||
+        (data.committed ? "已完成 git 提交（未执行 push）。" : "当前没有需要保存的改动。");
+      await thuAlert(msg);
+      setGitSavePrompt(false);
+      setGitSavePin("");
+      onGitSaveSuccess?.();
+    } catch (e) {
+      await thuAlert(e instanceof Error ? e.message : "Git 保存请求失败。");
+    } finally {
+      setGitSaving(false);
+    }
+  };
+
+  const handleGitSaveConfirm = async () => {
+    if (gitSavePinRequired) {
+      const trimmed = gitSavePin.replace(/\D/g, "");
+      if (trimmed.length !== 6) {
+        setGitSaveError("请输入 6 位数字密码");
+        return;
+      }
+      setGitSaveError(null);
+      await runGitSave(trimmed);
+    } else {
+      await runGitSave();
+    }
+  };
+
+  const handleGitSaveClick = () => {
+    if (gitSavePinRequired) {
+      setGitSavePrompt(true);
+      setGitSavePin("");
+      setGitSaveError(null);
+    } else {
+      runGitSave();
+    }
+  };
+
   if (!open) return null;
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-      style={{ backgroundColor: "var(--overlay)" }}
+      className="thu-modal-overlay fixed inset-0 z-[200] flex items-center justify-center p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-modal-title"
     >
       <div
-        className="w-full max-w-lg rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-[var(--shadow-dialog)]"
+        className="thu-modal-card w-full max-w-lg p-5"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 id="settings-modal-title" className="text-lg font-semibold text-[var(--text)]">
+          <h2 id="settings-modal-title" className="thu-modal-title text-lg">
             基本变量与 API Key
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1 text-[var(--text-muted)] hover:bg-[var(--bg-sidebar)] hover:text-[var(--text)]"
+            className="thu-modal-close p-1"
             aria-label="关闭"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -175,6 +248,71 @@ export function SettingsModal({ open, onClose }: { open: boolean; onClose: () =>
           <button type="button" onClick={fetchEnv} className="rounded-lg px-3 py-2 text-xs text-[var(--text-muted)] hover:bg-[var(--bg-sidebar)]">
             刷新
           </button>
+        </div>
+
+        {/* 开发者：一键 Git 保存 */}
+        <div className="mt-6 border-t border-[var(--border-soft)] pt-4">
+          <p className="mb-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
+            开发者
+          </p>
+          {!gitSavePrompt ? (
+            <button
+              type="button"
+              onClick={handleGitSaveClick}
+              disabled={gitSaving}
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors disabled:opacity-60"
+              title={gitSavePinRequired ? "对当前仓库执行 git add + commit（不 push），需输入 6 位密码确认" : "对当前仓库执行 git add + commit（不 push）"}
+            >
+              <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M5 12h14" />
+                <path d="M12 5v14" />
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+              </svg>
+              {gitSaving ? "Git 保存中…" : "一键 Git 保存"}
+            </button>
+          ) : (
+            <div className="rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-3">
+              <p className="text-xs text-[var(--text-muted)] mb-2">请输入 6 位数字密码以确认</p>
+              <input
+                type="password"
+                inputMode="numeric"
+                maxLength={6}
+                value={gitSavePin}
+                onChange={(e) => {
+                  setGitSavePin(e.target.value.replace(/\D/g, "").slice(0, 6));
+                  setGitSaveError(null);
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleGitSaveConfirm()}
+                placeholder="6 位密码"
+                className="thu-input w-full rounded-lg px-3 py-2 text-sm font-mono tracking-widest"
+                autoFocus
+                disabled={gitSaving}
+              />
+              {gitSaveError && <p className="mt-1 text-xs text-[var(--accent)]">{gitSaveError}</p>}
+              <div className="mt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleGitSaveConfirm}
+                  disabled={gitSaving}
+                  className="thu-btn-primary rounded-lg px-3 py-1.5 text-xs disabled:opacity-60"
+                >
+                  {gitSaving ? "保存中…" : "确认并保存"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setGitSavePrompt(false);
+                    setGitSavePin("");
+                    setGitSaveError(null);
+                  }}
+                  disabled={gitSaving}
+                  className="rounded-lg px-3 py-1.5 text-xs text-[var(--text-muted)] hover:bg-[var(--bg-card)] disabled:opacity-60"
+                >
+                  取消
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

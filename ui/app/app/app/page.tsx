@@ -5,11 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { SkillPanel } from "@/components/SkillPanel";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
 import { JournalCatalog } from "@/components/JournalCatalog";
+import { LiteratureSearchPanel, type LiteratureSearchPanelHandle } from "@/components/LiteratureSearchPanel";
 import { ManualAbstractPanel } from "@/components/ManualAbstractPanel";
 import { ThuLogo } from "@/components/ThuLogo";
 import { ManualView } from "@/components/ManualView";
 import { SettingsModal } from "@/components/SettingsModal";
 import { SessionLogPanel } from "@/components/SessionLogPanel";
+import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
 import {
   stageDisplayLabel,
   fileDisplayName,
@@ -32,6 +34,46 @@ const SKILL_TO_STAGE: Record<JobType, string> = {
 const DEFAULT_TOPIC = "artificial_intelligence";
 const DEFAULT_SOURCE = "outputs";
 
+const SIDEBAR_WIDTH_MIN = 320;
+const SIDEBAR_WIDTH_MAX = 560;
+const SIDEBAR_WIDTH_DEFAULT = 320;
+
+/** 侧栏区块折叠状态 */
+type SidebarSections = { journalDb: boolean; journal: boolean; skills: boolean; manual: boolean; docs: boolean };
+
+/** 侧栏区块标题用图标（24×24 风格） */
+const IconBook = () => (
+  <svg className="h-4 w-4 shrink-0 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+  </svg>
+);
+const IconSearch = () => (
+  <svg className="h-4 w-4 shrink-0 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+);
+const IconWorkbench = () => (
+  <svg className="h-4 w-4 shrink-0 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+const IconEditList = () => (
+  <svg className="h-4 w-4 shrink-0 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+  </svg>
+);
+const IconFolder = () => (
+  <svg className="h-4 w-4 shrink-0 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+  </svg>
+);
+const IconChevron = ({ open }: { open: boolean }) => (
+  <svg className={`h-4 w-4 shrink-0 text-[var(--text-muted)] transition-transform ${open ? "" : "-rotate-90"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+  </svg>
+);
+
 /** 始终可选的预设主题（与 outputs 实际目录合并后供技能工作台切换） */
 const PRESET_TOPICS: { topic: string; label: string }[] = [
   { topic: "artificial_intelligence", label: "Artificial Intelligence" },
@@ -48,11 +90,11 @@ function HomeFallback() {
           <ThuLogo />
           <div className="min-w-0 flex-1">
             <h1 className="header-title text-[1.25rem] font-semibold leading-tight tracking-tight thu-title">
-              <span className="font-semibold text-[var(--text)]">社会科学文献处理</span>
+              <span className="font-semibold text-[var(--text)]">社会科学文献综合处理</span>
               <span className="mx-2 text-[var(--text-muted)] font-normal" aria-hidden>｜</span>
-              <span className="font-medium text-[var(--text-muted)]">综合智能体</span>
+              <span className="font-medium text-[var(--text-muted)]">智能体</span>
             </h1>
-            <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">检索范围筛选 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述</p>
+            <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">文献检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述</p>
           </div>
         </div>
       </header>
@@ -114,9 +156,93 @@ function HomeContent() {
   const [renameError, setRenameError] = useState<string | null>(null);
   const [journalDataSourceLabel, setJournalDataSourceLabel] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [gitSaving, setGitSaving] = useState(false);
   const [lastCommitIso, setLastCommitIso] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState<SidebarSections>({
+    journalDb: false,
+    journal: false,
+    skills: false,
+    manual: false,
+    docs: false,
+  });
+  const { alert: thuAlert, confirm: thuConfirm } = useThUAlertConfirm();
+  const toggleSidebarSection = useCallback((key: keyof SidebarSections) => {
+    setSidebarOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
+
+  /** 说明书「本页功能一览」表格中点击区域名时，展开侧栏对应板块并滚动到该板块顶部 */
+  const handleManualAreaClick = useCallback((area: string) => {
+    const key: keyof SidebarSections | null =
+      area === "期刊数据库"
+        ? "journalDb"
+        : area === "文献检索"
+          ? "journal"
+          : area === "技能工作台"
+            ? "skills"
+            : area === "手动补录空缺摘要"
+              ? "manual"
+              : area === "文档目录"
+                ? "docs"
+                : null;
+    if (!key) return;
+    setSidebarOpen((prev) => ({ ...prev, [key]: true }));
+    setTimeout(() => {
+      const el = asideRef.current?.querySelector(`[data-sidebar-section="${key}"]`);
+      (el as HTMLElement)?.scrollIntoView({ block: "start", behavior: "smooth" });
+    }, 120);
+  }, []);
+
+  /** 说明书「技能工作台详情」中点击某一技能时：点击「期刊数据库」则展开侧栏「期刊数据库」板块，其他技能展开「技能工作台」并高亮该卡片 */
+  const handleSkillClick = useCallback((skillId: string) => {
+    if (skillId === "journal-catalog") {
+      setSidebarOpen((prev) => ({ ...prev, journalDb: true }));
+      setTimeout(() => {
+        const el = asideRef.current?.querySelector('[data-sidebar-section="journalDb"]');
+        (el as HTMLElement)?.scrollIntoView({ block: "start", behavior: "smooth" });
+      }, 120);
+    } else {
+      setSidebarOpen((prev) => ({ ...prev, skills: true }));
+      setHoveredManualSkillId(skillId);
+      setTimeout(() => {
+        const el = asideRef.current?.querySelector('[data-sidebar-section="skills"]');
+        (el as HTMLElement)?.scrollIntoView({ block: "start", behavior: "smooth" });
+      }, 120);
+    }
+  }, []);
+  const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_WIDTH_DEFAULT);
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStartRef = useRef({ x: 0, width: SIDEBAR_WIDTH_DEFAULT });
   const mainRef = useRef<HTMLElement>(null);
+  const asideRef = useRef<HTMLElement>(null);
+  const literatureSearchRef = useRef<LiteratureSearchPanelHandle | null>(null);
+
+  useEffect(() => {
+    if (!isResizing) return;
+    const onMove = (e: MouseEvent) => {
+      const { x, width } = resizeStartRef.current;
+      const delta = e.clientX - x;
+      const next = Math.min(SIDEBAR_WIDTH_MAX, Math.max(SIDEBAR_WIDTH_MIN, width + delta));
+      setSidebarWidth(next);
+    };
+    const onUp = () => setIsResizing(false);
+    const prevUserSelect = document.body.style.userSelect;
+    const prevCursor = document.body.style.cursor;
+    document.body.style.userSelect = "none";
+    document.body.style.cursor = "col-resize";
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      document.body.style.userSelect = prevUserSelect;
+      document.body.style.cursor = prevCursor;
+    };
+  }, [isResizing]);
+
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    resizeStartRef.current = { x: e.clientX, width: sidebarWidth };
+    setIsResizing(true);
+  }, [sidebarWidth]);
 
   const setUrl = useCallback(
     (updates: { topic?: string; stage?: string; file?: string; source?: string }) => {
@@ -291,34 +417,12 @@ function HomeContent() {
     setMetaRefreshKey((k) => k + 1);
   }, []);
 
-  const triggerGitSave = useCallback(async () => {
-    if (gitSaving) return;
-    setGitSaving(true);
-    try {
-      const res = await fetch("/api/git-save", { method: "POST" });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data?.ok) {
-        const msg = data?.error || "Git 保存失败，请在终端查看详情。";
-        window.alert(msg);
-        return;
-      }
-      const msg: string =
-        data.message ||
-        (data.committed ? "已完成 git 提交（未执行 push）。" : "当前没有需要保存的改动。");
-      window.alert(msg);
-      if (data.committed) {
-        fetch("/api/git-info")
-          .then((r) => r.json())
-          .then((d) => (d?.ok && d?.lastCommitIso ? setLastCommitIso(d.lastCommitIso) : null))
-          .catch(() => {});
-      }
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Git 保存请求失败。";
-      window.alert(msg);
-    } finally {
-      setGitSaving(false);
-    }
-  }, [gitSaving]);
+  const refreshGitInfo = useCallback(() => {
+    fetch("/api/git-info")
+      .then((r) => r.json())
+      .then((d) => (d?.ok && d?.lastCommitIso ? setLastCommitIso(d.lastCommitIso) : null))
+      .catch(() => {});
+  }, []);
 
   const changeTopic = useCallback(
     (newTopic: string) => {
@@ -334,6 +438,7 @@ function HomeContent() {
       journalIssns?: string[];
       yearFrom?: number;
       yearTo?: number;
+      searchMode?: "strict" | "relaxed";
     }) => {
       setUrl({ topic: params.topicSlug, source: "outputs" });
       setJournalSearchJobId(null);
@@ -348,6 +453,7 @@ function HomeContent() {
       if (params.journalIssns?.length) body.journalIssns = params.journalIssns;
       if (params.yearFrom != null) body.yearFrom = params.yearFrom;
       if (params.yearTo != null) body.yearTo = params.yearTo;
+      if (params.searchMode) body.searchMode = params.searchMode;
       fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -414,12 +520,12 @@ function HomeContent() {
           <ThuLogo />
           <div className="min-w-0 flex-1">
             <h1 className="header-title text-[1.25rem] font-semibold leading-tight tracking-tight thu-title">
-              <span className="font-semibold text-[var(--text)]">社会科学文献处理</span>
+              <span className="font-semibold text-[var(--text)]">社会科学文献综合处理</span>
               <span className="mx-2 text-[var(--text-muted)] font-normal" aria-hidden>｜</span>
-              <span className="font-medium text-[var(--text-muted)]">综合智能体</span>
+              <span className="font-medium text-[var(--text-muted)]">智能体</span>
             </h1>
             <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
-              检索范围筛选 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述
+              文献检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述
             </p>
           </div>
           <button
@@ -433,29 +539,6 @@ function HomeContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-          </button>
-          <button
-            type="button"
-            onClick={triggerGitSave}
-            disabled={gitSaving}
-            className="flex-shrink-0 inline-flex items-center gap-2 rounded-[10px] border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors disabled:opacity-60"
-            title="对当前仓库改动执行 git add + commit（不 push）"
-          >
-            <svg
-              className="h-4 w-4 shrink-0"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d="M5 12h14" />
-              <path d="M12 5v14" />
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-            </svg>
-            {gitSaving ? "Git 保存中…" : "一键 Git 保存"}
           </button>
           <button
             type="button"
@@ -473,171 +556,267 @@ function HomeContent() {
           </button>
         </div>
       </header>
-      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} onGitSaveSuccess={refreshGitInfo} />
 
       <div className="flex flex-1 min-h-0">
-        <aside className="aside-brand flex w-80 flex-shrink-0 flex-col overflow-y-auto overflow-x-hidden border-r border-[var(--border-soft)] bg-[var(--bg-sidebar)]">
-          <section className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-4">
-            <JournalCatalog
-              onStartSearch={runJournalSearch}
-              runJobId={journalSearchJobId}
-              runLog={journalSearchLog}
-              runDone={journalSearchDone}
-              runExitCode={journalSearchExitCode}
-              onDataSourceChange={setJournalDataSourceLabel}
-            />
+        <div className="flex flex-shrink-0" style={{ width: sidebarWidth }}>
+          <aside ref={asideRef} className="aside-brand flex min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden border-r border-[var(--border-soft)] bg-[var(--bg-card)]">
+          <section data-sidebar-section="journalDb" className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]">
+            <button
+              type="button"
+              onClick={() => toggleSidebarSection("journalDb")}
+              className="section-head flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+              aria-expanded={sidebarOpen.journalDb}
+            >
+              <IconBook />
+              <span className="min-w-0 flex-1">期刊数据库</span>
+              <IconChevron open={sidebarOpen.journalDb} />
+            </button>
+            {sidebarOpen.journalDb && (
+              <div className="p-4 pt-0">
+                <JournalCatalog mode="database" hideTitle />
+              </div>
+            )}
           </section>
-          <section className="flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
-            <h2 className="section-head mb-3 text-sm">技能工作台</h2>
-            <SkillPanel
-              topic={topic}
-              availableTopics={availableTopicsForPanel}
-              onTopicChange={changeTopic}
-              onJumpToOutputs={jumpToOutputsPreview}
-              onJobComplete={handleJobComplete}
-              highlightedCardIds={highlightedCardIds}
-              topicMeta={meta}
-              journalDataSourceLabel={journalDataSourceLabel}
-            />
+          <section data-sidebar-section="journal" className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]">
+            <button
+              type="button"
+              onClick={() => toggleSidebarSection("journal")}
+              className="section-head flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+              aria-expanded={sidebarOpen.journal}
+            >
+              <IconSearch />
+              <span className="min-w-0 flex-1">文献检索</span>
+              <IconChevron open={sidebarOpen.journal} />
+            </button>
+            {sidebarOpen.journal && (
+              <div className="p-4 pt-0">
+                <LiteratureSearchPanel
+                  ref={literatureSearchRef}
+                  hideTitle
+                  onStartSearch={runJournalSearch}
+                  runJobId={journalSearchJobId}
+                  runLog={journalSearchLog}
+                  runDone={journalSearchDone}
+                  runExitCode={journalSearchExitCode}
+                  onDataSourceChange={setJournalDataSourceLabel}
+                />
+              </div>
+            )}
+          </section>
+          <section data-sidebar-section="skills" className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]">
+            <button
+              type="button"
+              onClick={() => toggleSidebarSection("skills")}
+              className="section-head flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+              aria-expanded={sidebarOpen.skills}
+            >
+              <IconWorkbench />
+              <span className="min-w-0 flex-1">技能工作台</span>
+              <IconChevron open={sidebarOpen.skills} />
+            </button>
+            {sidebarOpen.skills && (
+              <div className="p-4 pt-0">
+                <SkillPanel
+                  topic={topic}
+                  availableTopics={availableTopicsForPanel}
+                  onTopicChange={changeTopic}
+                  onJumpToOutputs={jumpToOutputsPreview}
+                  onJobComplete={handleJobComplete}
+                  highlightedCardIds={highlightedCardIds}
+                  topicMeta={meta}
+                  journalDataSourceLabel={journalDataSourceLabel}
+                  onFocusLiteratureSearch={() => setSidebarOpen((prev) => ({ ...prev, journal: true }))}
+                  onRequestJournalSearchRun={() => {
+                    setSidebarOpen((prev) => ({ ...prev, journal: true }));
+                    setTimeout(() => literatureSearchRef.current?.startSearchWithCurrentParams(), 150);
+                  }}
+                />
+              </div>
+            )}
           </section>
           {source === "outputs" && topic && (
-            <section className="flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
-              <ManualAbstractPanel
-                topic={topic}
-                onSaved={() => setMetaRefreshKey((k) => k + 1)}
-              />
+            <section data-sidebar-section="manual" className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]">
+              <button
+                type="button"
+                onClick={() => toggleSidebarSection("manual")}
+                className="section-head flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+                aria-expanded={sidebarOpen.manual}
+              >
+                <IconEditList />
+                <span className="min-w-0 flex-1">手动补录空缺摘要</span>
+                <IconChevron open={sidebarOpen.manual} />
+              </button>
+              {sidebarOpen.manual && (
+                <div className="p-4 pt-0">
+                  <ManualAbstractPanel
+                    hideTitle
+                    topic={topic}
+                    topicLabel={availableTopicsForPanel.find((t) => t.topic === topic)?.label}
+                    availableTopics={availableTopicsForPanel}
+                    onTopicChange={changeTopic}
+                    onSaved={() => setMetaRefreshKey((k) => k + 1)}
+                  />
+                </div>
+              )}
             </section>
           )}
-          <section className="flex-shrink-0 p-4">
-            <h2 className="section-head mb-3 text-sm">文档目录</h2>
-            <p className="mb-2 text-xs text-[var(--text-muted)]">主题</p>
-            <ul className="max-h-28 overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
-              {topics.length === 0 && (
-                <li className="px-3 py-3 text-sm text-[var(--text-muted)]">暂无主题</li>
-              )}
-              {topics.map((t) => (
-                <li key={t.topic}>
-                  <button
-                    type="button"
-                    onClick={() => setUrl({ topic: t.topic, stage: "", file: "" })}
-                    className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${topic === t.topic ? "thu-btn-primary" : "text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"}`}
-                  >
-                    {t.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            {meta && (
-              <>
-                <p className="mt-3 mb-2 text-xs text-[var(--text-muted)]">阶段 · 文件</p>
-                {deleteError && (
-                  <p className="mb-2 text-xs text-[var(--accent)]">{deleteError}</p>
-                )}
-                <ul className="max-h-52 overflow-y-auto space-y-2 rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] p-2 shadow-thu-soft">
-                  {meta.stages.map((s) => (
-                    <li key={s.id}>
-                      <div
-                        className={`rounded-lg px-2 py-1.5 text-sm font-medium ${stage === s.id ? "bg-[var(--thu-purple-subtle)] thu-heading" : "text-[var(--text)]"}`}
+          <section data-sidebar-section="docs" className="thu-panel-left flex-shrink-0 bg-[var(--bg-card)]">
+            <button
+              type="button"
+              onClick={() => toggleSidebarSection("docs")}
+              className="section-head flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+              aria-expanded={sidebarOpen.docs}
+            >
+              <IconFolder />
+              <span className="min-w-0 flex-1">文档目录</span>
+              <IconChevron open={sidebarOpen.docs} />
+            </button>
+            {sidebarOpen.docs && (
+              <div className="p-4">
+                <p className="mb-1 text-xs text-[var(--text-muted)]">主题</p>
+                <p className="mb-2 text-[11px] text-[var(--text-muted)] opacity-90">当前共 {topics.length} 个主题</p>
+                <ul className="max-h-28 overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
+                  {topics.length === 0 && (
+                    <li className="px-3 py-3 text-sm text-[var(--text-muted)]">暂无主题</li>
+                  )}
+                  {topics.map((t) => (
+                    <li key={t.topic}>
+                      <button
+                        type="button"
+                        onClick={() => setUrl({ topic: t.topic, stage: "", file: "" })}
+                        className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${topic === t.topic ? "thu-btn-primary" : "text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"}`}
                       >
-                        {stageDisplayLabel(s.id)}
-                      </div>
-                      <ul className="ml-2 mt-1 space-y-0.5">
-                        {s.files?.map((f) => {
-                          const isActive =
-                            file === f.path || file === f.name || file === `${s.id}/${f.name}`;
-                          const menuOpen = fileMenuPath === f.path;
-                          return (
-                            <li key={f.path} className="group flex items-center gap-1">
-                              <button
-                                type="button"
-                                onClick={() => { setUrl({ stage: s.id, file: f.path }); setFileMenuPath(null); }}
-                                className={`min-w-0 flex-1 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${isActive ? "thu-btn-primary" : "text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)]"}`}
-                                title={f.name}
-                              >
-                                {fileDisplayName(f.name)}
-                              </button>
-                              {source === "outputs" && (
-                                <div className="relative flex-shrink-0">
-                                  <button
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); setFileMenuPath(menuOpen ? null : f.path); }}
-                                    className="rounded p-1 text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)] transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                    title="更多操作"
-                                    aria-expanded={menuOpen}
-                                  >
-                                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                                      <circle cx="12" cy="5" r="1.5" />
-                                      <circle cx="12" cy="12" r="1.5" />
-                                      <circle cx="12" cy="19" r="1.5" />
-                                    </svg>
-                                  </button>
-                                  {menuOpen && (
-                                    <>
-                                      <div className="fixed inset-0 z-10" aria-hidden onClick={() => setFileMenuPath(null)} />
-                                      <ul className="absolute right-0 top-full z-20 mt-0.5 min-w-[8rem] rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] py-1 shadow-thu-soft">
-                                        <li>
-                                          <a
-                                            href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1`}
-                                            download={f.name}
-                                            className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
-                                            onClick={() => setFileMenuPath(null)}
-                                          >
-                                            导出文档
-                                          </a>
-                                        </li>
-                                        <li>
-                                          <button
-                                            type="button"
-                                            className="w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
-                                            onClick={() => { setRenameModal({ path: f.path, name: f.name }); setRenameValue(f.name); setRenameError(null); setFileMenuPath(null); }}
-                                          >
-                                            重命名
-                                          </button>
-                                        </li>
-                                        <li>
-                                          <button
-                                            type="button"
-                                            className="w-full px-3 py-2 text-left text-sm text-[var(--accent)] hover:bg-[var(--accent-subtle)]"
-                                            onClick={() => {
-                                              if (window.confirm(`确定将「${fileDisplayName(f.name)}」移至废纸篓？`)) {
-                                                setDeleteError(null);
-                                                deleteFile(f.path);
-                                              }
-                                              setFileMenuPath(null);
-                                            }}
-                                          >
-                                            删除文档
-                                          </button>
-                                        </li>
-                                      </ul>
-                                    </>
-                                  )}
-                                </div>
-                              )}
-                            </li>
-                          );
-                        })}
-                      </ul>
+                        {t.label}
+                      </button>
                     </li>
                   ))}
                 </ul>
-              </>
+                {meta && (
+                  <>
+                    <p className="mt-3 mb-2 text-xs text-[var(--text-muted)]">阶段 · 文件</p>
+                    {deleteError && (
+                      <p className="mb-2 text-xs text-[var(--accent)]">{deleteError}</p>
+                    )}
+                    <ul className="max-h-52 overflow-y-auto space-y-2 rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] p-2 shadow-thu-soft">
+                      {meta.stages.map((s) => (
+                        <li key={s.id}>
+                          <div
+                            className={`rounded-lg px-2 py-1.5 text-sm font-medium ${stage === s.id ? "bg-[var(--thu-purple-subtle)] thu-heading" : "text-[var(--text)]"}`}
+                          >
+                            {stageDisplayLabel(s.id)}
+                          </div>
+                          <ul className="ml-2 mt-1 space-y-0.5">
+                            {s.files?.map((f) => {
+                              const isActive =
+                                file === f.path || file === f.name || file === `${s.id}/${f.name}`;
+                              const menuOpen = fileMenuPath === f.path;
+                              return (
+                                <li key={f.path} className="group flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => { setUrl({ stage: s.id, file: f.path }); setFileMenuPath(null); }}
+                                    className={`min-w-0 flex-1 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${isActive ? "thu-btn-primary" : "text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)]"}`}
+                                    title={f.name}
+                                  >
+                                    {fileDisplayName(f.name)}
+                                  </button>
+                                  {source === "outputs" && (
+                                    <div className="relative flex-shrink-0">
+                                      <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); setFileMenuPath(menuOpen ? null : f.path); }}
+                                        className="rounded p-1 text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)] transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                        title="更多操作"
+                                        aria-expanded={menuOpen}
+                                      >
+                                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                          <circle cx="12" cy="5" r="1.5" />
+                                          <circle cx="12" cy="12" r="1.5" />
+                                          <circle cx="12" cy="19" r="1.5" />
+                                        </svg>
+                                      </button>
+                                      {menuOpen && (
+                                        <>
+                                          <div className="fixed inset-0 z-10" aria-hidden onClick={() => setFileMenuPath(null)} />
+                                          <ul className="absolute right-0 top-full z-20 mt-0.5 min-w-[8rem] rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] py-1 shadow-thu-soft">
+                                            <li>
+                                              <a
+                                                href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1`}
+                                                download={f.name}
+                                                className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                                                onClick={() => setFileMenuPath(null)}
+                                              >
+                                                导出文档
+                                              </a>
+                                            </li>
+                                            <li>
+                                              <button
+                                                type="button"
+                                                className="w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                                                onClick={() => { setRenameModal({ path: f.path, name: f.name }); setRenameValue(f.name); setRenameError(null); setFileMenuPath(null); }}
+                                              >
+                                                重命名
+                                              </button>
+                                            </li>
+                                            <li>
+                                              <button
+                                                type="button"
+                                                className="w-full px-3 py-2 text-left text-sm text-[var(--accent)] hover:bg-[var(--accent-subtle)]"
+                                                onClick={async () => {
+                                                  const ok = await thuConfirm(`确定将「${fileDisplayName(f.name)}」移至废纸篓？`);
+                                                  if (ok) {
+                                                    setDeleteError(null);
+                                                    deleteFile(f.path);
+                                                  }
+                                                  setFileMenuPath(null);
+                                                }}
+                                              >
+                                                删除文档
+                                              </button>
+                                            </li>
+                                          </ul>
+                                        </>
+                                      )}
+                                    </div>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                <div className="mt-6 border-t border-[var(--border-soft)] pt-4">
+                  <p className="text-[11px] font-medium uppercase tracking-widest text-[var(--text-muted)]">
+                    清华大学社会学系
+                  </p>
+                  <p className="mt-0.5 text-[10px] text-[var(--text-muted)] opacity-80">
+                    Since 1926
+                  </p>
+                </div>
+              </div>
             )}
-            <div className="mt-6 border-t border-[var(--border-soft)] pt-4">
-              <p className="text-[11px] font-medium uppercase tracking-widest text-[var(--text-muted)]">
-                清华大学社会学系
-              </p>
-              <p className="mt-0.5 text-[10px] text-[var(--text-muted)] opacity-80">
-                Since 1926
-              </p>
-            </div>
           </section>
-        </aside>
+          </aside>
+          <div
+            role="separator"
+            aria-orientation="vertical"
+            aria-valuenow={sidebarWidth}
+            aria-valuemin={SIDEBAR_WIDTH_MIN}
+            aria-valuemax={SIDEBAR_WIDTH_MAX}
+            onMouseDown={handleResizeStart}
+            className={`flex-shrink-0 w-1 cursor-col-resize border-r border-[var(--border-soft)] bg-transparent transition-colors hover:bg-[var(--thu-purple-subtle)] ${isResizing ? "bg-[var(--thu-purple-subtle)]" : ""}`}
+            title="拖拽调整侧边栏宽度"
+          />
+        </div>
 
         {renameModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" role="dialog" aria-modal="true" aria-labelledby="rename-title">
-            <div className="mx-4 w-full max-w-sm rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-4 shadow-thu-soft">
-              <h3 id="rename-title" className="mb-3 text-sm font-medium text-[var(--text)]">重命名文档</h3>
+          <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="rename-title">
+            <div className="thu-modal-card mx-4 w-full max-w-sm p-5">
+              <h3 id="rename-title" className="thu-modal-title mb-3 text-base">重命名文档</h3>
               <p className="mb-2 text-xs text-[var(--text-muted)]">当前：{renameModal.name}</p>
               <input
                 type="text"
@@ -651,14 +830,14 @@ function HomeContent() {
                 <button
                   type="button"
                   onClick={() => { setRenameModal(null); setRenameError(null); }}
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)]"
+                  className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
                 >
                   取消
                 </button>
                 <button
                   type="button"
                   onClick={() => renameFile(renameModal.path, renameValue)}
-                  className="rounded-lg bg-[var(--thu-purple)] px-3 py-2 text-sm font-medium text-white shadow-thu-soft hover:opacity-90"
+                  className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
                 >
                   确定
                 </button>
@@ -717,6 +896,8 @@ function HomeContent() {
                   <ManualView
                     data={manualData}
                     onSkillHover={setHoveredManualSkillId}
+                    onAreaClick={handleManualAreaClick}
+                    onSkillClick={handleSkillClick}
                   />
                 ) : (
                   <p className="text-sm text-[var(--text-muted)]">说明书加载中…</p>

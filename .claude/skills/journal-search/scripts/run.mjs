@@ -544,11 +544,15 @@ async function fetchAbstractWithFirecrawl(url) {
    Fetch works from OpenAlex
 ================================= */
 
-async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 200 }) {
+/**
+ * 严格检索：仅在标题中匹配检索词（filter title.search）。
+ * 宽松检索：在标题、摘要、全文等默认字段中匹配（search 参数）。
+ */
+async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 200, strictMode = false }) {
   const all = [];
   const email = process.env.OPENALEX_EMAIL;
 
-  console.log("search query =", topic, "| source count =", sourceIds.length);
+  console.log("search query =", topic, "| strict =", strictMode, "| source count =", sourceIds.length);
   console.log("sourceIds sample =", sourceIds.slice(0, 5));
   console.log("maxPerJournal =", maxPerJournal);
 
@@ -561,11 +565,15 @@ async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 
         .replace(/^https?:\/\/openalex\.org\//, "")
         .replace(/^S+/, "S");
 
-      const filter = `primary_location.source.id:${sid}`;
+      const sourceFilter = `primary_location.source.id:${sid}`;
       const url = new URL("https://api.openalex.org/works");
 
-      url.searchParams.set("search", topic);
-      url.searchParams.set("filter", filter);
+      if (strictMode) {
+        url.searchParams.set("filter", `${sourceFilter},title.search:${topic}`);
+      } else {
+        url.searchParams.set("search", topic);
+        url.searchParams.set("filter", sourceFilter);
+      }
       url.searchParams.set("per-page", String(perPage));
       url.searchParams.set("cursor", cursor);
       url.searchParams.set("sort", "publication_date:desc");
@@ -573,7 +581,6 @@ async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 
 
       if (DEBUG) {
         console.log("DEBUG sid:", sid);
-        console.log("DEBUG filter:", filter);
         console.log("DEBUG topic:", topic);
         console.log("DEBUG URL:", url.toString());
       }
@@ -610,6 +617,7 @@ async function main() {
   }
 
   const query = topicSlug.replace(/_/g, " ").trim();
+  const strictMode = hasFlag("--strict");
   const WITH_ABSTRACT = process.env.ABSTRACT_FALLBACK === "1" || hasFlag("--with-abstract");
 
   const projectRoot = process.cwd();
@@ -647,7 +655,7 @@ async function main() {
     process.exit(1);
   }
 
-  const works = await fetchAllWorks({ topic: query, sourceIds, maxPerJournal: 100 });
+  const works = await fetchAllWorks({ topic: query, sourceIds, maxPerJournal: 100, strictMode });
   console.log("[works fetched]", works.length);
 
   let skipped = 0;
@@ -902,6 +910,7 @@ async function main() {
 
   let md = `# Papers for topic: ${topicSlug}\n\n`;
   md += `- query: ${mdEscape(query)}\n`;
+  md += `- search_mode: ${strictMode ? "strict" : "relaxed"}\n`;
   md += `- journals: ${mdEscape(journalsPath)}\n`;
   md += `- with_abstract: ${WITH_ABSTRACT ? "true" : "false"}\n`;
   md += `- rows: ${rows.length}\n\n`;

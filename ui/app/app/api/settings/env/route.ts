@@ -19,7 +19,7 @@ function mask(value: string): string {
   return s.slice(0, 3) + "···" + s.slice(-4);
 }
 
-/** GET /api/settings/env — 返回各 key 是否已配置及脱敏展示，不返回明文 */
+/** GET /api/settings/env — 返回各 key 是否已配置及脱敏展示，不返回明文；gitSavePinRequired 表示一键 Git 保存是否需输入 6 位密码 */
 export async function GET() {
   const vars = ENV_SPEC.map(({ key, label, hint }) => {
     const raw = process.env[key];
@@ -32,5 +32,6 @@ export async function GET() {
       masked: set ? mask(String(process.env[key])) : "未设置",
     };
   });
-  return NextResponse.json({ vars });
+  const gitSavePinRequired = Boolean(process.env.GIT_SAVE_PIN?.trim());
+  return NextResponse.json({ vars, gitSavePinRequired });
 }

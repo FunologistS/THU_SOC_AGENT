@@ -40,8 +40,22 @@ function runGit(args: string[]): Promise<GitResult> {
   });
 }
 
-/** POST /api/git-save — 一键 git add + commit 当前仓库改动（不执行 push） */
-export async function POST() {
+/** POST /api/git-save — 一键 git add + commit 当前仓库改动（不执行 push）。若配置了 GIT_SAVE_PIN，请求体需带 { pin: "6位数字" } 且一致才执行。 */
+export async function POST(req: Request) {
+  const requiredPin = process.env.GIT_SAVE_PIN?.trim();
+  if (requiredPin) {
+    let body: { pin?: string } = {};
+    try {
+      body = await req.json();
+    } catch {
+      // no body
+    }
+    const pin = typeof body.pin === "string" ? body.pin.replace(/\D/g, "") : "";
+    if (pin !== requiredPin.replace(/\D/g, "")) {
+      return NextResponse.json({ ok: false, error: "密码错误" }, { status: 401 });
+    }
+  }
+
   // 1. 查看是否有未提交改动
   const status = await runGit(["status", "--porcelain=v1"]);
   if (status.code !== 0) {
@@ -98,11 +112,17 @@ export async function POST() {
       });
     }
 
+    const hint =
+      /tell me who you are|author identity|user\.name|user\.email/i.test(combinedOutput)
+        ? "请在终端执行：git config user.name \"你的名字\" 与 git config user.email \"你的邮箱\" 后再试。"
+        : undefined;
+
     return NextResponse.json(
       {
         ok: false,
         error: "git commit 失败",
         detail: combinedOutput,
+        hint,
       },
       { status: 500 }
     );

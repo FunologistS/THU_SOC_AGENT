@@ -1,0 +1,876 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Economics
+  filter:
+    edition: SSCI
+    quartile: Q1
+    category: ECONOMICS
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260301_Economics_260301_normalized.csv
+  generated_at: 2026-03-01T05:40:14.068Z
+  date_tag: "20260301"
+  version: 1
+  count_filtered_rows: 142
+  count_unique_journals: 142
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Agricultural and Food Economics
+    short: AGR FOOD ECON
+    issn: ""
+    eissn: "21937532"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+  - name: AGRICULTURAL ECONOMICS
+    short: AGR ECON-BLACKWELL
+    issn: "01695150"
+    eissn: "15740862"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: American Economic Journal-Applied Economics
+    short: AM ECON J-APPL ECON
+    issn: "19457782"
+    eissn: "19457790"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+  - name: American Economic Journal-Economic Policy
+    short: AM ECON J-ECON POLIC
+    issn: "19457731"
+    eissn: 1945774X
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+  - name: American Economic Journal-Macroeconomics
+    short: AM ECON J-MACROECON
+    issn: "19457707"
+    eissn: "19457715"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+  - name: AMERICAN ECONOMIC REVIEW
+    short: AM ECON REV
+    issn: "00028282"
+    eissn: "19447981"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+  - name: American Economic Review-Insights
+    short: AM ECON REV INSIGHTS
+    issn: 2640205X
+    eissn: "26402068"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+  - name: AMERICAN JOURNAL OF AGRICULTURAL ECONOMICS
+    short: AM J AGR ECON
+    issn: "00029092"
+    eissn: "14678276"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Annals of Public and Cooperative Economics
+    short: ANN PUBLIC COOP ECON
+    issn: "13704788"
+    eissn: "14678292"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Annual Review of Economics
+    short: ANNU REV ECON
+    issn: "19411383"
+    eissn: "19411391"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Annual Review of Financial Economics
+    short: ANNU REV FINANC ECON
+    issn: "19411367"
+    eissn: "19411375"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Annual Review of Resource Economics
+    short: ANNU REV RESOUR ECON
+    issn: "19411340"
+    eissn: "19411359"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Applied Economic Analysis
+    short: APPL ECON ANAL
+    issn: ""
+    eissn: "26327627"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Applied Economic Perspectives and Policy
+    short: APPL ECON PERSPECT P
+    issn: "20405790"
+    eissn: "20405804"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Applied Health Economics and Health Policy
+    short: APPL HEALTH ECON HEA
+    issn: "11755652"
+    eissn: "11791896"
+    site: ""
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+  - name: Asian Economic Policy Review
+    short: ASIAN ECON POLICY R
+    issn: "18328105"
+    eissn: "17483131"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Borsa Istanbul Review
+    short: BORSA ISTANB REV
+    issn: "22148450"
+    eissn: "22148469"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: BROOKINGS PAPERS ON ECONOMIC ACTIVITY
+    short: BROOKINGS PAP ECO AC
+    issn: "00072303"
+    eissn: "15334465"
+    site: ""
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+  - name: Cambridge Journal of Regions Economy and Society
+    short: CAMB J REG ECON SOC
+    issn: "17521378"
+    eissn: "17521386"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: China & World Economy
+    short: CHINA WORLD ECON
+    issn: "16712234"
+    eissn: 1749124X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: China Agricultural Economic Review
+    short: CHINA AGR ECON REV
+    issn: 1756137X
+    eissn: "17561388"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: CHINA ECONOMIC REVIEW
+    short: CHINA ECON REV
+    issn: 1043951X
+    eissn: "18737781"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Competition & Change
+    short: COMPET CHANG
+    issn: "10245294"
+    eissn: "14772221"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ECOLOGICAL ECONOMICS
+    short: ECOL ECON
+    issn: "09218009"
+    eissn: "18736106"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: ECONOMETRICA
+    short: ECONOMETRICA
+    issn: "00129682"
+    eissn: "14680262"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Econometrics Journal
+    short: ECONOMET J
+    issn: "13684221"
+    eissn: 1368423X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Economic Analysis and Policy
+    short: ECON ANAL POLICY
+    issn: "03135926"
+    eissn: "03135926"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Economic Change and Restructuring
+    short: ECON CHANG RESTRUCT
+    issn: "15739414"
+    eissn: "15740277"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: ECONOMIC GEOGRAPHY
+    short: ECON GEOGR
+    issn: "00130095"
+    eissn: "19448287"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: ECONOMIC JOURNAL
+    short: ECON J
+    issn: "00130133"
+    eissn: "14680297"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: ECONOMIC MODELLING
+    short: ECON MODEL
+    issn: "02649993"
+    eissn: "18736122"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: ECONOMIC POLICY
+    short: ECON POLICY
+    issn: "02664658"
+    eissn: "14680327"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Economic Systems
+    short: ECON SYST
+    issn: "09393625"
+    eissn: "18785433"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Economics of Innovation and New Technology
+    short: ECON INNOV NEW TECH
+    issn: "10438599"
+    eissn: "14768364"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: ECONOMY AND SOCIETY
+    short: ECON SOC
+    issn: "03085147"
+    eissn: "14695766"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: EMERGING MARKETS FINANCE AND TRADE
+    short: EMERG MARK FINANC TR
+    issn: 1540496X
+    eissn: "15580938"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Emerging Markets Review
+    short: EMERG MARK REV
+    issn: "15660141"
+    eissn: "18736173"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Energy Economics
+    short: ENERG ECON
+    issn: "01409883"
+    eissn: "18736181"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Energy Policy
+    short: ENERG POLICY
+    issn: "03014215"
+    eissn: "18736777"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: ENVIRONMENTAL & RESOURCE ECONOMICS
+    short: ENVIRON RESOUR ECON
+    issn: "09246460"
+    eissn: "15731502"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Eurasian Business Review
+    short: EURASIAN BUS REV
+    issn: "13094297"
+    eissn: "21474281"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: European Journal of Health Economics
+    short: EUR J HEALTH ECON
+    issn: "16187598"
+    eissn: "16187601"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: European Research on Management and Business Economics
+    short: EUR RES MANAG BUS EC
+    issn: "24448834"
+    eissn: "24448842"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: EUROPEAN REVIEW OF AGRICULTURAL ECONOMICS
+    short: EUR REV AGRIC ECON
+    issn: "01651587"
+    eissn: "14643618"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: FOOD POLICY
+    short: FOOD POLICY
+    issn: "03069192"
+    eissn: "18735657"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Forest Policy and Economics
+    short: FOREST POLICY ECON
+    issn: "13899341"
+    eissn: "18727050"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Futures
+    short: FUTURES
+    issn: "00163287"
+    eissn: "18736378"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Global Economic Review
+    short: GLOBAL ECON REV
+    issn: 1226508X
+    eissn: "17443873"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Health Economics Review
+    short: HEALTH ECON REV
+    issn: "21911991"
+    eissn: "21911991"
+    site: ""
+    notes: WOS/JCR; BMC
+  - name: Industry and Innovation
+    short: IND INNOV
+    issn: "13662716"
+    eissn: "14698390"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INFORMATION ECONOMICS AND POLICY
+    short: INF ECON POLICY
+    issn: "01676245"
+    eissn: "18735975"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: International Environmental Agreements-Politics Law and Economics
+    short: INT ENVIRON AGREEM-P
+    issn: "15679764"
+    eissn: "15731553"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: International Journal of Emerging Markets
+    short: INT J EMERG MARK
+    issn: "17468809"
+    eissn: "17468817"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF FORECASTING
+    short: INT J FORECASTING
+    issn: "01692070"
+    eissn: "18728200"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: INTERNATIONAL LABOUR REVIEW
+    short: INT LABOUR REV
+    issn: "00207780"
+    eissn: 1564913X
+    site: ""
+    notes: WOS/JCR; OPEN LIBRARY HUMANITIES
+  - name: International Review of Economics & Finance
+    short: INT REV ECON FINANC
+    issn: "10590560"
+    eissn: "18738036"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: JCMS-Journal of Common Market Studies
+    short: JCMS-J COMMON MARK S
+    issn: "00219886"
+    eissn: "14685965"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF ACCOUNTING & ECONOMICS
+    short: J ACCOUNT ECON
+    issn: "01654101"
+    eissn: "18791980"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Agrarian Change
+    short: J AGRAR CHANGE
+    issn: "14710358"
+    eissn: "14710366"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF AGRICULTURAL ECONOMICS
+    short: J AGR ECON
+    issn: 0021857X
+    eissn: "14779552"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF APPLIED ECONOMETRICS
+    short: J APPL ECONOMET
+    issn: "08837252"
+    eissn: "10991255"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Asian Economics
+    short: J ASIAN ECON
+    issn: "10490078"
+    eissn: "18737927"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: JOURNAL OF BANKING & FINANCE
+    short: J BANK FINANC
+    issn: "03784266"
+    eissn: "18726372"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Behavioral and Experimental Finance
+    short: J BEHAV EXP FINANC
+    issn: "22146350"
+    eissn: "22146369"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: JOURNAL OF BUSINESS & ECONOMIC STATISTICS
+    short: J BUS ECON STAT
+    issn: "07350015"
+    eissn: "15372707"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Journal of Business Economics and Management
+    short: J BUS ECON MANAG
+    issn: "16111699"
+    eissn: "20294433"
+    site: ""
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+  - name: Journal of Commodity Markets
+    short: J COMMOD MARK
+    issn: "24058513"
+    eissn: "24058505"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: JOURNAL OF COMPARATIVE ECONOMICS
+    short: J COMP ECON
+    issn: "01475967"
+    eissn: "10957227"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: Journal of Competitiveness
+    short: J COMPETITIVENESS
+    issn: 1804171X
+    eissn: "18041728"
+    site: ""
+    notes: WOS/JCR; UNIV TOMASE BATI & ZLINE, FAK MANAGEMENTU EKONOMIKY
+  - name: JOURNAL OF CONSUMER AFFAIRS
+    short: J CONSUM AFF
+    issn: "00220078"
+    eissn: "17456606"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Contemporary Accounting & Economics
+    short: J CONTEMP ACCOUNT EC
+    issn: "18155669"
+    eissn: "18155669"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: JOURNAL OF DEVELOPMENT ECONOMICS
+    short: J DEV ECON
+    issn: "03043878"
+    eissn: "18726089"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Econometrics
+    short: J ECONOMETRICS
+    issn: "03044076"
+    eissn: "18726895"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+  - name: JOURNAL OF ECONOMIC GEOGRAPHY
+    short: J ECON GEOGR
+    issn: "14682702"
+    eissn: "14682710"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: JOURNAL OF ECONOMIC GROWTH
+    short: J ECON GROWTH
+    issn: "13814338"
+    eissn: "15737020"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF ECONOMIC HISTORY
+    short: J ECON HIST
+    issn: "00220507"
+    eissn: "14716372"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF ECONOMIC LITERATURE
+    short: J ECON LIT
+    issn: "00220515"
+    eissn: "23288175"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+  - name: JOURNAL OF ECONOMIC PERSPECTIVES
+    short: J ECON PERSPECT
+    issn: "08953309"
+    eissn: "19447965"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+  - name: Journal of Economic Policy Reform
+    short: J ECON POLICY REFORM
+    issn: "17487870"
+    eissn: "17487889"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF ECONOMIC SURVEYS
+    short: J ECON SURV
+    issn: "09500804"
+    eissn: "14676419"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF ENVIRONMENTAL ECONOMICS AND MANAGEMENT
+    short: J ENVIRON ECON MANAG
+    issn: "00950696"
+    eissn: "10960449"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: Journal of Family and Economic Issues
+    short: J FAM ECON ISS
+    issn: "10580476"
+    eissn: "15733475"
+    site: ""
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+  - name: JOURNAL OF FINANCE
+    short: J FINANC
+    issn: "00221082"
+    eissn: "15406261"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF FINANCIAL AND QUANTITATIVE ANALYSIS
+    short: J FINANC QUANT ANAL
+    issn: "00221090"
+    eissn: "17566916"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF FINANCIAL ECONOMICS
+    short: J FINANC ECON
+    issn: 0304405X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+  - name: Journal of Financial Stability
+    short: J FINANC STABIL
+    issn: "15723089"
+    eissn: "18780962"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: JOURNAL OF FORECASTING
+    short: J FORECASTING
+    issn: "02776693"
+    eissn: 1099131X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF HEALTH ECONOMICS
+    short: J HEALTH ECON
+    issn: "01676296"
+    eissn: "18791646"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: JOURNAL OF HUMAN RESOURCES
+    short: J HUM RESOUR
+    issn: 0022166X
+    eissn: "15488004"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+  - name: Journal of Institutional Economics
+    short: J I ECON
+    issn: "17441374"
+    eissn: "17441382"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF INTERNATIONAL ECONOMICS
+    short: J INT ECON
+    issn: "00221996"
+    eissn: "18730353"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of International Financial Markets Institutions & Money
+    short: J INT FINANC MARK I
+    issn: "10424431"
+    eissn: "18730612"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: JOURNAL OF LABOR ECONOMICS
+    short: J LABOR ECON
+    issn: 0734306X
+    eissn: "15375307"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: JOURNAL OF MONETARY ECONOMICS
+    short: J MONETARY ECON
+    issn: "03043932"
+    eissn: "18731295"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: JOURNAL OF POLICY ANALYSIS AND MANAGEMENT
+    short: J POLICY ANAL MANAG
+    issn: ""
+    eissn: "15206688"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF POLICY MODELING
+    short: J POLICY MODEL
+    issn: "01618938"
+    eissn: "18738060"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: JOURNAL OF POLITICAL ECONOMY
+    short: J POLIT ECON
+    issn: "00223808"
+    eissn: 1537534X
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: JOURNAL OF POPULATION ECONOMICS
+    short: J POPUL ECON
+    issn: "09331433"
+    eissn: "14321475"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF PUBLIC ECONOMICS
+    short: J PUBLIC ECON
+    issn: "00472727"
+    eissn: "00472727"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+  - name: JOURNAL OF REGIONAL SCIENCE
+    short: J REGIONAL SCI
+    issn: "00224146"
+    eissn: "14679787"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of the Association of Environmental and Resource Economists
+    short: J ASSOC ENVIRON RESO
+    issn: "23335955"
+    eissn: "23335963"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: Journal of the European Economic Association
+    short: J EUR ECON ASSOC
+    issn: "15424766"
+    eissn: "15424774"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: JOURNAL OF THE JAPANESE AND INTERNATIONAL ECONOMIES
+    short: J JPN INT ECON
+    issn: "08891583"
+    eissn: "10958681"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: Journal of Transport Geography
+    short: J TRANSP GEOGR
+    issn: "09666923"
+    eissn: "18731236"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: JOURNAL OF URBAN ECONOMICS
+    short: J URBAN ECON
+    issn: "00941190"
+    eissn: "10959068"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: LABOUR ECONOMICS
+    short: LABOUR ECON
+    issn: "09275371"
+    eissn: "18791034"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: MANAGERIAL AND DECISION ECONOMICS
+    short: MANAG DECIS ECON
+    issn: "01436570"
+    eissn: "10991468"
+    site: ""
+    notes: WOS/JCR; JOHN WILEY & SONS LTD
+  - name: NBER Macroeconomics Annual
+    short: NBER MACROECON ANNU
+    issn: "08893365"
+    eissn: "15372642"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: NEW POLITICAL ECONOMY
+    short: NEW POLIT ECON
+    issn: "13563467"
+    eissn: "14699923"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: North American Journal of Economics and Finance
+    short: N AM J ECON FINANC
+    issn: "10629408"
+    eissn: "18790860"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Oeconomia Copernicana
+    short: OECON COPERNIC
+    issn: "20831277"
+    eissn: "23531827"
+    site: ""
+    notes: WOS/JCR; INST BADAN GOSPODARCZYCH
+  - name: PHARMACOECONOMICS
+    short: PHARMACOECONOMICS
+    issn: "11707690"
+    eissn: "11792027"
+    site: ""
+    notes: WOS/JCR; ADIS INT LTD
+  - name: POST-SOVIET AFFAIRS
+    short: POST-SOV AFF
+    issn: 1060586X
+    eissn: "19382855"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: QUARTERLY JOURNAL OF ECONOMICS
+    short: Q J ECON
+    issn: "00335533"
+    eissn: "15314650"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: QUARTERLY REVIEW OF ECONOMICS AND FINANCE
+    short: Q REV ECON FINANC
+    issn: "10629769"
+    eissn: "18784259"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: RAND JOURNAL OF ECONOMICS
+    short: RAND J ECON
+    issn: "07416261"
+    eissn: "17562171"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: REGIONAL SCIENCE AND URBAN ECONOMICS
+    short: REG SCI URBAN ECON
+    issn: "01660462"
+    eissn: "18792308"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: REGIONAL STUDIES
+    short: REG STUD
+    issn: "00343404"
+    eissn: "13600591"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Research in Transportation Economics
+    short: RES TRANSP ECON
+    issn: "07398859"
+    eissn: "18757979"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: RESOURCE AND ENERGY ECONOMICS
+    short: RESOUR ENERGY ECON
+    issn: "09287655"
+    eissn: "18730221"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: REVIEW OF ECONOMIC STUDIES
+    short: REV ECON STUD
+    issn: "00346527"
+    eissn: 1467937X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: REVIEW OF ECONOMICS AND STATISTICS
+    short: REV ECON STAT
+    issn: "00346535"
+    eissn: "15309142"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+  - name: Review of Environmental Economics and Policy
+    short: REV ENV ECON POLICY
+    issn: "17506816"
+    eissn: "17506824"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: Review of Finance
+    short: REV FINANC
+    issn: "15723097"
+    eissn: 1573692X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: REVIEW OF FINANCIAL STUDIES
+    short: REV FINANC STUD
+    issn: "08939454"
+    eissn: "14657368"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: Review of International Organizations
+    short: REV INT ORGAN
+    issn: "15597431"
+    eissn: 1559744X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: REVIEW OF INTERNATIONAL POLITICAL ECONOMY
+    short: REV INT POLIT ECON
+    issn: "09692290"
+    eissn: "14664526"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Review of Keynesian Economics
+    short: REV KEYNES ECON
+    issn: "20495323"
+    eissn: "20495331"
+    site: ""
+    notes: WOS/JCR; EDWARD ELGAR PUBLISHING LTD
+  - name: SMALL BUSINESS ECONOMICS
+    short: SMALL BUS ECON
+    issn: 0921898X
+    eissn: "15730913"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: SOCIO-ECONOMIC PLANNING SCIENCES
+    short: SOCIO-ECON PLAN SCI
+    issn: "00380121"
+    eissn: "18736041"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Socio-Economic Review
+    short: SOCIO-ECON REV
+    issn: "14751461"
+    eissn: 1475147X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Structural Change and Economic Dynamics
+    short: STRUCT CHANGE ECON D
+    issn: 0954349X
+    eissn: "18736017"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Technological and Economic Development of Economy
+    short: TECHNOL ECON DEV ECO
+    issn: "20294913"
+    eissn: "20294921"
+    site: ""
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+  - name: Tourism Economics
+    short: TOURISM ECON
+    issn: "13548166"
+    eissn: "20440375"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Transport Policy
+    short: TRANSPORT POLICY
+    issn: 0967070X
+    eissn: 1879310X
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: TRANSPORTATION RESEARCH PART A-POLICY AND PRACTICE
+    short: TRANSPORT RES A-POL
+    issn: "09658564"
+    eissn: "18792375"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: TRANSPORTATION RESEARCH PART B-METHODOLOGICAL
+    short: TRANSPORT RES B-METH
+    issn: "01912615"
+    eissn: "18792367"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: TRANSPORTATION RESEARCH PART E-LOGISTICS AND TRANSPORTATION REVIEW
+    short: TRANSPORT RES E-LOG
+    issn: "13665545"
+    eissn: "18785794"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: VALUE IN HEALTH
+    short: VALUE HEALTH
+    issn: "10983015"
+    eissn: "15244733"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: WORLD BANK RESEARCH OBSERVER
+    short: WORLD BANK RES OBSER
+    issn: "02573032"
+    eissn: "15646971"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: WORLD DEVELOPMENT
+    short: WORLD DEV
+    issn: 0305750X
+    eissn: "18735991"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD

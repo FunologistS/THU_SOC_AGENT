@@ -14,7 +14,7 @@ const SKILL_NAMES = [
 /** 与技能工作台表述一致 */
 const SKILL_LABELS: Record<string, string> = {
   "journal-catalog": "期刊数据库",
-  "journal-search": "检索范围筛选",
+  "journal-search": "文献检索",
   "paper-summarize": "清洗规整",
   "literature-synthesis": "主题聚类 · 荟萃分析",
   "paper-writing": "一键综述",
@@ -33,25 +33,27 @@ function readFileSafe(filePath: string): string | null {
 export async function GET() {
   const root = getRepoRoot();
 
-  const intro = [
-    "本智能体面向**社会科学文献**：从选定期刊批量检索论文，到清洗、摘要、主题聚类与概念合成，最后生成可读的综述与简报。",
-    "在「文档目录」选主题与文件即可在右侧预览。技能工作台按步骤执行管线任务。",
-  ].join("\n\n");
+  const intro =
+    "欢迎使用社会科学文献综合处理智能体！本智能体可供社科研究者进行期刊查询、文献检索与整理、主题聚类与荟萃分析，并支持一键生成文献综述。";
 
-  const toc = [
-    { id: "intro", title: "简介" },
-    { id: "overview", title: "本页功能一览" },
-    { id: "skills", title: "技能说明（可展开）" },
-  ];
+  const toc: { id: string; title: string }[] = [];
 
   const overviewRows = [
     {
-      area: "检索范围筛选",
-      description: "选择期刊数据源（学科、分区、年份），填写主题后检索，结果写入「我的产出」对应主题下。",
+      area: "期刊数据库",
+      description: "查看与搜索期刊：Social Sciences Citation Index (SSCI) 完整名录，按学科、分区（仅 Sociology/Anthropology/Economics）、出版社筛选。",
+    },
+    {
+      area: "文献检索",
+      description: "数据来源为 OpenAlex 解析的社会学、人类学、经济学期刊。可选 1～3 个学科，填写主题与年份后检索，结果写入「我的产出」对应主题下。",
     },
     {
       area: "技能工作台",
-      description: "批量检索 → 清洗规整 → 主题聚类 → 荟萃分析 → 上传写作样本（可选）→ 一键综述；运行后可在文档目录查看产出。",
+      description: "文献检索 → 清洗规整 → 主题聚类 → 荟萃分析 → 上传写作样本（可选）→ 一键综述；运行后可在文档目录查看产出。",
+    },
+    {
+      area: "手动补录空缺摘要",
+      description: "对当前主题下缺摘要的条目进行手填补录，保存后可参与后续步骤。",
     },
     {
       area: "文档目录",

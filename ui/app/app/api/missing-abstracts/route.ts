@@ -73,23 +73,28 @@ function parseSummariesBlocks(md: string): {
   return result;
 }
 
-/** GET /api/missing-abstracts?topic=... — 返回 03_summaries 中缺摘要的条目列表 */
+/** 允许的摘要文件名：当前使用或版本号格式 */
+function isAllowedSummariesFile(name: string): boolean {
+  return (
+    name === "summaries_latest.md" || /^summaries_\d{8}_v\d+\.md$/.test(name)
+  );
+}
+
+/** GET /api/missing-abstracts?topic=...&file=... — 返回 03_summaries 中缺摘要的条目列表；file 可选，指定则读该版本文件 */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const topic = searchParams.get("topic");
+  const fileParam = searchParams.get("file");
 
   if (!topic || !isSafeTopic(topic)) {
     return NextResponse.json({ error: "Invalid or missing topic" }, { status: 400 });
   }
 
   const repoRoot = getRepoRoot();
-  const summariesPath = path.join(
-    repoRoot,
-    "outputs",
-    topic,
-    "03_summaries",
-    "summaries_latest.md"
-  );
+  const summariesDir = path.join(repoRoot, "outputs", topic, "03_summaries");
+  const fileName =
+    fileParam && isAllowedSummariesFile(fileParam) ? fileParam : "summaries_latest.md";
+  const summariesPath = path.join(summariesDir, fileName);
 
   if (!fs.existsSync(summariesPath)) {
     return NextResponse.json(
@@ -101,22 +106,23 @@ export async function GET(request: Request) {
   const latestStat = fs.statSync(summariesPath);
   const lastModified = latestStat.mtime.toISOString();
 
-  const summariesDir = path.dirname(summariesPath);
   let latestVersionFile: string | null = null;
-  try {
-    const names = fs.readdirSync(summariesDir);
-    const versioned = names
-      .filter((n) => /^summaries_\d{8}_v\d+\.md$/.test(n))
-      .map((n) => ({
-        name: n,
-        mtime: fs.statSync(path.join(summariesDir, n)).mtime.getTime(),
-      }))
-      .sort((a, b) => b.mtime - a.mtime);
-    const latestTime = latestStat.mtime.getTime();
-    const match = versioned.find((v) => Math.abs(v.mtime - latestTime) < 2000);
-    if (match) latestVersionFile = match.name;
-  } catch {
-    // ignore
+  if (fileName === "summaries_latest.md") {
+    try {
+      const names = fs.readdirSync(summariesDir);
+      const versioned = names
+        .filter((n) => /^summaries_\d{8}_v\d+\.md$/.test(n))
+        .map((n) => ({
+          name: n,
+          mtime: fs.statSync(path.join(summariesDir, n)).mtime.getTime(),
+        }))
+        .sort((a, b) => b.mtime - a.mtime);
+      const latestTime = latestStat.mtime.getTime();
+      const match = versioned.find((v) => Math.abs(v.mtime - latestTime) < 2000);
+      if (match) latestVersionFile = match.name;
+    } catch {
+      // ignore
+    }
   }
 
   let md: string;
@@ -131,11 +137,12 @@ export async function GET(request: Request) {
 
   const blocks = parseSummariesBlocks(md);
   const missing = blocks.filter((b) => b.missing);
+  const filled = blocks.filter((b) => !b.missing);
 
   return NextResponse.json({
     topic,
     total: blocks.length,
-    sourceFile: "summaries_latest.md",
+    sourceFile: fileName,
     lastModified,
     latestVersionFile: latestVersionFile ?? undefined,
     missing: missing.map((b) => ({
@@ -145,6 +152,14 @@ export async function GET(request: Request) {
       authors: b.authors,
       doi: b.doi,
       openalex: b.openalex,
+      keyFindings: b.keyFindings,
+      isManual: b.isManual,
+    })),
+    filled: filled.map((b) => ({
+      idx: b.idx,
+      title: b.title,
+      year: b.year,
+      authors: b.authors,
       keyFindings: b.keyFindings,
       isManual: b.isManual,
     })),

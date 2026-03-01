@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * 设置默认端口 3001，支持通过环境变量 PORT 覆盖（跨平台）。
- * 用法：node scripts/with-port.mjs dev | start
+ * THU_SOC_AGENT 专用端口 9301，避免与其它智能体/项目（常见 3000/3001）冲突，防止误开错应用。
+ * 支持通过环境变量 PORT 覆盖（跨平台）。用法：node scripts/with-port.mjs dev | start
  */
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const port = process.env.PORT || "3001";
+const port = process.env.PORT || "9301";
 const cmd = process.argv[2] || "dev";
 
 if (cmd !== "dev" && cmd !== "start") {

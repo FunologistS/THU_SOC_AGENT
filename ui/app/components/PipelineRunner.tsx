@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import type { JobType } from "@/app/types";
 
 const JOB_LABELS: Record<JobType, string> = {
-  journal_search: "检索范围筛选",
+  journal_search: "文献检索",
   paper_summarize: "文章归纳 (paper_summarize)",
   synthesize: "文献整合 (synthesize)",
   concept_synthesize: "概念合成 (荟萃分析)",
@@ -38,6 +38,7 @@ export function PipelineRunner({
   const [error, setError] = useState<string | null>(null);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
+  const [abortConfirmOpen, setAbortConfirmOpen] = useState(false);
 
   const run = async () => {
     setError(null);
@@ -172,9 +173,51 @@ export function PipelineRunner({
                     预估约 {Math.round((JOB_ESTIMATED_SEC[jobType] ?? 180) / 60)} 分钟 · 已用 {Math.floor((Date.now() - runStartTime) / 1000)} 秒 · 进度 {Math.round(progress)}%
                   </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setAbortConfirmOpen(true)}
+                  className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium"
+                >
+                  暂停运行
+                </button>
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
                 <div className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out" style={{ width: `${Math.round(progress)}%` }} role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} />
+              </div>
+            </div>
+          )}
+          {abortConfirmOpen && jobId && (
+            <div className="thu-modal-overlay fixed inset-0 z-[300] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="pipeline-abort-title">
+              <div className="thu-modal-card mx-4 w-full max-w-md p-5">
+                <h3 id="pipeline-abort-title" className="thu-modal-title mb-3 text-base">暂停运行</h3>
+                <p className="mb-4 text-sm text-[var(--text)]">是否中止当前技能运行？</p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setAbortConfirmOpen(false)}
+                    className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+                  >
+                    继续运行
+                  </button>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      setAbortConfirmOpen(false);
+                      try {
+                        await fetch("/api/run/abort", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ jobId }),
+                        });
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                    className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
+                  >
+                    取消运行
+                  </button>
+                </div>
               </div>
             </div>
           )}

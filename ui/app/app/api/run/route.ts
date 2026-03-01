@@ -5,6 +5,7 @@ import fs from "node:fs";
 import YAML from "yaml";
 import { getRepoRoot, isSafeTopic } from "@/lib/pathSafety";
 import { ensureJobsDir } from "@/lib/jobsDir";
+import { setRunningJob, deleteRunningJob } from "@/lib/runningJobs";
 import type { JobType } from "@/app/types";
 
 const DEFAULT_JOURNALS_PATH = path.join(
@@ -20,10 +21,11 @@ const JOB_WHITELIST: Record<
 > = {
   journal_search: {
     script: path.join(REPO_ROOT, ".claude/skills/journal-search/scripts/run.mjs"),
-    args: (topic, _extra?, journalsPath?: string) => [
+    args: (topic, extra?, journalsPath?: string) => [
       topic,
       "--journals",
       journalsPath || DEFAULT_JOURNALS_PATH,
+      ...(Array.isArray(extra) ? extra : []),
     ],
   },
   filter: {
@@ -92,6 +94,7 @@ export async function POST(request: Request) {
     conceptSynthesizeModel?: "gpt" | "glm";
     writingModel?: "gpt" | "glm";
     qualityOnly?: boolean;
+    searchMode?: "strict" | "relaxed";
   };
   try {
     body = await request.json();
@@ -99,8 +102,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModel, writingModel, qualityOnly } = body;
+  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModel, writingModel, qualityOnly, searchMode } = body;
   let extraArgs = Array.isArray(extraArgsRaw) ? [...extraArgsRaw] : undefined;
+  if (jobType === "journal_search" && searchMode === "strict") {
+    extraArgs = [...(extraArgs ?? []), "--strict"];
+  }
   if (jobType === "concept_synthesize" && qualityOnly === true) {
     extraArgs = [...(extraArgs ?? []), "--exclude-out-of-scope"];
   }
@@ -215,6 +221,8 @@ export async function POST(request: Request) {
     shell: false,
   });
 
+  setRunningJob(jobId, child);
+
   const logStream = fs.createWriteStream(logPath, { flags: "a" });
   const write = (chunk: Buffer, prefix: string) => {
     const text = prefix + chunk.toString();
@@ -225,6 +233,7 @@ export async function POST(request: Request) {
   child.stderr?.on("data", (chunk) => write(chunk, "[stderr] "));
 
   child.on("close", (code, signal) => {
+    deleteRunningJob(jobId);
     const exitLine = `\n[exit] code=${code} signal=${signal}\n`;
     logStream.write(exitLine);
     logStream.end();
@@ -234,11 +243,12 @@ export async function POST(request: Request) {
     const metaPath = path.join(jobsDir, `${jobId}.meta.json`);
     fs.writeFileSync(
       metaPath,
-      JSON.stringify({ exitCode: code ?? null, signal: signal ?? null })
+      JSON.stringify({ exitCode: code ?? null, signal: signal ?? null, done: true })
     );
   });
 
   child.on("error", (err) => {
+    deleteRunningJob(jobId);
     const errLine = `[error] ${err.message}\n`;
     logStream.write(errLine);
     logStream.end();

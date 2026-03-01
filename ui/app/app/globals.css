@@ -455,3 +455,77 @@ body {
   background: linear-gradient(135deg, var(--thu-purple-subtle) 0%, var(--accent-subtle) 100%) !important;
   box-shadow: 0 0 0 1px rgba(102, 8, 116, 0.15), var(--shadow-md);
 }
+
+/* ========== 清华风格弹窗：统一 overlay + 卡片 ========== */
+.thu-modal-overlay {
+  background: var(--overlay);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.thu-modal-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% 40%, rgba(102, 8, 116, 0.08), transparent 60%);
+  pointer-events: none;
+}
+.thu-modal-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-dialog);
+  overflow: hidden;
+}
+.thu-modal-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--thu-purple) 0%, var(--thu-purple-light) 35%, var(--accent) 100%);
+  box-shadow: 0 2px 8px rgba(102, 8, 116, 0.25);
+}
+.thu-modal-card .thu-modal-title {
+  color: var(--thu-purple);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.thu-modal-card .thu-modal-close {
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  transition: color 0.2s, background 0.2s;
+}
+.thu-modal-card .thu-modal-close:hover {
+  color: var(--thu-purple);
+  background: var(--thu-purple-subtle);
+}
+.thu-modal-card .thu-modal-btn-primary {
+  background: var(--thu-purple);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(102, 8, 116, 0.25);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+.thu-modal-card .thu-modal-btn-primary:hover {
+  background: linear-gradient(135deg, #550660 0%, #8b2d5a 100%);
+  box-shadow: 0 4px 14px rgba(102, 8, 116, 0.3);
+}
+.thu-modal-card .thu-modal-btn-primary:active {
+  transform: scale(0.98);
+}
+.thu-modal-card .thu-modal-btn-secondary {
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.thu-modal-card .thu-modal-btn-secondary:hover {
+  border-color: var(--thu-purple);
+  color: var(--thu-purple);
+  background: var(--thu-purple-subtle);
+}

@@ -31,9 +31,9 @@ cd ui/app
 npm run dev
 ```
 
-启动后在浏览器打开：**http://localhost:3001**。
+启动后在浏览器打开：**http://localhost:9301**。
 
-本仓库 UI **默认端口为 3001**（可通过 `PORT=...` 覆盖）。仅当 3001 被占用时再改用「临时改端口」（见下）。
+本仓库 UI **专用端口为 9301**（THU_SOC_AGENT 独享，与常见 3000/3001 区分，避免其它智能体占用同一端口导致误开错应用；可通过 `PORT=...` 覆盖）。仅当 9301 被占用时再改用「临时改端口」（见下）。
 
 ---
 
@@ -76,10 +76,10 @@ npm run dev
 
 ### 端口占用排查（macOS / Linux）
 
-若提示端口被占用或无法访问 3001：
+若提示端口被占用或无法访问 9301：
 
 ```bash
-lsof -i :3001
+lsof -i :9301
 kill -9 <PID>
 ```
 
@@ -88,16 +88,22 @@ kill -9 <PID>
 ### 临时改端口
 
 ```bash
-PORT=3005 npm run dev
+PORT=9305 npm run dev
 ```
 
-访问 **http://localhost:3005**。
+访问 **http://localhost:9305**。
 
 ### Windows（PowerShell）
 
 ```powershell
-$env:PORT=3005; npm run dev
+$env:PORT=9305; npm run dev
 ```
+
+### 端口唯一性与信息安全
+
+**本应用唯一访问地址为 http://localhost:9301**。端口 9301 为本仓库（THU_SOC_AGENT）专用，其它智能体或新项目请勿使用该端口，以免误打开错误应用造成数据或操作混淆（信息安全）。其它项目请使用常见默认端口（如 3000、3002）或自选其它端口。
+
+若您此前使用 3001，请将书签与启动后访问地址改为 **http://localhost:9301**；本地如有 `PORT=3001` 可在 `ui/app/.env.local` 中改为 `PORT=9301` 或删除该行以使用默认 9301。
 
 ---
 
@@ -109,7 +115,7 @@ $env:PORT=3005; npm run dev
 npm run doctor
 ```
 
-会检查 Node 版本、端口 3001、`.env`、`next` 安装等。
+会检查 Node 版本、端口 9301、`.env`、`next` 安装等。
 
 ---
 

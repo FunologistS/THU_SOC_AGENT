@@ -23,10 +23,18 @@ function normalizedFileSlug(discipline: string): string {
     .replace(/^_|_$/g, "") || "Sociology";
 }
 
-/** 某学科归一化 CSV 路径，若存在则可用于该学科的分区筛选 */
+/** 某学科归一化 CSV 路径：在 02_normalize 下按学科 slug 匹配 WOS_JCR_*_{slug}_*_normalized.csv，取最新一份 */
 function normalizedPathForDiscipline(discipline: string): string {
   const slug = normalizedFileSlug(discipline);
-  return path.join(WOS_NORMALIZED_DIR, `WOS_JCR_260218_${slug}_260218_normalized.csv`);
+  if (!slug) return "";
+  if (!fs.existsSync(WOS_NORMALIZED_DIR)) return "";
+  const re = new RegExp(`^WOS_JCR_.*_${slug.replace(/_/g, "_")}_.*_normalized\\.csv$`, "i");
+  const files = fs
+    .readdirSync(WOS_NORMALIZED_DIR)
+    .filter((f) => re.test(f))
+    .map((f) => path.join(WOS_NORMALIZED_DIR, f))
+    .sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs);
+  return files[0] ?? "";
 }
 
 /** Parse a single CSV row with quoted fields (handles commas inside quotes) */

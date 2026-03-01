@@ -1,18 +1,59 @@
 meta:
-  generated_at: 2026-02-19T08:25:18.413Z
-  date_tag: "20260219"
-  version: 7
-  input: /Users/bryson_sun/Library/Mobile
-    Documents/com~apple~CloudDocs/Desktop/孙百承/THU_SOC_AGENT/.claude/skills/journal-catalog/references/system/journals.yml
-  checked_with_site: 59
-  changed: 28
-  fixed_oup_root: 2
-  notes: Normalized journals[].site (https, remove fragment, query keep-list for
-    Cambridge/T&F/Sage; OUP legacy <slug>.oxfordjournals.org ->
-    https://academic.oup.com/<slug> mapping; trailing slash policy; optional
-    OpenAlex-based fix for OUP root using source.homepage_url with works-based
-    fallback).
+  generated_at: 2026-03-01T05:55:43.194Z
+  date_tag: "20260301"
+  version: 2
+  counts:
+    base_rows: 7
+    sources_rows: 342
+    manual_rows: 0
+    merged_unique: 337
+  inputs:
+    - label: base
+      file: .claude/skills/journal-catalog/references/base/journals_manual.yml
+      count: 7
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_anthropology_q1_20260301_v2.yml
+      count: 142
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_economics_q1_20260301_v1.yml
+      count: 142
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_sociology_q1_20260219_v2.yml
+      count: 58
+  notes: "Merge precedence: base < sources < manual. Non-empty fields override."
 journals:
+  - name: AFRICA
+    short: AFRICA
+    issn: "00019720"
+    eissn: "17500184"
+    site: http://journals.cambridge.org/action/displayJournal?jid=AFR
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S128375914
+    openalex_source_display_name: Africa
+  - name: African Archaeological Review
+    short: AFR ARCHAEOL REV
+    issn: "02630338"
+    eissn: "15729842"
+    site: http://www.springer.com/social+sciences/anthropology+%26+archaeology/journal/10437
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S203792648
+    openalex_source_display_name: African Archaeological Review
+  - name: Agricultural and Food Economics
+    short: AGR FOOD ECON
+    issn: ""
+    eissn: "21937532"
+    site: https://agrifoodecon.springeropen.com
+    notes: WOS/JCR; SPRINGERNATURE
+    openalex_source_id: https://openalex.org/S3034372847
+    openalex_source_display_name: Agricultural and Food Economics
+  - name: AGRICULTURAL ECONOMICS
+    short: AGR ECON-BLACKWELL
+    issn: "01695150"
+    eissn: "15740862"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1574-0862
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S154775064
+    openalex_source_display_name: Agricultural Economics
   - name: AGRICULTURE AND HUMAN VALUES
     short: AGR HUM VALUES
     issn: 0889048X
@@ -21,11 +62,107 @@ journals:
     notes: WOS/JCR; SPRINGER
     openalex_source_id: https://openalex.org/S78512408
     openalex_source_display_name: Agriculture and Human Values
+  - name: AIBR-Revista de Antropologia Iberoamericana
+    short: AIBR-REV ANTROPOL IB
+    issn: "16959752"
+    eissn: "15789705"
+    site: http://www.aibr.org
+    notes: WOS/JCR; ASOC ANTROPOLOGOS IBEROAMERICANOS EN RED
+    openalex_source_id: https://openalex.org/S1025827383
+    openalex_source_display_name: AIBR Revista de Antropologia Iberoamericana
+  - name: AMERICAN ANTHROPOLOGIST
+    short: AM ANTHROPOL
+    issn: "00027294"
+    eissn: "15481433"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481433
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S102499938
+    openalex_source_display_name: American Anthropologist
+  - name: AMERICAN ANTIQUITY
+    short: AM ANTIQUITY
+    issn: "00027316"
+    eissn: "23255064"
+    site: http://www.saa.org/AbouttheSociety/Publications/AmericanAntiquity/tabid/124/Default.aspx
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S34864311
+    openalex_source_display_name: American Antiquity
+  - name: American Economic Journal-Applied Economics
+    short: AM ECON J-APPL ECON
+    issn: "19457782"
+    eissn: "19457790"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: https://openalex.org/S42893225
+    openalex_source_display_name: American Economic Journal Applied Economics
+  - name: American Economic Journal-Economic Policy
+    short: AM ECON J-ECON POLIC
+    issn: "19457731"
+    eissn: 1945774X
+    site: http://aeaweb.org/aej-policy
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: https://openalex.org/S158011328
+    openalex_source_display_name: American Economic Journal Economic Policy
+  - name: American Economic Journal-Macroeconomics
+    short: AM ECON J-MACROECON
+    issn: "19457707"
+    eissn: "19457715"
+    site: http://books.google.com/books?id=6FlQAQAAIAAJ
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: https://openalex.org/S170166683
+    openalex_source_display_name: American Economic Journal Macroeconomics
+  - name: AMERICAN ECONOMIC REVIEW
+    short: AM ECON REV
+    issn: "00028282"
+    eissn: "19447981"
+    site: http://www.aeaweb.org/aer
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: https://openalex.org/S23254222
+    openalex_source_display_name: American Economic Review
+  - name: American Economic Review-Insights
+    short: AM ECON REV INSIGHTS
+    issn: 2640205X
+    eissn: "26402068"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: https://openalex.org/S4210174288
+    openalex_source_display_name: American Economic Review Insights
+  - name: AMERICAN ETHNOLOGIST
+    short: AM ETHNOL
+    issn: "00940496"
+    eissn: "15481425"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481425
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S114801684
+    openalex_source_display_name: American Ethnologist
+  - name: AMERICAN JOURNAL OF AGRICULTURAL ECONOMICS
+    short: AM J AGR ECON
+    issn: "00029092"
+    eissn: "14678276"
+    site: https://onlinelibrary.wiley.com/journal/14678276
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S91754907
+    openalex_source_display_name: American Journal of Agricultural Economics
+  - name: American Journal of Biological Anthropology
+    short: AM J BIOL ANTHROPOL
+    issn: "26927691"
+    eissn: "26927691"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4394736957
+    openalex_source_display_name: American Journal of Biological Anthropology
+  - name: AMERICAN JOURNAL OF HUMAN BIOLOGY
+    short: AM J HUM BIOL
+    issn: "10420533"
+    eissn: "15206300"
+    site: http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1520-6300
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S179381287
+    openalex_source_display_name: American Journal of Human Biology
   - name: AMERICAN JOURNAL OF SOCIOLOGY
     short: AM J SOCIOL
     issn: "00029602"
     eissn: "15375390"
-    site: https://journals.uchicago.edu/toc/ajs/current
+    site: https://www.journals.uchicago.edu/toc/ajs/current
     notes: WOS/JCR; UNIV CHICAGO PRESS
     openalex_source_id: https://openalex.org/S122471516
     openalex_source_display_name: American Journal of Sociology
@@ -37,38 +174,377 @@ journals:
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S157620343
     openalex_source_display_name: American Sociological Review
+  - name: Annals of Anthropological Practice
+    short: ANN ANTHROPL PRACT
+    issn: 2153957X
+    eissn: "21539588"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/21539588
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4210230149
+    openalex_source_display_name: Annals of Anthropological Practice
+  - name: ANNALS OF HUMAN BIOLOGY
+    short: ANN HUM BIOL
+    issn: "03014460"
+    eissn: "14645033"
+    site: https://www.tandfonline.com/journals/iahb20
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S172316950
+    openalex_source_display_name: Annals of Human Biology
+  - name: Annals of Public and Cooperative Economics
+    short: ANN PUBLIC COOP ECON
+    issn: "13704788"
+    eissn: "14678292"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4394735553
+    openalex_source_display_name: Annals of Public and Cooperative Economics
   - name: ANNALS OF TOURISM RESEARCH
     short: ANN TOURISM RES
     issn: "01607383"
     eissn: "18737722"
-    site: https://journals.elsevier.com/annals-of-tourism-research
+    site: https://www.journals.elsevier.com/annals-of-tourism-research
     notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
     openalex_source_id: https://openalex.org/S51885707
     openalex_source_display_name: Annals of Tourism Research
+  - name: Annual Review of Anthropology
+    short: ANNU REV ANTHROPOL
+    issn: "00846570"
+    eissn: "15454290"
+    site: http://www.annualreviews.org/journal/anthro
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: https://openalex.org/S195167216
+    openalex_source_display_name: Annual Review of Anthropology
+  - name: Annual Review of Economics
+    short: ANNU REV ECON
+    issn: "19411383"
+    eissn: "19411391"
+    site: http://www.annualreviews.org/journal/economics
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: https://openalex.org/S196715598
+    openalex_source_display_name: Annual Review of Economics
+  - name: Annual Review of Financial Economics
+    short: ANNU REV FINANC ECON
+    issn: "19411367"
+    eissn: "19411375"
+    site: http://www.annualreviews.org/journal/financial
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: https://openalex.org/S4210170931
+    openalex_source_display_name: Annual Review of Financial Economics
   - name: Annual Review of Law and Social Science
     short: ANNU REV LAW SOC SCI
     issn: "15503585"
     eissn: "15503631"
-    site: https://annualreviews.org/loi/lawsocsci
+    site: http://www.annualreviews.org/loi/lawsocsci
     notes: WOS/JCR; ANNUAL REVIEWS
     openalex_source_id: https://openalex.org/S59069355
     openalex_source_display_name: Annual Review of Law and Social Science
+  - name: Annual Review of Resource Economics
+    short: ANNU REV RESOUR ECON
+    issn: "19411340"
+    eissn: "19411359"
+    site: http://www.annualreviews.org/journal/resource
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: https://openalex.org/S76844451
+    openalex_source_display_name: Annual Review of Resource Economics
   - name: Annual Review of Sociology
     short: ANNU REV SOCIOL
     issn: "03600572"
     eissn: "15452115"
-    site: https://annualreviews.org/content/journals/soc
+    site: https://www.annualreviews.org/content/journals/soc
     notes: WOS/JCR; ANNUAL REVIEWS
     openalex_source_id: https://openalex.org/S61274580
     openalex_source_display_name: Annual Review of Sociology
+  - name: Anthropological Forum
+    short: ANTHROPOL FORUM
+    issn: "00664677"
+    eissn: "14692902"
+    site: https://www.tandfonline.com/toc/canf20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S92835259
+    openalex_source_display_name: Anthropological Forum
+  - name: Anthropological Journal of European Cultures
+    short: ANTHROPOL J EUR CULT
+    issn: "17552923"
+    eissn: "17552931"
+    site: http://journals.berghahnbooks.com/ajec
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: https://openalex.org/S131365115
+    openalex_source_display_name: Anthropological Journal of European Cultures
+  - name: Anthropological Notebooks
+    short: ANTHROPOL NOTEB
+    issn: 1408032X
+    eissn: ""
+    site: http://www.drustvo-antropologov.si/anthropological_notebooks1.html
+    notes: WOS/JCR; SLOVENE ANTHROPOLOGICAL SOC
+    openalex_source_id: https://openalex.org/S55855850
+    openalex_source_display_name: Anthropological notebooks
+  - name: ANTHROPOLOGICAL QUARTERLY
+    short: ANTHROPOL QUART
+    issn: "00035491"
+    eissn: "15341518"
+    site: https://aq.gwu.edu
+    notes: WOS/JCR; GEORGE WASHINGTON UNIV INST ETHNOGRAPHIC RESEARCH
+    openalex_source_id: https://openalex.org/S127531613
+    openalex_source_display_name: Anthropological Quarterly
+  - name: Anthropological Theory
+    short: ANTHROPOL THEOR
+    issn: "14634996"
+    eissn: "17412641"
+    site: http://ant.sagepub.com
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S14830646
+    openalex_source_display_name: Anthropological Theory
+  - name: ANTHROPOLOGIE
+    short: ANTHROPOLOGIE
+    issn: "00035521"
+    eissn: "18735827"
+    site: https://www.journals.elsevier.com/lanthropologie
+    notes: WOS/JCR; ELSEVIER FRANCE-EDITIONS SCIENTIFIQUES MEDICALES ELSEVIER
+    openalex_source_id: https://openalex.org/S2898112208
+    openalex_source_display_name: L Anthropologie
+  - name: Anthropologie et Sante-Revue Internationale Francophone d Anthropologie de
+      la Sante
+    short: ANTHROPOL SANTE
+    issn: "21115028"
+    eissn: "21115028"
+    site: http://anthropologiesante.revues.org
+    notes: WOS/JCR; ASSOC AMADES
+    openalex_source_id: https://openalex.org/S4210230706
+    openalex_source_display_name: Anthropologie et santé
+  - name: ANTHROPOLOGIE-INTERNATIONAL JOURNAL OF HUMAN DIVERSITY AND EVOLUTION
+    short: ANTHROPOL-INT J HUM
+    issn: "03231119"
+    eissn: "03231119"
+    site: ""
+    notes: WOS/JCR; MORAVIAN MUSEUM
+    openalex_source_id: https://openalex.org/S4210189146
+    openalex_source_display_name: Anthropologie
+  - name: ANTHROPOLOGISCHER ANZEIGER
+    short: ANTHROPOL ANZ
+    issn: "00035548"
+    eissn: "00035548"
+    site: https://www.schweizerbart.de/journals/anthranz
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+    openalex_source_id: https://openalex.org/S108000440
+    openalex_source_display_name: Anthropologischer Anzeiger
+  - name: ANTHROPOLOGY & EDUCATION QUARTERLY
+    short: ANTHROPOL EDUC QUART
+    issn: "01617761"
+    eissn: "15481492"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481492
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S175874283
+    openalex_source_display_name: Anthropology & Education Quarterly
+  - name: Anthropology & Medicine
+    short: ANTHROPOL MED
+    issn: "13648470"
+    eissn: "14692910"
+    site: https://www.tandfonline.com/toc/canm20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S201110913
+    openalex_source_display_name: Anthropology and Medicine
+  - name: Anthropology in Action-Journal for Applied Anthropology in Policy and
+      Practice
+    short: ANTHROPOL ACTION
+    issn: 0967201X
+    eissn: "17522285"
+    site: https://www.berghahnjournals.com/view/journals/aia/aia-overview.xml
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: https://openalex.org/S88815126
+    openalex_source_display_name: Anthropology in Action
+  - name: ANTHROPOLOGY OF CONSCIOUSNESS
+    short: ANTHROPOL CONSCIOUS
+    issn: "10534202"
+    eissn: "15563537"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15563537
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S125931951
+    openalex_source_display_name: Anthropology of Consciousness
+  - name: Anthropology of Work Review
+    short: ANTHROPOL WORK REV
+    issn: 0883024X
+    eissn: "15481417"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481417
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S161794171
+    openalex_source_display_name: Anthropology of Work Review
+  - name: Anthropology Southern Africa
+    short: ANTHROPOL SOUTH AFR
+    issn: "23323256"
+    eissn: "23323264"
+    site: https://www.tandfonline.com/toc/rasa20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S4210190722
+    openalex_source_display_name: Anthropology Southern Africa
+  - name: Anthropology Today
+    short: ANTHROPOL TODAY
+    issn: 0268540X
+    eissn: "14678322"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-8322
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S121529132
+    openalex_source_display_name: Anthropology Today
+  - name: ANTHROPOS
+    short: ANTHROPOS
+    issn: "02579774"
+    eissn: ""
+    site: http://www.anthropos.eu/anthropos/index.php
+    notes: WOS/JCR; NOMOS VERLAGSGESELLSCHAFT MBH & CO KG
+    openalex_source_id: https://openalex.org/S4210208665
+    openalex_source_display_name: Anthropos
+  - name: ANTHROPOZOOLOGICA
+    short: ANTHROPOZOOLOGICA
+    issn: "07613032"
+    eissn: "21070881"
+    site: http://sciencepress.mnhn.fr/fr/periodiques/anthropozoologica
+    notes: WOS/JCR; PUBLICATIONS SCIENTIFIQUES DU MUSEUM, PARIS
+    openalex_source_id: https://openalex.org/S4210233383
+    openalex_source_display_name: Anthropozoologica
   - name: ANTHROZOOS
     short: ANTHROZOOS
     issn: "08927936"
     eissn: "17530377"
-    site: https://tandfonline.com/toc/rfan20/current
+    site: https://www.tandfonline.com/toc/rfan20/current
     notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
     openalex_source_id: https://openalex.org/S179102905
     openalex_source_display_name: Anthrozoös
+  - name: ANTIQUITY
+    short: ANTIQUITY
+    issn: 0003598X
+    eissn: "17451744"
+    site: https://www.cambridge.org/core/journals/antiquity
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S173880072
+    openalex_source_display_name: Antiquity
+  - name: Antropologia Portuguesa
+    short: ANTROPOL PORT
+    issn: "08700990"
+    eissn: "21827982"
+    site: https://impactum-journals.uc.pt/antropologiaportuguesa
+    notes: WOS/JCR; COIMBRA UNIV PRESS
+    openalex_source_id: https://openalex.org/S4210173833
+    openalex_source_display_name: Antropologia Portuguesa
+  - name: Applied Economic Analysis
+    short: APPL ECON ANAL
+    issn: ""
+    eissn: "26327627"
+    site: https://www.emeraldgrouppublishing.com/journal/aea
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: https://openalex.org/S4210191200
+    openalex_source_display_name: Applied Economic Analysis
+  - name: Applied Economic Perspectives and Policy
+    short: APPL ECON PERSPECT P
+    issn: "20405790"
+    eissn: "20405804"
+    site: https://onlinelibrary.wiley.com/journal/20405804
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4210201861
+    openalex_source_display_name: Applied Economic Perspectives and Policy
+  - name: Applied Health Economics and Health Policy
+    short: APPL HEALTH ECON HEA
+    issn: "11755652"
+    eissn: "11791896"
+    site: https://www.springer.com/journal/40258
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+    openalex_source_id: https://openalex.org/S194514787
+    openalex_source_display_name: Applied Health Economics and Health Policy
+  - name: Archaeological and Anthropological Sciences
+    short: ARCHAEOL ANTHROP SCI
+    issn: "18669557"
+    eissn: "18669565"
+    site: https://www.springer.com/journal/12520
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    openalex_source_id: https://openalex.org/S160634688
+    openalex_source_display_name: Archaeological and Anthropological Sciences
+  - name: Archaeology Ethnology and Anthropology of Eurasia
+    short: ARCHAEOL ETHNOL ANTH
+    issn: "15630110"
+    eissn: 1531832X
+    site: ""
+    notes: WOS/JCR; PLEIADES PUBLISHING INC
+    openalex_source_id: https://openalex.org/S15075267
+    openalex_source_display_name: Archaeology Ethnology and Anthropology of Eurasia
+  - name: ARCHAEOLOGY IN OCEANIA
+    short: ARCHAEOL OCEAN
+    issn: "07284896"
+    eissn: "18344453"
+    site: https://onlinelibrary.wiley.com/journal/18344453
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S2764418312
+    openalex_source_display_name: Archaeology in Oceania/Archæology & physical anthropology in Oceania
+  - name: ARCTIC ANTHROPOLOGY
+    short: ARCTIC ANTHROPOL
+    issn: "00666939"
+    eissn: "19338139"
+    site: http://aa.uwpress.org
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    openalex_source_id: https://openalex.org/S3081132
+    openalex_source_display_name: Arctic Anthropology
+  - name: Asia Pacific Journal of Anthropology
+    short: ASIA PAC J ANTHROPOL
+    issn: "14442213"
+    eissn: "17409314"
+    site: https://www.tandfonline.com/toc/rtap20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S191816521
+    openalex_source_display_name: The Asia Pacific Journal of Anthropology
+  - name: Asian Economic Policy Review
+    short: ASIAN ECON POLICY R
+    issn: "18328105"
+    eissn: "17483131"
+    site: https://onlinelibrary.wiley.com/journal/17483131
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S23010633
+    openalex_source_display_name: Asian Economic Policy Review
+  - name: AUSTRALIAN ARCHAEOLOGY
+    short: AUST ARCHAEOL
+    issn: "03122417"
+    eissn: "24700363"
+    site: http://www.australianarchaeology.com/our-journal
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S105714911
+    openalex_source_display_name: Australian Archaeology
+  - name: Australian Journal of Anthropology
+    short: AUST J ANTHROPOL
+    issn: "10358811"
+    eissn: "17576547"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1757-6547
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S202606351
+    openalex_source_display_name: The Australian Journal of Anthropology
+  - name: BIJDRAGEN TOT DE TAAL- LAND- EN VOLKENKUNDE
+    short: BIJDR TAAL-LAND-V
+    issn: "00062294"
+    eissn: "22134379"
+    site: http://booksandjournals.brillonline.com/content/journals/22134379
+    notes: WOS/JCR; BRILL
+    openalex_source_id: https://openalex.org/S20542293
+    openalex_source_display_name: Bijdragen tot de taal- land- en volkenkunde /
+      Journal of the Humanities and Social Sciences of Southeast Asia
+  - name: Bioarchaeology International
+    short: BIOARCHAEOLOGY INT
+    issn: "24728349"
+    eissn: "24728357"
+    site: http://journals.upress.ufl.edu/bioarchaeology
+    notes: WOS/JCR; UNIV FLORIDA PRESS
+    openalex_source_id: https://openalex.org/S4210204803
+    openalex_source_display_name: Bioarchaeology International
+  - name: Boletin Antropologico
+    short: BOL ANTROPOL
+    issn: 0257750X
+    eissn: 0257750X
+    site: ""
+    notes: WOS/JCR; UNIV LOS ANDES
+    openalex_source_id: https://openalex.org/S4210216432
+    openalex_source_display_name: Boletín Antropológico/Boletín antropológico
+  - name: Borsa Istanbul Review
+    short: BORSA ISTANB REV
+    issn: "22148450"
+    eissn: "22148469"
+    site: https://www.journals.elsevier.com/borsa-istanbul-review
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S2764882396
+    openalex_source_display_name: Borsa Istanbul Review
   - name: BRITISH JOURNAL OF SOCIOLOGY
     short: BRIT J SOCIOL
     issn: "00071315"
@@ -81,18 +557,90 @@ journals:
     short: BRIT J SOCIOL EDUC
     issn: "01425692"
     eissn: "14653346"
-    site: https://tandfonline.com/toc/cbse20/current
+    site: https://www.tandfonline.com/toc/cbse20/current
     notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
     openalex_source_id: https://openalex.org/S187274487
     openalex_source_display_name: British Journal of Sociology of Education
+  - name: BROOKINGS PAPERS ON ECONOMIC ACTIVITY
+    short: BROOKINGS PAP ECO AC
+    issn: "00072303"
+    eissn: "15334465"
+    site: http://www.brookings.edu/economics/bpea.aspx
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+    openalex_source_id: https://openalex.org/S4210173904
+    openalex_source_display_name: Brookings Papers on Economic Activity
+  - name: CAHIERS D ETUDES AFRICAINES
+    short: CAH ETUD AFR
+    issn: "00080055"
+    eissn: "17775353"
+    site: http://etudesafricaines.revues.org
+    notes: WOS/JCR; EDITIONS ECOLE HAUTESETUDES & SCIENCES SOCIALES
+    openalex_source_id: https://openalex.org/S176975696
+    openalex_source_display_name: Cahiers d études africaines
+  - name: Cambridge Journal of Anthropology
+    short: CAMB J ANTHROPOL
+    issn: "03057674"
+    eissn: "20477716"
+    site: https://www.berghahnjournals.com/view/journals/cja/cja-overview.xml
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: https://openalex.org/S2765025229
+    openalex_source_display_name: The Cambridge Journal of Anthropology
+  - name: Cambridge Journal of Regions Economy and Society
+    short: CAMB J REG ECON SOC
+    issn: "17521378"
+    eissn: "17521386"
+    site: http://cjres.oxfordjournals.org
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S97316453
+    openalex_source_display_name: Cambridge Journal of Regions Economy and Society
+  - name: Childhood in the Past
+    short: CHILD PAST
+    issn: "17585716"
+    eissn: "20408528"
+    site: https://www.tandfonline.com/toc/ycip20/current
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S4210194470
+    openalex_source_display_name: Childhood in the Past
+  - name: China & World Economy
+    short: CHINA WORLD ECON
+    issn: "16712234"
+    eissn: 1749124X
+    site: https://onlinelibrary.wiley.com/journal/1749124X
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S48661868
+    openalex_source_display_name: China & World Economy
+  - name: China Agricultural Economic Review
+    short: CHINA AGR ECON REV
+    issn: 1756137X
+    eissn: "17561388"
+    site: http://www.emeraldinsight.com/journals.htm?issn=1756-137x
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: https://openalex.org/S171031257
+    openalex_source_display_name: China Agricultural Economic Review
+  - name: CHINA ECONOMIC REVIEW
+    short: CHINA ECON REV
+    issn: 1043951X
+    eissn: "18737781"
+    site: http://www.journals.elsevier.com/china-economic-review/#description
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: https://openalex.org/S19645890
+    openalex_source_display_name: China Economic Review
   - name: Chinese Sociological Review
     short: CSR
     issn: "21620555"
     eissn: "21620563"
-    site: https://tandfonline.com/journals/mcsa20
+    site: https://www.tandfonline.com/journals/mcsa20
     notes: Taylor & Francis
     openalex_source_id: https://openalex.org/S2764722375
     openalex_source_display_name: Chinese Sociological Review
+  - name: Chungara-Revista de Antropologia Chilena
+    short: CHUNGARA
+    issn: "07177356"
+    eissn: "07177356"
+    site: http://www.chungara.cl/index.php/en/our-journal
+    notes: WOS/JCR; UNIV TARAPACA
+    openalex_source_id: https://openalex.org/S17808133
+    openalex_source_display_name: Chungara
   - name: City & Community
     short: CITY COMMUNITY
     issn: "15356841"
@@ -101,35 +649,380 @@ journals:
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S161221444
     openalex_source_display_name: City and Community
+  - name: City & Society
+    short: CITY SOC
+    issn: "08930465"
+    eissn: 1548744X
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/1548744X
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S2764350772
+    openalex_source_display_name: City & Society
+  - name: COMPARATIVE STUDIES IN SOCIETY AND HISTORY
+    short: COMP STUD SOC HIST
+    issn: "00104175"
+    eissn: "14752999"
+    site: http://journals.cambridge.org/action/displayJournal?jid=CSS
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S21304105
+    openalex_source_display_name: Comparative Studies in Society and History
+  - name: Competition & Change
+    short: COMPET CHANG
+    issn: "10245294"
+    eissn: "14772221"
+    site: https://us.sagepub.com/en-us/nam/journal/competition-change
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S187200255
+    openalex_source_display_name: Competition & Change
   - name: Cornell Hospitality Quarterly
     short: CORNELL HOSP Q
     issn: "19389655"
     eissn: "19389663"
-    site: https://cqx.sagepub.com/
+    site: http://cqx.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S140551370
     openalex_source_display_name: Cornell Hospitality Quarterly
+  - name: Critical African Studies
+    short: CRIT AFR STUD
+    issn: "21681392"
+    eissn: "20407211"
+    site: https://www.tandfonline.com/toc/rcaf20/current
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S2764881429
+    openalex_source_display_name: Critical African Studies
+  - name: CRITIQUE OF ANTHROPOLOGY
+    short: CRIT ANTHROPOL
+    issn: 0308275X
+    eissn: "14603721"
+    site: http://www.sagepub.com/journals/Journal200880/title
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S38691782
+    openalex_source_display_name: Critique of Anthropology
+  - name: Cuadernos de Antropologia
+    short: CUAD ANTROPOL
+    issn: "14093138"
+    eissn: 2215356X
+    site: http://revistas.ucr.ac.cr/index.php/antropologia
+    notes: WOS/JCR; UNIV COSTA RICA, FAC CIENCIAS SOCIALES
+    openalex_source_id: https://openalex.org/S2736404659
+    openalex_source_display_name: Cuadernos de Antropología
+  - name: CULTURAL ANTHROPOLOGY
+    short: CULT ANTHROPOL
+    issn: "08867356"
+    eissn: "15481360"
+    site: http://www.culanth.org
+    notes: WOS/JCR; SOC CULTURAL ANTHROPOLOGY
+    openalex_source_id: https://openalex.org/S22506700
+    openalex_source_display_name: Cultural Anthropology
+  - name: CULTURAL STUDIES
+    short: CULT STUD
+    issn: "09502386"
+    eissn: "14664348"
+    site: https://www.tandfonline.com/toc/rcus20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S25593863
+    openalex_source_display_name: Cultural Studies
+  - name: CULTURE MEDICINE AND PSYCHIATRY
+    short: CULT MED PSYCHIAT
+    issn: 0165005X
+    eissn: 1573076X
+    site: http://www.springer.com/social+sciences/anthropology+&+archaeology/journal/11013
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S75857574
+    openalex_source_display_name: Culture Medicine and Psychiatry
+  - name: CURRENT ANTHROPOLOGY
+    short: CURR ANTHROPOL
+    issn: "00113204"
+    eissn: "15375382"
+    site: http://www.journals.uchicago.edu/ca
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S165709033
+    openalex_source_display_name: Current Anthropology
+  - name: DIALECTICAL ANTHROPOLOGY
+    short: DIALECT ANTHROPOL
+    issn: "03044092"
+    eissn: "15730786"
+    site: http://www.springer.com/social+sciences/archaeology+&+anthropology/journal/10624
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S51698217
+    openalex_source_display_name: Dialectical Anthropology
   - name: DISCOURSE & SOCIETY
     short: DISCOURSE SOC
     issn: "09579265"
     eissn: "14603624"
-    site: https://sagepub.com/en-us/nam/discourse-society/journal200873
+    site: http://sagepub.com/en-us/nam/discourse-society/journal200873
     notes: WOS/JCR; SAGE PUBLICATIONS LTD
     openalex_source_id: https://openalex.org/S192935290
     openalex_source_display_name: Discourse & Society
+  - name: ECOLOGICAL ECONOMICS
+    short: ECOL ECON
+    issn: "09218009"
+    eissn: "18736106"
+    site: http://www.journals.elsevier.com/ecological-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S136211407
+    openalex_source_display_name: Ecological Economics
+  - name: ECONOMETRICA
+    short: ECONOMETRICA
+    issn: "00129682"
+    eissn: "14680262"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1468-0262
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S95464858
+    openalex_source_display_name: Econometrica
+  - name: Econometrics Journal
+    short: ECONOMET J
+    issn: "13684221"
+    eissn: 1368423X
+    site: https://academic.oup.com/ectj
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S33519306
+    openalex_source_display_name: Econometrics Journal
+  - name: Economic Analysis and Policy
+    short: ECON ANAL POLICY
+    issn: "03135926"
+    eissn: "03135926"
+    site: https://www.journals.elsevier.com/economic-analysis-and-policy
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S2898574612
+    openalex_source_display_name: Economic Analysis and Policy
+  - name: Economic Anthropology
+    short: ECON ANTHROPOL
+    issn: "23304847"
+    eissn: "23304847"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/23304847
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4210239638
+    openalex_source_display_name: Economic Anthropology
+  - name: Economic Change and Restructuring
+    short: ECON CHANG RESTRUCT
+    issn: "15739414"
+    eissn: "15740277"
+    site: https://link.springer.com/journal/10644
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S4210193400
+    openalex_source_display_name: Economic Change and Restructuring
+  - name: ECONOMIC GEOGRAPHY
+    short: ECON GEOGR
+    issn: "00130095"
+    eissn: "19448287"
+    site: https://www.tandfonline.com/toc/recg20/current
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S38825547
+    openalex_source_display_name: Economic Geography
+  - name: ECONOMIC JOURNAL
+    short: ECON J
+    issn: "00130133"
+    eissn: "14680297"
+    site: https://academic.oup.com/ej
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S45992627
+    openalex_source_display_name: The Economic Journal
+  - name: ECONOMIC MODELLING
+    short: ECON MODEL
+    issn: "02649993"
+    eissn: "18736122"
+    site: http://www.journals.elsevier.com/economic-modelling
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S141184754
+    openalex_source_display_name: Economic Modelling
+  - name: ECONOMIC POLICY
+    short: ECON POLICY
+    issn: "02664658"
+    eissn: "14680327"
+    site: https://academic.oup.com/economicpolicy
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S99606308
+    openalex_source_display_name: Economic Policy
+  - name: Economic Systems
+    short: ECON SYST
+    issn: "09393625"
+    eissn: "18785433"
+    site: https://www.journals.elsevier.com/economic-systems
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S206007305
+    openalex_source_display_name: Economic Systems
+  - name: Economics of Innovation and New Technology
+    short: ECON INNOV NEW TECH
+    issn: "10438599"
+    eissn: "14768364"
+    site: https://www.tandfonline.com/toc/gein20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S192056284
+    openalex_source_display_name: Economics of Innovation and New Technology
   - name: ECONOMY AND SOCIETY
     short: ECON SOC
     issn: "03085147"
     eissn: "14695766"
-    site: https://tandfonline.com/toc/reso20/current
+    site: https://www.tandfonline.com/toc/reso20/current
     notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
     openalex_source_id: https://openalex.org/S25250876
     openalex_source_display_name: Economy and Society
+  - name: EMERGING MARKETS FINANCE AND TRADE
+    short: EMERG MARK FINANC TR
+    issn: 1540496X
+    eissn: "15580938"
+    site: https://www.tandfonline.com/toc/mree20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S166264140
+    openalex_source_display_name: Emerging Markets Finance and Trade
+  - name: Emerging Markets Review
+    short: EMERG MARK REV
+    issn: "15660141"
+    eissn: "18736173"
+    site: https://www.journals.elsevier.com/emerging-markets-review
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S197112600
+    openalex_source_display_name: Emerging Markets Review
+  - name: Energy Economics
+    short: ENERG ECON
+    issn: "01409883"
+    eissn: "18736181"
+    site: http://www.journals.elsevier.com/energy-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S94499970
+    openalex_source_display_name: Energy Economics
+  - name: Energy Policy
+    short: ENERG POLICY
+    issn: "03014215"
+    eissn: "18736777"
+    site: http://www.journals.elsevier.com/energy-policy
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S175056054
+    openalex_source_display_name: Energy Policy
+  - name: ENVIRONMENTAL & RESOURCE ECONOMICS
+    short: ENVIRON RESOUR ECON
+    issn: "09246460"
+    eissn: "15731502"
+    site: http://www.springer.com/economics/environmental/journal/10640?detailsPage=aimsAndScopes
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S86125002
+    openalex_source_display_name: Environmental and Resource Economics
+  - name: Estudios Atacamenos
+    short: ESTUD ATACAMENOS
+    issn: "07181043"
+    eissn: "07181043"
+    site: https://revistas.ucn.cl/index.php/estudios-atacamenos/index
+    notes: WOS/JCR; UNIV CATOLICA NORTE, Inst Invest Arqueologicas y Museo RP
+      Gustavo Le Paige
+    openalex_source_id: https://openalex.org/S4210200000
+    openalex_source_display_name: Estudios Atacameños Arqueología y antropología surandinas
+  - name: Estudios de Cultura Maya
+    short: ESTUD CULT MAYA
+    issn: "01852574"
+    eissn: "24485179"
+    site: https://revistas-filologicas.unam.mx/estudios-cultura-maya/index.php/ecm/index
+    notes: WOS/JCR; UNIV NAC AUTONOMA MEXICO, INST INVESTIGACIONES FILOLOGICAS
+    openalex_source_id: https://openalex.org/S2736447579
+    openalex_source_display_name: Estudios de Cultura Maya
+  - name: Ethnobiology Letters
+    short: ETHNOBIOL LETT
+    issn: "21598126"
+    eissn: "21598126"
+    site: http://ojs.ethnobiology.org/index.php/ebl/index
+    notes: WOS/JCR; SOC ETHNOBIOLOGY
+    openalex_source_id: https://openalex.org/S2738885717
+    openalex_source_display_name: Ethnobiology Letters
+  - name: Ethnography
+    short: ETHNOGRAPHY
+    issn: "14661381"
+    eissn: "17412714"
+    site: http://www.sagepub.com/journals/Journal200906/title
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S158932249
+    openalex_source_display_name: Ethnography
+  - name: ETHNOHISTORY
+    short: ETHNOHISTORY
+    issn: "00141801"
+    eissn: "15275477"
+    site: http://ethnohistory.dukejournals.org
+    notes: WOS/JCR; DUKE UNIV PRESS
+    openalex_source_id: https://openalex.org/S49405560
+    openalex_source_display_name: Ethnohistory
+  - name: Ethnologies
+    short: ETHNOLOGIES
+    issn: "14815974"
+    eissn: "17080401"
+    site: https://www.acef-fsac.ulaval.ca/fr/revue-ethnologies/numeros-publies
+    notes: WOS/JCR; FOLKLORE STUDIES ASSOC CANADA
+    openalex_source_id: https://openalex.org/S4210189111
+    openalex_source_display_name: Ethnologies
+  - name: ETHNOS
+    short: ETHNOS
+    issn: "00141844"
+    eissn: 1469588X
+    site: https://www.tandfonline.com/toc/retn20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S43131466
+    openalex_source_display_name: Ethnos
+  - name: ETHOS
+    short: ETHOS
+    issn: "00912131"
+    eissn: "15481352"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481352
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S133059572
+    openalex_source_display_name: Ethos
+  - name: Etnoantropoloski Problemi-Issues in Ethnology and Anthropology
+    short: ETNOANTROPOLOSKI PRO
+    issn: "03531589"
+    eissn: "23348801"
+    site: https://www.eap-iea.org/index.php/eap/index
+    notes: WOS/JCR; UNIV BELGRADE, FAC PHILOSOPHY
+    openalex_source_id: https://openalex.org/S2764976161
+    openalex_source_display_name: Etnoantropološki problemi / Issues in Ethnology and Anthropology
+  - name: Etnoloska Tribina
+    short: ETHNOLOSKA TRIB
+    issn: "03511944"
+    eissn: "18489540"
+    site: http://hrcak.srce.hr/etnoloska-tribina
+    notes: WOS/JCR; CROATIAN ETHNOLOGICAL SOC
+    openalex_source_id: https://openalex.org/S4210186259
+    openalex_source_display_name: Etnološka tribina
+  - name: Etudes Inuit Studies
+    short: ETUDES INUIT STUD
+    issn: "07011008"
+    eissn: "07011008"
+    site: ""
+    notes: WOS/JCR; UNIV LAVAL, FAC SCIENCES SOCIALES
+    openalex_source_id: https://openalex.org/S4210220786
+    openalex_source_display_name: Études/Inuit/Studies
+  - name: Eurasian Business Review
+    short: EURASIAN BUS REV
+    issn: "13094297"
+    eissn: "21474281"
+    site: https://link.springer.com/journal/40821
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    openalex_source_id: https://openalex.org/S2764805720
+    openalex_source_display_name: Eurasian Economic Review
+  - name: European Journal of Health Economics
+    short: EUR J HEALTH ECON
+    issn: "16187598"
+    eissn: "16187601"
+    site: https://link.springer.com/journal/10198
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S16530434
+    openalex_source_display_name: The European Journal of Health Economics
+  - name: European Research on Management and Business Economics
+    short: EUR RES MANAG BUS EC
+    issn: "24448834"
+    eissn: "24448842"
+    site: https://www.journals.elsevier.com/european-research-on-management-and-business-economics
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S2898275063
+    openalex_source_display_name: European Research on Management and Business Economics
+  - name: EUROPEAN REVIEW OF AGRICULTURAL ECONOMICS
+    short: EUR REV AGRIC ECON
+    issn: "01651587"
+    eissn: "14643618"
+    site: http://www.oxfordjournals.org
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S32361082
+    openalex_source_display_name: European Review of Agricultural Economics
   - name: EUROPEAN SOCIETIES
     short: EUR SOC
     issn: "14616696"
     eissn: "14698307"
-    site: https://tandfonline.com/toc/reus20/current
+    site: https://www.tandfonline.com/toc/reus20/current
     notes: WOS/JCR; MIT PRESS
     openalex_source_id: https://openalex.org/S118409008
     openalex_source_display_name: European Societies
@@ -141,14 +1034,102 @@ journals:
     notes: WOS/JCR; OXFORD UNIV PRESS
     openalex_source_id: https://openalex.org/S159327246
     openalex_source_display_name: European Sociological Review
+  - name: EVOLUTIONARY ANTHROPOLOGY
+    short: EVOL ANTHROPOL
+    issn: "10601538"
+    eissn: "15206505"
+    site: http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1520-6505
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S172508320
+    openalex_source_display_name: Evolutionary Anthropology Issues News and Reviews
+  - name: Evolutionary Human Sciences
+    short: EVOL HUM SCI
+    issn: ""
+    eissn: 2513843X
+    site: https://www.cambridge.org/core/journals/evolutionary-human-sciences
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S4210210912
+    openalex_source_display_name: Evolutionary Human Sciences
+  - name: Feminist Anthropology
+    short: FEM ANTHROPOL
+    issn: "26437961"
+    eissn: "26437961"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/26437961
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4210183640
+    openalex_source_display_name: Feminist Anthropology
+  - name: Field Methods
+    short: FIELD METHOD
+    issn: 1525822X
+    eissn: "15523969"
+    site: http://fmx.sagepub.com
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S83253694
+    openalex_source_display_name: Field Methods
+  - name: Focaal-Journal of Global and Historical Anthropology
+    short: FOCAAL
+    issn: "09201297"
+    eissn: "15585263"
+    site: http://journals.berghahnbooks.com/focaal
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: https://openalex.org/S28021636
+    openalex_source_display_name: Focaal
+  - name: Food and Foodways
+    short: FOOD FOODWAYS
+    issn: "07409710"
+    eissn: "15423484"
+    site: https://www.tandfonline.com/toc/gfof20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S2803517
+    openalex_source_display_name: Food and Foodways
+  - name: FOOD POLICY
+    short: FOOD POLICY
+    issn: "03069192"
+    eissn: "18735657"
+    site: https://www.journals.elsevier.com/food-policy
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S63571384
+    openalex_source_display_name: Food Policy
+  - name: Forest Policy and Economics
+    short: FOREST POLICY ECON
+    issn: "13899341"
+    eissn: "18727050"
+    site: https://www.journals.elsevier.com/forest-policy-and-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S95823145
+    openalex_source_display_name: Forest Policy and Economics
+  - name: Futures
+    short: FUTURES
+    issn: "00163287"
+    eissn: "18736378"
+    site: https://www.journals.elsevier.com/futures
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S130638383
+    openalex_source_display_name: Futures
+  - name: Gazeta de Antropologia
+    short: GAZ ANTROPOL
+    issn: "23402792"
+    eissn: "23402792"
+    site: http://www.gazeta-antropologia.es
+    notes: WOS/JCR; ASOC GRANADINA ANTROPOLOGIA
+    openalex_source_id: https://openalex.org/S2738988793
+    openalex_source_display_name: Gazeta de Antropología
   - name: GENDER & SOCIETY
     short: GENDER SOC
     issn: "08912432"
     eissn: "15523977"
-    site: https://gas.sagepub.com/
+    site: http://gas.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S113116626
     openalex_source_display_name: Gender & Society
+  - name: Global Economic Review
+    short: GLOBAL ECON REV
+    issn: 1226508X
+    eissn: "17443873"
+    site: https://www.tandfonline.com/toc/rger20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S47824075
+    openalex_source_display_name: Global Economic Review
   - name: GLOBAL NETWORKS-A JOURNAL OF TRANSNATIONAL AFFAIRS
     short: GLOBAL NETW
     issn: "14702266"
@@ -157,30 +1138,166 @@ journals:
     notes: WOS/JCR; WILEY
     openalex_source_id: https://openalex.org/S135713760
     openalex_source_display_name: Global Networks
+  - name: HAU-Journal of Ethnographic Theory
+    short: HAU-J ETHNOGR THEORY
+    issn: "25751433"
+    eissn: "20491115"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S2764491276
+    openalex_source_display_name: Hau Journal of Ethnographic Theory
+  - name: Health Economics Review
+    short: HEALTH ECON REV
+    issn: "21911991"
+    eissn: "21911991"
+    site: https://healtheconomicsreview.biomedcentral.com
+    notes: WOS/JCR; BMC
+    openalex_source_id: https://openalex.org/S2738551320
+    openalex_source_display_name: Health Economics Review
   - name: Health Sociology Review
     short: HEALTH SOCIOL REV
     issn: "14461242"
     eissn: "18393551"
-    site: https://tandfonline.com/toc/rhsr20/current
+    site: https://www.tandfonline.com/toc/rhsr20/current
     notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
     openalex_source_id: https://openalex.org/S50321101
     openalex_source_display_name: Health Sociology Review
+  - name: History and Anthropology
+    short: HIST ANTHROPOL
+    issn: "02757206"
+    eissn: "14772612"
+    site: http://www.tandfonline.com/loi/ghan20#
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S151470275
+    openalex_source_display_name: History and Anthropology
+  - name: HOMO-JOURNAL OF COMPARATIVE HUMAN BIOLOGY
+    short: HOMO
+    issn: 0018442X
+    eissn: "16181301"
+    site: ""
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+    openalex_source_id: https://openalex.org/S136893510
+    openalex_source_display_name: HOMO
+  - name: HUMAN ECOLOGY
+    short: HUM ECOL
+    issn: "03007839"
+    eissn: "15729915"
+    site: http://www.springer.com/social+sciences/anthropology+%26+archaeology/journal/10745
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+    openalex_source_id: https://openalex.org/S82712235
+    openalex_source_display_name: Human Ecology
+  - name: HUMAN NATURE-AN INTERDISCIPLINARY BIOSOCIAL PERSPECTIVE
+    short: HUM NATURE-INT BIOS
+    issn: "10456767"
+    eissn: "19364776"
+    site: http://www.springer.com/social+sciences/anthropology+%26+archaeology/journal/12110
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S67524285
+    openalex_source_display_name: Human Nature
+  - name: HUMAN ORGANIZATION
+    short: HUM ORGAN
+    issn: "00187259"
+    eissn: "19383525"
+    site: http://www.sfaa.net/publications/human-organization
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S100638937
+    openalex_source_display_name: Human Organization
+  - name: Industry and Innovation
+    short: IND INNOV
+    issn: "13662716"
+    eissn: "14698390"
+    site: https://www.tandfonline.com/toc/ciai20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S36209479
+    openalex_source_display_name: Industry and Innovation
   - name: Information Communication & Society
     short: INFORM COMMUN SOC
     issn: 1369118X
     eissn: "14684462"
-    site: https://tandfonline.com/toc/rics20/current
+    site: https://www.tandfonline.com/toc/rics20/current
     notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
     openalex_source_id: https://openalex.org/S70010600
     openalex_source_display_name: Information Communication & Society
+  - name: INFORMATION ECONOMICS AND POLICY
+    short: INF ECON POLICY
+    issn: "01676245"
+    eissn: "18735975"
+    site: https://www.journals.elsevier.com/information-economics-and-policy
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S169221615
+    openalex_source_display_name: Information Economics and Policy
+  - name: Inter-Asia Cultural Studies
+    short: INTER-ASIA CULT STUD
+    issn: "14649373"
+    eissn: "14698447"
+    site: https://www.tandfonline.com/toc/riac20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S43495592
+    openalex_source_display_name: Inter-Asia Cultural Studies
+  - name: Interdisciplinaria Archaeologica-Natural Sciences in Archaeology
+    short: INTERDISCIP ARCHAEOL
+    issn: 1804848X
+    eissn: "23361220"
+    site: http://iansa.eu/index.html
+    notes: WOS/JCR; UNIV HRADEC KRALOVE
+    openalex_source_id: https://openalex.org/S2765035638
+    openalex_source_display_name: Interdisciplinaria Archaeologica - Natural Sciences in Archaeology
+  - name: International Environmental Agreements-Politics Law and Economics
+    short: INT ENVIRON AGREEM-P
+    issn: "15679764"
+    eissn: "15731553"
+    site: https://link.springer.com/journal/10784
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S54467454
+    openalex_source_display_name: International Environmental Agreements Politics Law and Economics
+  - name: International Indigenous Policy Journal
+    short: INT INDIG POLICY J
+    issn: "19165781"
+    eissn: "19165781"
+    site: https://ojs.lib.uwo.ca/index.php/iipj/index
+    notes: WOS/JCR; UNIV WESTERN ONTARIO
+    openalex_source_id: https://openalex.org/S2739297695
+    openalex_source_display_name: International Indigenous Policy Journal
+  - name: International Journal of Emerging Markets
+    short: INT J EMERG MARK
+    issn: "17468809"
+    eissn: "17468817"
+    site: http://firstsearch.oclc.org/journal=1746-8809;screen=info;ECOIP
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: https://openalex.org/S116345831
+    openalex_source_display_name: International Journal of Emerging Markets
+  - name: INTERNATIONAL JOURNAL OF FORECASTING
+    short: INT J FORECASTING
+    issn: "01692070"
+    eissn: "18728200"
+    site: https://www.sciencedirect.com/journal/international-journal-of-forecasting
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S39841227
+    openalex_source_display_name: International Journal of Forecasting
   - name: International Journal of Intercultural Relations
     short: INT J INTERCULT REL
     issn: "01471767"
     eissn: "18737552"
-    site: https://journals.elsevier.com/international-journal-of-intercultural-relations
+    site: https://www.journals.elsevier.com/international-journal-of-intercultural-relations
     notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
     openalex_source_id: https://openalex.org/S174538591
     openalex_source_display_name: International Journal of Intercultural Relations
+  - name: INTERNATIONAL JOURNAL OF OSTEOARCHAEOLOGY
+    short: INT J OSTEOARCHAEOL
+    issn: 1047482X
+    eissn: "10991212"
+    site: https://onlinelibrary.wiley.com/journal/10991212
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S138209933
+    openalex_source_display_name: International Journal of Osteoarchaeology
+  - name: INTERNATIONAL LABOUR REVIEW
+    short: INT LABOUR REV
+    issn: "00207780"
+    eissn: 1564913X
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1564-913X
+    notes: WOS/JCR; OPEN LIBRARY HUMANITIES
+    openalex_source_id: https://openalex.org/S50174339
+    openalex_source_display_name: International Labour Review
   - name: International Political Sociology
     short: INT POLIT SOCIOL
     issn: "17495679"
@@ -193,58 +1310,715 @@ journals:
     short: INT REV SOCIOL SPORT
     issn: "10126902"
     eissn: "14617218"
-    site: https://irs.sagepub.com/
+    site: http://irs.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS LTD
     openalex_source_id: https://openalex.org/S144178814
     openalex_source_display_name: International Review for the Sociology of Sport
+  - name: International Review of Economics & Finance
+    short: INT REV ECON FINANC
+    issn: "10590560"
+    eissn: "18738036"
+    site: https://www.journals.elsevier.com/international-review-of-economics-and-finance
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S168273071
+    openalex_source_display_name: International Review of Economics & Finance
+  - name: Intersecciones en Antropologia
+    short: INTERSECCIONES ANTRO
+    issn: 1850373X
+    eissn: 1850373X
+    site: https://interseccionesantro.soc.unicen.edu.ar/index.php/intersecciones
+    notes: WOS/JCR; UNIV NACL CENTRO PROVINCIA BUENOS AIRES (UNICEN), FAC CIENCIAS
+      SOCIALES
+    openalex_source_id: https://openalex.org/S979770011
+    openalex_source_display_name: Intersecciones en antropología
+  - name: JCMS-Journal of Common Market Studies
+    short: JCMS-J COMMON MARK S
+    issn: "00219886"
+    eissn: "14685965"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1468-5965
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S122406424
+    openalex_source_display_name: JCMS Journal of Common Market Studies
+  - name: Journal de la Societe des Americanistes
+    short: J SOC AMERICANISTES
+    issn: "00379174"
+    eissn: "19577842"
+    site: http://jsa.revues.org
+    notes: WOS/JCR; UNIV PARIS X PARIS-NANTERRE, ARCHEOLOGIE & ETHNOLOGIE
+    openalex_source_id: https://openalex.org/S59278040
+    openalex_source_display_name: Journal de la Société des Américanistes
+  - name: JOURNAL OF ACCOUNTING & ECONOMICS
+    short: J ACCOUNT ECON
+    issn: "01654101"
+    eissn: "18791980"
+    site: http://www.journals.elsevier.com/journal-of-accounting-and-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S62142384
+    openalex_source_display_name: Journal of Accounting and Economics
+  - name: Journal of Agrarian Change
+    short: J AGRAR CHANGE
+    issn: "14710358"
+    eissn: "14710366"
+    site: https://onlinelibrary.wiley.com/journal/14710366
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S17004734
+    openalex_source_display_name: Journal of Agrarian Change
+  - name: JOURNAL OF AGRICULTURAL ECONOMICS
+    short: J AGR ECON
+    issn: 0021857X
+    eissn: "14779552"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1477-9552
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S14468722
+    openalex_source_display_name: Journal of Agricultural Economics
+  - name: JOURNAL OF ANTHROPOLOGICAL ARCHAEOLOGY
+    short: J ANTHROPOL ARCHAEOL
+    issn: "02784165"
+    eissn: "10902686"
+    site: http://www.elsevier.com/wps/find/journaldescription.cws_home/622852/description
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: https://openalex.org/S34740387
+    openalex_source_display_name: Journal of Anthropological Archaeology
+  - name: JOURNAL OF ANTHROPOLOGICAL RESEARCH
+    short: J ANTHROPOL RES
+    issn: "00917710"
+    eissn: "21533806"
+    site: http://www.journals.uchicago.edu/toc/jar/current
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S30381306
+    openalex_source_display_name: Journal of Anthropological Research
+  - name: Journal of Anthropological Sciences
+    short: J ANTHROPOL SCI
+    issn: "18274765"
+    eissn: "20370644"
+    site: ""
+    notes: WOS/JCR; IST ITALIANO ANTROPOLOGIA
+    openalex_source_id: https://openalex.org/S104358966
+    openalex_source_display_name: Journal of anthropological sciences
+  - name: JOURNAL OF APPLIED ECONOMETRICS
+    short: J APPL ECONOMET
+    issn: "08837252"
+    eissn: "10991255"
+    site: http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1099-1255
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S85739584
+    openalex_source_display_name: Journal of Applied Econometrics
+  - name: JOURNAL OF ARCHAEOLOGICAL METHOD AND THEORY
+    short: J ARCHAEOL METHOD TH
+    issn: "10725369"
+    eissn: "15737764"
+    site: https://link.springer.com/journal/10816
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S42980227
+    openalex_source_display_name: Journal of Archaeological Method and Theory
+  - name: JOURNAL OF ARCHAEOLOGICAL RESEARCH
+    short: J ARCHAEOL RES
+    issn: "10590161"
+    eissn: "15737756"
+    site: https://link.springer.com/journal/10814
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S101328740
+    openalex_source_display_name: Journal of Archaeological Research
+  - name: JOURNAL OF ARCHAEOLOGICAL SCIENCE
+    short: J ARCHAEOL SCI
+    issn: "03054403"
+    eissn: "10959238"
+    site: http://www.journals.elsevier.com/journal-of-archaeological-science
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S190270160
+    openalex_source_display_name: Journal of Archaeological Science
+  - name: Journal of Asian Economics
+    short: J ASIAN ECON
+    issn: "10490078"
+    eissn: "18737927"
+    site: https://www.sciencedirect.com/journal/journal-of-asian-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S69458508
+    openalex_source_display_name: Journal of Asian Economics
+  - name: JOURNAL OF BANKING & FINANCE
+    short: J BANK FINANC
+    issn: "03784266"
+    eissn: "18726372"
+    site: http://www.journals.elsevier.com/journal-of-banking-and-finance
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S2876017
+    openalex_source_display_name: Journal of Banking & Finance
+  - name: Journal of Behavioral and Experimental Finance
+    short: J BEHAV EXP FINANC
+    issn: "22146350"
+    eissn: "22146369"
+    site: https://www.journals.elsevier.com/journal-of-behavioral-and-experimental-finance
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S2764372386
+    openalex_source_display_name: Journal of Behavioral and Experimental Finance
+  - name: JOURNAL OF BUSINESS & ECONOMIC STATISTICS
+    short: J BUS ECON STAT
+    issn: "07350015"
+    eissn: "15372707"
+    site: http://amstat.tandfonline.com/loi/jbes#.uvek9_zmsnq
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    openalex_source_id: https://openalex.org/S18095783
+    openalex_source_display_name: Journal of Business and Economic Statistics
+  - name: Journal of Business Economics and Management
+    short: J BUS ECON MANAG
+    issn: "16111699"
+    eissn: "20294433"
+    site: http://jbem.vgtu.lt
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+    openalex_source_id: https://openalex.org/S66524056
+    openalex_source_display_name: Journal of Business Economics and Management
+  - name: Journal of Commodity Markets
+    short: J COMMOD MARK
+    issn: "24058513"
+    eissn: "24058505"
+    site: https://www.journals.elsevier.com/journal-of-commodity-markets
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S2898531903
+    openalex_source_display_name: Journal of commodity markets
+  - name: JOURNAL OF COMPARATIVE ECONOMICS
+    short: J COMP ECON
+    issn: "01475967"
+    eissn: "10957227"
+    site: http://www.journals.elsevier.com/journal-of-comparative-economics
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: https://openalex.org/S138645024
+    openalex_source_display_name: Journal of Comparative Economics
+  - name: Journal of Competitiveness
+    short: J COMPETITIVENESS
+    issn: 1804171X
+    eissn: "18041728"
+    site: http://www.cjournal.cz
+    notes: WOS/JCR; UNIV TOMASE BATI & ZLINE, FAK MANAGEMENTU EKONOMIKY
+    openalex_source_id: https://openalex.org/S4210186250
+    openalex_source_display_name: Journal of Competitiveness
+  - name: JOURNAL OF CONSUMER AFFAIRS
+    short: J CONSUM AFF
+    issn: "00220078"
+    eissn: "17456606"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1745-6606
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S189751245
+    openalex_source_display_name: Journal of Consumer Affairs
   - name: Journal of Consumer Culture
     short: J CONSUM CULT
     issn: "14695405"
     eissn: "17412900"
-    site: https://joc.sagepub.com/
+    site: http://joc.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS LTD
     openalex_source_id: https://openalex.org/S10063912
     openalex_source_display_name: Journal of Consumer Culture
+  - name: Journal of Contemporary Accounting & Economics
+    short: J CONTEMP ACCOUNT EC
+    issn: "18155669"
+    eissn: "18155669"
+    site: https://www.journals.elsevier.com/journal-of-contemporary-accounting-and-economics
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S142725411
+    openalex_source_display_name: Journal of Contemporary Accounting & Economics
+  - name: JOURNAL OF DEVELOPMENT ECONOMICS
+    short: J DEV ECON
+    issn: "03043878"
+    eissn: "18726089"
+    site: http://www.elsevier.com/wps/find/journaldescription.cws_home/505546/description#description
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S101209419
+    openalex_source_display_name: Journal of Development Economics
+  - name: Journal of Econometrics
+    short: J ECONOMETRICS
+    issn: "03044076"
+    eissn: "18726895"
+    site: http://www.elsevier.com/locate/jeconom
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    openalex_source_id: https://openalex.org/S127742747
+    openalex_source_display_name: Journal of Econometrics
+  - name: JOURNAL OF ECONOMIC GEOGRAPHY
+    short: J ECON GEOGR
+    issn: "14682702"
+    eissn: "14682710"
+    site: http://joeg.oxfordjournals.org
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S46039370
+    openalex_source_display_name: Journal of Economic Geography
+  - name: JOURNAL OF ECONOMIC GROWTH
+    short: J ECON GROWTH
+    issn: "13814338"
+    eissn: "15737020"
+    site: http://www.springer.com/economics/growth/journal/10887
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S181171746
+    openalex_source_display_name: Journal of Economic Growth
+  - name: JOURNAL OF ECONOMIC HISTORY
+    short: J ECON HIST
+    issn: "00220507"
+    eissn: "14716372"
+    site: http://journals.cambridge.org/action/displayJournal?jid=JEH
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S122073985
+    openalex_source_display_name: The Journal of Economic History
+  - name: JOURNAL OF ECONOMIC LITERATURE
+    short: J ECON LIT
+    issn: "00220515"
+    eissn: "23288175"
+    site: http://www.aeaweb.org/journal.html
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: https://openalex.org/S127708089
+    openalex_source_display_name: Journal of Economic Literature
+  - name: JOURNAL OF ECONOMIC PERSPECTIVES
+    short: J ECON PERSPECT
+    issn: "08953309"
+    eissn: "19447965"
+    site: http://www.aeaweb.org/jep
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: https://openalex.org/S72880728
+    openalex_source_display_name: The Journal of Economic Perspectives
+  - name: Journal of Economic Policy Reform
+    short: J ECON POLICY REFORM
+    issn: "17487870"
+    eissn: "17487889"
+    site: https://www.tandfonline.com/toc/gpre20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S74096415
+    openalex_source_display_name: Journal of Economic Policy Reform
+  - name: JOURNAL OF ECONOMIC SURVEYS
+    short: J ECON SURV
+    issn: "09500804"
+    eissn: "14676419"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-6419
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S124549413
+    openalex_source_display_name: Journal of Economic Surveys
+  - name: JOURNAL OF ENVIRONMENTAL ECONOMICS AND MANAGEMENT
+    short: J ENVIRON ECON MANAG
+    issn: "00950696"
+    eissn: "10960449"
+    site: http://www.elsevier.com/wps/find/journaldescription.cws_home/622870/description#description
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: https://openalex.org/S200872515
+    openalex_source_display_name: Journal of Environmental Economics and Management
+  - name: JOURNAL OF ETHNOBIOLOGY
+    short: J ETHNOBIOL
+    issn: "02780771"
+    eissn: "21624496"
+    site: https://journals.sagepub.com/home/ebia
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S72250933
+    openalex_source_display_name: Journal of Ethnobiology
+  - name: Journal of Family and Economic Issues
+    short: J FAM ECON ISS
+    issn: "10580476"
+    eissn: "15733475"
+    site: https://www.springer.com/journal/10834
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+    openalex_source_id: https://openalex.org/S4210224032
+    openalex_source_display_name: Journal of Family and Economic Issues
+  - name: JOURNAL OF FAMILY HISTORY
+    short: J FAM HIST
+    issn: "03631990"
+    eissn: "15525473"
+    site: http://jfh.sagepub.com
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S22422391
+    openalex_source_display_name: Journal of Family History
+  - name: JOURNAL OF FINANCE
+    short: J FINANC
+    issn: "00221082"
+    eissn: "15406261"
+    site: http://www.wiley.com/bw/journal.asp?ref=0022-1082
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S5353659
+    openalex_source_display_name: The Journal of Finance
+  - name: JOURNAL OF FINANCIAL AND QUANTITATIVE ANALYSIS
+    short: J FINANC QUANT ANAL
+    issn: "00221090"
+    eissn: "17566916"
+    site: https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S193228710
+    openalex_source_display_name: Journal of Financial and Quantitative Analysis
+  - name: JOURNAL OF FINANCIAL ECONOMICS
+    short: J FINANC ECON
+    issn: 0304405X
+    eissn: ""
+    site: http://www.journals.elsevier.com/journal-of-financial-economics
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    openalex_source_id: https://openalex.org/S149240962
+    openalex_source_display_name: Journal of Financial Economics
+  - name: Journal of Financial Stability
+    short: J FINANC STABIL
+    issn: "15723089"
+    eissn: "18780962"
+    site: https://www.journals.elsevier.com/journal-of-financial-stability
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: https://openalex.org/S121634618
+    openalex_source_display_name: Journal of Financial Stability
+  - name: JOURNAL OF FORECASTING
+    short: J FORECASTING
+    issn: "02776693"
+    eissn: 1099131X
+    site: http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1099-131X
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S122161766
+    openalex_source_display_name: Journal of Forecasting
   - name: JOURNAL OF HEALTH AND SOCIAL BEHAVIOR
     short: J HEALTH SOC BEHAV
     issn: "00221465"
     eissn: "21506000"
-    site: https://sagepub.com/journals/Journal201971/title
+    site: http://www.sagepub.com/journals/Journal201971/title
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S122290859
     openalex_source_display_name: Journal of Health and Social Behavior
+  - name: JOURNAL OF HEALTH ECONOMICS
+    short: J HEALTH ECON
+    issn: "01676296"
+    eissn: "18791646"
+    site: http://www.elsevier.com/wps/find/journaldescription.cws_home/505560/description#description
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S166621295
+    openalex_source_display_name: Journal of Health Economics
+  - name: JOURNAL OF HISTORICAL SOCIOLOGY
+    short: J HIST SOCIOL
+    issn: "09521909"
+    eissn: "14676443"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-6443
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S49831879
+    openalex_source_display_name: Journal of Historical Sociology
+  - name: JOURNAL OF HUMAN EVOLUTION
+    short: J HUM EVOL
+    issn: "00472484"
+    eissn: "10958606"
+    site: http://www.journals.elsevier.com/journal-of-human-evolution
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S83388334
+    openalex_source_display_name: Journal of Human Evolution
+  - name: JOURNAL OF HUMAN RESOURCES
+    short: J HUM RESOUR
+    issn: 0022166X
+    eissn: "15488004"
+    site: http://jhr.uwpress.org
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    openalex_source_id: https://openalex.org/S62957338
+    openalex_source_display_name: The Journal of Human Resources
+  - name: Journal of Institutional Economics
+    short: J I ECON
+    issn: "17441374"
+    eissn: "17441382"
+    site: http://journals.cambridge.org/JOI
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S146268463
+    openalex_source_display_name: Journal of Institutional Economics
+  - name: JOURNAL OF INTERNATIONAL ECONOMICS
+    short: J INT ECON
+    issn: "00221996"
+    eissn: "18730353"
+    site: https://www.sciencedirect.com/journal/journal-of-international-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S198098467
+    openalex_source_display_name: Journal of International Economics
+  - name: Journal of International Financial Markets Institutions & Money
+    short: J INT FINANC MARK I
+    issn: "10424431"
+    eissn: "18730612"
+    site: https://www.journals.elsevier.com/journal-of-international-financial-markets-institutions-and-money
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S82743730
+    openalex_source_display_name: Journal of International Financial Markets Institutions and Money
+  - name: JOURNAL OF LABOR ECONOMICS
+    short: J LABOR ECON
+    issn: 0734306X
+    eissn: "15375307"
+    site: http://www.journals.uchicago.edu/JOLE/home.html
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S8557221
+    openalex_source_display_name: Journal of Labor Economics
+  - name: Journal of Latin American and Caribbean Anthropology
+    short: J LAT AM CARIBB ANTH
+    issn: "19354932"
+    eissn: "19354940"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/19354940
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4210196943
+    openalex_source_display_name: The Journal of Latin American and Caribbean Anthropology
+  - name: Journal of Linguistic Anthropology
+    short: J LINGUIST ANTHROPOL
+    issn: "10551360"
+    eissn: "15481395"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481395
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S161848700
+    openalex_source_display_name: Journal of Linguistic Anthropology
   - name: JOURNAL OF MARRIAGE AND FAMILY
     short: J MARRIAGE FAM
     issn: "00222445"
     eissn: "17413737"
-    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1741-3737
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1741-3737
     notes: WOS/JCR; WILEY
     openalex_source_id: https://openalex.org/S146344
     openalex_source_display_name: Journal of Marriage and the Family
+  - name: JOURNAL OF MATERIAL CULTURE
+    short: J MAT CULT
+    issn: "13591835"
+    eissn: "14603586"
+    site: http://mcu.sagepub.com
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S179822231
+    openalex_source_display_name: Journal of Material Culture
+  - name: JOURNAL OF MONETARY ECONOMICS
+    short: J MONETARY ECON
+    issn: "03043932"
+    eissn: "18731295"
+    site: http://www.journals.elsevier.com/journal-of-monetary-economics/#description
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S6711363
+    openalex_source_display_name: Journal of Monetary Economics
+  - name: Journal of Paleolithic Archaeology
+    short: J PALEOLITH ARCHAEOL
+    issn: ""
+    eissn: "25208217"
+    site: https://link.springer.com/journal/41982
+    notes: WOS/JCR; SPRINGERNATURE
+    openalex_source_id: https://openalex.org/S4210218161
+    openalex_source_display_name: Journal of Paleolithic Archaeology
+  - name: JOURNAL OF PEASANT STUDIES
+    short: J PEASANT STUD
+    issn: "03066150"
+    eissn: "17439361"
+    site: http://www.tandf.co.uk/journals/jps
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S112914683
+    openalex_source_display_name: The Journal of Peasant Studies
+  - name: JOURNAL OF POLICY ANALYSIS AND MANAGEMENT
+    short: J POLICY ANAL MANAG
+    issn: ""
+    eissn: "15206688"
+    site: http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1520-6688
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S25370267
+    openalex_source_display_name: Journal of Policy Analysis and Management
+  - name: JOURNAL OF POLICY MODELING
+    short: J POLICY MODEL
+    issn: "01618938"
+    eissn: "18738060"
+    site: https://www.journals.elsevier.com/journal-of-policy-modeling
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: https://openalex.org/S81022070
+    openalex_source_display_name: Journal of Policy Modeling
+  - name: JOURNAL OF POLITICAL ECONOMY
+    short: J POLIT ECON
+    issn: "00223808"
+    eissn: 1537534X
+    site: http://www.journals.uchicago.edu/toc/jpe/current
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S95323914
+    openalex_source_display_name: Journal of Political Economy
+  - name: JOURNAL OF POPULATION ECONOMICS
+    short: J POPUL ECON
+    issn: "09331433"
+    eissn: "14321475"
+    site: https://www.springer.com/journal/148
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S18284184
+    openalex_source_display_name: Journal of Population Economics
+  - name: JOURNAL OF PUBLIC ECONOMICS
+    short: J PUBLIC ECON
+    issn: "00472727"
+    eissn: "00472727"
+    site: https://www.journals.elsevier.com/journal-of-public-economics
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    openalex_source_id: https://openalex.org/S199447588
+    openalex_source_display_name: Journal of Public Economics
+  - name: JOURNAL OF REGIONAL SCIENCE
+    short: J REGIONAL SCI
+    issn: "00224146"
+    eissn: "14679787"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9787
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S65528657
+    openalex_source_display_name: Journal of Regional Science
+  - name: JOURNAL OF SOCIAL ARCHAEOLOGY
+    short: J SOC ARCHAEOL
+    issn: "14696053"
+    eissn: "17412951"
+    site: http://jsa.sagepub.com
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S184546072
+    openalex_source_display_name: Journal of Social Archaeology
+  - name: Journal of the Association of Environmental and Resource Economists
+    short: J ASSOC ENVIRON RESO
+    issn: "23335955"
+    eissn: "23335963"
+    site: http://www.press.uchicago.edu/ucp/journals/journal/jaere.html
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S2735550652
+    openalex_source_display_name: Journal of the Association of Environmental and Resource Economists
+  - name: Journal of the European Economic Association
+    short: J EUR ECON ASSOC
+    issn: "15424766"
+    eissn: "15424774"
+    site: https://academic.oup.com/jeea
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S165087003
+    openalex_source_display_name: Journal of the European Economic Association
+  - name: JOURNAL OF THE JAPANESE AND INTERNATIONAL ECONOMIES
+    short: J JPN INT ECON
+    issn: "08891583"
+    eissn: "10958681"
+    site: https://www.journals.elsevier.com/journal-of-the-japanese-and-international-economies
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: https://openalex.org/S160393188
+    openalex_source_display_name: Journal of the Japanese and International Economies
+  - name: JOURNAL OF THE POLYNESIAN SOCIETY
+    short: J POLYNESIAN SOC
+    issn: "00324000"
+    eissn: "22305955"
+    site: http://www.jps.auckland.ac.nz
+    notes: WOS/JCR; POLYNESIAN SOC INC
+    openalex_source_id: https://openalex.org/S189780351
+    openalex_source_display_name: Journal of the Polynesian Society
+  - name: JOURNAL OF THE ROYAL ANTHROPOLOGICAL INSTITUTE
+    short: J ROY ANTHROPOL INST
+    issn: "13590987"
+    eissn: "14679655"
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9655
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S65256140
+    openalex_source_display_name: Journal of the Royal Anthropological Institute
+  - name: Journal of Transport Geography
+    short: J TRANSP GEOGR
+    issn: "09666923"
+    eissn: "18731236"
+    site: http://www.journals.elsevier.com/journal-of-transport-geography
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S80150607
+    openalex_source_display_name: Journal of Transport Geography
+  - name: JOURNAL OF URBAN ECONOMICS
+    short: J URBAN ECON
+    issn: "00941190"
+    eissn: "10959068"
+    site: https://www.journals.elsevier.com/journal-of-urban-economics
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: https://openalex.org/S147692640
+    openalex_source_display_name: Journal of Urban Economics
+  - name: Journal of Urban Ethnology
+    short: J URBAN ETHNOL
+    issn: "14290618"
+    eissn: "14290618"
+    site: ""
+    notes: WOS/JCR; POLISH ACAD SCIENCES, INST ARCHAEOLOGY & ETHNOLOGY
+    openalex_source_id: https://openalex.org/S4210173109
+    openalex_source_display_name: Journal of Urban Ethnology
+  - name: JOURNAL OF WORLD PREHISTORY
+    short: J WORLD PREHIST
+    issn: "08927537"
+    eissn: "15737802"
+    site: https://www.springer.com/journal/10963
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S97630619
+    openalex_source_display_name: Journal of World Prehistory
+  - name: LABOUR ECONOMICS
+    short: LABOUR ECON
+    issn: "09275371"
+    eissn: "18791034"
+    site: https://www.journals.elsevier.com/labour-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S163774179
+    openalex_source_display_name: Labour Economics
   - name: LANGUAGE IN SOCIETY
     short: LANG SOC
     issn: "00474045"
     eissn: "14698013"
-    site: https://journals.cambridge.org/action/displayJournal
+    site: http://journals.cambridge.org/action/displayJournal?jid=LSY
     notes: WOS/JCR; CAMBRIDGE UNIV PRESS
     openalex_source_id: https://openalex.org/S123019783
     openalex_source_display_name: Language in Society
+  - name: LATIN AMERICAN ANTIQUITY
+    short: LAT AM ANTIQ
+    issn: "10456635"
+    eissn: "23255080"
+    site: https://www.cambridge.org/core/journals/latin-american-antiquity
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S30681974
+    openalex_source_display_name: Latin American Antiquity
   - name: LAW & SOCIETY REVIEW
     short: LAW SOC REV
     issn: "00239216"
     eissn: "15405893"
-    site: https://cambridge.org/lsr
+    site: https://www.cambridge.org/lsr
     notes: WOS/JCR; CAMBRIDGE UNIV PRESS
     openalex_source_id: https://openalex.org/S44706263
     openalex_source_display_name: Law & Society Review
+  - name: Lithic Technology
+    short: LITHIC TECHNOL
+    issn: "01977261"
+    eissn: "20516185"
+    site: https://www.tandfonline.com/toc/ylit20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S2764680422
+    openalex_source_display_name: Lithic Technology
+  - name: Magallania
+    short: MAGALLANIA
+    issn: "07182244"
+    eissn: "07182244"
+    site: http://www.scielo.cl/scielo.php?script=sci_serial&pid=0718-2244&lng=en&nrm=iso
+    notes: WOS/JCR; UNIV MAGALLANES
+    openalex_source_id: https://openalex.org/S141015964
+    openalex_source_display_name: Magallania
+  - name: MANAGERIAL AND DECISION ECONOMICS
+    short: MANAG DECIS ECON
+    issn: "01436570"
+    eissn: "10991468"
+    site: https://onlinelibrary.wiley.com/journal/10991468
+    notes: WOS/JCR; JOHN WILEY & SONS LTD
+    openalex_source_id: https://openalex.org/S138400101
+    openalex_source_display_name: Managerial and Decision Economics
   - name: MEDIA CULTURE & SOCIETY
     short: MEDIA CULT SOC
     issn: "01634437"
     eissn: "14603675"
-    site: https://sagepub.com/journals/Journal200958/title
+    site: http://www.sagepub.com/journals/Journal200958/title
     notes: WOS/JCR; SAGE PUBLICATIONS LTD
     openalex_source_id: https://openalex.org/S18522216
     openalex_source_display_name: Media Culture & Society
+  - name: Medical Anthropology
+    short: MED ANTHROPOL
+    issn: "01459740"
+    eissn: "15455882"
+    site: https://www.tandfonline.com/toc/gmea20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S91080920
+    openalex_source_display_name: Medical Anthropology
+  - name: MEDICAL ANTHROPOLOGY QUARTERLY
+    short: MED ANTHROPOL Q
+    issn: "07455194"
+    eissn: "15481387"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481387
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S71057445
+    openalex_source_display_name: Medical Anthropology Quarterly
+  - name: Museum Anthropology
+    short: MUS ANTHROPOL
+    issn: "08928339"
+    eissn: "15481379"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15481379
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S282835
+    openalex_source_display_name: Museum Anthropology
+  - name: Nawpa Pacha
+    short: NAWPA PACHA
+    issn: "00776297"
+    eissn: "20516207"
+    site: https://www.tandfonline.com/toc/ynaw20/current
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S4210197920
+    openalex_source_display_name: Ñawpa Pacha
+  - name: NBER Macroeconomics Annual
+    short: NBER MACROECON ANNU
+    issn: "08893365"
+    eissn: "15372642"
+    site: http://www.nber.org/macroannualconference/macroannualconference.html
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S127060114
+    openalex_source_display_name: NBER Macroeconomics Annual
   - name: New Directions for Child and Adolescent Development
     short: NEW DIR CHILD ADOLES
     issn: "15203247"
@@ -253,11 +2027,75 @@ journals:
     notes: WOS/JCR; WILEY
     openalex_source_id: https://openalex.org/S31771912
     openalex_source_display_name: New Directions for Child and Adolescent Development
+  - name: NEW POLITICAL ECONOMY
+    short: NEW POLIT ECON
+    issn: "13563467"
+    eissn: "14699923"
+    site: https://www.tandfonline.com/toc/cnpe20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S146242404
+    openalex_source_display_name: New Political Economy
+  - name: NOMADIC PEOPLES
+    short: NOMAD PEOPLES
+    issn: "08227942"
+    eissn: "17522366"
+    site: http://www.berghahnbooksonline.com/journals/np
+    notes: WOS/JCR; WHITE HORSE PRESS
+    openalex_source_id: https://openalex.org/S178513897
+    openalex_source_display_name: Nomadic Peoples
+  - name: North American Journal of Economics and Finance
+    short: N AM J ECON FINANC
+    issn: "10629408"
+    eissn: "18790860"
+    site: https://www.journals.elsevier.com/the-north-american-journal-of-economics-and-finance
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: https://openalex.org/S155526628
+    openalex_source_display_name: The North American Journal of Economics and Finance
+  - name: OCEANIA
+    short: OCEANIA
+    issn: "00298077"
+    eissn: "18344461"
+    site: http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1834-4461
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S58557618
+    openalex_source_display_name: Oceania
+  - name: Oeconomia Copernicana
+    short: OECON COPERNIC
+    issn: "20831277"
+    eissn: "23531827"
+    site: http://oeconomia.pl
+    notes: WOS/JCR; INST BADAN GOSPODARCZYCH
+    openalex_source_id: https://openalex.org/S2738677470
+    openalex_source_display_name: Oeconomia Copernicana
+  - name: PaleoAmerica
+    short: PALEOAMERICA
+    issn: "20555563"
+    eissn: "20555571"
+    site: https://www.tandfonline.com/toc/ypal20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S4210197810
+    openalex_source_display_name: PaleoAmerica
+  - name: PHARMACOECONOMICS
+    short: PHARMACOECONOMICS
+    issn: "11707690"
+    eissn: "11792027"
+    site: http://www.springer.com/adisonline/journal/40273
+    notes: WOS/JCR; ADIS INT LTD
+    openalex_source_id: https://openalex.org/S43019230
+    openalex_source_display_name: PharmacoEconomics
+  - name: Polar-Political and Legal Anthropology Review
+    short: POLAR-POLIT LEG ANTH
+    issn: "10816976"
+    eissn: "15552934"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15552934
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    openalex_source_id: https://openalex.org/S4210169922
+    openalex_source_display_name: PoLAR Political and Legal Anthropology Review
   - name: POLITICS & SOCIETY
     short: POLIT SOC
     issn: "00323292"
     eissn: "15527514"
-    site: https://journals.sagepub.com/home/pas
+    site: http://journals.sagepub.com/home/pas
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S49968029
     openalex_source_display_name: Politics & Society
@@ -265,10 +2103,34 @@ journals:
     short: POPUL DEV REV
     issn: "00987921"
     eissn: "17284457"
-    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1728-4457
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1728-4457
     notes: WOS/JCR; WILEY
     openalex_source_id: https://openalex.org/S32314625
     openalex_source_display_name: Population and Development Review
+  - name: POST-SOVIET AFFAIRS
+    short: POST-SOV AFF
+    issn: 1060586X
+    eissn: "19382855"
+    site: https://www.tandfonline.com/toc/rpsa20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S79712050
+    openalex_source_display_name: Post-Soviet Affairs
+  - name: Praehistorische Zeitschrift
+    short: PRAEHIST Z
+    issn: "00794848"
+    eissn: "16130804"
+    site: http://www.degruyter.com/view/j/prhz
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    openalex_source_id: https://openalex.org/S171064435
+    openalex_source_display_name: Praehistorische Zeitschrift
+  - name: PUBLIC CULTURE
+    short: PUBLIC CULTURE
+    issn: "08992363"
+    eissn: "15278018"
+    site: http://publicculture.org
+    notes: WOS/JCR; DUKE UNIV PRESS
+    openalex_source_id: https://openalex.org/S74056291
+    openalex_source_display_name: Public Culture
   - name: Qualitative Research
     short: QUAL RES
     issn: "14687941"
@@ -281,26 +2143,226 @@ journals:
     short: QUAL SOCIOL
     issn: "01620436"
     eissn: "15737837"
-    site: https://springerlink.com/(xnnb5345uwemez55somc4b55)/app/home/journal.asp
+    site: http://www.springerlink.com/(xnnb5345uwemez55somc4b55)/app/home/journal.asp?referrer=parent&backto=linkingpublicationresults,1:105337,1
     notes: WOS/JCR; SPRINGER
     openalex_source_id: https://openalex.org/S143967217
     openalex_source_display_name: Qualitative Sociology
+  - name: QUARTERLY JOURNAL OF ECONOMICS
+    short: Q J ECON
+    issn: "00335533"
+    eissn: "15314650"
+    site: http://qje.oxfordjournals.org
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: https://openalex.org/S203860005
+    openalex_source_display_name: The Quarterly Journal of Economics
+  - name: QUARTERLY REVIEW OF ECONOMICS AND FINANCE
+    short: Q REV ECON FINANC
+    issn: "10629769"
+    eissn: "18784259"
+    site: https://www.journals.elsevier.com/the-quarterly-review-of-economics-and-finance
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: https://openalex.org/S125273398
+    openalex_source_display_name: The Quarterly Review of Economics and Finance
   - name: RACE & CLASS
     short: RACE CLASS
     issn: "03063968"
     eissn: "17413125"
-    site: https://sagepub.com/journalsProdDesc.nav
+    site: http://www.sagepub.com/journalsProdDesc.nav?prodId=Journal200818
     notes: WOS/JCR; SAGE PUBLICATIONS LTD
     openalex_source_id: https://openalex.org/S180716411
     openalex_source_display_name: Race & Class
+  - name: RAND JOURNAL OF ECONOMICS
+    short: RAND J ECON
+    issn: "07416261"
+    eissn: "17562171"
+    site: https://onlinelibrary.wiley.com/journal/17562171
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S34139249
+    openalex_source_display_name: The RAND Journal of Economics
+  - name: REGIONAL SCIENCE AND URBAN ECONOMICS
+    short: REG SCI URBAN ECON
+    issn: "01660462"
+    eissn: "18792308"
+    site: https://www.journals.elsevier.com/regional-science-and-urban-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S107631327
+    openalex_source_display_name: Regional Science and Urban Economics
+  - name: REGIONAL STUDIES
+    short: REG STUD
+    issn: "00343404"
+    eissn: "13600591"
+    site: https://www.tandfonline.com/toc/cres20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S175672440
+    openalex_source_display_name: Regional Studies
+  - name: Relaciones
+    short: RELACIONES-ARG
+    issn: "03252221"
+    eissn: "18521479"
+    site: http://www.saantropologia.com.ar/revista-relaciones
+    notes: WOS/JCR; SOC ARGENTINA ANTROPOLOGIA
+    openalex_source_id: https://openalex.org/S2739120472
+    openalex_source_display_name: Relaciones
+  - name: Research in Transportation Economics
+    short: RES TRANSP ECON
+    issn: "07398859"
+    eissn: "18757979"
+    site: https://www.journals.elsevier.com/research-in-transportation-economics
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S39263009
+    openalex_source_display_name: Research in Transportation Economics
+  - name: RESOURCE AND ENERGY ECONOMICS
+    short: RESOUR ENERGY ECON
+    issn: "09287655"
+    eissn: "18730221"
+    site: http://www.journals.elsevier.com/resource-and-energy-economics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S165058066
+    openalex_source_display_name: Resource and Energy Economics
+  - name: REVIEW OF ECONOMIC STUDIES
+    short: REV ECON STUD
+    issn: "00346527"
+    eissn: 1467937X
+    site: https://academic.oup.com/restud
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S88935262
+    openalex_source_display_name: The Review of Economic Studies
+  - name: REVIEW OF ECONOMICS AND STATISTICS
+    short: REV ECON STAT
+    issn: "00346535"
+    eissn: "15309142"
+    site: http://www.mitpressjournals.org/loi/rest
+    notes: WOS/JCR; MIT PRESS
+    openalex_source_id: https://openalex.org/S180061323
+    openalex_source_display_name: The Review of Economics and Statistics
+  - name: Review of Environmental Economics and Policy
+    short: REV ENV ECON POLICY
+    issn: "17506816"
+    eissn: "17506824"
+    site: http://reep.oxfordjournals.org
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S140842003
+    openalex_source_display_name: Review of Environmental Economics and Policy
+  - name: Review of Finance
+    short: REV FINANC
+    issn: "15723097"
+    eissn: 1573692X
+    site: https://academic.oup.com/rof
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S131117787
+    openalex_source_display_name: Review of Finance
+  - name: REVIEW OF FINANCIAL STUDIES
+    short: REV FINANC STUD
+    issn: "08939454"
+    eissn: "14657368"
+    site: https://academic.oup.com/rfs
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: https://openalex.org/S170137484
+    openalex_source_display_name: Review of Financial Studies
+  - name: Review of International Organizations
+    short: REV INT ORGAN
+    issn: "15597431"
+    eissn: 1559744X
+    site: http://www.springer.com/social+sciences/journal/11558
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S71858213
+    openalex_source_display_name: The Review of International Organizations
+  - name: REVIEW OF INTERNATIONAL POLITICAL ECONOMY
+    short: REV INT POLIT ECON
+    issn: "09692290"
+    eissn: "14664526"
+    site: http://www.tandfonline.com/action/journalInformation?journalCode=rrip20
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S2875300
+    openalex_source_display_name: Review of International Political Economy
+  - name: Review of Keynesian Economics
+    short: REV KEYNES ECON
+    issn: "20495323"
+    eissn: "20495331"
+    site: ""
+    notes: WOS/JCR; EDWARD ELGAR PUBLISHING LTD
+    openalex_source_id: https://openalex.org/S2764655866
+    openalex_source_display_name: Review of Keynesian Economics
+  - name: Reviews in Anthropology
+    short: REV ANTHR
+    issn: "00938157"
+    eissn: "15563014"
+    site: https://www.tandfonline.com/toc/grva20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S99456263
+    openalex_source_display_name: Reviews in Anthropology
+  - name: Revista de Antropologia Social
+    short: REV ANTROPOL SOC
+    issn: 1131558X
+    eissn: "19882831"
+    site: http://revistas.ucm.es/index.php/RASO
+    notes: WOS/JCR; UNIV COMPLUTENSE MADRID, SERVICIO PUBLICACIONES
+    openalex_source_id: https://openalex.org/S4210174732
+    openalex_source_display_name: Revista de Antropología Social
+  - name: Revista Espanola de Antropologia Americana
+    short: REV ESP ANTROPOL AM
+    issn: "05566533"
+    eissn: "19882718"
+    site: http://revistas.ucm.es/index.php/REAA
+    notes: WOS/JCR; UNIV COMPLUTENSE MADRID, SERVICIO PUBLICACIONES
+    openalex_source_id: https://openalex.org/S4306527271
+    openalex_source_display_name: Revista Española de Antropología Americana
+  - name: Romani Studies
+    short: ROMANI STUD
+    issn: "15280748"
+    eissn: "17572274"
+    site: ""
+    notes: WOS/JCR; LIVERPOOL UNIV PRESS
+    openalex_source_id: https://openalex.org/S12643362
+    openalex_source_display_name: Romani Studies
   - name: Scandinavian Journal of Hospitality and Tourism
     short: SCAND J HOSP TOUR
     issn: "15022250"
     eissn: "15022269"
-    site: https://tandfonline.com/toc/sjht20/current
+    site: https://www.tandfonline.com/toc/sjht20/current
     notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
     openalex_source_id: https://openalex.org/S127704935
     openalex_source_display_name: Scandinavian Journal of Hospitality and Tourism
+  - name: Signs and Society
+    short: SIGNS SOC
+    issn: "23264489"
+    eissn: "23264497"
+    site: http://www.press.uchicago.edu/ucp/journals/journal/sas.html
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: https://openalex.org/S4210225922
+    openalex_source_display_name: Signs and Society
+  - name: Slovensky Narodopis-Slovak Ethnology
+    short: SLOVENSKY NARODOP
+    issn: "13351303"
+    eissn: "13399357"
+    site: ""
+    notes: WOS/JCR; SLOVAK ACAD SCIENCES, INST ETHNOLOGY
+    openalex_source_id: https://openalex.org/S2736711728
+    openalex_source_display_name: Slovenský národopis
+  - name: SMALL BUSINESS ECONOMICS
+    short: SMALL BUS ECON
+    issn: 0921898X
+    eissn: "15730913"
+    site: http://www.springer.com/business+%26+management/business+for+professionals/journal/11187
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: https://openalex.org/S41869786
+    openalex_source_display_name: Small Business Economics
+  - name: Social Analysis
+    short: SOC ANAL
+    issn: 0155977X
+    eissn: "15585727"
+    site: http://journals.berghahnbooks.com/sa
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: https://openalex.org/S57599369
+    openalex_source_display_name: Social Analysis
+  - name: Social Anthropology
+    short: SOC ANTHROPOL
+    issn: "09640282"
+    eissn: "14698676"
+    site: http://www.easaonline.org/journal.shtml
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: https://openalex.org/S20076162
+    openalex_source_display_name: Social Anthropology
   - name: SOCIAL FORCES
     short: SOC FORCES
     issn: "00377732"
@@ -313,7 +2375,7 @@ journals:
     short: SOC INDIC RES
     issn: "03038300"
     eissn: "15730921"
-    site: https://springer.com/journal/11205
+    site: https://www.springer.com/journal/11205
     notes: WOS/JCR; SPRINGER
     openalex_source_id: https://openalex.org/S112952035
     openalex_source_display_name: Social Indicators Research
@@ -321,7 +2383,7 @@ journals:
     short: SOC MOVEMENT STUD
     issn: "14742837"
     eissn: "14742829"
-    site: https://tandfonline.com/action/journalInformation
+    site: http://www.tandfonline.com/action/journalInformation?show=aimsScope&journalCode=csms20
     notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
     openalex_source_id: https://openalex.org/S135892541
     openalex_source_display_name: Social movement studies
@@ -329,7 +2391,7 @@ journals:
     short: SOC NETWORKS
     issn: "03788733"
     eissn: "18792111"
-    site: https://journals.elsevier.com/social-networks
+    site: http://www.journals.elsevier.com/social-networks
     notes: WOS/JCR; ELSEVIER
     openalex_source_id: https://openalex.org/S26186134
     openalex_source_display_name: Social Networks
@@ -337,7 +2399,7 @@ journals:
     short: SOC PROBL
     issn: "00377791"
     eissn: "15338533"
-    site: https://academic.oup.com/socpro
+    site: http://socpro.oxfordjournals.org
     notes: WOS/JCR; OXFORD UNIV PRESS INC
     openalex_source_id: https://openalex.org/S129389861
     openalex_source_display_name: Social Problems
@@ -345,7 +2407,7 @@ journals:
     short: SOC PSYCHOL QUART
     issn: "01902725"
     eissn: "19398999"
-    site: https://spq.sagepub.com/
+    site: http://spq.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S131591925
     openalex_source_display_name: Social Psychology Quarterly
@@ -353,7 +2415,7 @@ journals:
     short: SOC SCI RES
     issn: 0049089X
     eissn: "10960317"
-    site: https://journals.elsevier.com/social-science-research
+    site: https://www.journals.elsevier.com/social-science-research
     notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
     openalex_source_id: https://openalex.org/S59311786
     openalex_source_display_name: Social Science Research
@@ -365,11 +2427,19 @@ journals:
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S2764909113
     openalex_source_display_name: Society and Mental Health
+  - name: SOCIO-ECONOMIC PLANNING SCIENCES
+    short: SOCIO-ECON PLAN SCI
+    issn: "00380121"
+    eissn: "18736041"
+    site: https://www.journals.elsevier.com/socio-economic-planning-sciences
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: https://openalex.org/S153485742
+    openalex_source_display_name: Socio-Economic Planning Sciences
   - name: Socio-Economic Review
     short: SOCIO-ECON REV
     issn: "14751461"
     eissn: 1475147X
-    site: https://academic.oup.com/ser
+    site: http://ser.oxfordjournals.org
     notes: WOS/JCR; OXFORD UNIV PRESS
     openalex_source_id: https://openalex.org/S147547362
     openalex_source_display_name: Socio-Economic Review
@@ -377,7 +2447,7 @@ journals:
     short: SOCIOL RURALIS
     issn: "00380199"
     eissn: "14679523"
-    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9523
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9523
     notes: WOS/JCR; WILEY
     openalex_source_id: https://openalex.org/S66322501
     openalex_source_display_name: Sociologia Ruralis
@@ -385,7 +2455,7 @@ journals:
     short: SOCIOL METHODOL
     issn: "00811750"
     eissn: "14679531"
-    site: https://asanet.org/journals/sm/sm.cfm
+    site: http://www.asanet.org/journals/sm/sm.cfm
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S181883320
     openalex_source_display_name: Sociological Methodology
@@ -393,7 +2463,7 @@ journals:
     short: SOCIOL METHOD RES
     issn: "00491241"
     eissn: "15528294"
-    site: https://smr.sagepub.com/
+    site: http://smr.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S9536269
     openalex_source_display_name: Sociological Methods & Research
@@ -409,7 +2479,7 @@ journals:
     short: SOCIOL SCI
     issn: ""
     eissn: "23306696"
-    site: https://sociologicalscience.com/
+    site: https://www.sociologicalscience.com
     notes: WOS/JCR; SOC SOCIOLOGICAL SCIENCE
     openalex_source_id: https://openalex.org/S2739021930
     openalex_source_display_name: Sociological Science
@@ -429,11 +2499,19 @@ journals:
     notes: WOS/JCR; WILEY
     openalex_source_id: https://openalex.org/S100176667
     openalex_source_display_name: Sociology Compass
+  - name: Sociology Lens
+    short: SOCIOLOGY LENS
+    issn: "28325796"
+    eissn: 2832580X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S4387286883
+    openalex_source_display_name: Sociology Lens
   - name: SOCIOLOGY OF EDUCATION
     short: SOCIOL EDUC
     issn: "00380407"
     eissn: "19398573"
-    site: https://soe.sagepub.com/
+    site: http://soe.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S36718530
     openalex_source_display_name: Sociology of Education
@@ -441,7 +2519,7 @@ journals:
     short: SOCIOL HEALTH ILL
     issn: "01419889"
     eissn: "14679566"
-    site: https://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9566
+    site: http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1467-9566
     notes: WOS/JCR; WILEY
     openalex_source_id: https://openalex.org/S123166236
     openalex_source_display_name: Sociology of Health & Illness
@@ -457,7 +2535,7 @@ journals:
     short: SOCIOL SPORT J
     issn: "07411235"
     eissn: "15432785"
-    site: https://journals.humankinetics.com/journal/ssj
+    site: http://journals.humankinetics.com/journal/ssj
     notes: WOS/JCR; HUMAN KINETICS PUBL INC
     openalex_source_id: https://openalex.org/S12205661
     openalex_source_display_name: Sociology of Sport Journal
@@ -465,15 +2543,153 @@ journals:
     short: SOCIOLOGY
     issn: "00380385"
     eissn: "14698684"
-    site: https://uk.sagepub.com/journalsProdDesc.nav
+    site: http://www.uk.sagepub.com/journalsProdDesc.nav?prodId=Journal201569
     notes: WOS/JCR; SAGE PUBLICATIONS LTD
     openalex_source_id: https://openalex.org/S79135273
     openalex_source_display_name: Sociology
+  - name: Structural Change and Economic Dynamics
+    short: STRUCT CHANGE ECON D
+    issn: 0954349X
+    eissn: "18736017"
+    site: https://www.journals.elsevier.com/structural-change-and-economic-dynamics
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: https://openalex.org/S67638930
+    openalex_source_display_name: Structural Change and Economic Dynamics
+  - name: Studia Ethnologica Croatica
+    short: STUD ETHNOL CROAT
+    issn: "13303627"
+    eissn: "18489532"
+    site: https://hrcak.srce.hr/sec?lang=en
+    notes: WOS/JCR; UNIV ZAGREB, FAC HUMANITIES & SOCIAL SCIENCES, DEPT ETHNOL &
+      CULT ANTHROPOL
+    openalex_source_id: https://openalex.org/S4210192708
+    openalex_source_display_name: Studia Ethnologica Croatica
+  - name: Technological and Economic Development of Economy
+    short: TECHNOL ECON DEV ECO
+    issn: "20294913"
+    eissn: "20294921"
+    site: http://tede.vgtu.lt
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+    openalex_source_id: https://openalex.org/S115091506
+    openalex_source_display_name: Technological and Economic Development of Economy
+  - name: Tomskii Zhurnal Lingvisticheskikh i Antropologicheskikh Issledovanii-Tomsk
+      Journal of Linguistics and Anthropology
+    short: TOMSK ZH LINGVIST AN
+    issn: "23076119"
+    eissn: "23076119"
+    site: ""
+    notes: WOS/JCR; TOMSK STATE PEDAGOGICAL UNIV
+    openalex_source_id: https://openalex.org/S4210220962
+    openalex_source_display_name: Tomsk Journal of Linguistics and Anthropology
+  - name: Tourism Economics
+    short: TOURISM ECON
+    issn: "13548166"
+    eissn: "20440375"
+    site: https://us.sagepub.com/en-us/nam/tourism-economics/journal202562
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S201197719
+    openalex_source_display_name: Tourism Economics
+  - name: Trabajos de Prehistoria
+    short: TRABAJOS PREHIST
+    issn: "00825638"
+    eissn: "19883218"
+    site: http://tp.revistas.csic.es
+    notes: WOS/JCR; CONSEJO SUPERIOR INVESTIGACIONES CIENTIFICAS-CSIC
+    openalex_source_id: https://openalex.org/S100617624
+    openalex_source_display_name: Trabajos de Prehistoria
+  - name: Transcultural Psychiatry
+    short: TRANSCULT PSYCHIATRY
+    issn: "13634615"
+    eissn: "14617471"
+    site: http://tps.sagepub.com
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S15609493
+    openalex_source_display_name: Transcultural Psychiatry
+  - name: Transforming Anthropology
+    short: TRANSFORM ANTHROPOL
+    issn: "10510559"
+    eissn: "15487466"
+    site: https://anthrosource.onlinelibrary.wiley.com/journal/15487466
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S202664421
+    openalex_source_display_name: Transforming Anthropology
+  - name: Transport Policy
+    short: TRANSPORT POLICY
+    issn: 0967070X
+    eissn: 1879310X
+    site: https://www.journals.elsevier.com/transport-policy
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: https://openalex.org/S186558940
+    openalex_source_display_name: Transport Policy
+  - name: TRANSPORTATION RESEARCH PART A-POLICY AND PRACTICE
+    short: TRANSPORT RES A-POL
+    issn: "09658564"
+    eissn: "18792375"
+    site: https://www.journals.elsevier.com/transportation-research-part-a-policy-and-practice
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S159637997
+    openalex_source_display_name: Transportation Research Part A Policy and Practice
+  - name: TRANSPORTATION RESEARCH PART B-METHODOLOGICAL
+    short: TRANSPORT RES B-METH
+    issn: "01912615"
+    eissn: "18792367"
+    site: https://www.journals.elsevier.com/transportation-research-part-b-methodological
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S96305778
+    openalex_source_display_name: Transportation Research Part B Methodological
+  - name: TRANSPORTATION RESEARCH PART E-LOGISTICS AND TRANSPORTATION REVIEW
+    short: TRANSPORT RES E-LOG
+    issn: "13665545"
+    eissn: "18785794"
+    site: https://www.journals.elsevier.com/transportation-research-part-e-logistics-and-transportation-review
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S173966628
+    openalex_source_display_name: Transportation Research Part E Logistics and Transportation Review
+  - name: Urbanities-Journal of Urban Ethnography
+    short: URBANITIES
+    issn: "22395725"
+    eissn: "22395725"
+    site: ""
+    notes: WOS/JCR; IUAES, COMMISSION URBAN ANTHROPOLOGY
+    openalex_source_id: https://openalex.org/S2738585195
+    openalex_source_display_name: "URBANITIES : Journal of the Commission on Urban Anthropology"
+  - name: VALUE IN HEALTH
+    short: VALUE HEALTH
+    issn: "10983015"
+    eissn: "15244733"
+    site: https://www.journals.elsevier.com/value-in-health
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: https://openalex.org/S678965
+    openalex_source_display_name: Value in Health
+  - name: Visual Anthropology
+    short: VIS ANTHROPOL
+    issn: "08949468"
+    eissn: "15455920"
+    site: https://www.tandfonline.com/toc/gvan20/current
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: https://openalex.org/S107070057
+    openalex_source_display_name: Visual Anthropology
+  - name: Visual Anthropology Review
+    short: VIS ANTHR REV
+    issn: "10587187"
+    eissn: "15487458"
+    site: https://onlinelibrary.wiley.com/journal/15487458
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S174124453
+    openalex_source_display_name: Visual Anthropology Review
+  - name: Visual Ethnography
+    short: VIS ETHNOGR
+    issn: "22811605"
+    eissn: "22811605"
+    site: ""
+    notes: WOS/JCR; UNIV BASILICATA
+    openalex_source_id: https://openalex.org/S4306534401
+    openalex_source_display_name: Visual Ethnography
   - name: WORK AND OCCUPATIONS
     short: WORK OCCUPATION
     issn: "07308884"
     eissn: "15528464"
-    site: https://wox.sagepub.com/
+    site: http://wox.sagepub.com
     notes: WOS/JCR; SAGE PUBLICATIONS INC
     openalex_source_id: https://openalex.org/S51211322
     openalex_source_display_name: Work and Occupations
@@ -485,3 +2701,27 @@ journals:
     notes: WOS/JCR; SAGE PUBLICATIONS LTD
     openalex_source_id: https://openalex.org/S60510972
     openalex_source_display_name: Work Employment and Society
+  - name: WORLD BANK RESEARCH OBSERVER
+    short: WORLD BANK RES OBSER
+    issn: "02573032"
+    eissn: "15646971"
+    site: http://www.worldbank.org/html/extpb/observer/obscont.htm
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: https://openalex.org/S117685085
+    openalex_source_display_name: The World Bank Research Observer
+  - name: WORLD DEVELOPMENT
+    short: WORLD DEV
+    issn: 0305750X
+    eissn: "18735991"
+    site: http://www.elsevier.com/wps/find/journaldescription.cws_home/386/description#description
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: https://openalex.org/S85457386
+    openalex_source_display_name: World Development
+  - name: ZEITSCHRIFT FUR ETHNOLOGIE - Journal of Social and Cultural Anthropology
+    short: Z ETHNOL
+    issn: "00442666"
+    eissn: ""
+    site: https://www.dgska.de/zeitschrift-fuer-ethnologie
+    notes: WOS/JCR; DIETRICH REIMER VERLAG
+    openalex_source_id: https://openalex.org/S83458904
+    openalex_source_display_name: Zeitschrift für Ethnologie

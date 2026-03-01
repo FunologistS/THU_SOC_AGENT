@@ -121,6 +121,6 @@ export async function POST(request: Request) {
     ok: true,
     topic,
     versionedFile: path.basename(versionedPath),
-    message: "已保存为新版本（手动补录），已更新 summaries_latest.md。",
+    message: "已保存为新版本（手动补录），历史版本已保留；已更新 summaries_latest.md，后续荟萃分析、一键综述将使用新版本。",
   });
 }

@@ -712,7 +712,8 @@ function parseSummariesMarkdown(md) {
   return papers;
 }
 
-/** --------- Relevance scoring (AI marker gate) --------- **/
+/** --------- Relevance scoring (topic vs out-of-scope) --------- **/
+/** 若能从 01_raw 读到用户检索词，则基于检索词匹配判定跑题；否则回退到 AI 主题词。 */
 
 const AI_MARKERS = [
   "ai",
@@ -731,11 +732,26 @@ const AI_MARKERS = [
   "algorithm",
 ];
 
-function relevanceScore(tokens) {
+function relevanceScore(tokens, queryTokens = null) {
   const set = new Set(tokens || []);
+  if (Array.isArray(queryTokens) && queryTokens.length > 0) {
+    let s = 0;
+    for (const q of queryTokens) if (set.has(q)) s += 2;
+    return s;
+  }
   let s = 0;
   for (const m of AI_MARKERS) if (set.has(m)) s += 2;
   return s;
+}
+
+/** 从 outputs/<topic>/01_raw/papers_latest.md 解析 "- query: ..." 得到用户检索词，用于 relevance。 */
+function readUserQueryFrom01Raw(topic, projectRoot) {
+  const papersPath = path.join(projectRoot, "outputs", topic, "01_raw", "papers_latest.md");
+  if (!fs.existsSync(papersPath)) return null;
+  const text = fs.readFileSync(papersPath, "utf-8");
+  const m = text.match(/^\s*-\s*query:\s*(.+?)\s*$/m);
+  if (!m) return null;
+  return m[1].trim() || null;
 }
 
 /** --------- QA report --------- **/
@@ -755,6 +771,7 @@ function writeQaReport(outPath, { topic, inPath, date, v, kEff, seed, qa, topMis
   lines.push(`- unknown_data_final: ${qa.unknownData}`);
   lines.push(`- missing_journal: ${qa.missingJournal}`);
   lines.push(`- out_of_scope_candidates: ${qa.outOfScope}`);
+  if (qa.relevanceBasis) lines.push(`- relevance_basis: ${qa.relevanceBasis}`);
   lines.push(`- method_auto_hits: ${qa.methodAuto}`);
   lines.push(`- data_auto_hits: ${qa.dataAuto}`);
   lines.push(``);
@@ -1023,8 +1040,17 @@ for (let cid = 0; cid < kEff; cid++) {
 clusterStats.sort((a, b) => b.count - a.count);
 
 /** --------- Relevance / out_of_scope --------- **/
+/** 优先使用 01_raw 中的用户检索词判定跑题，与用户设定一致；无则回退到 AI 主题词。 */
+const projectRoot = process.cwd();
+const userQuery = readUserQueryFrom01Raw(topic, projectRoot);
+const queryTokens = userQuery ? tokenize(userQuery) : [];
+if (queryTokens.length > 0) {
+  console.log(`[synthesis] 使用 01_raw 检索词做 relevance：${userQuery} → ${queryTokens.length} tokens`);
+} else {
+  console.log("[synthesis] 未读取到 01_raw 检索词，使用内置 AI 主题词做 relevance");
+}
 
-const aiScores = docsTokens.map((toks) => relevanceScore(toks));
+const aiScores = docsTokens.map((toks) => relevanceScore(toks, queryTokens));
 const outOfScope = aiScores.map((s) => s < 2);
 
 /** --------- meta_table --------- **/
@@ -1174,6 +1200,7 @@ for (const r of rows) {
   if (String(r.method_source) === "auto") qa.methodAuto++;
   if (String(r.data_source) === "auto") qa.dataAuto++;
 }
+qa.relevanceBasis = queryTokens.length > 0 ? "user_query (01_raw)" : "ai_markers (fallback)";
 
 // Top missing by journal
 {

@@ -22,9 +22,12 @@ export interface JournalItem {
 }
 
 const DATA_SOURCE_LABELS: Record<string, string> = {
-  wos: "SSCI完整目录（3540）",
-  yml: "OpenAlex解析社会学Q1期刊目录（58+1）",
+  wos: "Social Sciences Citation Index (SSCI)",
+  yml: "OpenAlex解析期刊目录（社会学/人类学/经济学 Q1）",
 };
+
+/** 仅有完整 JCR 归一化数据的学科才显示「分区」筛选项 */
+const JCR_QUARTILE_DISCIPLINES = ["Sociology", "Anthropology", "Economics"];
 
 export function JournalCatalog({
   onStartSearch,
@@ -33,6 +36,9 @@ export function JournalCatalog({
   runDone,
   runExitCode,
   onDataSourceChange,
+  hideTitle,
+  /** database = 仅查看与搜索期刊，不展示「开始检索」；search = 完整流程（当前默认） */
+  mode = "search",
 }: {
   onStartSearch: (params: {
     topicSlug: string;
@@ -40,6 +46,7 @@ export function JournalCatalog({
     yearTo?: number;
     journalSourceIds: string[];
     journalIssns?: string[];
+    searchMode?: "strict" | "relaxed";
   }) => void;
   runJobId?: string | null;
   runLog?: string;
@@ -47,6 +54,9 @@ export function JournalCatalog({
   runExitCode?: number;
   /** 数据源切换时回调，用于在技能工作台显示当前数据源提示 */
   onDataSourceChange?: (label: string) => void;
+  /** 为侧栏折叠时由父级统一渲染标题，隐藏组件内标题 */
+  hideTitle?: boolean;
+  mode?: "database" | "search";
 }) {
   const [journals, setJournals] = useState<JournalItem[]>([]);
   const [disciplines, setDisciplines] = useState<string[]>([]);
@@ -64,6 +74,7 @@ export function JournalCatalog({
   const [loadingCatalog, setLoadingCatalog] = useState(true);
   const [detailJournal, setDetailJournal] = useState<JournalItem | null>(null);
   const [journalSearchQuery, setJournalSearchQuery] = useState("");
+  const [searchMode, setSearchMode] = useState<"strict" | "relaxed">("relaxed");
   const fetchingRef = useRef(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
@@ -125,13 +136,15 @@ export function JournalCatalog({
   }, [publisher]);
 
   useEffect(() => {
-    if (useWos) fetchWos();
+    if (mode === "database") fetchWos();
+    else if (useWos) fetchWos();
     else fetchYml();
-  }, [useWos, fetchWos, fetchYml]);
+  }, [mode, useWos, fetchWos, fetchYml]);
 
   useEffect(() => {
-    onDataSourceChange?.(DATA_SOURCE_LABELS[useWos ? "wos" : "yml"] ?? (useWos ? "SSCI完整目录（3540）" : "OpenAlex解析社会学Q1期刊目录（58+1）"));
-  }, [useWos, onDataSourceChange]);
+    if (mode === "database") return;
+    onDataSourceChange?.(DATA_SOURCE_LABELS[useWos ? "wos" : "yml"] ?? "");
+  }, [mode, useWos, onDataSourceChange]);
 
   // 检索任务开始：记录开始时间并启动进度条
   useEffect(() => {
@@ -183,6 +196,7 @@ export function JournalCatalog({
         yearTo: to && !Number.isNaN(to) ? to : undefined,
         journalSourceIds: [],
         journalIssns: Array.from(new Set(issns)),
+        searchMode,
       });
     } else if (!useWos && journals.length > 0) {
       const ids = journals
@@ -195,6 +209,7 @@ export function JournalCatalog({
         yearFrom: from && !Number.isNaN(from) ? from : undefined,
         yearTo: to && !Number.isNaN(to) ? to : undefined,
         journalSourceIds: ids,
+        searchMode,
       });
     } else {
       setRunning(true);
@@ -204,6 +219,7 @@ export function JournalCatalog({
         yearFrom: from && !Number.isNaN(from) ? from : undefined,
         yearTo: to && !Number.isNaN(to) ? to : undefined,
         journalSourceIds: [],
+        searchMode,
       });
     }
     setTopicInput("");
@@ -260,31 +276,43 @@ export function JournalCatalog({
 
   return (
     <div className="space-y-4">
-      <h3 className="thu-heading text-xs font-medium uppercase tracking-wider">
-        检索范围筛选
-      </h3>
+      {!hideTitle && (
+        <h3 className="thu-heading text-xs font-medium uppercase tracking-wider">
+          {mode === "database" ? "期刊数据库" : "文献检索"}
+        </h3>
+      )}
       <div className="space-y-3">
-        <p className="text-[11px] text-[var(--text-muted)]">期刊数据库 · 学科 / 分区 / 年份 · 主题</p>
+        <p className="text-[11px] text-[var(--text-muted)]">
+          {mode === "database" ? "学科 / 分区 / 出版社 · 搜索期刊" : "期刊数据库 · 学科 / 分区 / 年份 · 主题"}
+        </p>
         <div className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2">
-          <span className="text-sm text-[var(--text-muted)]">数据源</span>
-          <select
-            value={useWos ? "wos" : "yml"}
-            onChange={(e) => {
-              const v = e.target.value === "wos";
-              setUseWos(v);
-              onDataSourceChange?.(DATA_SOURCE_LABELS[v ? "wos" : "yml"]);
-            }}
-            className="thu-input w-full rounded-lg px-3 py-2 text-sm"
-          >
-            <option value="wos">SSCI完整目录（3540）</option>
-            <option value="yml">OpenAlex解析社会学Q1期刊目录（58+1）</option>
-          </select>
-          {useWos && (
+          {mode !== "database" && (
+            <>
+              <span className="text-sm text-[var(--text-muted)]">数据源</span>
+              <select
+                value={useWos ? "wos" : "yml"}
+                onChange={(e) => {
+                  const v = e.target.value === "wos";
+                  setUseWos(v);
+                  onDataSourceChange?.(DATA_SOURCE_LABELS[v ? "wos" : "yml"]);
+                }}
+                className="thu-input w-full rounded-lg px-3 py-2 text-sm"
+              >
+                <option value="wos">{DATA_SOURCE_LABELS.wos}</option>
+                <option value="yml">{DATA_SOURCE_LABELS.yml}</option>
+              </select>
+            </>
+          )}
+          {(useWos || mode === "database") && (
             <>
               <span className="text-sm text-[var(--text-muted)]">学科</span>
               <select
                 value={discipline}
-                onChange={(e) => setDiscipline(e.target.value)}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  setDiscipline(next);
+                  if (!JCR_QUARTILE_DISCIPLINES.includes(next)) setQuartile("");
+                }}
                 className="thu-input w-full rounded-lg px-3 py-2 text-sm"
               >
                 <option value="">全部</option>
@@ -294,18 +322,22 @@ export function JournalCatalog({
                   </option>
                 ))}
               </select>
-              <span className="text-sm text-[var(--text-muted)]">分区</span>
-              <select
-                value={quartile}
-                onChange={(e) => setQuartile(e.target.value)}
-                className="thu-input w-full rounded-lg px-3 py-2 text-sm"
-              >
-                <option value="">全部</option>
-                <option value="Q1">Q1</option>
-                <option value="Q2">Q2</option>
-                <option value="Q3">Q3</option>
-                <option value="Q4">Q4</option>
-              </select>
+              {JCR_QUARTILE_DISCIPLINES.includes(discipline) && (
+                <>
+                  <span className="text-sm text-[var(--text-muted)]">分区</span>
+                  <select
+                    value={quartile}
+                    onChange={(e) => setQuartile(e.target.value)}
+                    className="thu-input w-full rounded-lg px-3 py-2 text-sm"
+                  >
+                    <option value="">全部</option>
+                    <option value="Q1">Q1</option>
+                    <option value="Q2">Q2</option>
+                    <option value="Q3">Q3</option>
+                    <option value="Q4">Q4</option>
+                  </select>
+                </>
+              )}
             </>
           )}
           <span className="text-sm text-[var(--text-muted)]">出版社</span>
@@ -343,7 +375,7 @@ export function JournalCatalog({
           </p>
           {useWos && !loadingCatalog && (
             <p className="leading-relaxed text-[11px]">
-              选学科即得该学科全部期刊。若已添加该学科的 JCR 归一化文件（如 Sociology、Economics），可按分区筛选。
+              选学科即得该学科全部期刊。仅 Sociology、Anthropology、Economics 支持按分区筛选。
             </p>
           )}
           {!useWos && !loadingCatalog && (
@@ -440,16 +472,18 @@ export function JournalCatalog({
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-2 pt-0.5">
-          <button
-            type="button"
-            onClick={() => setDialogOpen(true)}
-            className="thu-btn-primary w-full rounded-lg px-3 py-2 text-sm font-medium shadow-thu-soft transition-colors"
-          >
-            设置主题与年份 · 开始检索
-          </button>
-        </div>
-        {runJobId && (
+        {mode === "search" && (
+          <div className="flex flex-col gap-2 pt-0.5">
+            <button
+              type="button"
+              onClick={() => setDialogOpen(true)}
+              className="thu-btn-primary w-full rounded-lg px-3 py-2 text-sm font-medium shadow-thu-soft transition-colors"
+            >
+              设置主题与年份 · 开始检索
+            </button>
+          </div>
+        )}
+        {mode === "search" && runJobId && (
           <div className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2 shadow-thu-soft">
             {!runDone && runStartTime != null && (
               <div className="mb-2 space-y-1.5">
@@ -491,21 +525,20 @@ export function JournalCatalog({
         )}
       </div>
 
-      {dialogOpen && (
+      {mode === "search" && dialogOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          style={{ backgroundColor: "var(--overlay)" }}
+          className="thu-modal-overlay fixed inset-0 z-[100] flex items-center justify-center p-4"
           onClick={() => !running && setDialogOpen(false)}
           role="dialog"
           aria-modal="true"
           aria-labelledby="dialog-title"
         >
           <div
-            className="w-full max-w-lg rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-thu-dialog"
+            className="thu-modal-card w-full max-w-lg p-5"
             onClick={(e) => e.stopPropagation()}
           >
-            <h4 id="dialog-title" className="font-semibold text-[var(--text)] text-lg">
-              检索范围筛选
+            <h4 id="dialog-title" className="thu-modal-title text-lg">
+              文献检索
             </h4>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
               {journals.length > 0
@@ -533,7 +566,21 @@ export function JournalCatalog({
                   className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm"
                 />
                 <p className="mt-0.5 text-xs text-[var(--text-muted)]">
-                  使用英文或下划线，如 digital_labor
+                  使用英文或下划线（会自动转为空格），如 digital_labor
+                </p>
+              </label>
+              <label className="block">
+                <span className="text-xs text-[var(--text-muted)]">检索范围</span>
+                <select
+                  value={searchMode}
+                  onChange={(e) => setSearchMode(e.target.value as "strict" | "relaxed")}
+                  className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="relaxed">宽松检索（标题、摘要等出现即可）</option>
+                  <option value="strict">严格检索（仅标题中含检索词）</option>
+                </select>
+                <p className="mt-0.5 text-xs text-[var(--text-muted)]">
+                  严格检索召回更少、更贴题；宽松检索召回更多、可能含边缘文献
                 </p>
               </label>
               <div className="flex gap-3">
@@ -567,7 +614,7 @@ export function JournalCatalog({
               <button
                 type="button"
                 onClick={() => setDialogOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm text-[var(--text-muted)] hover:bg-[var(--bg-sidebar)] transition-colors"
+                className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm"
               >
                 取消
               </button>
@@ -575,7 +622,7 @@ export function JournalCatalog({
                 type="button"
                 onClick={handleStartSearch}
                 disabled={running || (!topicInput.trim() && !instructionInput.trim())}
-                className="thu-btn-primary rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50 transition-colors shadow-thu-soft"
+                className="thu-modal-btn-primary rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
               >
                 开始检索
               </button>
@@ -586,18 +633,17 @@ export function JournalCatalog({
 
       {detailJournal && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          style={{ backgroundColor: "var(--overlay)" }}
+          className="thu-modal-overlay fixed inset-0 z-[100] flex items-center justify-center p-4"
           onClick={() => setDetailJournal(null)}
           role="dialog"
           aria-modal="true"
           aria-labelledby="journal-detail-title"
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] p-5 shadow-thu-dialog max-h-[85vh] overflow-y-auto"
+            className="thu-modal-card w-full max-w-md p-5 max-h-[85vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <h4 id="journal-detail-title" className="font-semibold text-[var(--text)] text-base border-b border-[var(--border-soft)] pb-2">
+            <h4 id="journal-detail-title" className="thu-modal-title text-base border-b border-[var(--border-soft)] pb-2">
               {displayTitle(detailJournal)}
             </h4>
             <dl className="mt-3 space-y-2 text-sm">
@@ -622,7 +668,7 @@ export function JournalCatalog({
                 <div>
                   <dt className="text-[var(--text-muted)] font-medium">JCI（期刊引证指标）</dt>
                   <dd className="text-[var(--text)]">{detailJournal.jci}</dd>
-                  <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Journal Citation Indicator，学科归一化影响力指标。数据截至 2026 年 2 月。</p>
+                  <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Journal Citation Indicator，学科归一化影响力指标。Journal Citation Reports 数据库最后更新截至 2025 年 10 月 15 日。</p>
                 </div>
               )}
               {detailJournal.quartile && (

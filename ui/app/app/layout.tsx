@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
 import "./thu-theme.css";
+import { ThUAlertConfirmProvider } from "@/components/ThUAlertConfirm";
 
 export const metadata: Metadata = {
-  title: "社会科学文献处理综合智能体",
-  description: "批量检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述 · 技能工作台与文档目录",
+  title: "THU_SOC_AGENT · 社会科学文献综合处理｜智能体",
+  description: "THU_SOC_AGENT：社会科学文献综合处理智能体。期刊查询、文献检索与整理、主题聚类与荟萃分析、一键生成文献综述。访问地址为 http://localhost:9301，请勿与其它项目共用端口。",
   icons: {
     icon: "/icon.png",
     apple: "/icon.png",
@@ -20,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className="min-h-screen antialiased">
-        <Suspense fallback={<div className="p-4 text-[var(--text-muted)]">加载中…</div>}>
-          {children}
-        </Suspense>
+        <ThUAlertConfirmProvider>
+          <Suspense fallback={<div className="p-4 text-[var(--text-muted)]">加载中…</div>}>
+            {children}
+          </Suspense>
+        </ThUAlertConfirmProvider>
       </body>
     </html>
   );

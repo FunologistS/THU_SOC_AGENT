@@ -10,7 +10,8 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const appDir = path.join(__dirname, "..");
-const DEFAULT_PORT = 3001;
+/** THU_SOC_AGENT 专用端口，与 with-port.mjs 保持一致 */
+const DEFAULT_PORT = 9301;
 
 function ok(msg) {
   console.log(`  ✓ ${msg}`);
@@ -50,7 +51,7 @@ try {
 if (pids.length > 0) {
   fail(
     `端口 ${DEFAULT_PORT} 已被占用（PID: ${pids.join(", ")}）`,
-    `释放端口：lsof -i :${DEFAULT_PORT} 查看进程，再执行 kill -9 <PID>；或改用临时端口：PORT=3005 npm run dev`
+    `释放端口：lsof -i :${DEFAULT_PORT} 查看进程，再执行 kill -9 <PID>；或改用临时端口：PORT=9305 npm run dev`
   );
   hasError = true;
 } else if (pids.length === 0 && (process.platform === "darwin" || process.platform === "linux")) {
