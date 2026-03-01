@@ -9,6 +9,12 @@ const DISCIPLINES = [
   { id: "Economics", label: "Economics" },
 ] as const;
 
+/** 年份下拉：2026 在上，便于从最新文献选起 */
+const YEAR_OPTIONS = Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i);
+
+const SEARCH_TYPE_TOOLTIP =
+  "严格检索：摘要与关键词都包含检索词才保留。宽松检索：标题、摘要或关键词任一包含即可。";
+
 function toSlug(s: string): string {
   return s
     .trim()
@@ -58,7 +64,8 @@ export const LiteratureSearchPanel = forwardRef<
   const [instructionInput, setInstructionInput] = useState("");
   const [yearFrom, setYearFrom] = useState("");
   const [yearTo, setYearTo] = useState("");
-  const [searchMode, setSearchMode] = useState<"strict" | "relaxed">("relaxed");
+  const [searchMode, setSearchMode] = useState<"strict" | "relaxed">("strict");
+  const [searchTypeTooltipVisible, setSearchTypeTooltipVisible] = useState(false);
   const [running, setRunning] = useState(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
@@ -216,53 +223,91 @@ export const LiteratureSearchPanel = forwardRef<
           />
         </label>
         <label className="block">
-          <span className="text-[11px] text-[var(--text-muted)]">主题 / 关键词</span>
+          <span className="text-[11px] text-[var(--text-muted)]">检索主题</span>
           <input
             type="text"
             value={topicInput}
             onChange={(e) => setTopicInput(e.target.value)}
-            placeholder="如：digital_labor、artificial_intelligence"
+            placeholder="如：digital_labor"
             className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm"
           />
           <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">
-            使用英文或下划线（会自动转为空格）
+            请输入英文，单词间空格和下划线效果等价。
           </p>
         </label>
         <label className="block">
-          <span className="text-[11px] text-[var(--text-muted)]">检索范围</span>
-          <select
-            value={searchMode}
-            onChange={(e) => setSearchMode(e.target.value as "strict" | "relaxed")}
-            className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm"
-          >
-            <option value="relaxed">宽松检索（标题、摘要等出现即可）</option>
-            <option value="strict">严格检索（仅标题中含检索词）</option>
-          </select>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] text-[var(--text-muted)]">检索类型</span>
+            <span
+              className="relative inline-flex h-[1em] w-[1em] cursor-help items-center justify-center rounded-full border border-current text-[11px]"
+              onMouseEnter={() => setSearchTypeTooltipVisible(true)}
+              onMouseLeave={() => setSearchTypeTooltipVisible(false)}
+              aria-label="检索类型说明"
+            >
+              <span className="opacity-70">ⓘ</span>
+              {searchTypeTooltipVisible && (
+                <span
+                  className="absolute bottom-full left-0 z-50 mb-1 w-56 rounded-lg border border-gray-200 px-2.5 py-2 text-[11px] leading-snug shadow-lg"
+                  role="tooltip"
+                  style={{ backgroundColor: "#ffffff", color: "#1c1924", opacity: 1 }}
+                >
+                  {SEARCH_TYPE_TOOLTIP}
+                </span>
+              )}
+            </span>
+          </div>
+          <div className="mt-1 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setSearchMode("strict")}
+              className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                searchMode === "strict"
+                  ? "bg-[#660874] text-white shadow-[0_2px_8px_rgba(102,8,116,0.3)]"
+                  : "border border-[var(--border-soft)] bg-[var(--bg-sidebar)] text-[var(--text-muted)] hover:border-[#660874] hover:text-[var(--text)]"
+              }`}
+            >
+              严格检索
+            </button>
+            <button
+              type="button"
+              onClick={() => setSearchMode("relaxed")}
+              className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                searchMode === "relaxed"
+                  ? "text-white shadow-[0_2px_8px_rgba(217,51,121,0.3)]"
+                  : "border border-[var(--border-soft)] bg-[var(--bg-sidebar)] text-[var(--text-muted)] hover:border-[#d93379] hover:text-[var(--text)]"
+              }`}
+              style={searchMode === "relaxed" ? { background: "linear-gradient(135deg, #c92d6a 0%, #d93379 50%, #e85a9a 100%)" } : undefined}
+            >
+              宽松检索
+            </button>
+          </div>
         </label>
         <div className="flex gap-3">
           <label className="flex-1">
             <span className="text-[11px] text-[var(--text-muted)]">年份起</span>
-            <input
-              type="number"
-              min="2000"
-              max="2030"
+            <select
               value={yearFrom}
               onChange={(e) => setYearFrom(e.target.value)}
-              placeholder="2024"
-              className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm"
-            />
+              className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm bg-[var(--bg-card)]"
+            >
+              <option value="">不限定</option>
+              {YEAR_OPTIONS.map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
           </label>
           <label className="flex-1">
             <span className="text-[11px] text-[var(--text-muted)]">年份止</span>
-            <input
-              type="number"
-              min="2000"
-              max="2030"
+            <select
               value={yearTo}
               onChange={(e) => setYearTo(e.target.value)}
-              placeholder="2026"
-              className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm"
-            />
+              className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm bg-[var(--bg-card)]"
+            >
+              <option value="">不限定</option>
+              {YEAR_OPTIONS.map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
           </label>
         </div>
       </div>

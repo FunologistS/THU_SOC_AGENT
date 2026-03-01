@@ -91,8 +91,8 @@ export async function POST(request: Request) {
     args?: string[];
     journalSourceIds?: string[];
     journalIssns?: string[];
-    conceptSynthesizeModel?: "gpt" | "glm";
-    writingModel?: "gpt" | "glm";
+    conceptSynthesizeModel?: "gpt" | "glm" | "glm-4.7-flash" | "glm-5";
+    writingModel?: "gpt" | "glm" | "glm-4.7-flash" | "glm-5";
     qualityOnly?: boolean;
     searchMode?: "strict" | "relaxed";
   };
@@ -102,13 +102,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModel, writingModel, qualityOnly, searchMode } = body;
+  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModelRaw, writingModelRaw, qualityOnly, searchMode } = body;
+  const conceptSynthesizeModel = conceptSynthesizeModelRaw === "glm" ? "glm-4.7-flash" : conceptSynthesizeModelRaw;
+  const writingModel = writingModelRaw === "glm" ? "glm-4.7-flash" : writingModelRaw;
   let extraArgs = Array.isArray(extraArgsRaw) ? [...extraArgsRaw] : undefined;
   if (jobType === "journal_search" && searchMode === "strict") {
     extraArgs = [...(extraArgs ?? []), "--strict"];
   }
   if (jobType === "concept_synthesize" && qualityOnly === true) {
     extraArgs = [...(extraArgs ?? []), "--exclude-out-of-scope"];
+  }
+  if (jobType === "concept_synthesize" && (conceptSynthesizeModel === "glm-4.7-flash" || conceptSynthesizeModel === "glm-5")) {
+    extraArgs = [...(extraArgs ?? []), "--model", conceptSynthesizeModel];
   }
   if (jobType === "upload_and_writing" && writingModel) {
     extraArgs = extraArgs ?? [];
@@ -211,8 +216,9 @@ export async function POST(request: Request) {
     args = config.args(topic, extraArgs) as string[];
   }
 
-  if (jobType === "writing_under_style" && writingModel === "glm") {
+  if (jobType === "writing_under_style" && writingModel && writingModel !== "gpt") {
     args.push("--provider", "glm");
+    args.push("--model", writingModel);
   }
 
   const child = spawn("node", [scriptToRun, ...args], {

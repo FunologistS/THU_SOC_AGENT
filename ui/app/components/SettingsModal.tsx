@@ -26,6 +26,14 @@ export function SettingsModal({
   const [gitSaveError, setGitSaveError] = useState<string | null>(null);
   const [gitSaving, setGitSaving] = useState(false);
   const [gitSavePinRequired, setGitSavePinRequired] = useState(false);
+  const [versionName, setVersionName] = useState("");
+  const [versionNaming, setVersionNaming] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [historyList, setHistoryList] = useState<{ hash: string; dateBeijing: string; tag?: string }[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [editingHash, setEditingHash] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState("");
+  const [namingHash, setNamingHash] = useState<string | null>(null);
   const { alert: thuAlert } = useThUAlertConfirm();
 
   const fetchEnv = useCallback(() => {
@@ -123,6 +131,7 @@ export function SettingsModal({
       setGitSavePrompt(false);
       setGitSavePin("");
       onGitSaveSuccess?.();
+      fetchHistory();
     } catch (e) {
       await thuAlert(e instanceof Error ? e.message : "Git 保存请求失败。");
     } finally {
@@ -154,6 +163,77 @@ export function SettingsModal({
     }
   };
 
+  const fetchHistory = useCallback(() => {
+    setHistoryLoading(true);
+    fetch("/api/git-history")
+      .then((r) => r.json())
+      .then((d) => (d?.ok ? setHistoryList(d.saves ?? []) : setHistoryList([])))
+      .catch(() => setHistoryList([]))
+      .finally(() => setHistoryLoading(false));
+  }, []);
+
+  const handleVersionNameSubmit = async () => {
+    const name = versionName.trim();
+    if (!name) {
+      await thuAlert("请填写版本名称");
+      return;
+    }
+    setVersionNaming(true);
+    try {
+      const res = await fetch("/api/git-tag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tag: name }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.ok) {
+        await thuAlert(data?.error || "命名失败");
+        return;
+      }
+      await thuAlert(`已命名为「${name}」`);
+      setVersionName("");
+      fetchHistory();
+      onGitSaveSuccess?.();
+    } catch (e) {
+      await thuAlert(e instanceof Error ? e.message : "请求失败");
+    } finally {
+      setVersionNaming(false);
+    }
+  };
+
+  const handleHistoryRowName = async (s: { hash: string; dateBeijing: string; tag?: string }) => {
+    const name = editingName.trim();
+    if (!name) {
+      await thuAlert("请填写版本名称");
+      return;
+    }
+    setNamingHash(s.hash);
+    try {
+      const res = await fetch("/api/git-tag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tag: name,
+          hash: s.hash,
+          replaceTag: s.tag || undefined,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.ok) {
+        await thuAlert(data?.error || "命名失败");
+        return;
+      }
+      setEditingHash(null);
+      setEditingName("");
+      fetchHistory();
+      onGitSaveSuccess?.();
+    } catch (e) {
+      await thuAlert(e instanceof Error ? e.message : "请求失败");
+    } finally {
+      setNamingHash(null);
+    }
+  };
+
   if (!open) return null;
 
   return (
@@ -165,10 +245,10 @@ export function SettingsModal({
       aria-labelledby="settings-modal-title"
     >
       <div
-        className="thu-modal-card w-full max-w-lg p-5"
+        className="thu-modal-card flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden p-0"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-[var(--border-soft)] px-5 py-4">
           <h2 id="settings-modal-title" className="thu-modal-title text-lg">
             基本变量与 API Key
           </h2>
@@ -183,6 +263,7 @@ export function SettingsModal({
             </svg>
           </button>
         </div>
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-5 py-4">
         <p className="text-xs text-[var(--text-muted)] mb-4">
           以下为各 skill 会用到的环境变量，仅展示是否已配置及脱敏值；完整 Key 不在此展示。
         </p>
@@ -313,6 +394,117 @@ export function SettingsModal({
               </div>
             </div>
           )}
+
+          {/* 为当前版本命名 */}
+          <div className="mt-3">
+            <p className="text-[11px] text-[var(--text-muted)] mb-1.5">为当前最新提交命名（打 tag）</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={versionName}
+                onChange={(e) => setVersionName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleVersionNameSubmit()}
+                placeholder="如 v1.0、初稿"
+                className="thu-input flex-1 min-w-0 rounded-lg px-3 py-2 text-sm"
+                disabled={versionNaming}
+              />
+              <button
+                type="button"
+                onClick={handleVersionNameSubmit}
+                disabled={versionNaming || !versionName.trim()}
+                className="thu-btn-primary rounded-lg px-3 py-2 text-xs whitespace-nowrap disabled:opacity-60"
+              >
+                {versionNaming ? "命名中…" : "命名"}
+              </button>
+            </div>
+          </div>
+
+          {/* 保存历史 */}
+          <div className="mt-3">
+            <button
+              type="button"
+              onClick={() => {
+                setHistoryOpen((o) => !o);
+                if (!historyOpen) fetchHistory();
+              }}
+              className="flex w-full items-center justify-between rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors"
+            >
+              <span>保存历史（北京时间）</span>
+              <svg className={`h-4 w-4 shrink-0 transition-transform ${historyOpen ? "" : "-rotate-90"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {historyOpen && (
+              <div className="mt-1.5 max-h-48 overflow-y-auto rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2">
+                {historyLoading ? (
+                  <p className="text-xs text-[var(--text-muted)] py-2">加载中…</p>
+                ) : historyList.length === 0 ? (
+                  <p className="text-xs text-[var(--text-muted)] py-2">暂无保存记录</p>
+                ) : (
+                  <ul className="space-y-1.5">
+                    {historyList.map((s) => (
+                      <li key={s.hash} className="rounded px-2 py-1.5 text-xs bg-[var(--bg-page)]">
+                        {editingHash === s.hash ? (
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-[var(--text-muted)] shrink-0">{s.dateBeijing}</span>
+                            <input
+                              type="text"
+                              value={editingName}
+                              onChange={(e) => setEditingName(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") handleHistoryRowName(s);
+                                if (e.key === "Escape") { setEditingHash(null); setEditingName(""); }
+                              }}
+                              placeholder="版本名"
+                              className="thu-input flex-1 min-w-0 max-w-[8rem] rounded px-2 py-1 text-xs"
+                              autoFocus
+                              disabled={namingHash !== null}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleHistoryRowName(s)}
+                              disabled={namingHash !== null || !editingName.trim()}
+                              className="thu-btn-primary rounded px-2 py-1 text-xs disabled:opacity-60"
+                            >
+                              {namingHash === s.hash ? "命名中…" : "确认"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => { setEditingHash(null); setEditingName(""); }}
+                              disabled={namingHash !== null}
+                              className="rounded px-2 py-1 text-xs text-[var(--text-muted)] hover:bg-[var(--bg-sidebar)] disabled:opacity-60"
+                            >
+                              取消
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[var(--text-muted)]">{s.dateBeijing}</span>
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              {s.tag ? (
+                                <span className="font-medium text-[var(--text)] truncate" title={s.tag}>{s.tag}</span>
+                              ) : (
+                                <span className="text-[var(--text-muted)] italic">未命名</span>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => { setEditingHash(s.hash); setEditingName(s.tag ?? ""); }}
+                                disabled={namingHash !== null}
+                                className="shrink-0 rounded px-1.5 py-0.5 text-[11px] text-[var(--thu-purple)] hover:bg-[var(--thu-purple-subtle)] disabled:opacity-60"
+                              >
+                                {s.tag ? "重命名" : "命名"}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
         </div>
       </div>
     </div>

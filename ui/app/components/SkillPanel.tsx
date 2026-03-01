@@ -81,9 +81,10 @@ export function SkillPanel({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [writingReviewModalOpen, setWritingReviewModalOpen] = useState(false);
   const [writingReviewPrompt, setWritingReviewPrompt] = useState("");
-  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm">("glm");
+  /** 荟萃分析/一键综述可选：gpt | 智谱 glm-4.7-flash | 智谱 glm-5 */
+  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
   const [conceptSynthesizeModelOpen, setConceptSynthesizeModelOpen] = useState(false);
-  const [writingModel, setWritingModel] = useState<"gpt" | "glm">("glm");
+  const [writingModel, setWritingModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
   const [writingModelOpen, setWritingModelOpen] = useState(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
@@ -108,15 +109,15 @@ export function SkillPanel({
   const runOne = (
     jobType: JobType,
     extraArgs?: string[],
-    options?: { conceptSynthesizeModel?: "gpt" | "glm"; writingModel?: "gpt" | "glm"; qualityOnly?: boolean }
+    options?: { conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5"; writingModel?: "gpt" | "glm-4.7-flash" | "glm-5"; qualityOnly?: boolean }
   ): Promise<boolean> => {
     return new Promise((resolve) => {
       const body: {
         jobType: string;
         topic: string;
         args?: string[];
-        conceptSynthesizeModel?: "gpt" | "glm";
-        writingModel?: "gpt" | "glm";
+        conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5";
+        writingModel?: "gpt" | "glm-4.7-flash" | "glm-5";
         qualityOnly?: boolean;
       } = { jobType, topic };
       if (Array.isArray(extraArgs) && extraArgs.length > 0) body.args = extraArgs;
@@ -424,7 +425,7 @@ export function SkillPanel({
               <span className="inline-block transition-transform" style={{ transform: conceptSynthesizeModelOpen ? "rotate(90deg)" : "none" }}>
                 ▶
               </span>
-              选择模型：{conceptSynthesizeModel === "gpt" ? "OpenAI GPT-5.2" : "智谱 GLM-4.7-Flash"}
+              选择模型：{conceptSynthesizeModel === "gpt" ? "OpenAI GPT-5.2" : conceptSynthesizeModel === "glm-5" ? "智谱 GLM-5" : "智谱 GLM-4.7-Flash"}
             </button>
             {conceptSynthesizeModelOpen && (
               <div className="mt-1.5 flex flex-col gap-1.5">
@@ -443,16 +444,29 @@ export function SkillPanel({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setConceptSynthesizeModel("glm")}
+                  onClick={() => setConceptSynthesizeModel("glm-4.7-flash")}
                   className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    conceptSynthesizeModel === "glm"
+                    conceptSynthesizeModel === "glm-4.7-flash"
                       ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
                       : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
                   }`}
-                  aria-pressed={conceptSynthesizeModel === "glm"}
+                  aria-pressed={conceptSynthesizeModel === "glm-4.7-flash"}
                 >
                   <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
                   <span>智谱 GLM-4.7-Flash</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConceptSynthesizeModel("glm-5")}
+                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
+                    conceptSynthesizeModel === "glm-5"
+                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
+                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
+                  }`}
+                  aria-pressed={conceptSynthesizeModel === "glm-5"}
+                >
+                  <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <span>智谱 GLM-5</span>
                 </button>
               </div>
             )}
@@ -560,7 +574,7 @@ export function SkillPanel({
               <span className="inline-block transition-transform" style={{ transform: writingModelOpen ? "rotate(90deg)" : "none" }}>
                 ▶
               </span>
-              选择模型：{writingModel === "gpt" ? "OpenAI GPT-5.2" : "智谱 GLM-4.7-Flash"}
+              选择模型：{writingModel === "gpt" ? "OpenAI GPT-5.2" : writingModel === "glm-5" ? "智谱 GLM-5" : "智谱 GLM-4.7-Flash"}
             </button>
             {writingModelOpen && (
               <div className="mt-1.5 flex flex-col gap-1.5">
@@ -579,16 +593,29 @@ export function SkillPanel({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setWritingModel("glm")}
+                  onClick={() => setWritingModel("glm-4.7-flash")}
                   className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    writingModel === "glm"
+                    writingModel === "glm-4.7-flash"
                       ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
                       : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
                   }`}
-                  aria-pressed={writingModel === "glm"}
+                  aria-pressed={writingModel === "glm-4.7-flash"}
                 >
                   <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
                   <span>智谱 GLM-4.7-Flash</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWritingModel("glm-5")}
+                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
+                    writingModel === "glm-5"
+                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
+                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
+                  }`}
+                  aria-pressed={writingModel === "glm-5"}
+                >
+                  <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <span>智谱 GLM-5</span>
                 </button>
               </div>
             )}

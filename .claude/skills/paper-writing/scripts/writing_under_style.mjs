@@ -30,6 +30,8 @@
  * 新增 flags：
  *  - --provider gpt | glm
  *      => 使用 OpenAI（gpt，默认）或智谱 GLM（glm）。glm 时需 ZHIPU_API_KEY，模型默认 glm-4.7-flash
+ *  - --model <id>
+ *      => 智谱模型 id（仅当 --provider glm 时生效），如 glm-4.7-flash、glm-5；未传则用 ZHIPU_MODEL 或默认
  *  - --force
  *      => chunk 模式强制重跑所有 chunk（无视已有 chunks_styled）
  *  - --styled-dir <dir>
@@ -82,19 +84,24 @@ const providerRaw = (() => {
 })();
 const PROVIDER = providerRaw === "glm" ? "glm" : "gpt";
 
+const modelFlag = (() => {
+  const i = process.argv.indexOf("--model");
+  if (i >= 0 && process.argv[i + 1]) return process.argv[i + 1];
+  return null;
+})();
 let API_KEY;
 let BASE_URL;
 let MODEL;
 if (PROVIDER === "glm") {
   API_KEY = process.env.ZHIPU_API_KEY;
   BASE_URL = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
-  MODEL = process.env.ZHIPU_MODEL || "glm-4.7-flash";
+  MODEL = modelFlag || process.env.ZHIPU_MODEL || "glm-4.7-flash";
 } else {
   API_KEY = process.env.OPENAI_API_KEY;
   BASE_URL = process.env.OPENAI_BASE_URL || "https://api.gptsapi.net/v1";
   MODEL = process.env.OPENAI_MODEL || "gpt-5.2";
 }
-const MODEL_LABEL = PROVIDER === "glm" ? "智谱 GLM-4.7-Flash" : "OpenAI GPT-5.2";
+const MODEL_LABEL = PROVIDER === "glm" ? `智谱 ${MODEL}` : "OpenAI GPT-5.2";
 
 const MAX_STYLE_CHARS = Number(process.env.MAX_STYLE_CHARS) || 1000;
 const CHUNK_MAX_CHARS = Number(process.env.CHUNK_MAX_CHARS) || 16000;

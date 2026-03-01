@@ -29,7 +29,7 @@ export function PipelineRunner({
   onJumpToOutputs?: () => void;
 }) {
   const [jobType, setJobType] = useState<JobType>("concept_synthesize");
-  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm">("glm");
+  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
   const [jobId, setJobId] = useState<string | null>(null);
   const [log, setLog] = useState("");
   const [done, setDone] = useState(false);
@@ -50,7 +50,7 @@ export function PipelineRunner({
     setProgress(0);
     setRunning(true);
     try {
-      const body: { jobType: string; topic: string; conceptSynthesizeModel?: "gpt" | "glm" } = {
+      const body: { jobType: string; topic: string; conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5" } = {
         jobType,
         topic,
       };
@@ -134,15 +134,27 @@ export function PipelineRunner({
             </button>
             <button
               type="button"
-              onClick={() => setConceptSynthesizeModel("glm")}
+              onClick={() => setConceptSynthesizeModel("glm-4.7-flash")}
               className={`flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-all ${
-                conceptSynthesizeModel === "glm"
+                conceptSynthesizeModel === "glm-4.7-flash"
                   ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)]"
                   : "border-[var(--border)] bg-white"
               }`}
             >
               <img src="/llm/zhipu_z_icon.svg" alt="" className="h-4 w-4 object-contain" />
               <span>智谱 GLM-4.7-Flash</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setConceptSynthesizeModel("glm-5")}
+              className={`flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-all ${
+                conceptSynthesizeModel === "glm-5"
+                  ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)]"
+                  : "border-[var(--border)] bg-white"
+              }`}
+            >
+              <img src="/llm/zhipu_z_icon.svg" alt="" className="h-4 w-4 object-contain" />
+              <span>智谱 GLM-5</span>
             </button>
           </div>
         )}

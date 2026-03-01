@@ -541,12 +541,66 @@ async function fetchAbstractWithFirecrawl(url) {
 }
 
 /* ===============================
+   Strict / Relaxed match (title, abstract, keywords)
+================================= */
+
+/** 文本是否包含检索词（大小写不敏感、归一化空格） */
+function textContains(text, query) {
+  const t = normalizeWhitespace(String(text || "")).toLowerCase();
+  const q = normalizeWhitespace(String(query || "")).toLowerCase();
+  if (!q) return true;
+  return t.includes(q);
+}
+
+/** 从 work 取摘要全文（与后续使用的逻辑一致） */
+function workAbstractText(w) {
+  return (
+    abstractFromInvertedIndex(w?.abstract_inverted_index) ||
+    (typeof w?.abstract === "string" ? w.abstract.trim() : "") ||
+    ""
+  );
+}
+
+/** work 的 keywords 中是否至少有一个包含 query（display_name 或 keyword.display_name） */
+function workKeywordsContain(w, query) {
+  const list = w?.keywords;
+  if (!Array.isArray(list) || list.length === 0) return false;
+  const q = normalizeWhitespace(String(query || "")).toLowerCase();
+  if (!q) return true;
+  for (const item of list) {
+    const name =
+      item?.keyword?.display_name ??
+      item?.display_name ??
+      (typeof item === "string" ? item : "");
+    if (textContains(name, query)) return true;
+  }
+  return false;
+}
+
+/**
+ * 严格检索：摘要与关键词都包含检索词才通过。
+ * 宽松检索：标题、摘要、关键词任一包含即可。
+ */
+function workMatchesTopic(w, query, strictMode) {
+  const title = w?.title ?? "";
+  const abs = workAbstractText(w);
+  const inTitle = textContains(title, query);
+  const inAbstract = textContains(abs, query);
+  const inKeywords = workKeywordsContain(w, query);
+
+  if (strictMode) {
+    return inAbstract && inKeywords;
+  }
+  return inTitle || inAbstract || inKeywords;
+}
+
+/* ===============================
    Fetch works from OpenAlex
 ================================= */
 
 /**
- * 严格检索：仅在标题中匹配检索词（filter title.search）。
- * 宽松检索：在标题、摘要、全文等默认字段中匹配（search 参数）。
+ * 严格检索：API 仅按摘要匹配（abstract.search），结果在后处理中再要求关键词也包含。
+ * 宽松检索：API 用 search 拉取标题/摘要/全文匹配，结果在后处理中保留标题 or 摘要 or 关键词任一包含。
  */
 async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 200, strictMode = false }) {
   const all = [];
@@ -569,7 +623,7 @@ async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 
       const url = new URL("https://api.openalex.org/works");
 
       if (strictMode) {
-        url.searchParams.set("filter", `${sourceFilter},title.search:${topic}`);
+        url.searchParams.set("filter", `${sourceFilter},abstract.search:${topic}`);
       } else {
         url.searchParams.set("search", topic);
         url.searchParams.set("filter", sourceFilter);
@@ -686,6 +740,16 @@ async function main() {
     }
     if (!year) {
       markSkip("missing year", w);
+      continue;
+    }
+
+    if (!workMatchesTopic(w, query, strictMode)) {
+      markSkip(
+        strictMode
+          ? "strict: abstract and keywords must both contain query"
+          : "relaxed: title, abstract or keywords must contain query",
+        w
+      );
       continue;
     }
 
