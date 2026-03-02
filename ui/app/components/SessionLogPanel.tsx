@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
 
 const POLL_MS = 1500;
 const DEFAULT_HEIGHT_PX = 220;
@@ -13,7 +14,10 @@ export function SessionLogPanel() {
   const [jobCount, setJobCount] = useState<number | null>(null);
   const [manageMsg, setManageMsg] = useState("");
   const [managing, setManaging] = useState(false);
+  /** 上次一键保存时间（北京时间，到分钟）；有保存记录时显示 */
+  const [lastSaveTime, setLastSaveTime] = useState<string | null>(null);
   const preRef = useRef<HTMLPreElement>(null);
+  const { confirm: thuConfirm } = useThUAlertConfirm();
 
   useEffect(() => {
     const fetchSession = () => {
@@ -26,6 +30,20 @@ export function SessionLogPanel() {
     const t = setInterval(fetchSession, POLL_MS);
     return () => clearInterval(t);
   }, []);
+
+  useEffect(() => {
+    fetch("/api/git-history")
+      .then((r) => r.json())
+      .then((d) => {
+        const saves = d?.saves;
+        if (Array.isArray(saves) && saves.length > 0 && saves[0]?.dateBeijing) {
+          setLastSaveTime(saves[0].dateBeijing);
+        } else {
+          setLastSaveTime(null);
+        }
+      })
+      .catch(() => setLastSaveTime(null));
+  }, [expanded]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -47,6 +65,18 @@ export function SessionLogPanel() {
       .then(() => setContent(""))
       .catch(() => {})
       .finally(() => setClearing(false));
+  };
+
+  const onCleanupClick = async () => {
+    const ok = await thuConfirm("确定仅保留最近 30 条任务日志，其余将删除？");
+    if (ok) runManage("cleanup", { keepLast: 30 });
+  };
+
+  const onClearClick = async () => {
+    const ok = await thuConfirm(
+      "清空后当前运行日志将无法恢复。请确认重要内容已通过「归档 3 天前」等方式存档。\n\n确定要清空吗？"
+    );
+    if (ok) clearLog();
   };
 
   const runManage = async (
@@ -107,16 +137,11 @@ export function SessionLogPanel() {
       </button>
       {expanded && (
         <>
-          <div className="flex flex-wrap items-center justify-end gap-2 px-3 pb-1">
-            <button
-              type="button"
-              onClick={clearLog}
-              disabled={clearing || !content}
-              className="rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-2.5 py-1.5 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
-            >
-              {clearing ? "清空中…" : "清空"}
-            </button>
-          </div>
+          {lastSaveTime != null && (
+            <div className="px-3 py-1.5 text-[11px] text-[var(--text-muted)] border-b border-[var(--border-soft)]">
+              上次保存时间：{lastSaveTime}（北京时间）
+            </div>
+          )}
           <div className="border-t border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2">
             <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
               <span>日志管理：</span>
@@ -131,11 +156,19 @@ export function SessionLogPanel() {
               </button>
               <button
                 type="button"
-                onClick={() => runManage("cleanup", { keepLast: 30 })}
+                onClick={onCleanupClick}
                 disabled={managing}
                 className="rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1 font-medium hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
               >
                 仅保留最近 30 条
+              </button>
+              <button
+                type="button"
+                onClick={onClearClick}
+                disabled={clearing || !content}
+                className="rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1 font-medium hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
+              >
+                {clearing ? "清空中…" : "清空"}
               </button>
             </div>
             {manageMsg && (
