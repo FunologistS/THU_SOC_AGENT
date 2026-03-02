@@ -25,6 +25,7 @@ export type JobType =
   | "synthesize"
   | "concept_synthesize"
   | "upload_and_writing"
+  | "transcribe_submit_and_writing"
   | "writing_under_style";
 
 export interface RunJobRequest {

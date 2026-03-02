@@ -14,6 +14,14 @@ function unwrapMarkdownCodeBlock(raw: string): string {
   return inner || raw;
 }
 
+/** 去掉链接外的多余括号，避免“（[(Padovani & Pavan, 2016)](#paper-1)）”这种双层括号，只保留链接本身 */
+function stripOuterParensAroundLinks(content: string): string {
+  return content.replace(
+    /[（(]\s*(\[[^\]]+\]\(#paper-\d+\))\s*[）)]/g,
+    (_, link) => link
+  );
+}
+
 /** 将正文中尚未成链接的纯文字引用 (Author, Year) 转为 [(Author, Year)](#paper-id)，以便点击查看 */
 function linkifyPlainCitations(
   content: string,
@@ -145,10 +153,11 @@ export function MarkdownPreview({
     );
   }
   const unwrapped = unwrapMarkdownCodeBlock(content);
+  const cleaned = stripOuterParensAroundLinks(unwrapped);
   const toRender =
     citationLinkTopic && papersCitations.length > 0
-      ? linkifyPlainCitations(unwrapped, papersCitations)
-      : unwrapped;
+      ? linkifyPlainCitations(cleaned, papersCitations)
+      : cleaned;
   return (
     <div className="prose-reader">
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
@@ -163,13 +172,16 @@ export function MarkdownPreview({
           onClick={() => setExpandedCell(null)}
         >
           <div
-            className="thu-modal-card prose-expand-modal max-h-[85vh] w-full max-w-2xl overflow-y-auto p-5"
+            className="thu-modal-card prose-expand-modal relative max-h-[85vh] w-full max-w-2xl overflow-y-auto p-5 flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="prose-reader text-sm">{expandedCell}</div>
+            <button type="button" onClick={() => setExpandedCell(null)} className="thu-modal-close absolute right-4 top-4 z-10 p-1" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <div className="prose-reader text-sm flex-1 min-h-0 overflow-y-auto pr-6">{expandedCell}</div>
             <button
               type="button"
-              className="thu-modal-btn-primary mt-4 px-4 py-2 text-sm font-medium"
+              className="thu-modal-btn-primary mt-4 px-4 py-2 text-sm font-medium shrink-0"
               onClick={() => setExpandedCell(null)}
             >
               关闭
@@ -188,17 +200,21 @@ export function MarkdownPreview({
           onClick={() => !citationLoading && setCitationPaper(null)}
         >
           <div
-            className="thu-modal-card max-h-[85vh] w-full max-w-2xl overflow-y-auto p-5 text-sm"
+            className="thu-modal-card relative max-h-[85vh] w-full max-w-2xl flex flex-col p-5 text-sm overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
+            <button type="button" onClick={() => !citationLoading && setCitationPaper(null)} className="thu-modal-close absolute right-4 top-4 z-10 p-1" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
             {citationLoading && (
               <p className="text-[var(--text-muted)]">加载中…</p>
             )}
             {!citationLoading && citationPaper && (
               <>
-                <h3 className="text-base font-semibold text-[var(--text)] border-b border-[var(--border-soft)] pb-2 mb-3">
+                <h3 className="text-base font-semibold text-[var(--text)] border-b border-[var(--border-soft)] pb-2 mb-3 pr-8 shrink-0">
                   {citationPaper.title ?? "（无标题）"}
                 </h3>
+                <div className="flex-1 min-h-0 overflow-y-auto -mx-1 px-1">
                 <dl className="grid gap-2 [&_dt]:font-medium [&_dt]:text-[var(--text-muted)] [&_dt]:mt-2 first:[&_dt]:mt-0 [&_dd]:text-[var(--text)]">
                   {(citationPaper.authors != null && citationPaper.authors !== "") && (
                     <>
@@ -264,11 +280,12 @@ export function MarkdownPreview({
                     </>
                   )}
                 </dl>
+                </div>
               </>
             )}
             <button
               type="button"
-              className="mt-4 rounded-lg bg-[var(--thu-purple)] px-4 py-2 text-sm font-medium text-white"
+              className="mt-4 shrink-0 rounded-lg bg-[var(--thu-purple)] px-4 py-2 text-sm font-medium text-white"
               onClick={() => setCitationPaper(null)}
             >
               关闭

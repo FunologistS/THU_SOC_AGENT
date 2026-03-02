@@ -2,8 +2,21 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
+import { type JournalSearchParams, DISCIPLINES } from "@/components/LiteratureSearchPanel";
 import type { JobType } from "@/app/types";
 import type { TopicMeta } from "@/app/types";
+
+/** 与 LiteratureSearchPanel 一致：主题 slug 化 */
+function toSlug(s: string): string {
+  return s
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9_-]/g, "");
+}
+
+/** 年份下拉：2026 在上 */
+const YEAR_OPTIONS = Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i);
 
 /** 5 步：层层递进，对应后端 jobType */
 export type SkillId = JobType;
@@ -17,9 +30,12 @@ const SKILLS: { step: number; id: SkillId; label: string; desc: string }[] = [
 ];
 
 /** 未在 SKILLS 中的 job 的展示名（如从一键综述内触发的上传写作样本） */
-const EXTRA_RUNNING_LABELS: Record<string, string> = { upload_and_writing: "上传写作样本" };
+const EXTRA_RUNNING_LABELS: Record<string, string> = {
+  upload_and_writing: "上传写作样本",
+  transcribe_submit_and_writing: "转录并综述",
+};
 
-/** 各技能预估耗时（秒），用于进度条时间基准；完成时以 100% 为准 */
+/** 各技能预估耗时（秒），仅作进度条参考；实际用时以「已用 X 秒」为准 */
 const SKILL_ESTIMATED_SECONDS: Record<SkillId, number> = {
   journal_search: 180,
   filter: 120,
@@ -27,7 +43,8 @@ const SKILL_ESTIMATED_SECONDS: Record<SkillId, number> = {
   synthesize: 120,
   concept_synthesize: 210,
   upload_and_writing: 600,
-  writing_under_style: 390,
+  transcribe_submit_and_writing: 600,
+  writing_under_style: 600,
 };
 
 function hasStageFiles(meta: TopicMeta | null, stageId: string): boolean {
@@ -47,7 +64,9 @@ export function SkillPanel({
   topicMeta = null,
   journalDataSourceLabel = null,
   onFocusLiteratureSearch,
-  onRequestJournalSearchRun,
+  getJournalSearchDefaults,
+  onRunJournalSearch,
+  onRunStarted,
 }: {
   topic: string;
   availableTopics?: { topic: string; label: string }[];
@@ -60,10 +79,20 @@ export function SkillPanel({
   topicMeta?: TopicMeta | null;
   /** 当前期刊数据源展示名（来自文献检索 / 期刊数据库），用于灰色提示 */
   journalDataSourceLabel?: string | null;
-  /** 点击「重新检索」运行时的「去设置」：聚焦/展开侧栏文献检索区块 */
+  /** 点击「重新检索」弹窗内「去侧栏修改」时：聚焦/展开侧栏文献检索区块 */
   onFocusLiteratureSearch?: () => void;
-  /** 点击「重新检索」运行时的「使用当前设置并运行」：用当前检索选项直接开始检索 */
-  onRequestJournalSearchRun?: () => void;
+  /** 打开重新检索弹窗时拉取当前设定作为默认值 */
+  getJournalSearchDefaults?: () => JournalSearchParams | null;
+  /** 在弹窗内确认后，用用户选择/修改后的参数执行检索 */
+  onRunJournalSearch?: (params: {
+    topicSlug: string;
+    journalSourceIds: string[];
+    yearFrom?: number;
+    yearTo?: number;
+    searchMode?: "strict" | "relaxed";
+  }) => void;
+  /** 技能真正开始运行（jobId 已设置）时调用，用于页面滚动到运行日志 */
+  onRunStarted?: () => void;
 }) {
   const highlightSet = new Set(highlightedCardIds);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -80,29 +109,112 @@ export function SkillPanel({
   const [exitCode, setExitCode] = useState<number | undefined>();
   const [error, setError] = useState<string | null>(null);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [uploadStyle, setUploadStyle] = useState<"academic" | "colloquial">("academic");
+  const [uploadStyle, setUploadStyle] = useState<"academic" | "colloquial" | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [writingReviewModalOpen, setWritingReviewModalOpen] = useState(false);
+  /** 一键综述弹窗步骤：先选是否上传 → 是则上传表单，否则选默认风格 */
+  const [writingReviewStep, setWritingReviewStep] = useState<"upload_choice" | "upload_style_pick" | "upload_form" | "default_style" | "confirm">("upload_choice");
+  /** 在「确认」步骤中待运行的风格与提示（选择参考样例后先进入确认，再点确认并运行才真正跑） */
+  const [pendingWritingStyle, setPendingWritingStyle] = useState<"zh" | "en" | "colloquial" | "none" | null>(null);
+  const [pendingWritingPrompt, setPendingWritingPrompt] = useState<string>("");
   const [writingReviewPrompt, setWritingReviewPrompt] = useState("");
   /** 荟萃分析/一键综述可选：gpt | 智谱 glm-4.7-flash | 智谱 glm-5 */
   const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
   const [conceptSynthesizeModelOpen, setConceptSynthesizeModelOpen] = useState(false);
+  /** 主题聚类：auto=自动选k，fixed6=常规6类，custom=用户设定(2-20) */
+  const [synthesizeKMode, setSynthesizeKMode] = useState<"auto" | "fixed6" | "custom">("auto");
+  const [synthesizeKCustom, setSynthesizeKCustom] = useState(6);
+  const [synthesizeKOpen, setSynthesizeKOpen] = useState(false);
   const [writingModel, setWritingModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
   const [writingModelOpen, setWritingModelOpen] = useState(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
+  /** 已用秒数（每秒更新），保证超过预估后仍持续刷新显示 */
+  const [elapsedSec, setElapsedSec] = useState(0);
   const [journalSearchConfirmOpen, setJournalSearchConfirmOpen] = useState(false);
+  /** 弹窗打开时拉取的默认值（含 journalSourceIds），用于本次运行的参数 */
+  const [journalSearchModalDefaults, setJournalSearchModalDefaults] = useState<JournalSearchParams | null>(null);
+  const [modalTopicInput, setModalTopicInput] = useState("");
+  const [modalInstructionInput, setModalInstructionInput] = useState("");
+  const [modalYearFrom, setModalYearFrom] = useState("");
+  const [modalYearTo, setModalYearTo] = useState("");
+  const [modalSearchMode, setModalSearchMode] = useState<"strict" | "relaxed">("strict");
   const [abortConfirmOpen, setAbortConfirmOpen] = useState(false);
+  /** 用于暂停运行：runOne 收到 jobId 后立即写入，避免 state 未更新时点击取消拿不到 id */
+  const latestJobIdRef = useRef<string | null>(null);
   const { confirm: thuConfirm, confirmThree: thuConfirmThree } = useThUAlertConfirm();
 
-  // 运行中按预估时间推进进度条（约每秒更新），完成时由 poll 设为 100%
+  /** 弹窗内选中的管线主题（仅限已有主题），用于产出目录 outputs/<topic> */
+  const [modalPipelineTopic, setModalPipelineTopic] = useState("");
+  /** 弹窗内选中的检索学科，与侧栏文献检索一致 */
+  const [modalSelectedDisciplines, setModalSelectedDisciplines] = useState<string[]>([]);
+  /** 弹窗内根据学科拉取的期刊 source id 列表，用于运行检索 */
+  const [modalDisciplineJournalIds, setModalDisciplineJournalIds] = useState<string[]>([]);
+  const [modalDisciplinesLoading, setModalDisciplinesLoading] = useState(false);
+  const modalDisciplinesRequestId = useRef(0);
+
+  /** 打开重新检索弹窗时，用侧栏当前设定填充默认值，主题默认当前页主题（若当前不在已有主题列表中则取第一个） */
+  useEffect(() => {
+    if (!journalSearchConfirmOpen) return;
+    const inList = availableTopics.some((t) => t.topic === topic);
+    setModalPipelineTopic(inList ? topic : availableTopics[0]?.topic ?? topic);
+    if (!getJournalSearchDefaults) return;
+    const def = getJournalSearchDefaults();
+    setJournalSearchModalDefaults(def);
+    if (def) {
+      setModalTopicInput(def.topicInput);
+      setModalInstructionInput(def.instructionInput);
+      setModalYearFrom(def.yearFrom != null ? String(def.yearFrom) : "");
+      setModalYearTo(def.yearTo != null ? String(def.yearTo) : "");
+      setModalSearchMode(def.searchMode);
+      setModalSelectedDisciplines(def.selectedDisciplines?.length ? [...def.selectedDisciplines] : ["Sociology", "Anthropology", "Economics"]);
+      setModalDisciplineJournalIds(def.journalSourceIds?.length ? [...def.journalSourceIds] : []);
+    } else {
+      setModalSelectedDisciplines(["Sociology", "Anthropology", "Economics"]);
+      setModalDisciplineJournalIds([]);
+    }
+  }, [journalSearchConfirmOpen, topic, availableTopics, getJournalSearchDefaults]);
+
+  /** 弹窗内学科变更时拉取对应期刊列表 */
+  useEffect(() => {
+    if (!journalSearchConfirmOpen || modalSelectedDisciplines.length === 0) {
+      setModalDisciplineJournalIds([]);
+      setModalDisciplinesLoading(false);
+      return;
+    }
+    modalDisciplinesRequestId.current += 1;
+    const myId = modalDisciplinesRequestId.current;
+    setModalDisciplinesLoading(true);
+    const params = new URLSearchParams();
+    params.set("disciplines", modalSelectedDisciplines.join(","));
+    fetch(`/api/journals-by-discipline?${params}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (myId !== modalDisciplinesRequestId.current) return;
+        const ids = (d.journals || [])
+          .map((j: { openalex_source_id?: string }) => (j.openalex_source_id ?? "").trim())
+          .filter(Boolean) as string[];
+        setModalDisciplineJournalIds(ids);
+      })
+      .catch(() => {
+        if (myId !== modalDisciplinesRequestId.current) return;
+        setModalDisciplineJournalIds([]);
+      })
+      .finally(() => {
+        if (myId !== modalDisciplinesRequestId.current) return;
+        setModalDisciplinesLoading(false);
+      });
+  }, [journalSearchConfirmOpen, modalSelectedDisciplines]);
+
+  // 运行中每秒更新已用秒数与进度条；已用秒数始终递增，保证超过预估后时间仍持续显示
   useEffect(() => {
     if (!jobId || done || runStartTime == null || !runningSkill) return;
     const estimatedSec = SKILL_ESTIMATED_SECONDS[runningSkill] ?? 180;
     const tick = () => {
       const elapsed = (Date.now() - runStartTime) / 1000;
-      const pct = Math.min(95, (elapsed / estimatedSec) * 100);
-      setProgress(pct);
+      const sec = Math.floor(elapsed);
+      setElapsedSec(sec);
+      setProgress(Math.min(95, (elapsed / estimatedSec) * 100));
     };
     tick();
     const id = setInterval(tick, 1000);
@@ -112,7 +224,14 @@ export function SkillPanel({
   const runOne = (
     jobType: JobType,
     extraArgs?: string[],
-    options?: { conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5"; writingModel?: "gpt" | "glm-4.7-flash" | "glm-5"; qualityOnly?: boolean }
+    options?: {
+      conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5";
+      writingModel?: "gpt" | "glm-4.7-flash" | "glm-5";
+      qualityOnly?: boolean;
+      writingStyle?: "zh" | "en" | "colloquial" | "none";
+      writingPrompt?: string;
+      synthesizeK?: string;
+    }
   ): Promise<boolean> => {
     return new Promise((resolve) => {
       const body: {
@@ -122,13 +241,22 @@ export function SkillPanel({
         conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5";
         writingModel?: "gpt" | "glm-4.7-flash" | "glm-5";
         qualityOnly?: boolean;
+        writingStyle?: "zh" | "en" | "colloquial" | "none";
+        writingPrompt?: string;
+        synthesizeK?: string;
       } = { jobType, topic };
       if (Array.isArray(extraArgs) && extraArgs.length > 0) body.args = extraArgs;
+      if (jobType === "synthesize" && options?.synthesizeK) body.synthesizeK = options.synthesizeK;
       if (jobType === "concept_synthesize" && options?.conceptSynthesizeModel)
         body.conceptSynthesizeModel = options.conceptSynthesizeModel;
       if (jobType === "concept_synthesize" && options?.qualityOnly === true) body.qualityOnly = true;
-      if ((jobType === "writing_under_style" || jobType === "upload_and_writing") && options?.writingModel)
+      if (
+        (jobType === "writing_under_style" || jobType === "upload_and_writing" || jobType === "transcribe_submit_and_writing") &&
+        options?.writingModel
+      )
         body.writingModel = options.writingModel;
+      if (jobType === "writing_under_style" && options?.writingStyle) body.writingStyle = options.writingStyle;
+      if (jobType === "writing_under_style" && options?.writingPrompt != null) body.writingPrompt = options.writingPrompt;
       fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -141,10 +269,13 @@ export function SkillPanel({
             resolve(false);
             return;
           }
+          latestJobIdRef.current = data.jobId;
           setJobId(data.jobId);
           setLog("");
           setRunStartTime(Date.now());
           setProgress(0);
+          setElapsedSec(0);
+          onRunStarted?.();
           const poll = () => {
             fetch(`/api/logs?jobId=${data.jobId}`)
               .then((l) => l.json())
@@ -155,6 +286,7 @@ export function SkillPanel({
                 if (ld.done) {
                   setProgress(100);
                   setRunStartTime(null);
+                  setElapsedSec(0);
                   if (ld.exitCode === 0) onJobComplete?.(jobType);
                   resolve(ld.exitCode === 0);
                 } else {
@@ -216,6 +348,7 @@ export function SkillPanel({
     }
 
     if (skillId === "writing_under_style") {
+      setWritingReviewStep("upload_choice");
       setWritingReviewModalOpen(true);
       return;
     }
@@ -239,6 +372,7 @@ export function SkillPanel({
       }
     }
 
+    latestJobIdRef.current = null;
     setJobId(null);
     setLog("");
     setDone(false);
@@ -246,12 +380,22 @@ export function SkillPanel({
     setRunningSkill(skillId);
     setRunStartTime(null);
     setProgress(0);
+    setElapsedSec(0);
 
     try {
       const ok =
         skillId === "concept_synthesize"
           ? await runOne(skillId, undefined, { conceptSynthesizeModel, qualityOnly })
-          : await runOne(skillId);
+          : skillId === "synthesize"
+            ? await runOne(skillId, undefined, {
+                synthesizeK:
+                  synthesizeKMode === "auto"
+                    ? "auto"
+                    : synthesizeKMode === "fixed6"
+                      ? "6"
+                      : String(Math.min(20, Math.max(2, synthesizeKCustom))),
+              })
+            : await runOne(skillId);
       if (ok) onJobComplete?.(skillId);
       setRunningSkill(null);
     } catch {
@@ -259,62 +403,79 @@ export function SkillPanel({
     }
   };
 
-  /** 上传写作样本并执行 upload_and_writing，返回成功后的 savedFileName；失败返回 null */
-  const uploadStyleFileAndRun = async (file: File): Promise<string | null> => {
+  /** 上传写作样本到 assets/<style>，再执行 transcribe_submit_and_writing（转录到 references/submit/<style> + 综述） */
+  const uploadAndTranscribeSubmitWriting = async (file: File): Promise<boolean> => {
     const ext = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
     if (ext !== ".pdf" && ext !== ".docx") {
       setUploadError("仅支持 .pdf 与 .docx");
-      return null;
+      return false;
     }
     const form = new FormData();
     form.set("file", file);
-    form.set("style", uploadStyle);
+    form.set("style", uploadStyle ?? "academic");
     const uploadRes = await fetch("/api/upload-style-file", { method: "POST", body: form });
     const uploadData = await uploadRes.json();
     if (!uploadRes.ok) {
       setUploadError(uploadData.error || "上传失败");
-      return null;
+      return false;
     }
     const savedFileName = uploadData.savedFileName as string;
-    const ok = await runOne("upload_and_writing", [uploadStyle, savedFileName], { writingModel });
-    if (ok) onJobComplete?.("upload_and_writing");
-    return ok ? savedFileName : null;
+    const ok = await runOne("transcribe_submit_and_writing", [uploadStyle ?? "academic", savedFileName], { writingModel });
+    if (ok) onJobComplete?.("transcribe_submit_and_writing");
+    return ok;
   };
 
   const topicDisplay = topic ? topic.replace(/_/g, " ") : "—";
 
-  const startWritingReview = async (withPrompt: string | null) => {
-    setWritingReviewModalOpen(false);
-    const promptToUse = withPrompt?.trim() || null;
-    setWritingReviewPrompt("");
+  /** 从「上传表单」确认：先上传再跑 transcribe_submit_and_writing */
+  const confirmUploadAndRun = async () => {
+    if (!uploadFile) return;
     setUploadError(null);
     setError(null);
+    latestJobIdRef.current = null;
     setJobId(null);
     setLog("");
     setDone(false);
     setExitCode(undefined);
     setRunStartTime(null);
     setProgress(0);
+    setElapsedSec(0);
+    setRunningSkill("transcribe_submit_and_writing");
+    setWritingReviewModalOpen(false);
+    setWritingReviewStep("upload_choice");
+    const ok = await uploadAndTranscribeSubmitWriting(uploadFile);
+    setUploadFile(null);
+    setRunningSkill(null);
+    if (ok) onRunStarted?.();
+  };
 
-    const fileToUpload = uploadFile ?? null;
-    if (fileToUpload) {
-      setRunningSkill("upload_and_writing");
-      const saved = await uploadStyleFileAndRun(fileToUpload);
-      setUploadFile(null);
-      if (saved == null) {
-        setRunningSkill(null);
-        return;
-      }
-    }
-
+  /** 从「确认」步骤或直接调用：跑 writing_under_style(styleChoice, prompt) */
+  const startWritingReviewWithStyle = (styleChoice: "zh" | "en" | "colloquial" | "none", withPrompt: string | null) => {
+    const promptToUse = withPrompt?.trim() || null;
+    setWritingReviewModalOpen(false);
+    setWritingReviewStep("upload_choice");
+    setPendingWritingStyle(null);
+    setPendingWritingPrompt("");
+    setWritingReviewPrompt("");
+    setUploadError(null);
+    setError(null);
+    latestJobIdRef.current = null;
+    setJobId(null);
+    setLog("");
+    setDone(false);
+    setExitCode(undefined);
+    setRunStartTime(null);
+    setProgress(0);
+    setElapsedSec(0);
     setRunningSkill("writing_under_style");
-    runOne(
-      "writing_under_style",
-      promptToUse ? [promptToUse] : undefined,
-      { writingModel }
-    )
+    runOne("writing_under_style", undefined, {
+      writingModel,
+      writingStyle: styleChoice,
+      writingPrompt: promptToUse ?? undefined,
+    })
       .then(() => setRunningSkill(null))
       .catch(() => setRunningSkill(null));
+    onRunStarted?.();
   };
 
   return (
@@ -352,7 +513,7 @@ export function SkillPanel({
         顺序：① 重新检索 → ② 清洗规整 → ③ 主题聚类 → ④ 荟萃分析 → ⑤ 一键综述（可选在弹窗内上传写作样本）
       </p>
       <div className="grid gap-1.5">
-        {SKILLS.slice(0, 3).map((s) => (
+        {SKILLS.slice(0, 2).map((s) => (
           <div
             key={s.id}
             data-skill-id={s.id}
@@ -379,6 +540,104 @@ export function SkillPanel({
             </button>
           </div>
         ))}
+        {/* ③ 主题聚类：可选聚类数 自动 / 固定 6 */}
+        <div
+          data-skill-id="synthesize"
+          className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
+            highlightSet.has("synthesize")
+              ? "skill-card-highlight border-[var(--thu-purple)]"
+              : "border-[var(--border-soft)] bg-[var(--bg-card)]"
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--thu-purple)] text-[10px] font-medium text-white shadow-sm">
+              3
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-medium text-[var(--text)]">主题聚类</div>
+              <div className="text-[11px] text-[var(--text-muted)] leading-tight">
+                基于结构化摘要做主题聚类，梳理主要研究方向，生成元数据（04_meta）
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => run("synthesize")}
+              disabled={!!runningSkill || !topic}
+              className="thu-btn-primary flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+            >
+              {runningSkill === "synthesize" ? "…" : "运行"}
+            </button>
+          </div>
+          <div className="mt-2">
+            <button
+              type="button"
+              onClick={() => setSynthesizeKOpen((o) => !o)}
+              className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] hover:text-[var(--text)]"
+            >
+              <span className="inline-block transition-transform" style={{ transform: synthesizeKOpen ? "rotate(90deg)" : "none" }}>
+                ▶
+              </span>
+              聚类数：{synthesizeKMode === "auto" ? "自动聚类（AI 测算最优）" : synthesizeKMode === "fixed6" ? "常规 6 类" : `自定义（${Math.min(20, Math.max(2, synthesizeKCustom))} 类）`}
+            </button>
+            {synthesizeKOpen && (
+              <div className="mt-1.5 flex flex-col gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setSynthesizeKMode("auto")}
+                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
+                    synthesizeKMode === "auto"
+                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
+                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
+                  }`}
+                  aria-pressed={synthesizeKMode === "auto"}
+                >
+                  自动聚类（按 AI 测算的最优类别数）
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSynthesizeKMode("fixed6")}
+                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
+                    synthesizeKMode === "fixed6"
+                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
+                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
+                  }`}
+                  aria-pressed={synthesizeKMode === "fixed6"}
+                >
+                  常规 6 类
+                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSynthesizeKMode("custom")}
+                    className={`flex flex-1 items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
+                      synthesizeKMode === "custom"
+                        ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
+                        : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
+                    }`}
+                    aria-pressed={synthesizeKMode === "custom"}
+                  >
+                    自定义
+                  </button>
+                  <label className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
+                    <input
+                      type="number"
+                      min={2}
+                      max={20}
+                      value={synthesizeKCustom}
+                      onChange={(e) => {
+                        const v = parseInt(e.target.value, 10);
+                        if (!Number.isNaN(v)) setSynthesizeKCustom(Math.min(20, Math.max(2, v)));
+                      }}
+                      onFocus={() => setSynthesizeKMode("custom")}
+                      className="w-12 rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-1.5 py-1 text-center text-[var(--text)]"
+                    />
+                    类（2–20）
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
         {/* ④ 荟萃分析：可选 GPT / GLM */}
         <div
           data-skill-id="concept_synthesize"
@@ -549,9 +808,12 @@ export function SkillPanel({
         </div>
       </div>
       {abortConfirmOpen && jobId && (
-        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="abort-confirm-title">
-          <div className="thu-modal-card mx-4 w-full max-w-md p-5">
-            <h3 id="abort-confirm-title" className="thu-modal-title mb-3 text-base">暂停运行</h3>
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="abort-confirm-title" onClick={() => setAbortConfirmOpen(false)}>
+          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5" onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setAbortConfirmOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="abort-confirm-title" className="thu-modal-title mb-3 text-base pr-8">暂停运行</h3>
             <p className="mb-4 text-sm text-[var(--text)]">是否中止当前技能运行？</p>
             <div className="flex flex-wrap gap-2">
               <button
@@ -565,11 +827,13 @@ export function SkillPanel({
                 type="button"
                 onClick={async () => {
                   setAbortConfirmOpen(false);
+                  const idToAbort = latestJobIdRef.current || jobId;
+                  if (!idToAbort) return;
                   try {
                     await fetch("/api/run/abort", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ jobId }),
+                      body: JSON.stringify({ jobId: idToAbort }),
                     });
                   } catch {
                     // 忽略网络错误，轮询会得到 done
@@ -584,120 +848,366 @@ export function SkillPanel({
         </div>
       )}
       {journalSearchConfirmOpen && (
-        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="journal-search-confirm-title">
-          <div className="thu-modal-card mx-4 w-full max-w-md p-5">
-            <h3 id="journal-search-confirm-title" className="thu-modal-title mb-3 text-base">重新检索</h3>
-            <p className="mb-4 text-xs text-[var(--text-muted)]">是否需要重新设置检索选项（年份、主题、提示词）？</p>
-            <div className="flex flex-col gap-2">
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="journal-search-confirm-title" onClick={() => setJournalSearchConfirmOpen(false)}>
+          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setJournalSearchConfirmOpen(false)} className="thu-modal-close absolute right-4 top-4 z-10 p-1 shrink-0" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="journal-search-confirm-title" className="thu-modal-title mb-3 text-base pr-8">重新检索</h3>
+            <p className="mb-3 text-xs text-[var(--text-muted)]">可在下方调整检索选项（默认沿用当前设定），确认后直接运行。</p>
+            <div className="mb-4 space-y-3">
+              {availableTopics.length > 0 && (
+                <label className="block">
+                  <span className="text-[11px] text-[var(--text-muted)]">主题</span>
+                  <select
+                    value={modalPipelineTopic}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (v) setModalPipelineTopic(v);
+                    }}
+                    className="thu-input mt-1 w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
+                  >
+                    {availableTopics.map((t) => (
+                      <option key={t.topic} value={t.topic}>
+                        {t.label}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">产出将保存到该主题下，仅可在已有主题中选择。</p>
+                </label>
+              )}
+              {onFocusLiteratureSearch && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setJournalSearchConfirmOpen(false);
+                    onFocusLiteratureSearch();
+                  }}
+                  className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2 text-sm font-medium text-[var(--thu-purple)] transition-colors hover:bg-[var(--thu-purple-subtle)]"
+                >
+                  检索新主题
+                </button>
+              )}
+              <div className="space-y-2">
+                <span className="text-[11px] text-[var(--text-muted)]">检索学科</span>
+                <div className="flex flex-col gap-1.5">
+                  {DISCIPLINES.map((d) => (
+                    <label
+                      key={d.id}
+                      className="flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm transition-colors has-[:checked]:border-[var(--thu-purple)] has-[:checked]:bg-[var(--thu-purple-subtle)]"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={modalSelectedDisciplines.includes(d.id)}
+                        onChange={() => {
+                          setModalSelectedDisciplines((prev) =>
+                            prev.includes(d.id) ? prev.filter((x) => x !== d.id) : [...prev, d.id]
+                          );
+                        }}
+                        className="h-3.5 w-3.5 shrink-0 rounded border-[var(--border)] accent-[var(--thu-purple)]"
+                      />
+                      {d.label}
+                    </label>
+                  ))}
+                </div>
+                <p className="text-[11px] text-[var(--text-muted)]">
+                  {modalDisciplinesLoading ? "加载中…" : `共 ${modalDisciplineJournalIds.length} 本期刊（已选学科）`}
+                </p>
+              </div>
+              <label className="block">
+                <span className="text-[11px] text-[var(--text-muted)]">提示词（可选）</span>
+                <textarea
+                  value={modalInstructionInput}
+                  onChange={(e) => setModalInstructionInput(e.target.value)}
+                  placeholder="例如：在选定期刊中搜索数字劳动相关、2024-2026年间的论文"
+                  rows={2}
+                  className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm resize-y"
+                />
+              </label>
+              <div className="flex gap-2">
+                <label className="flex-1">
+                  <span className="text-[11px] text-[var(--text-muted)]">年份起</span>
+                  <select
+                    value={modalYearFrom}
+                    onChange={(e) => setModalYearFrom(e.target.value)}
+                    className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm bg-[var(--bg-card)]"
+                  >
+                    <option value="">不限定</option>
+                    {YEAR_OPTIONS.map((y) => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="flex-1">
+                  <span className="text-[11px] text-[var(--text-muted)]">年份止</span>
+                  <select
+                    value={modalYearTo}
+                    onChange={(e) => setModalYearTo(e.target.value)}
+                    className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm bg-[var(--bg-card)]"
+                  >
+                    <option value="">不限定</option>
+                    {YEAR_OPTIONS.map((y) => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <div>
+                <span className="text-[11px] text-[var(--text-muted)]">检索类型</span>
+                <div className="mt-1 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalSearchMode("strict")}
+                    className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                      modalSearchMode === "strict"
+                        ? "bg-[#660874] text-white"
+                        : "border border-[var(--border-soft)] bg-[var(--bg-sidebar)] text-[var(--text-muted)]"
+                    }`}
+                  >
+                    严格检索
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setModalSearchMode("relaxed")}
+                    className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                      modalSearchMode === "relaxed"
+                        ? "text-white"
+                        : "border border-[var(--border-soft)] bg-[var(--bg-sidebar)] text-[var(--text-muted)]"
+                    }`}
+                    style={modalSearchMode === "relaxed" ? { background: "linear-gradient(135deg, #c92d6a 0%, #d93379 50%, #e85a9a 100%)" } : undefined}
+                  >
+                    宽松检索
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  setJournalSearchConfirmOpen(false);
-                  onFocusLiteratureSearch?.();
-                }}
+                onClick={() => setJournalSearchConfirmOpen(false)}
                 className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
               >
-                去设置
+                取消
               </button>
               <button
                 type="button"
                 onClick={() => {
+                  const topicSlug =
+                    availableTopics.length > 0 && modalPipelineTopic
+                      ? modalPipelineTopic
+                      : toSlug(modalInstructionInput) || topic || "digital_labor";
+                  const from = modalYearFrom ? parseInt(modalYearFrom, 10) : undefined;
+                  const to = modalYearTo ? parseInt(modalYearTo, 10) : undefined;
                   setJournalSearchConfirmOpen(false);
-                  onRequestJournalSearchRun?.();
+                  onRunJournalSearch?.({
+                    topicSlug,
+                    journalSourceIds: modalDisciplineJournalIds,
+                    yearFrom: from && !Number.isNaN(from) ? from : undefined,
+                    yearTo: to && !Number.isNaN(to) ? to : undefined,
+                    searchMode: modalSearchMode,
+                  });
                 }}
-                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+                disabled={modalSelectedDisciplines.length === 0 || modalDisciplineJournalIds.length === 0 || modalDisciplinesLoading}
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium disabled:opacity-50"
               >
-                使用当前设置并运行
+                确认并运行
               </button>
             </div>
           </div>
         </div>
       )}
       {writingReviewModalOpen && (
-        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="writing-review-modal-title">
-          <div className="thu-modal-card mx-4 w-full max-w-md p-5">
-            <h3 id="writing-review-modal-title" className="thu-modal-title mb-3 text-base">一键综述</h3>
-            <p className="mb-3 text-xs text-[var(--text-muted)]">选择直接生成，或输入额外提示词后再生成。可选项：先上传写作样本再生成。</p>
-            {/* 可选项：上传写作样本 */}
-            <div className="mb-4 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2.5">
-              <div className="mb-2 text-[11px] font-medium text-[var(--text-muted)]">上传写作样本（可选）</div>
-              <p className="mb-2 text-[11px] text-[var(--text-muted)] leading-snug">若上传则先处理样本再生成综述，否则使用默认样本。</p>
-              <div className="mb-2 flex flex-wrap gap-2 items-center">
-                <label className="flex items-center gap-1.5 text-xs cursor-pointer">
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="writing-review-modal-title" onClick={() => setWritingReviewModalOpen(false)}>
+          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setWritingReviewModalOpen(false)} className="thu-modal-close absolute right-4 top-4 z-10 p-1 shrink-0" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="writing-review-modal-title" className="thu-modal-title mb-3 text-base pr-8">一键综述</h3>
+
+            {writingReviewStep === "upload_choice" && (
+              <>
+                <p className="mb-4 text-sm text-[var(--text)]">是否上传写作案例？</p>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { setUploadStyle(null); setWritingReviewStep("upload_style_pick"); }}
+                    className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+                  >
+                    是，上传我的写作样本
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWritingReviewStep("default_style")}
+                    className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
+                  >
+                    否，使用默认风格（可选学术型或通俗型）
+                  </button>
+                </div>
+              </>
+            )}
+
+            {writingReviewStep === "upload_style_pick" && (
+              <>
+                <p className="mb-3 text-sm text-[var(--text)]">请先选择写作样本类型（必选其一后才会出现「下一步」）</p>
+                <div className="mb-3 flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setUploadStyle("academic")}
+                    className={`rounded-lg px-3 py-2 text-sm font-medium text-left transition-all ${uploadStyle === "academic" ? "thu-modal-btn-primary" : "border border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}
+                  >
+                    学术型
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUploadStyle("colloquial")}
+                    className={`rounded-lg px-3 py-2 text-sm font-medium text-left transition-all ${uploadStyle === "colloquial" ? "thu-modal-btn-primary" : "border border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}
+                  >
+                    通俗型
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={() => setWritingReviewStep("upload_choice")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回</button>
+                  {uploadStyle && (
+                    <button type="button" onClick={() => setWritingReviewStep("upload_form")} className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium">下一步：上传样例</button>
+                  )}
+                </div>
+              </>
+            )}
+
+            {writingReviewStep === "upload_form" && uploadStyle && (
+              <>
+                <p className="mb-3 text-xs text-[var(--text-muted)]">类型：{uploadStyle === "academic" ? "学术型" : "通俗型"}。文件将保存到 assets/{uploadStyle}，转录结果保存到 references/submit/{uploadStyle}。</p>
+                <div className="mb-3 flex items-center gap-2">
                   <input
-                    type="radio"
-                    name="modalUploadStyle"
-                    checked={uploadStyle === "academic"}
-                    onChange={() => setUploadStyle("academic")}
-                    className="rounded-full border-[var(--border)]"
+                    type="file"
+                    accept=".pdf,.docx"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      setUploadFile(f ?? null);
+                      setUploadError(null);
+                    }}
+                    className="text-[11px] text-[var(--text)] file:mr-2 file:rounded file:border-0 file:bg-[var(--thu-purple-subtle)] file:px-2 file:py-1 file:text-xs file:font-medium file:text-[var(--thu-purple)]"
                   />
-                  <span>学术型</span>
-                </label>
-                <label className="flex items-center gap-1.5 text-xs cursor-pointer">
-                  <input
-                    type="radio"
-                    name="modalUploadStyle"
-                    checked={uploadStyle === "colloquial"}
-                    onChange={() => setUploadStyle("colloquial")}
-                    className="rounded-full border-[var(--border)]"
+                  {uploadFile && <span className="text-[11px] text-[var(--text-muted)]">{uploadFile.name}</span>}
+                </div>
+                {uploadError && <p className="mb-2 text-xs text-[var(--accent)]">{uploadError}</p>}
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={() => setWritingReviewStep("upload_style_pick")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回</button>
+                  <button type="button" onClick={confirmUploadAndRun} disabled={!uploadFile} className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium disabled:opacity-50">确认并运行</button>
+                </div>
+              </>
+            )}
+
+            {writingReviewStep === "default_style" && (
+              <>
+                <p className="mb-1 text-sm font-medium text-[var(--text)]">默认风格：请先选学术型或通俗型</p>
+                <p className="mb-3 text-xs text-[var(--text-muted)]">学术型可进一步选中文或英文样例；通俗型使用内置默认样例。所选类型将同时使用内置默认样例与您上传的该类型写作样例（侧栏「写作样例」可管理）。</p>
+                <div className="mb-3 space-y-3">
+                  <div>
+                    <p className="mb-1.5 text-[11px] font-medium text-[var(--text-muted)]">学术型</p>
+                    <div className="flex flex-col gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => { setPendingWritingStyle("zh"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
+                        className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium text-left"
+                      >
+                        参考中文样例（academic-2a-tsyzm.md、academic-2b-qnyj.md）
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setPendingWritingStyle("en"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
+                        className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium text-left"
+                      >
+                        参考英文样例（academic-1a-IR.md、academic-1b-CSR.md）
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setPendingWritingStyle("none"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
+                        className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium text-left border border-[var(--border-soft)]"
+                      >
+                        不参考任何风格，直接生成综述
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-1.5 text-[11px] font-medium text-[var(--text-muted)]">通俗型</p>
+                    <button
+                      type="button"
+                      onClick={() => { setPendingWritingStyle("colloquial"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
+                      className="thu-modal-btn-secondary w-full rounded-lg px-3 py-2 text-sm font-medium text-left"
+                    >
+                      使用通俗型默认样例（colloquial-1-wwewbw.md、colloquial-2-acknowledgement.md）
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-3 space-y-1">
+                  <label className="block text-[11px] text-[var(--text-muted)]">额外提示词（可选）</label>
+                  <textarea
+                    value={writingReviewPrompt}
+                    onChange={(e) => setWritingReviewPrompt(e.target.value)}
+                    placeholder="例如：突出某主题、避免某表述…"
+                    rows={2}
+                    className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--thu-purple)] focus:outline-none"
                   />
-                  <span>通俗型</span>
-                </label>
-              </div>
-              <input
-                type="file"
-                accept=".pdf,.docx"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  setUploadFile(f ?? null);
-                  setUploadError(null);
-                }}
-                className="text-[11px] text-[var(--text)] file:mr-2 file:rounded file:border-0 file:bg-[var(--thu-purple-subtle)] file:px-2 file:py-1 file:text-xs file:font-medium file:text-[var(--thu-purple)]"
-              />
-              {uploadFile && <span className="ml-2 text-[11px] text-[var(--text-muted)]">{uploadFile.name}</span>}
-              {uploadError && <p className="mt-1.5 text-xs text-[var(--accent)]">{uploadError}</p>}
-            </div>
-            <div className="mb-4 flex flex-col gap-2">
+                </div>
+                <button type="button" onClick={() => setWritingReviewStep("upload_choice")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回</button>
+              </>
+            )}
+
+            {writingReviewStep === "confirm" && pendingWritingStyle && (
+              <>
+                <p className="mb-3 text-sm font-medium text-[var(--text)]">请确认您的设置后运行</p>
+                <dl className="mb-3 space-y-1.5 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-xs">
+                  <div className="flex gap-2">
+                    <dt className="text-[var(--text-muted)] shrink-0">参考样例：</dt>
+                    <dd className="text-[var(--text)]">
+                      {pendingWritingStyle === "zh" && "中文学术型（academic-2a / 2b）"}
+                      {pendingWritingStyle === "en" && "英文学术型（academic-1a / 1b）"}
+                      {pendingWritingStyle === "colloquial" && "通俗型默认样例"}
+                      {pendingWritingStyle === "none" && "不参考任何风格"}
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="text-[var(--text-muted)] shrink-0">模型：</dt>
+                    <dd className="text-[var(--text)]">{writingModel === "gpt" ? "OpenAI GPT-5.2" : writingModel === "glm-5" ? "智谱 GLM-5" : "智谱 GLM-4.7-Flash"}</dd>
+                  </div>
+                  {pendingWritingPrompt && (
+                    <div className="flex gap-2">
+                      <dt className="text-[var(--text-muted)] shrink-0">额外提示：</dt>
+                      <dd className="text-[var(--text)] break-words">{pendingWritingPrompt}</dd>
+                    </div>
+                  )}
+                </dl>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={() => setWritingReviewStep("default_style")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回修改</button>
+                  <button
+                    type="button"
+                    onClick={() => startWritingReviewWithStyle(pendingWritingStyle, pendingWritingPrompt || null)}
+                    className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+                  >
+                    确认并运行
+                  </button>
+                </div>
+              </>
+            )}
+
+            {writingReviewStep === "upload_choice" && (
               <button
                 type="button"
-                onClick={() => startWritingReview(null)}
-                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+                onClick={() => { setWritingReviewModalOpen(false); setWritingReviewStep("upload_choice"); setWritingReviewPrompt(""); setUploadError(null); }}
+                className="thu-modal-btn-secondary mt-3 rounded-lg px-3 py-1.5 text-xs"
               >
-                直接生成综述
+                取消
               </button>
-              <div className="space-y-2">
-                <label className="block text-[11px] text-[var(--text-muted)]">额外提示词（可选）</label>
-                <textarea
-                  value={writingReviewPrompt}
-                  onChange={(e) => setWritingReviewPrompt(e.target.value)}
-                  placeholder="例如：突出某主题、避免某表述、强调政策含义…"
-                  rows={3}
-                  className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--thu-purple)] focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => startWritingReview(writingReviewPrompt)}
-                  className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
-                >
-                  带提示词生成
-                </button>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => { setWritingReviewModalOpen(false); setWritingReviewPrompt(""); setUploadError(null); }}
-              className="thu-modal-btn-secondary mt-2 rounded-lg px-3 py-1.5 text-xs"
-            >
-              取消
-            </button>
+            )}
           </div>
         </div>
       )}
       {error && (
         <p className="text-xs text-[var(--accent)]">{error}</p>
       )}
-      {jobId && (
-        <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2.5">
+      {(jobId || runningSkill) && (
+        <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2.5" data-run-log-section="skills">
           {!done && (
             <div className="mb-2 space-y-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
               <div className="flex items-center gap-2">
@@ -706,20 +1216,23 @@ export function SkillPanel({
                   aria-hidden
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs font-medium text-[var(--text)]">正在运行 · {runningSkill ? (SKILLS.find((s) => s.id === runningSkill)?.label ?? EXTRA_RUNNING_LABELS[runningSkill] ?? runningSkill) : ""}</p>
+                  <p className="text-xs font-medium text-[var(--text)]">
+                    {jobId ? "正在运行" : "正在启动"} · {runningSkill ? (SKILLS.find((s) => s.id === runningSkill)?.label ?? EXTRA_RUNNING_LABELS[runningSkill] ?? runningSkill) : ""}
+                  </p>
                   <p className="text-[11px] text-[var(--text-muted)]">
                     {runStartTime != null && runningSkill && (() => {
                       const estSec = SKILL_ESTIMATED_SECONDS[runningSkill] ?? 180;
                       const estMin = Math.round(estSec / 60);
-                      const elapsedSec = Math.floor((Date.now() - runStartTime) / 1000);
-                      return `预估约 ${estMin} 分钟 · 已用 ${elapsedSec} 秒 · 进度 ${Math.round(progress)}%`;
+                      return `预估约 ${estMin} 分钟（仅供参考）· 已用 ${elapsedSec} 秒 · 进度 ${Math.round(progress)}%`;
                     })()}
+                    {runningSkill && runStartTime == null && "正在启动…"}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setAbortConfirmOpen(true)}
-                  className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium"
+                  disabled={!jobId}
+                  className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium disabled:opacity-50"
                 >
                   暂停运行
                 </button>

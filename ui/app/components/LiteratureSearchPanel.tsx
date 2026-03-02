@@ -3,12 +3,6 @@
 import { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from "react";
 import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
 
-const DISCIPLINES = [
-  { id: "Sociology", label: "Sociology" },
-  { id: "Anthropology", label: "Anthropology" },
-  { id: "Economics", label: "Economics" },
-] as const;
-
 /** 年份下拉：2026 在上，便于从最新文献选起 */
 const YEAR_OPTIONS = Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i);
 
@@ -23,8 +17,26 @@ function toSlug(s: string): string {
     .replace(/[^a-z0-9_-]/g, "");
 }
 
+export type JournalSearchParams = {
+  topicInput: string;
+  instructionInput: string;
+  yearFrom?: number;
+  yearTo?: number;
+  searchMode: "strict" | "relaxed";
+  journalSourceIds: string[];
+  dataSourceLabel: string;
+  selectedDisciplines: string[];
+};
+
+export const DISCIPLINES = [
+  { id: "Sociology", label: "Sociology" },
+  { id: "Anthropology", label: "Anthropology" },
+  { id: "Economics", label: "Economics" },
+] as const;
+
 export type LiteratureSearchPanelHandle = {
   startSearchWithCurrentParams: () => void;
+  getCurrentParams: () => JournalSearchParams | null;
 };
 
 export const LiteratureSearchPanel = forwardRef<
@@ -43,6 +55,7 @@ export const LiteratureSearchPanel = forwardRef<
     runDone?: boolean;
     runExitCode?: number;
     onDataSourceChange?: (label: string) => void;
+    onJumpToOutputs?: () => void;
     hideTitle?: boolean;
   }
 >(function LiteratureSearchPanel(
@@ -53,6 +66,7 @@ export const LiteratureSearchPanel = forwardRef<
     runDone,
     runExitCode,
     onDataSourceChange,
+    onJumpToOutputs,
     hideTitle,
   },
   ref
@@ -171,9 +185,36 @@ export const LiteratureSearchPanel = forwardRef<
     thuAlert,
   ]);
 
-  useImperativeHandle(ref, () => ({
-    startSearchWithCurrentParams: handleStartSearch,
-  }), [handleStartSearch]);
+  const getCurrentParams = useCallback((): JournalSearchParams | null => {
+    const ids = journals
+      .map((j) => (j.openalex_source_id ?? "").trim())
+      .filter(Boolean) as string[];
+    const label =
+      selectedDisciplines.length === 0
+        ? "OpenAlex 解析（未选学科）"
+        : `OpenAlex 解析（${selectedDisciplines.map((d) => DISCIPLINES.find((x) => x.id === d)?.label ?? d).join(", ")}）`;
+    const from = yearFrom ? parseInt(yearFrom, 10) : NaN;
+    const to = yearTo ? parseInt(yearTo, 10) : NaN;
+    return {
+      topicInput,
+      instructionInput,
+      yearFrom: Number.isNaN(from) ? undefined : from,
+      yearTo: Number.isNaN(to) ? undefined : to,
+      searchMode,
+      journalSourceIds: ids,
+      dataSourceLabel: label,
+      selectedDisciplines: [...selectedDisciplines],
+    };
+  }, [journals, selectedDisciplines, topicInput, instructionInput, yearFrom, yearTo, searchMode]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      startSearchWithCurrentParams: handleStartSearch,
+      getCurrentParams,
+    }),
+    [handleStartSearch, getCurrentParams]
+  );
 
   return (
     <div className="space-y-4">
@@ -322,12 +363,18 @@ export const LiteratureSearchPanel = forwardRef<
       </button>
 
       {runJobId && (
-        <div className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2 shadow-thu-soft">
+        <div className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2 shadow-thu-soft" data-run-log-section="journal">
           {!runDone && runStartTime != null && (
             <div className="mb-2 space-y-1.5">
-              <p className="text-[11px] text-[var(--text-muted)]">
-                预估约 {Math.round(JOURNAL_SEARCH_ESTIMATED_SEC / 60)} 分钟 · 已用 {Math.floor((Date.now() - runStartTime) / 1000)} 秒 · 进度 {Math.round(progress)}%
-              </p>
+              <div className="flex items-center gap-2">
+                <div
+                  className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
+                  aria-hidden
+                />
+                <p className="text-[11px] text-[var(--text-muted)]">
+                  预估约 {Math.round(JOURNAL_SEARCH_ESTIMATED_SEC / 60)} 分钟 · 已用 {Math.floor((Date.now() - runStartTime) / 1000)} 秒 · 进度 {Math.round(progress)}%
+                </p>
+              </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
                 <div
                   className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out"
@@ -353,9 +400,20 @@ export const LiteratureSearchPanel = forwardRef<
             {runLog || "（等待…）"}
           </pre>
           {runDone && (
-            <p className="mt-2 text-xs">
-              {runExitCode === 0 ? "✓ 完成" : `退出码 ${runExitCode}`}
-            </p>
+            <div className="mt-2 flex items-center gap-2 text-xs">
+              <span className={runExitCode === 0 ? "text-[var(--text)]" : "text-[var(--accent)]"}>
+                {runExitCode === 0 ? "✓ 完成" : `退出码 ${runExitCode}`}
+              </span>
+              {runExitCode === 0 && onJumpToOutputs && (
+                <button
+                  type="button"
+                  onClick={onJumpToOutputs}
+                  className="thu-title hover:underline"
+                >
+                  查看产出
+                </button>
+              )}
+            </div>
           )}
         </div>
       )}

@@ -548,10 +548,13 @@ export function JournalCatalog({
           aria-labelledby="dialog-title"
         >
           <div
-            className="thu-modal-card w-full max-w-lg p-5"
+            className="thu-modal-card relative w-full max-w-lg p-5"
             onClick={(e) => e.stopPropagation()}
           >
-            <h4 id="dialog-title" className="thu-modal-title text-lg">
+            <button type="button" onClick={() => !running && setDialogOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h4 id="dialog-title" className="thu-modal-title text-lg pr-8">
               文献检索
             </h4>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
@@ -689,13 +692,17 @@ export function JournalCatalog({
           aria-labelledby="journal-detail-title"
         >
           <div
-            className="thu-modal-card w-full max-w-md p-5 max-h-[85vh] overflow-y-auto"
+            className="thu-modal-card relative w-full max-w-md p-5 max-h-[85vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <h4 id="journal-detail-title" className="thu-modal-title text-base border-b border-[var(--border-soft)] pb-2">
+            <button type="button" onClick={() => setDetailJournal(null)} className="thu-modal-close absolute right-4 top-4 z-10 p-1 shrink-0" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h4 id="journal-detail-title" className="thu-modal-title text-base border-b border-[var(--border-soft)] pb-2 pr-8 shrink-0">
               {displayTitle(detailJournal)}
             </h4>
-            <dl className="mt-3 space-y-2 text-sm">
+            <div className="flex-1 min-h-0 overflow-y-auto mt-3">
+            <dl className="space-y-2 text-sm">
               <div>
                 <dt className="text-[var(--text-muted)] font-medium">ISSN</dt>
                 <dd className="text-[var(--text)]">{detailJournal.issn || "—"}</dd>
@@ -752,7 +759,8 @@ export function JournalCatalog({
                 <dd className="text-[var(--text)]">{detailJournal.publisher || "—"}</dd>
               </div>
             </dl>
-            <div className="mt-4 pt-3 border-t border-[var(--border-soft)] flex justify-end">
+            </div>
+            <div className="mt-4 pt-3 border-t border-[var(--border-soft)] flex justify-end shrink-0">
               <button
                 type="button"
                 onClick={() => setDetailJournal(null)}

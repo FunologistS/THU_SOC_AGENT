@@ -5,22 +5,38 @@ import { getRepoRoot } from "@/lib/pathSafety";
 
 const TOPIC_REGEX = /^[a-z0-9_/-]+$/;
 
-/** 将作者串转为文内引用格式，与 literature-synthesis 中 toInTextCitation 一致 */
+/** 从作者串中提取仅姓氏（与 literature-synthesis 中 authorsStrToSurnames 一致） */
+function authorsStrToSurnames(authorsStr: string | null): string[] {
+  const raw = authorsStr != null ? String(authorsStr).trim() : "";
+  if (!raw) return [];
+  const segments = raw
+    .split(/[,，、;；]|\s+and\s+|\s*&\s*/gi)
+    .map((s) => s.replace(/\s+et\s+al\.?/gi, " ").trim())
+    .filter(Boolean);
+  if (segments.length > 1) {
+    return segments.map((seg) => {
+      const words = seg.split(/\s+/).filter(Boolean);
+      return words.length ? words[words.length - 1]! : seg;
+    });
+  }
+  const words = raw.split(/\s+/).filter(Boolean);
+  if (words.length <= 2) return words.length ? [words[words.length - 1]!] : [];
+  const surnames: string[] = [];
+  for (let i = 1; i < words.length; i += 2) surnames.push(words[i]!);
+  return surnames.length ? surnames : [words[words.length - 1]!];
+}
+
+/** 将作者串转为文内引用格式（仅姓氏）：2人 (A & B, Year)，3人及以上 (First et al., Year) */
 function toInTextCitation(authorsStr: string | null, year: number | null): string {
   const y =
     year != null && Number.isFinite(Number(year)) && String(year).trim() !== ""
       ? String(Number(year))
       : "?";
-  const raw = authorsStr != null ? String(authorsStr).trim() : "";
-  if (!raw) return `(Unknown, ${y})`;
-  const parts = raw
-    .split(/[,，、;；]/)
-    .map((s) => s.replace(/\s*&\s*|\s+et\s+al\.?/gi, " ").trim())
-    .filter(Boolean);
-  if (parts.length === 0) return `(Unknown, ${y})`;
-  if (parts.length === 1) return `(${parts[0]}, ${y})`;
-  if (parts.length === 2) return `(${parts[0]} & ${parts[1]}, ${y})`;
-  return `(${parts[0]} et al., ${y})`;
+  const surnames = authorsStrToSurnames(authorsStr);
+  if (surnames.length === 0) return `(Unknown, ${y})`;
+  if (surnames.length === 1) return `(${surnames[0]}, ${y})`;
+  if (surnames.length === 2) return `(${surnames[0]} & ${surnames[1]}, ${y})`;
+  return `(${surnames[0]} et al., ${y})`;
 }
 
 /**

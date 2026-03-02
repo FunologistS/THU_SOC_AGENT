@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { JobType } from "@/app/types";
 
 const JOB_LABELS: Record<JobType, string> = {
@@ -8,7 +8,10 @@ const JOB_LABELS: Record<JobType, string> = {
   paper_summarize: "文章归纳 (paper_summarize)",
   synthesize: "文献整合 (synthesize)",
   concept_synthesize: "概念合成 (荟萃分析)",
+  upload_and_writing: "上传写作样本",
+  transcribe_submit_and_writing: "转录并综述",
   writing_under_style: "综述仿写 (writing_under_style)",
+  filter: "筛选",
 };
 
 const JOB_ESTIMATED_SEC: Record<JobType, number> = {
@@ -18,7 +21,8 @@ const JOB_ESTIMATED_SEC: Record<JobType, number> = {
   synthesize: 120,
   concept_synthesize: 210,
   upload_and_writing: 600,
-  writing_under_style: 390,
+  transcribe_submit_and_writing: 600,
+  writing_under_style: 600,
 };
 
 export function PipelineRunner({
@@ -38,16 +42,20 @@ export function PipelineRunner({
   const [error, setError] = useState<string | null>(null);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
+  const [elapsedSec, setElapsedSec] = useState(0);
   const [abortConfirmOpen, setAbortConfirmOpen] = useState(false);
+  const latestJobIdRef = useRef<string | null>(null);
 
   const run = async () => {
     setError(null);
+    latestJobIdRef.current = null;
     setJobId(null);
     setLog("");
     setDone(false);
     setExitCode(undefined);
     setRunStartTime(null);
     setProgress(0);
+    setElapsedSec(0);
     setRunning(true);
     try {
       const body: { jobType: string; topic: string; conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5" } = {
@@ -66,9 +74,11 @@ export function PipelineRunner({
         setRunning(false);
         return;
       }
+      latestJobIdRef.current = data.jobId;
       setJobId(data.jobId);
       setRunStartTime(Date.now());
       setProgress(0);
+      setElapsedSec(0);
       const poll = async () => {
         const lres = await fetch(`/api/logs?jobId=${data.jobId}`);
         const ldata = await lres.json();
@@ -78,6 +88,7 @@ export function PipelineRunner({
         if (ldata.done) {
           setProgress(100);
           setRunStartTime(null);
+          setElapsedSec(0);
           setRunning(false);
         } else {
           setTimeout(poll, 800);
@@ -95,6 +106,7 @@ export function PipelineRunner({
     const estimatedSec = JOB_ESTIMATED_SEC[jobType] ?? 180;
     const tick = () => {
       const elapsed = (Date.now() - runStartTime) / 1000;
+      setElapsedSec(Math.floor(elapsed));
       setProgress(Math.min(95, (elapsed / estimatedSec) * 100));
     };
     tick();
@@ -182,7 +194,7 @@ export function PipelineRunner({
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-medium text-[var(--text)]">正在运行 · {JOB_LABELS[jobType]}</p>
                   <p className="text-[11px] text-[var(--text-muted)]">
-                    预估约 {Math.round((JOB_ESTIMATED_SEC[jobType] ?? 180) / 60)} 分钟 · 已用 {Math.floor((Date.now() - runStartTime) / 1000)} 秒 · 进度 {Math.round(progress)}%
+                    预估约 {Math.round((JOB_ESTIMATED_SEC[jobType] ?? 180) / 60)} 分钟（仅供参考）· 已用 {elapsedSec} 秒 · 进度 {Math.round(progress)}%
                   </p>
                 </div>
                 <button
@@ -199,9 +211,12 @@ export function PipelineRunner({
             </div>
           )}
           {abortConfirmOpen && jobId && (
-            <div className="thu-modal-overlay fixed inset-0 z-[300] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="pipeline-abort-title">
-              <div className="thu-modal-card mx-4 w-full max-w-md p-5">
-                <h3 id="pipeline-abort-title" className="thu-modal-title mb-3 text-base">暂停运行</h3>
+            <div className="thu-modal-overlay fixed inset-0 z-[300] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="pipeline-abort-title" onClick={() => setAbortConfirmOpen(false)}>
+              <div className="thu-modal-card relative mx-4 w-full max-w-md p-5" onClick={(e) => e.stopPropagation()}>
+                <button type="button" onClick={() => setAbortConfirmOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <h3 id="pipeline-abort-title" className="thu-modal-title mb-3 text-base pr-8">暂停运行</h3>
                 <p className="mb-4 text-sm text-[var(--text)]">是否中止当前技能运行？</p>
                 <div className="flex flex-wrap gap-2">
                   <button
@@ -215,11 +230,13 @@ export function PipelineRunner({
                     type="button"
                     onClick={async () => {
                       setAbortConfirmOpen(false);
+                      const idToAbort = latestJobIdRef.current || jobId;
+                      if (!idToAbort) return;
                       try {
                         await fetch("/api/run/abort", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ jobId }),
+                          body: JSON.stringify({ jobId: idToAbort }),
                         });
                       } catch {
                         // ignore

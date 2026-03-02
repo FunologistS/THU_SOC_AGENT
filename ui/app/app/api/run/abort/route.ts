@@ -20,6 +20,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Job not found or already finished" }, { status: 404 });
   }
 
-  child.kill("SIGTERM");
+  try {
+    child.kill("SIGKILL");
+  } catch {
+    try {
+      child.kill("SIGTERM");
+    } catch {
+      // 忽略
+    }
+  }
   return NextResponse.json({ ok: true });
 }

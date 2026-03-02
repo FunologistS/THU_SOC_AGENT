@@ -157,22 +157,39 @@ function parseMetaClusters(md) {
   return clusters.sort((a, b) => a.clusterId - b.clusterId);
 }
 
-/** 将作者串转为文内引用格式：如 "Wu, Sun" -> "Wu & Sun"，"Wu, Sun, Li" -> "Wu et al."；已含 &/et al. 的串先按逗号拆分再格式化。 */
+/** 从作者串中提取仅姓氏：如 "Claudia Padovani, Elena Pavan" -> ["Padovani","Pavan"]；"Claudia Padovani Elena Pavan"（无逗号）按“名 姓”对取每段最后一词。 */
+function authorsStrToSurnames(authorsStr) {
+  const raw = authorsStr != null ? String(authorsStr).trim() : "";
+  if (!raw) return [];
+  const segments = raw
+    .split(/[,，、;；]|\s+and\s+|\s*&\s*/gi)
+    .map((s) => s.replace(/\s+et\s+al\.?/gi, " ").trim())
+    .filter(Boolean);
+  if (segments.length > 1) {
+    return segments.map((seg) => {
+      const words = seg.split(/\s+/).filter(Boolean);
+      return words.length ? words[words.length - 1] : seg;
+    });
+  }
+  const words = raw.split(/\s+/).filter(Boolean);
+  if (words.length <= 2) return words.length ? [words[words.length - 1]] : [];
+  // 无逗号且多于 2 词：按“名 姓”对取每对的最后一词（偶数词：取 1,3,5...）
+  const surnames = [];
+  for (let i = 1; i < words.length; i += 2) surnames.push(words[i]);
+  return surnames.length ? surnames : [words[words.length - 1]];
+}
+
+/** 将作者串转为文内引用格式（仅姓氏）：如 "Claudia Padovani, Elena Pavan" -> "(Padovani & Pavan, Year)"；3人及以上为 "(First et al., Year)"。 */
 function toInTextCitation(authorsStr, year) {
   const y =
     year != null && Number.isFinite(Number(year)) && String(year).trim() !== ""
       ? String(Number(year))
       : "?";
-  const raw = authorsStr != null ? String(authorsStr).trim() : "";
-  if (!raw) return `(Unknown, ${y})`;
-  const parts = raw
-    .split(/[,，、;；]/)
-    .map((s) => s.replace(/\s*&\s*|\s+et\s+al\.?/gi, " ").trim())
-    .filter(Boolean);
-  if (parts.length === 0) return `(Unknown, ${y})`;
-  if (parts.length === 1) return `(${parts[0]}, ${y})`;
-  if (parts.length === 2) return `(${parts[0]} & ${parts[1]}, ${y})`;
-  return `(${parts[0]} et al., ${y})`;
+  const surnames = authorsStrToSurnames(authorsStr);
+  if (surnames.length === 0) return `(Unknown, ${y})`;
+  if (surnames.length === 1) return `(${surnames[0]}, ${y})`;
+  if (surnames.length === 2) return `(${surnames[0]} & ${surnames[1]}, ${y})`;
+  return `(${surnames[0]} et al., ${y})`;
 }
 
 /** ---------------- Parse summaries_latest.md ---------------- **/
@@ -408,7 +425,7 @@ function buildClusterPrompt({ topic, clusterId, clusterSize, cards, wantAppendix
 你的写作风格应简洁、实质性强，适合研究简报，并融入社会学理论与视角。
 
 **引用纪律（必须遵守）**：简报中的每条论述若来自某一篇或某几篇具体文献，必须“有理有据”——在该句或该要点末尾（或句中合适处）标明文内引用。不得出现“有研究指出”“部分文献认为”等无引用支撑的概括句；每条基于文献的论断都要带引用。
-**可点击引用（必须遵守）**：正文与各小节中出现的每一处文内引用，都必须写成 Markdown 可点击链接形式，以便读者点击查看文献详情。格式为 [(Author & Author, Year)](#paper-<id>) 或 [(Author et al., Year)](#paper-<id>)，其中 <id> 为该文献在下方卡片中的 ID（数字）。多篇文献时每篇单独成链接，例如：[(Wu & Sun, 2026)](#paper-1)；[(Li et al., 2025)](#paper-2)。不要写纯括号 (Author, Year)，一律用带 #paper-id 的链接形式。
+**可点击引用（必须遵守）**：正文与各小节中出现的每一处文内引用，都必须写成 Markdown 可点击链接形式，以便读者点击查看文献详情。格式为 [(Surname & Surname, Year)](#paper-<id>) 或 [(Surname et al., Year)](#paper-<id>)（仅用姓氏：2人用 A & B，3人及以上用第一作者姓氏+et al.），其中 <id> 为该文献在下方卡片中的 ID。多篇时每篇单独成链接，例如：[(Padovani & Pavan, 2016)](#paper-1)；[(Almanza-Alcalde et al., 2021)](#paper-2)。**链接文字已含括号，不要在链接外再加括号**，即只写 [...] 形式，不要写成（[(…)](#paper-id)）。不要写纯括号 (Author, Year)，一律用带 #paper-id 的链接形式。
 `;
 
   const context = [
@@ -427,13 +444,13 @@ ${context ? `\n背景信息：\n${context}\n` : ""}
 ## <主题标题（概念性、理论友好；此处不应有聚类ID）>
 
 **该主题的主要内容（2-4句话）：**
-- 每句若概括自具体文献，须在句末用可点击引用标注，格式为 [(Author, Year)](#paper-<id>)。例：该主题涉及数字劳动与平台治理 [(Wu & Sun, 2026)](#paper-1)；[(Li et al., 2025)](#paper-2)。
+- 每句若概括自具体文献，须在句末用可点击引用标注，格式为 [(姓氏 & 姓氏, Year)](#paper-<id>) 或 [(姓氏 et al., Year)](#paper-<id>)。例：该主题涉及数字劳动与平台治理 [(Padovani & Pavan, 2016)](#paper-1)；[(Almanza-Alcalde et al., 2021)](#paper-2)。链接外不要再加括号。
 
 **主要的视角/视角框架（2-5个要点）：**
-- 每个要点若来自某篇/某几篇文献，须用可点击引用标明，如 [(Smith, 2025)](#paper-3)；[(Chen & Wang, 2026)](#paper-4)。
+- 每个要点若来自某篇/某几篇文献，须用可点击引用标明（仅姓氏），如 [(Smith, 2025)](#paper-3)；[(Chen & Wang, 2026)](#paper-4)。不要写（[(…)](#paper-id)）这种双层括号。
 
 **重复的主张/结论（2-5个要点）：**
-- 每个结论必须注明来自哪篇/哪几篇，用可点击引用，如：……[(A, 2025)](#paper-1)；[(B & C, 2026)](#paper-2)。不得写无引用的“研究指出……”。
+- 每个结论必须注明来自哪篇/哪几篇，用可点击引用（仅姓氏，链接外不加括号），如：……[(Smith, 2025)](#paper-1)；[(Padovani & Pavan, 2016)](#paper-2)。不得写无引用的“研究指出……”。
 
 **从摘要中可见的限制（2-5个要点）：**
 - 只使用可从摘要推断的内容，并用可点击引用标注 [(Author, Year)](#paper-<id>)。采用软性表述：“通常”“倾向于”“摘要中很少提到……”。
@@ -457,7 +474,7 @@ ${wantAppendix ? `
 - 一句话总结不超过35个字。
 - 如果期刊缺失，则不应显示。
 - 如果你找不到方法/数据/主张，应该说“未指定”而不是猜测。
-- **引用规范（强制）**：正文与各小节中，凡基于某篇或某几篇文献的论述，必须用可点击链接形式标注：[(Author, Year)](#paper-<id>)，多篇时每篇单独一个链接。不要写纯括号 (Author, Year)，不要写 ID=xx。无引用支撑的文献性论断不允许出现。
+- **引用规范（强制）**：文内引用仅用姓氏（2人：A & B；3人及以上：第一作者 et al.）；用可点击链接标注 [(Surname, Year)](#paper-<id>)，多篇时每篇单独一个链接；链接外不要加括号，不要写（[(…)](#paper-id)）。无引用支撑的文献性论断不允许出现。
 - **该主题的论文**列表中，每行必须使用可点击引用：[(文内引用)](#paper-<id>): 一句话总结，其中 <id> 为卡片中的 ID（数字）。
 
 现在，这里是论文卡片（每篇论文一个；文内引用与 ID 用于生成符合学术规范的引用与链接）：

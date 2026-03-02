@@ -23,6 +23,7 @@
  * - qa_report (unknown/missing stats + top missing journals)
  * - extra pivot tables: year×cluster, journal×cluster, method×cluster, data×cluster
  * - optional --k-scan "5..10" to inspect cluster size + top terms across k
+ * - --k auto or --choose-k "2..10": select optimal k in range by silhouette score (no fixed 6)
  *
  * v8 (your request): Scheme A labeling fix
  * - clustering tokens unchanged
@@ -511,6 +512,51 @@ function kmeans(vectors, k, seed = 42, maxIter = 50) {
   return { labels, centroids };
 }
 
+/**
+ * Silhouette score (cosine distance): higher = better separation.
+ * For singleton clusters, s_i = 0. Returns mean over all points.
+ */
+function silhouetteScore(vectors, labels, distFn = cosineDist) {
+  const n = vectors.length;
+  if (n <= 1) return 0;
+
+  const k = Math.max(...labels) + 1;
+  const byCluster = Array.from({ length: k }, () => []);
+  for (let i = 0; i < n; i++) byCluster[labels[i]].push(i);
+
+  let sum = 0;
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    const ci = labels[i];
+    const same = byCluster[ci];
+    if (same.length <= 1) {
+      sum += 0;
+      count++;
+      continue;
+    }
+    let a = 0;
+    for (const j of same) if (j !== i) a += distFn(vectors[i], vectors[j]);
+    a /= same.length - 1;
+
+    let b = Infinity;
+    for (let c = 0; c < k; c++) {
+      if (c === ci) continue;
+      const other = byCluster[c];
+      if (other.length === 0) continue;
+      let avg = 0;
+      for (const j of other) avg += distFn(vectors[i], vectors[j]);
+      avg /= other.length;
+      if (avg < b) b = avg;
+    }
+    if (!Number.isFinite(b)) b = 0;
+    const max = Math.max(a, b) || 1;
+    const s = (b - a) / max;
+    sum += s;
+    count++;
+  }
+  return count === 0 ? 0 : sum / count;
+}
+
 /** --------- Field repair layer --------- **/
 
 function isUnknownField(s) {
@@ -863,14 +909,17 @@ const topic = args._[0];
 
 if (!topic) {
   console.error(
-    `Usage: node synthesis.mjs <topic> [--in path] [--k 6] [--date YYYYMMDD] [--v N] [--seed 42] [--minDf 2] [--titleWeight 2] [--debug-text <idx|substr>] [--k-scan "5..10"] [--labelDfMax 0.5]`
+    `Usage: node synthesis.mjs <topic> [--in path] [--k 6|auto] [--choose-k "2..10"] [--date YYYYMMDD] [--v N] [--seed 42] [--minDf 2] [--titleWeight 2] [--debug-text <idx|substr>] [--k-scan "5..10"] [--labelDfMax 0.5]`
   );
   process.exit(1);
 }
 
 const inPath = args.in ? String(args.in) : path.join("outputs", topic, "03_summaries", "summaries_latest.md");
 
-const k = Number(args.k || 6);
+const kArg = args.k != null ? String(args.k).trim().toLowerCase() : "6";
+const chooseKRange = args["choose-k"] ? parseRangeK(String(args["choose-k"])) : null;
+const kIsAuto = kArg === "auto" || chooseKRange !== null;
+const k = kIsAuto ? 6 : Number(kArg || 6);
 const seed = Number(args.seed || 42);
 const date = String(args.date || todayYYYYMMDD());
 const minDf = Number(args.minDf || 2);
@@ -967,9 +1016,35 @@ if (debugTextArg) {
 
 const { X, vocab } = buildTfidfMatrix(docsTokens, { minDf });
 
-const kEff = Math.max(1, Math.min(k, repairedPapers.length || 1));
-const km = kmeans(X, kEff, seed);
-const labels = km.labels;
+const nPapers = repairedPapers.length || 1;
+let kEff;
+let labels;
+/** When k was auto-selected, store note for meta_clusters header (e.g. "auto (silhouette=0.12)"). */
+let kSelectionNote = "";
+
+if (kIsAuto) {
+  const cap = Math.min(nPapers - 1, Math.max(1, Math.floor(nPapers / 2)));
+  const kMax = chooseKRange ? Math.min(chooseKRange.hi, cap) : Math.min(10, cap);
+  const kMin = Math.min(chooseKRange ? Math.max(2, chooseKRange.lo) : 2, kMax);
+  let best = { k: kMin, score: -Infinity, labels: null };
+  console.log(`[synthesis] Choosing optimal k in [${kMin}..${kMax}] by silhouette score...`);
+  for (let kk = kMin; kk <= kMax; kk++) {
+    const { labels: lab } = kmeans(X, kk, seed);
+    const score = silhouetteScore(X, lab, cosineDist);
+    if (score > best.score) {
+      best = { k: kk, score, labels: lab };
+    }
+    console.log(`[synthesis]   k=${kk} silhouette=${score.toFixed(4)}`);
+  }
+  kEff = best.k;
+  labels = best.labels;
+  kSelectionNote = `auto (silhouette=${best.score.toFixed(4)})`;
+  console.log(`[synthesis] Selected k=${kEff} (${kSelectionNote})`);
+} else {
+  kEff = Math.max(1, Math.min(k, nPapers));
+  const km = kmeans(X, kEff, seed);
+  labels = km.labels;
+}
 
 /** --------- Optional k-scan --------- **/
 
@@ -1227,7 +1302,7 @@ const clusterLines = [];
 clusterLines.push(`# Meta clusters for topic: ${topic}`);
 clusterLines.push(`Source: ${inPath}`);
 clusterLines.push(`Total papers: ${repairedPapers.length}`);
-clusterLines.push(`k=${kEff}, seed=${seed}`);
+clusterLines.push(`k=${kEff}, seed=${seed}${kSelectionNote ? `, k_selection=${kSelectionNote}` : ""}`);
 clusterLines.push(`minDf=${minDf}, titleWeight=${titleWeight}`);
 clusterLines.push(`labelDfMax=${labelDfMax}`);
 clusterLines.push(

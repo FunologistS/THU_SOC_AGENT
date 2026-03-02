@@ -134,13 +134,16 @@ export function ThUAlertConfirmProvider({ children }: { children: React.ReactNod
           role="dialog"
           aria-modal="true"
           aria-labelledby="thu-dialog-title"
-          onClick={state.type === "alert" ? handleClose : undefined}
+          onClick={handleClose}
         >
           <div
-            className="thu-modal-card mx-4 w-full max-w-md p-5"
+            className="thu-modal-card relative mx-4 w-full max-w-md p-5"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 id="thu-dialog-title" className="thu-modal-title mb-3 text-base">
+            <button type="button" onClick={handleClose} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="thu-dialog-title" className="thu-modal-title mb-3 text-base pr-8">
               {state.type === "alert"
                 ? "提示"
                 : state.type === "confirm_three"

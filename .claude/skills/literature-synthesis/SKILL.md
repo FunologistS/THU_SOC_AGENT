@@ -78,6 +78,14 @@ node .claude/skills/literature-synthesis/scripts/synthesize.mjs <topicSlug> \
   --date YYYYMMDD --v N
 ```
 
+**聚类数 k 的设定：**
+
+- 默认 `--k 6`：固定为 6 类。
+- **自动选 k（推荐）**：`--k auto` 会在合理范围内（默认 2～10，且不超过 n/2）对每个 k 跑一次聚类，用轮廓系数（silhouette）选得分最高的 k，再以该 k 生成最终聚类与简报。
+- 自定义范围：`--choose-k "2..12"` 指定自动选 k 的区间（仍会受样本数上限约束）。例如样本较少时可用 `--choose-k "2..6"`。
+
+输出中的 `meta_clusters_*.md` 若为自动选 k，会在头部注明 `k_selection=auto (silhouette=0.xx)`。
+
 ### 2）concept_synthesize.mjs
 
 `concept_synthesize.mjs` 将根据 synthesize.mjs 输出的聚类结果，进一步提炼主题，生成结构化的概念性报告。此工具提供了两个模型选项：

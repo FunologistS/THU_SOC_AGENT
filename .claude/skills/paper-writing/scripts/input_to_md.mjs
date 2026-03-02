@@ -47,6 +47,12 @@ function resolvePaths(filePath, outputPath) {
     ? path.resolve(process.cwd(), outputPath)
     : path.resolve(PAPER_WRITING_ROOT, "references", outputPath);
 
+  // 若输出已指定为 submit/ 子目录，则不再按输入自动落入 academic/colloquial
+  const outPathNorm = (outputPath || "").replace(/\\/g, path.sep);
+  if (outPathNorm.startsWith("submit/")) {
+    return { fullInput, fullOutput };
+  }
+
   // 小优化：按输入来源自动落入 references 子目录
   const norm = path.normalize(fullInput);
   const outBasename = path.basename(fullOutput);

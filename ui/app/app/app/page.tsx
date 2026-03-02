@@ -7,6 +7,7 @@ import { MarkdownPreview } from "@/components/MarkdownPreview";
 import { JournalCatalog } from "@/components/JournalCatalog";
 import { LiteratureSearchPanel, type LiteratureSearchPanelHandle } from "@/components/LiteratureSearchPanel";
 import { ManualAbstractPanel } from "@/components/ManualAbstractPanel";
+import { WritingSamplesPanel } from "@/components/WritingSamplesPanel";
 import { ThuLogo } from "@/components/ThuLogo";
 import { ManualView } from "@/components/ManualView";
 import { SettingsModal } from "@/components/SettingsModal";
@@ -28,6 +29,7 @@ const SKILL_TO_STAGE: Record<JobType, string> = {
   synthesize: "04_meta",
   concept_synthesize: "05_report",
   upload_and_writing: "06_review",
+  transcribe_submit_and_writing: "06_review",
   writing_under_style: "06_review",
 };
 
@@ -39,7 +41,7 @@ const SIDEBAR_WIDTH_MAX = 560;
 const SIDEBAR_WIDTH_DEFAULT = 320;
 
 /** 侧栏区块折叠状态 */
-type SidebarSections = { journalDb: boolean; journal: boolean; skills: boolean; manual: boolean; docs: boolean };
+type SidebarSections = { journalDb: boolean; journal: boolean; skills: boolean; manual: boolean; writingSamples: boolean; docs: boolean };
 
 /** 侧栏区块标题用图标（24×24 风格） */
 const IconBook = () => (
@@ -66,6 +68,11 @@ const IconEditList = () => (
 const IconFolder = () => (
   <svg className="h-4 w-4 shrink-0 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+  </svg>
+);
+const IconDocumentText = () => (
+  <svg className="h-4 w-4 shrink-0 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
   </svg>
 );
 const IconChevron = ({ open }: { open: boolean }) => (
@@ -158,6 +165,7 @@ function HomeContent() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [lastCommitIso, setLastCommitIso] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState<SidebarSections>({
+    writingSamples: false,
     journalDb: false,
     journal: false,
     skills: false,
@@ -180,6 +188,8 @@ function HomeContent() {
             ? "skills"
             : area === "手动补录空缺摘要"
               ? "manual"
+              : area === "写作样例"
+              ? "writingSamples"
               : area === "文档目录"
                 ? "docs"
                 : null;
@@ -262,7 +272,7 @@ function HomeContent() {
       .then((r) => r.json())
       .then((d) => setTopics((d.topics || []).filter((t: { topic: string }) => t.topic !== "system")))
       .catch(() => setTopics([]));
-  }, [source]);
+  }, [source, metaRefreshKey]);
 
   useEffect(() => {
     if (!topic) {
@@ -365,6 +375,15 @@ function HomeContent() {
     if (fallback) setUrl({ stage: fallback.stage, file: fallback.file });
   }, [pendingJumpToOutputs, meta, lastCompletedSkillId, setUrl]);
 
+  const journalSearchWasDoneRef = useRef(false);
+  useEffect(() => {
+    if (journalSearchDone && !journalSearchWasDoneRef.current && journalSearchExitCode === 0) {
+      setLastCompletedSkillId("journal_search");
+      setMetaRefreshKey((k) => k + 1);
+    }
+    journalSearchWasDoneRef.current = journalSearchDone;
+  }, [journalSearchDone, journalSearchExitCode]);
+
   useEffect(() => {
     fetch("/api/git-info")
       .then((r) => r.json())
@@ -415,6 +434,7 @@ function HomeContent() {
   const handleJobComplete = useCallback((skillId: JobType) => {
     setLastCompletedSkillId(skillId);
     setMetaRefreshKey((k) => k + 1);
+    if (skillId === "paper_summarize") setHoveredManualSkillId((prev) => (prev === "paper-summarize" ? null : prev));
   }, []);
 
   const refreshGitInfo = useCallback(() => {
@@ -573,7 +593,7 @@ function HomeContent() {
               <IconChevron open={sidebarOpen.journalDb} />
             </button>
             {sidebarOpen.journalDb && (
-              <div className="p-4 pt-0">
+              <div className="p-4 pt-0 max-h-[70vh] min-h-0 overflow-y-auto">
                 <JournalCatalog mode="database" hideTitle />
               </div>
             )}
@@ -600,6 +620,7 @@ function HomeContent() {
                   runDone={journalSearchDone}
                   runExitCode={journalSearchExitCode}
                   onDataSourceChange={setJournalDataSourceLabel}
+                  onJumpToOutputs={jumpToOutputsPreview}
                 />
               </div>
             )}
@@ -627,9 +648,19 @@ function HomeContent() {
                   topicMeta={meta}
                   journalDataSourceLabel={journalDataSourceLabel}
                   onFocusLiteratureSearch={() => setSidebarOpen((prev) => ({ ...prev, journal: true }))}
-                  onRequestJournalSearchRun={() => {
+                  getJournalSearchDefaults={() => literatureSearchRef.current?.getCurrentParams() ?? null}
+                  onRunJournalSearch={(params) => {
+                    runJournalSearch(params);
                     setSidebarOpen((prev) => ({ ...prev, journal: true }));
-                    setTimeout(() => literatureSearchRef.current?.startSearchWithCurrentParams(), 150);
+                    setTimeout(() => {
+                      asideRef.current?.querySelector('[data-run-log-section="journal"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                    }, 150);
+                  }}
+                  onRunStarted={() => {
+                    setSidebarOpen((prev) => ({ ...prev, skills: true }));
+                    setTimeout(() => {
+                      asideRef.current?.querySelector('[data-run-log-section="skills"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                    }, 150);
                   }}
                 />
               </div>
@@ -656,11 +687,36 @@ function HomeContent() {
                     availableTopics={availableTopicsForPanel}
                     onTopicChange={changeTopic}
                     onSaved={() => setMetaRefreshKey((k) => k + 1)}
+                    onRequestFocusPaperSummarize={() => {
+                      setSidebarOpen((prev) => ({ ...prev, skills: true }));
+                      setHoveredManualSkillId("paper-summarize");
+                      setTimeout(() => {
+                        const el = asideRef.current?.querySelector('[data-skill-id="paper_summarize"]');
+                        (el as HTMLElement)?.scrollIntoView({ block: "center", behavior: "smooth" });
+                      }, 120);
+                    }}
                   />
                 </div>
               )}
             </section>
           )}
+          <section data-sidebar-section="writingSamples" className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]">
+            <button
+              type="button"
+              onClick={() => toggleSidebarSection("writingSamples")}
+              className="section-head flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+              aria-expanded={sidebarOpen.writingSamples}
+            >
+              <IconDocumentText />
+              <span className="min-w-0 flex-1">写作样例</span>
+              <IconChevron open={sidebarOpen.writingSamples} />
+            </button>
+            {sidebarOpen.writingSamples && (
+              <div className="p-4 pt-0">
+                <WritingSamplesPanel hideTitle />
+              </div>
+            )}
+          </section>
           <section data-sidebar-section="docs" className="thu-panel-left flex-shrink-0 bg-[var(--bg-card)]">
             <button
               type="button"
@@ -674,8 +730,13 @@ function HomeContent() {
             </button>
             {sidebarOpen.docs && (
               <div className="p-4">
+                {topic && (
+                  <p className="mb-2 text-xs text-[var(--text-muted)]">
+                    当前主题：<span className="font-medium text-[var(--text)]">{topics.find((t) => t.topic === topic)?.label ?? topic.replace(/_/g, " ")}</span>
+                  </p>
+                )}
                 <p className="mb-1 text-xs text-[var(--text-muted)]">主题</p>
-                <p className="mb-2 text-[11px] text-[var(--text-muted)] opacity-90">当前共 {topics.length} 个主题</p>
+                <p className="mb-2 text-[11px] text-[var(--text-muted)] opacity-90">当前共 {topics.length} 个主题，可点击切换</p>
                 <ul className="max-h-28 overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
                   {topics.length === 0 && (
                     <li className="px-3 py-3 text-sm text-[var(--text-muted)]">暂无主题</li>
@@ -814,9 +875,12 @@ function HomeContent() {
         </div>
 
         {renameModal && (
-          <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="rename-title">
-            <div className="thu-modal-card mx-4 w-full max-w-sm p-5">
-              <h3 id="rename-title" className="thu-modal-title mb-3 text-base">重命名文档</h3>
+          <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="rename-title" onClick={() => { setRenameModal(null); setRenameError(null); }}>
+            <div className="thu-modal-card relative mx-4 w-full max-w-sm p-5" onClick={(e) => e.stopPropagation()}>
+              <button type="button" onClick={() => { setRenameModal(null); setRenameError(null); }} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <h3 id="rename-title" className="thu-modal-title mb-3 text-base pr-8">重命名文档</h3>
               <p className="mb-2 text-xs text-[var(--text-muted)]">当前：{renameModal.name}</p>
               <input
                 type="text"
