@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   let archived = 0;
   const archiveBase = path.join(jobsDir, "archive");
 
-  for (const jobId of jobIds) {
+  for (const jobId of Array.from(jobIds)) {
     const logPath = path.join(jobsDir, `${jobId}.log`);
     const metaPath = path.join(jobsDir, `${jobId}.meta.json`);
     let mtime = 0;

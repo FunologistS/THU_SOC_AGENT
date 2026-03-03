@@ -16,7 +16,7 @@
     [data-theme="dark"] main::before { background-image: linear-gradient(rgba(157, 77, 168, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(157, 77, 168, 0.08) 1px, transparent 1px); }
     [data-theme="dark"] .box { background: rgba(42, 35, 64, 0.92); border-color: rgba(255,255,255,0.08); }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; font-family: system-ui, -apple-system, sans-serif; color: var(--text); background: var(--bg-page); background-image: radial-gradient(ellipse 120% 70% at 50% 20%, rgba(102, 8, 116, 0.08), transparent 55%), radial-gradient(ellipse 70% 50% at 20% 60%, rgba(217, 51, 121, 0.05), transparent 50%); display: flex; flex-direction: column; }
+    body { margin: 0; min-height: 100vh; font-family: system-ui, -apple-system, sans-serif; color: var(--text); background: var(--bg-page); background-image: radial-gradient(ellipse 120% 70% at 50% 20%, rgba(102, 8, 116, 0.08), transparent 55%), radial-gradient(ellipse 70% 50% at 20% 60%, rgba(217, 51, 121, 0.05), transparent 50%); display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
     .header { flex-shrink: 0; border-bottom: 1px solid var(--border-soft); background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1.25rem; }
     .thu-logo-ring { flex-shrink: 0; position: relative; border-radius: 50%; padding: 3px; width: 3.5rem; height: 3.5rem; background: conic-gradient(from 0deg, var(--thu-purple), #d93379, #8b3d96, #e85a9a, var(--thu-purple)); }
     .thu-logo-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; padding: 4px; box-shadow: var(--shadow); }
@@ -50,9 +50,28 @@
     .theme-toggle .icon-sun { display: block; }
     [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
     [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+    /* 动态光球（transform 位移，保证可见） */
+    @keyframes orb-float-1 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.85; } 33% { transform: translate(8%, -5%) scale(1.05); opacity: 1; } 66% { transform: translate(-6%, 8%) scale(0.98); opacity: 0.9; } }
+    @keyframes orb-float-2 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; } 33% { transform: translate(-10%, 6%) scale(1.08); opacity: 1; } 66% { transform: translate(5%, -8%) scale(0.95); opacity: 0.85; } }
+    @keyframes orb-float-3 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.75; } 50% { transform: translate(-4%, -6%) scale(1.1); opacity: 1; } }
+    .animated-bg-orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .animated-bg-orb { position: absolute; border-radius: 50%; filter: blur(60px); }
+    .animated-bg-orb-1 { width: 70vmax; height: 70vmax; left: -15%; top: -20%; background: radial-gradient(circle, rgba(102, 8, 116, 0.18) 0%, rgba(102, 8, 116, 0.05) 40%, transparent 70%); animation: orb-float-1 18s ease-in-out infinite; }
+    .animated-bg-orb-2 { width: 55vmax; height: 55vmax; right: -10%; bottom: -15%; background: radial-gradient(circle, rgba(217, 51, 121, 0.14) 0%, rgba(217, 51, 121, 0.04) 45%, transparent 70%); animation: orb-float-2 22s ease-in-out infinite; }
+    .animated-bg-orb-3 { width: 45vmax; height: 45vmax; left: 40%; bottom: -5%; background: radial-gradient(circle, rgba(102, 8, 116, 0.12) 0%, transparent 60%); animation: orb-float-3 15s ease-in-out infinite; }
+    [data-theme="dark"] .animated-bg-orb-1 { background: radial-gradient(circle, rgba(102, 8, 116, 0.4) 0%, rgba(102, 8, 116, 0.1) 40%, transparent 70%); }
+    [data-theme="dark"] .animated-bg-orb-2 { background: radial-gradient(circle, rgba(217, 51, 121, 0.3) 0%, rgba(217, 51, 121, 0.08) 45%, transparent 70%); }
+    [data-theme="dark"] .animated-bg-orb-3 { background: radial-gradient(circle, rgba(139, 61, 150, 0.35) 0%, transparent 60%); }
+    body .header { position: relative; z-index: 1; }
+    body main { position: relative; z-index: 1; }
   </style>
 </head>
 <body>
+  <div class="animated-bg-orbs" aria-hidden>
+    <div class="animated-bg-orb animated-bg-orb-1"></div>
+    <div class="animated-bg-orb animated-bg-orb-2"></div>
+    <div class="animated-bg-orb animated-bg-orb-3"></div>
+  </div>
   <header class="header">
     <div class="thu-logo-ring">
       <div class="thu-logo-inner">

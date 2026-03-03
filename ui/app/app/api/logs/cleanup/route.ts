@@ -77,7 +77,7 @@ export async function POST(request: Request) {
       const cur = byJob.get(e.jobId);
       if (cur === undefined || e.mtime > cur) byJob.set(e.jobId, e.mtime);
     }
-    const sorted = [...byJob.entries()].sort((a, b) => b[1] - a[1]);
+    const sorted = Array.from(byJob.entries()).sort((a, b) => b[1] - a[1]);
     const toRemove = sorted.slice(body.keepLast).map(([id]) => id);
     for (const jobId of toRemove) {
       for (const ext of [".log", ".meta.json"]) {
@@ -104,7 +104,7 @@ export async function POST(request: Request) {
       const m = name.match(/^(job_[a-z0-9_]+)\.(log|meta\.json)$/);
       if (m && JOB_ID_REGEX.test(m[1])) jobIds.add(m[1]);
     }
-    for (const jobId of jobIds) {
+    for (const jobId of Array.from(jobIds)) {
       const logPath = path.join(jobsDir, `${jobId}.log`);
       const metaPath = path.join(jobsDir, `${jobId}.meta.json`);
       let mtime = 0;

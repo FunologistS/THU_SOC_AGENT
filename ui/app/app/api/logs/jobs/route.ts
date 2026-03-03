@@ -29,7 +29,7 @@ export async function GET() {
   }
 
   const jobs: JobLogEntry[] = [];
-  for (const jobId of jobIds) {
+  for (const jobId of Array.from(jobIds)) {
     const logPath = path.join(jobsDir, `${jobId}.log`);
     const metaPath = path.join(jobsDir, `${jobId}.meta.json`);
     let mtime = 0;

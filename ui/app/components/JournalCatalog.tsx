@@ -267,7 +267,7 @@ export function JournalCatalog({
       if (!g.has(key)) g.set(key, []);
       g.get(key)!.push(j);
     }
-    const letters = [...g.keys()].sort((a, b) => (a === "#" ? 1 : b === "#" ? -1 : a.localeCompare(b)));
+    const letters = Array.from(g.keys()).sort((a, b) => (a === "#" ? 1 : b === "#" ? -1 : a.localeCompare(b)));
     return { indexLetters: letters, groups: g };
   }, [filteredJournals]);
 

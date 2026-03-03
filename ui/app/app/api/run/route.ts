@@ -141,11 +141,17 @@ export async function POST(request: Request) {
     writingModel?: "gpt" | "glm" | "glm-4.7-flash" | "glm-5";
     qualityOnly?: boolean;
     searchMode?: "strict" | "relaxed";
-    /** 主题聚类：聚类数 "auto"=自动选k，"6"=固定6类等 */
     synthesizeK?: string;
-    /** 一键综述默认风格：zh=学术型中文样例，en=学术型英文样例，colloquial=通俗型默认样例，none=不参考任何风格 */
     writingStyle?: "zh" | "en" | "colloquial" | "none";
     writingPrompt?: string;
+    /** 主题聚类：输入文档，相对路径如 03_summaries/summaries_latest.md */
+    synthesizeInPath?: string;
+    /** 荟萃分析：04_meta 下 meta_clusters 文件名、briefing 文件名；03_summaries 下 summaries 文件名（仅文件名，不含目录） */
+    conceptMetaClusters?: string;
+    conceptBriefing?: string;
+    conceptSummaries?: string;
+    /** 一键综述：05_report 下输入文件名，如 report_latest.md */
+    writingReportFile?: string;
   };
   try {
     body = await request.json();
@@ -153,7 +159,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { jobType, topic, args: extraArgsRaw, journalSourceIds, journalIssns, conceptSynthesizeModelRaw, writingModelRaw, qualityOnly, searchMode, synthesizeK, writingStyle, writingPrompt } = body;
+  const {
+    jobType,
+    topic,
+    args: extraArgsRaw,
+    journalSourceIds,
+    journalIssns,
+    conceptSynthesizeModel: conceptSynthesizeModelRaw,
+    writingModel: writingModelRaw,
+    qualityOnly,
+    searchMode,
+    synthesizeK,
+    writingStyle,
+    writingPrompt,
+    synthesizeInPath,
+    conceptMetaClusters,
+    conceptBriefing,
+    conceptSummaries,
+    writingReportFile,
+  } = body;
   const conceptSynthesizeModel = conceptSynthesizeModelRaw === "glm" ? "glm-4.7-flash" : conceptSynthesizeModelRaw;
   const writingModel = writingModelRaw === "glm" ? "glm-4.7-flash" : writingModelRaw;
   let extraArgs = Array.isArray(extraArgsRaw) ? [...extraArgsRaw] : undefined;
@@ -163,11 +187,25 @@ export async function POST(request: Request) {
   if (jobType === "synthesize" && synthesizeK != null && String(synthesizeK).trim() !== "") {
     extraArgs = [...(extraArgs ?? []), "--k", String(synthesizeK).trim()];
   }
+  const safeRelPath = (p: string) => /^[a-z0-9_/. \-]+$/i.test(p) && !p.includes("..");
+  if (jobType === "synthesize" && synthesizeInPath && safeRelPath(synthesizeInPath)) {
+    extraArgs = [...(extraArgs ?? []), "--in", path.join("outputs", topic, synthesizeInPath)];
+  }
   if (jobType === "concept_synthesize" && qualityOnly === true) {
     extraArgs = [...(extraArgs ?? []), "--exclude-out-of-scope"];
   }
   if (jobType === "concept_synthesize" && (conceptSynthesizeModel === "glm-4.7-flash" || conceptSynthesizeModel === "glm-5")) {
     extraArgs = [...(extraArgs ?? []), "--model", conceptSynthesizeModel];
+  }
+  const safeFileName = (s: string) => typeof s === "string" && /^[a-z0-9_.\-]+\.md$/i.test(s.trim());
+  if (jobType === "concept_synthesize" && conceptMetaClusters && safeFileName(conceptMetaClusters)) {
+    extraArgs = [...(extraArgs ?? []), "--meta-clusters", path.join(REPO_ROOT, "outputs", topic, "04_meta", conceptMetaClusters.trim())];
+  }
+  if (jobType === "concept_synthesize" && conceptBriefing && safeFileName(conceptBriefing)) {
+    extraArgs = [...(extraArgs ?? []), "--briefing", path.join(REPO_ROOT, "outputs", topic, "04_meta", conceptBriefing.trim())];
+  }
+  if (jobType === "concept_synthesize" && conceptSummaries && safeFileName(conceptSummaries)) {
+    extraArgs = [...(extraArgs ?? []), "--summaries", path.join(REPO_ROOT, "outputs", topic, "03_summaries", conceptSummaries.trim())];
   }
   if (jobType === "upload_and_writing" && writingModel) {
     extraArgs = extraArgs ?? [];
@@ -178,6 +216,9 @@ export async function POST(request: Request) {
     extraArgs = extraArgs ?? [];
     if (extraArgs.length < 3) extraArgs.push(writingModel);
     else extraArgs[2] = writingModel;
+  }
+  if (jobType === "writing_under_style" && writingReportFile && safeFileName(writingReportFile)) {
+    extraArgs = [...(extraArgs ?? []), "--report-file", writingReportFile.trim()];
   }
   if (!jobType || !topic) {
     return NextResponse.json(
@@ -308,6 +349,9 @@ export async function POST(request: Request) {
       args.push("--provider", "glm");
       args.push("--model", writingModel);
     }
+    if (writingReportFile && safeFileName(writingReportFile)) {
+      args.push("--report-file", writingReportFile.trim());
+    }
   } else {
     args = config.args(topic, extraArgs) as string[];
   }
@@ -315,6 +359,9 @@ export async function POST(request: Request) {
   if (jobType === "writing_under_style" && !writingStyle && writingModel && writingModel !== "gpt") {
     args.push("--provider", "glm");
     args.push("--model", writingModel);
+  }
+  if (jobType === "writing_under_style" && writingReportFile && safeFileName(writingReportFile)) {
+    args.push("--report-file", writingReportFile.trim());
   }
 
   const spawnEnv =

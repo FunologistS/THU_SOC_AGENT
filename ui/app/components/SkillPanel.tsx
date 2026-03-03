@@ -123,13 +123,23 @@ export function SkillPanel({
   const [writingReviewPrompt, setWritingReviewPrompt] = useState("");
   /** 荟萃分析/一键综述可选：gpt | 智谱 glm-4.7-flash | 智谱 glm-5 */
   const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
-  const [conceptSynthesizeModelOpen, setConceptSynthesizeModelOpen] = useState(false);
   /** 主题聚类：auto=自动选k，fixed6=常规6类，custom=用户设定(2-20) */
   const [synthesizeKMode, setSynthesizeKMode] = useState<"auto" | "fixed6" | "custom">("auto");
   const [synthesizeKCustom, setSynthesizeKCustom] = useState(6);
-  const [synthesizeKOpen, setSynthesizeKOpen] = useState(false);
+  /** 主题聚类：输入文档，如 03_summaries/summaries_latest.md；空则用脚本默认 */
+  const [synthesizeInPath, setSynthesizeInPath] = useState("");
+  /** 主题聚类：运行前弹窗 */
+  const [synthesizeModalOpen, setSynthesizeModalOpen] = useState(false);
+  /** 荟萃分析：选具体文档（04_meta / 03_summaries 下文件名） */
+  const [conceptMetaClusters, setConceptMetaClusters] = useState("");
+  const [conceptBriefing, setConceptBriefing] = useState("");
+  const [conceptSummaries, setConceptSummaries] = useState("");
+  /** 一键综述：05_report 下输入文件名 */
+  const [writingReportFile, setWritingReportFile] = useState("");
   const [writingModel, setWritingModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
-  const [writingModelOpen, setWritingModelOpen] = useState(false);
+  /** 荟萃分析：运行前弹窗，在弹窗内选择模型与文档 */
+  const [conceptSynthesizeModalOpen, setConceptSynthesizeModalOpen] = useState(false);
+  const [conceptSynthesizePendingQualityOnly, setConceptSynthesizePendingQualityOnly] = useState(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
   /** 已用秒数（每秒更新），保证超过预估后仍持续刷新显示 */
@@ -253,6 +263,11 @@ export function SkillPanel({
       writingStyle?: "zh" | "en" | "colloquial" | "none";
       writingPrompt?: string;
       synthesizeK?: string;
+      synthesizeInPath?: string;
+      conceptMetaClusters?: string;
+      conceptBriefing?: string;
+      conceptSummaries?: string;
+      writingReportFile?: string;
     }
   ): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -266,12 +281,21 @@ export function SkillPanel({
         writingStyle?: "zh" | "en" | "colloquial" | "none";
         writingPrompt?: string;
         synthesizeK?: string;
+        synthesizeInPath?: string;
+        conceptMetaClusters?: string;
+        conceptBriefing?: string;
+        conceptSummaries?: string;
+        writingReportFile?: string;
       } = { jobType, topic };
       if (Array.isArray(extraArgs) && extraArgs.length > 0) body.args = extraArgs;
       if (jobType === "synthesize" && options?.synthesizeK) body.synthesizeK = options.synthesizeK;
+      if (jobType === "synthesize" && options?.synthesizeInPath) body.synthesizeInPath = options.synthesizeInPath;
       if (jobType === "concept_synthesize" && options?.conceptSynthesizeModel)
         body.conceptSynthesizeModel = options.conceptSynthesizeModel;
       if (jobType === "concept_synthesize" && options?.qualityOnly === true) body.qualityOnly = true;
+      if (jobType === "concept_synthesize" && options?.conceptMetaClusters) body.conceptMetaClusters = options.conceptMetaClusters;
+      if (jobType === "concept_synthesize" && options?.conceptBriefing) body.conceptBriefing = options.conceptBriefing;
+      if (jobType === "concept_synthesize" && options?.conceptSummaries) body.conceptSummaries = options.conceptSummaries;
       if (
         (jobType === "writing_under_style" || jobType === "upload_and_writing" || jobType === "transcribe_submit_and_writing") &&
         options?.writingModel
@@ -279,6 +303,7 @@ export function SkillPanel({
         body.writingModel = options.writingModel;
       if (jobType === "writing_under_style" && options?.writingStyle) body.writingStyle = options.writingStyle;
       if (jobType === "writing_under_style" && options?.writingPrompt != null) body.writingPrompt = options.writingPrompt;
+      if (jobType === "writing_under_style" && options?.writingReportFile) body.writingReportFile = options.writingReportFile;
       fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -337,8 +362,11 @@ export function SkillPanel({
     setError(null);
 
     const label = SKILLS.find((s) => s.id === skillId)?.label ?? skillId;
-    const go = await thuConfirm(`确定要执行「${label}」吗？`);
-    if (!go) return;
+    const skipConfirm = skillId === "journal_search" || skillId === "synthesize" || skillId === "concept_synthesize" || skillId === "writing_under_style";
+    if (!skipConfirm) {
+      const go = await thuConfirm(`确定要执行「${label}」吗？`);
+      if (!go) return;
+    }
 
     if (skillId === "journal_search") {
       setJournalSearchConfirmOpen(true);
@@ -367,6 +395,8 @@ export function SkillPanel({
       } catch {
         // 忽略缺失摘要接口失败，允许继续
       }
+      setSynthesizeModalOpen(true);
+      return;
     }
     if (skillId === "concept_synthesize" && !hasStageFiles(topicMeta, "04_meta")) {
       setError("尚未完成「主题聚类」，请先运行该步骤。");
@@ -383,8 +413,8 @@ export function SkillPanel({
       return;
     }
 
-    let qualityOnly = false;
-    if (skillId === "concept_synthesize" && topic) {
+    if (skillId === "concept_synthesize") {
+      let qualityOnly = false;
       try {
         const qaRes = await fetch(`/api/qa-report-summary?topic=${encodeURIComponent(topic)}`);
         const qa = await qaRes.json();
@@ -398,8 +428,11 @@ export function SkillPanel({
           qualityOnly = choice === "confirm";
         }
       } catch {
-        // 忽略 QA 接口失败，按全部论文运行
+        // 忽略 QA 接口失败
       }
+      setConceptSynthesizePendingQualityOnly(qualityOnly);
+      setConceptSynthesizeModalOpen(true);
+      return;
     }
 
     latestJobIdRef.current = null;
@@ -415,17 +448,14 @@ export function SkillPanel({
     try {
       const ok =
         skillId === "concept_synthesize"
-          ? await runOne(skillId, undefined, { conceptSynthesizeModel, qualityOnly })
-          : skillId === "synthesize"
-            ? await runOne(skillId, undefined, {
-                synthesizeK:
-                  synthesizeKMode === "auto"
-                    ? "auto"
-                    : synthesizeKMode === "fixed6"
-                      ? "6"
-                      : String(Math.min(20, Math.max(2, synthesizeKCustom))),
-              })
-            : await runOne(skillId);
+          ? await runOne(skillId, undefined, {
+              conceptSynthesizeModel,
+              qualityOnly,
+              conceptMetaClusters: conceptMetaClusters || undefined,
+              conceptBriefing: conceptBriefing || undefined,
+              conceptSummaries: conceptSummaries || undefined,
+            })
+          : await runOne(skillId);
       if (ok) onJobComplete?.(skillId);
       setRunningSkill(null);
     } catch {
@@ -502,6 +532,7 @@ export function SkillPanel({
       writingModel,
       writingStyle: styleChoice,
       writingPrompt: promptToUse ?? undefined,
+      writingReportFile: writingReportFile || undefined,
     })
       .then(() => setRunningSkill(null))
       .catch(() => setRunningSkill(null));
@@ -570,7 +601,7 @@ export function SkillPanel({
             </button>
           </div>
         ))}
-        {/* ③ 主题聚类：可选聚类数 自动 / 固定 6 */}
+        {/* ③ 主题聚类 */}
         <div
           data-skill-id="synthesize"
           className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
@@ -598,77 +629,8 @@ export function SkillPanel({
               {runningSkill === "synthesize" ? "…" : "运行"}
             </button>
           </div>
-          <div className="mt-2">
-            <button
-              type="button"
-              onClick={() => setSynthesizeKOpen((o) => !o)}
-              className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] hover:text-[var(--text)]"
-            >
-              <span className="inline-block transition-transform" style={{ transform: synthesizeKOpen ? "rotate(90deg)" : "none" }}>
-                ▶
-              </span>
-              聚类数：{synthesizeKMode === "auto" ? "自动聚类（AI 测算最优）" : synthesizeKMode === "fixed6" ? "常规 6 类" : `自定义（${Math.min(20, Math.max(2, synthesizeKCustom))} 类）`}
-            </button>
-            {synthesizeKOpen && (
-              <div className="mt-1.5 flex flex-col gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setSynthesizeKMode("auto")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    synthesizeKMode === "auto"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={synthesizeKMode === "auto"}
-                >
-                  自动聚类（按 AI 测算的最优类别数）
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSynthesizeKMode("fixed6")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    synthesizeKMode === "fixed6"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={synthesizeKMode === "fixed6"}
-                >
-                  常规 6 类
-                </button>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSynthesizeKMode("custom")}
-                    className={`flex flex-1 items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                      synthesizeKMode === "custom"
-                        ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                        : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                    }`}
-                    aria-pressed={synthesizeKMode === "custom"}
-                  >
-                    自定义
-                  </button>
-                  <label className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
-                    <input
-                      type="number"
-                      min={2}
-                      max={20}
-                      value={synthesizeKCustom}
-                      onChange={(e) => {
-                        const v = parseInt(e.target.value, 10);
-                        if (!Number.isNaN(v)) setSynthesizeKCustom(Math.min(20, Math.max(2, v)));
-                      }}
-                      onFocus={() => setSynthesizeKMode("custom")}
-                      className="w-12 rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-1.5 py-1 text-center text-[var(--text)]"
-                    />
-                    类（2–20）
-                  </label>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
-        {/* ④ 荟萃分析：可选 GPT / GLM */}
+        {/* ④ 荟萃分析 */}
         <div
           data-skill-id="concept_synthesize"
           className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
@@ -696,75 +658,8 @@ export function SkillPanel({
               {runningSkill === "concept_synthesize" ? "…" : "运行"}
             </button>
           </div>
-          <div className="mt-2">
-            <button
-              type="button"
-              onClick={() => setConceptSynthesizeModelOpen((o) => !o)}
-              className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] hover:text-[var(--text)]"
-            >
-              <span className="inline-block transition-transform" style={{ transform: conceptSynthesizeModelOpen ? "rotate(90deg)" : "none" }}>
-                ▶
-              </span>
-              选择模型：{conceptSynthesizeModel === "gpt" ? "OpenAI GPT-5.2" : conceptSynthesizeModel === "glm-5" ? "智谱 GLM-5" : "智谱 GLM-4.7-Flash"}
-            </button>
-            {conceptSynthesizeModelOpen && (
-              <div className="mt-1.5 flex flex-col gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setConceptSynthesizeModel("gpt")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    conceptSynthesizeModel === "gpt"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={conceptSynthesizeModel === "gpt"}
-                >
-                  <img
-                    src="/llm/chatgpt_logo.png"
-                    alt=""
-                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai"
-                  />
-                  <span>OpenAI GPT-5.2</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setConceptSynthesizeModel("glm-4.7-flash")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    conceptSynthesizeModel === "glm-4.7-flash"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={conceptSynthesizeModel === "glm-4.7-flash"}
-                >
-                  <img
-                    src="/llm/zhipu_z_icon.svg"
-                    alt=""
-                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
-                  />
-                  <span>智谱 GLM-4.7-Flash</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setConceptSynthesizeModel("glm-5")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    conceptSynthesizeModel === "glm-5"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={conceptSynthesizeModel === "glm-5"}
-                >
-                  <img
-                    src="/llm/zhipu_z_icon.svg"
-                    alt=""
-                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
-                  />
-                  <span>智谱 GLM-5</span>
-                </button>
-              </div>
-            )}
-          </div>
         </div>
-        {/* ⑤ 一键综述：可选 GPT / GLM，弹窗内可选项上传写作样本 */}
+        {/* ⑤ 一键综述 */}
         <div
           data-skill-id="writing_under_style"
           className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
@@ -792,73 +687,6 @@ export function SkillPanel({
               {runningSkill === "writing_under_style" ? "…" : "运行"}
             </button>
           </div>
-          <div className="mt-2">
-            <button
-              type="button"
-              onClick={() => setWritingModelOpen((o) => !o)}
-              className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] hover:text-[var(--text)]"
-            >
-              <span className="inline-block transition-transform" style={{ transform: writingModelOpen ? "rotate(90deg)" : "none" }}>
-                ▶
-              </span>
-              选择模型：{writingModel === "gpt" ? "OpenAI GPT-5.2" : writingModel === "glm-5" ? "智谱 GLM-5" : "智谱 GLM-4.7-Flash"}
-            </button>
-            {writingModelOpen && (
-              <div className="mt-1.5 flex flex-col gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setWritingModel("gpt")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    writingModel === "gpt"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={writingModel === "gpt"}
-                >
-                  <img
-                    src="/llm/chatgpt_logo.png"
-                    alt=""
-                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai"
-                  />
-                  <span>OpenAI GPT-5.2</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setWritingModel("glm-4.7-flash")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    writingModel === "glm-4.7-flash"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={writingModel === "glm-4.7-flash"}
-                >
-                  <img
-                    src="/llm/zhipu_z_icon.svg"
-                    alt=""
-                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
-                  />
-                  <span>智谱 GLM-4.7-Flash</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setWritingModel("glm-5")}
-                  className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
-                    writingModel === "glm-5"
-                      ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]"
-                      : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"
-                  }`}
-                  aria-pressed={writingModel === "glm-5"}
-                >
-                  <img
-                    src="/llm/zhipu_z_icon.svg"
-                    alt=""
-                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
-                  />
-                  <span>智谱 GLM-5</span>
-                </button>
-              </div>
-            )}
-          </div>
         </div>
       </div>
       {abortConfirmOpen && jobId && (
@@ -873,29 +701,189 @@ export function SkillPanel({
               <button
                 type="button"
                 onClick={() => setAbortConfirmOpen(false)}
-                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+                className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
               >
                 继续运行
               </button>
               <button
                 type="button"
                 onClick={async () => {
-                  setAbortConfirmOpen(false);
                   const idToAbort = latestJobIdRef.current || jobId;
-                  if (!idToAbort) return;
-                  try {
-                    await fetch("/api/run/abort", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ jobId: idToAbort }),
-                    });
-                  } catch {
-                    // 忽略网络错误，轮询会得到 done
+                  setAbortConfirmOpen(false);
+                  if (idToAbort) {
+                    try {
+                      const res = await fetch("/api/run/abort", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ jobId: idToAbort }),
+                      });
+                      if (res.ok) {
+                        setJobId(null);
+                        setRunningSkill(null);
+                        setDone(true);
+                        setRunStartTime(null);
+                        setProgress(0);
+                        setElapsedSec(0);
+                      }
+                    } catch {
+                      setJobId(null);
+                      setRunningSkill(null);
+                      setDone(true);
+                    }
                   }
                 }}
-                className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
               >
-                取消运行
+                确认取消
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {synthesizeModalOpen && (
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="synthesize-modal-title" onClick={() => setSynthesizeModalOpen(false)}>
+          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5" onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">主题聚类</h3>
+            <div className="mb-4 space-y-3">
+              <div>
+                <label className="mb-1.5 block text-[11px] font-medium text-[var(--text-muted)]">聚类数</label>
+                <div className="flex flex-col gap-1.5">
+                  <button type="button" onClick={() => setSynthesizeKMode("auto")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${synthesizeKMode === "auto" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                    自动聚类（AI 测算最优）
+                  </button>
+                  <button type="button" onClick={() => setSynthesizeKMode("fixed6")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${synthesizeKMode === "fixed6" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                    常规 6 类
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <button type="button" onClick={() => setSynthesizeKMode("custom")} className={`flex-1 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${synthesizeKMode === "custom" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      自定义
+                    </button>
+                    <label className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
+                      <input type="number" min={2} max={20} value={synthesizeKCustom} onChange={(e) => { const v = parseInt(e.target.value, 10); if (!Number.isNaN(v)) setSynthesizeKCustom(Math.min(20, Math.max(2, v))); }} onFocus={() => setSynthesizeKMode("custom")} className="w-12 rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-1.5 py-1 text-center text-[var(--text)]" />
+                      类（2–20）
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">摘要文档（03_summaries）</label>
+                <select value={synthesizeInPath} onChange={(e) => setSynthesizeInPath(e.target.value)} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                  <option value="">默认（summaries_latest.md）</option>
+                  {(topicMeta?.stages?.find((s) => s.id === "03_summaries")?.files ?? []).map((f) => (<option key={f.path} value={`03_summaries/${f.name}`}>{f.name}</option>))}
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" onClick={() => setSynthesizeModalOpen(false)} className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium">取消</button>
+              <button
+                type="button"
+                onClick={async () => {
+                  setSynthesizeModalOpen(false);
+                  latestJobIdRef.current = null;
+                  setJobId(null);
+                  setLog("");
+                  setDone(false);
+                  setExitCode(undefined);
+                  setRunningSkill("synthesize");
+                  setRunStartTime(null);
+                  setProgress(0);
+                  setElapsedSec(0);
+                  const ok = await runOne("synthesize", undefined, {
+                    synthesizeK: synthesizeKMode === "auto" ? "auto" : synthesizeKMode === "fixed6" ? "6" : String(Math.min(20, Math.max(2, synthesizeKCustom))),
+                    synthesizeInPath: synthesizeInPath || undefined,
+                  });
+                  if (ok) onJobComplete?.("synthesize");
+                  setRunningSkill(null);
+                  onRunStarted?.();
+                }}
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                确认运行
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {conceptSynthesizeModalOpen && (
+        <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="concept-synthesize-modal-title" onClick={() => setConceptSynthesizeModalOpen(false)}>
+          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setConceptSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="concept-synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">荟萃分析</h3>
+            <p className="mb-3 text-sm text-[var(--text-muted)]">选择模型与输入文档后点击「确认运行」。</p>
+            <div className="mb-4 space-y-3">
+              <div>
+                <label className="mb-1.5 block text-[11px] font-medium text-[var(--text-muted)]">选择模型</label>
+                <div className="flex flex-col gap-1.5">
+                  <button type="button" onClick={() => setConceptSynthesizeModel("gpt")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${conceptSynthesizeModel === "gpt" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                    <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai" />
+                    <span>OpenAI GPT-5.2</span>
+                  </button>
+                  <button type="button" onClick={() => setConceptSynthesizeModel("glm-4.7-flash")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${conceptSynthesizeModel === "glm-4.7-flash" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                    <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                    <span>智谱 GLM-4.7-Flash</span>
+                  </button>
+                  <button type="button" onClick={() => setConceptSynthesizeModel("glm-5")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${conceptSynthesizeModel === "glm-5" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                    <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                    <span>智谱 GLM-5</span>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">元聚类（04_meta）</label>
+                <select value={conceptMetaClusters} onChange={(e) => setConceptMetaClusters(e.target.value)} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                  <option value="">默认（meta_clusters_latest.md）</option>
+                  {(topicMeta?.stages?.find((s) => s.id === "04_meta")?.files ?? []).map((f) => (<option key={f.path} value={f.name}>{f.name}</option>))}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">简报（04_meta）</label>
+                <select value={conceptBriefing} onChange={(e) => setConceptBriefing(e.target.value)} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                  <option value="">默认（briefing_latest.md）</option>
+                  {(topicMeta?.stages?.find((s) => s.id === "04_meta")?.files ?? []).map((f) => (<option key={f.path} value={f.name}>{f.name}</option>))}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">摘要（03_summaries）</label>
+                <select value={conceptSummaries} onChange={(e) => setConceptSummaries(e.target.value)} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                  <option value="">默认（summaries_latest.md）</option>
+                  {(topicMeta?.stages?.find((s) => s.id === "03_summaries")?.files ?? []).map((f) => (<option key={f.path} value={f.name}>{f.name}</option>))}
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" onClick={() => setConceptSynthesizeModalOpen(false)} className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium">取消</button>
+              <button
+                type="button"
+                onClick={async () => {
+                  setConceptSynthesizeModalOpen(false);
+                  latestJobIdRef.current = null;
+                  setJobId(null);
+                  setLog("");
+                  setDone(false);
+                  setExitCode(undefined);
+                  setRunningSkill("concept_synthesize");
+                  setRunStartTime(null);
+                  setProgress(0);
+                  setElapsedSec(0);
+                  const ok = await runOne("concept_synthesize", undefined, {
+                    conceptSynthesizeModel,
+                    qualityOnly: conceptSynthesizePendingQualityOnly,
+                    conceptMetaClusters: conceptMetaClusters || undefined,
+                    conceptBriefing: conceptBriefing || undefined,
+                    conceptSummaries: conceptSummaries || undefined,
+                  });
+                  if (ok) onJobComplete?.("concept_synthesize");
+                  setRunningSkill(null);
+                  onRunStarted?.();
+                }}
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                确认运行
               </button>
             </div>
           </div>
@@ -1102,11 +1090,14 @@ export function SkillPanel({
       )}
       {writingReviewModalOpen && (
         <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="writing-review-modal-title" onClick={() => setWritingReviewModalOpen(false)}>
-          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="thu-modal-card relative mx-4 flex w-full max-w-md flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+            <div className="flex-shrink-0 px-5 pt-5 pr-12 pb-0">
+              <h3 id="writing-review-modal-title" className="thu-modal-title text-base">一键综述</h3>
+            </div>
             <button type="button" onClick={() => setWritingReviewModalOpen(false)} className="thu-modal-close absolute right-4 top-4 z-10 p-1 shrink-0" aria-label="关闭">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <h3 id="writing-review-modal-title" className="thu-modal-title mb-3 text-base pr-8">一键综述</h3>
+            <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4">
 
             {writingReviewStep === "upload_choice" && (
               <>
@@ -1234,6 +1225,30 @@ export function SkillPanel({
                     className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--thu-purple)] focus:outline-none"
                   />
                 </div>
+                <div className="mb-3">
+                  <label className="mb-1.5 block text-[11px] font-medium text-[var(--text-muted)]">选择模型</label>
+                  <div className="flex flex-col gap-1.5">
+                    <button type="button" onClick={() => setWritingModel("gpt")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "gpt" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai" />
+                      <span>OpenAI GPT-5.2</span>
+                    </button>
+                    <button type="button" onClick={() => setWritingModel("glm-4.7-flash")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-4.7-flash" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                      <span>智谱 GLM-4.7-Flash</span>
+                    </button>
+                    <button type="button" onClick={() => setWritingModel("glm-5")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-5" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                      <span>智谱 GLM-5</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">输入文档（05_report）</label>
+                  <select value={writingReportFile} onChange={(e) => setWritingReportFile(e.target.value)} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                    <option value="">默认（chunks 或 report_latest.md）</option>
+                    {(topicMeta?.stages?.find((s) => s.id === "05_report")?.files ?? []).map((f) => (<option key={f.path} value={f.name}>{f.name}</option>))}
+                  </select>
+                </div>
                 <button type="button" onClick={() => setWritingReviewStep("upload_choice")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回</button>
               </>
             )}
@@ -1255,6 +1270,12 @@ export function SkillPanel({
                     <dt className="text-[var(--text-muted)] shrink-0">模型：</dt>
                     <dd className="text-[var(--text)]">{writingModel === "gpt" ? "OpenAI GPT-5.2" : writingModel === "glm-5" ? "智谱 GLM-5" : "智谱 GLM-4.7-Flash"}</dd>
                   </div>
+                  {writingReportFile && (
+                    <div className="flex gap-2">
+                      <dt className="text-[var(--text-muted)] shrink-0">输入文档：</dt>
+                      <dd className="text-[var(--text)]">{writingReportFile}</dd>
+                    </div>
+                  )}
                   {pendingWritingPrompt && (
                     <div className="flex gap-2">
                       <dt className="text-[var(--text-muted)] shrink-0">额外提示：</dt>
@@ -1284,6 +1305,8 @@ export function SkillPanel({
                 取消
               </button>
             )}
+
+            </div>
           </div>
         </div>
       )}

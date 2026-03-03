@@ -130,19 +130,34 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* 首页（未启动时）· 底纹与主色统一 */
+/* 首页（未启动时）· 底纹与主色统一 + 动态渐变（仅 start.html 等使用） */
+@keyframes gradient-drift {
+  0%, 100% { background-position: 0% 20%, 100% 80%, 50% 50%, 0% 0%; }
+  50% { background-position: 100% 80%, 0% 20%, 50% 50%, 0% 0%; }
+}
 .start-page-root {
   background: var(--bg-page);
   background-image:
     radial-gradient(ellipse 120% 70% at 50% 20%, rgba(102, 8, 116, 0.08), transparent 55%),
     radial-gradient(ellipse 70% 50% at 20% 60%, rgba(217, 51, 121, 0.05), transparent 50%),
     radial-gradient(ellipse 60% 40% at 85% 70%, rgba(102, 8, 116, 0.04), transparent 50%);
+  background-size: 140% 140%, 140% 140%, 140% 140%;
+  background-position: 0% 0%, 100% 50%, 50% 100%;
+  animation: gradient-drift 24s ease-in-out infinite;
+}
+[data-theme="dark"] .start-page-root {
+  background-size: 140% 140%, 140% 140%, 140% 140%, 100% 100%;
+  background-position: 0% 0%, 100% 50%, 50% 100%, 0% 0%;
+  animation: gradient-drift 30s ease-in-out infinite;
 }
 .start-page-main {
   position: relative;
   background-image:
     radial-gradient(circle at 20% 30%, rgba(102, 8, 116, 0.04) 0%, transparent 40%),
     radial-gradient(circle at 80% 80%, rgba(217, 51, 121, 0.035) 0%, transparent 35%);
+  background-size: 130% 130%, 130% 130%;
+  background-position: 0% 0%, 100% 100%;
+  animation: gradient-drift 22s ease-in-out infinite;
 }
 .start-page-main::before {
   content: "";

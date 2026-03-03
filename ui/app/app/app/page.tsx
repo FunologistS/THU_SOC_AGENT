@@ -126,8 +126,33 @@ function HomeContent() {
     for (const t of topics) byTopic.set(t.topic, t.label);
     return Array.from(byTopic.entries())
       .map(([topic, label]) => ({ topic, label }))
-      .sort((a, b) => a.topic.localeCompare(b.topic));
+      .sort((a, b) => a.label.localeCompare(b.label, "zh", { sensitivity: "base" }));
   }, [topics]);
+
+  /** 文档目录主题按首字母分组，用于右侧字母快速定位（与期刊数据库一致）；非 A–Z 归为 # */
+  const topicLetterIndex = useMemo(() => {
+    const sorted = [...availableTopicsForPanel];
+    const g = new Map<string, { topic: string; label: string }[]>();
+    for (const t of sorted) {
+      const first = (t.label[0] ?? t.topic[0] ?? "").toUpperCase();
+      const key = /[A-Z]/.test(first) ? first : "#";
+      if (!g.has(key)) g.set(key, []);
+      g.get(key)!.push(t);
+    }
+    const letters = Array.from(g.keys()).sort((a, b) => (a === "#" ? 1 : b === "#" ? -1 : a.localeCompare(b)));
+    return { indexLetters: letters, groups: g };
+  }, [availableTopicsForPanel]);
+
+  const topicListRef = useRef<HTMLDivElement>(null);
+  const scrollToTopicLetter = useCallback((letter: string) => {
+    const el = document.getElementById(`topic-letter-${letter}`);
+    if (el && topicListRef.current) {
+      const container = topicListRef.current;
+      const y = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+      container.scrollTo({ top: Math.max(0, y - 4), behavior: "smooth" });
+    }
+  }, []);
+
   const [meta, setMeta] = useState<TopicMeta | null>(null);
   const [metaRefreshKey, setMetaRefreshKey] = useState(0);
   const [content, setContent] = useState("");
@@ -650,7 +675,7 @@ function HomeContent() {
             </button>
             {sidebarOpen.journalDb && (
               <div className="p-4 pt-0 max-h-[70vh] min-h-0 overflow-y-auto">
-                <JournalCatalog mode="database" hideTitle />
+                <JournalCatalog mode="database" hideTitle onStartSearch={() => {}} />
               </div>
             )}
           </section>
@@ -789,27 +814,79 @@ function HomeContent() {
               <div className="p-4">
                 {topic && (
                   <p className="mb-2 text-xs text-[var(--text-muted)]">
-                    当前主题：<span className="font-medium text-[var(--text)]">{topics.find((t) => t.topic === topic)?.label ?? topic.replace(/_/g, " ")}</span>
+                    当前主题：<span className="font-medium text-[var(--text)]">{availableTopicsForPanel.find((t) => t.topic === topic)?.label ?? topic.replace(/_/g, " ")}</span>
                   </p>
                 )}
                 <p className="mb-1 text-xs text-[var(--text-muted)]">主题</p>
-                <p className="mb-2 text-[11px] text-[var(--text-muted)] opacity-90">当前共 {topics.length} 个主题，可点击切换</p>
-                <ul className="max-h-28 overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
-                  {topics.length === 0 && (
-                    <li className="px-3 py-3 text-sm text-[var(--text-muted)]">暂无主题</li>
+                <p className="mb-2 text-[11px] text-[var(--text-muted)] opacity-90">
+                  共 {availableTopicsForPanel.length} 个主题，右侧字母可快速定位
+                </p>
+                <div className="flex gap-0 max-h-48 rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft overflow-hidden">
+                  <div
+                    ref={topicListRef}
+                    className="min-h-0 min-w-0 max-h-48 flex-1 overflow-y-auto"
+                    role="list"
+                  >
+                    {availableTopicsForPanel.length === 0 ? (
+                      <div className="px-3 py-3 text-sm text-[var(--text-muted)]">暂无主题</div>
+                    ) : topicLetterIndex.indexLetters.length > 0 ? (
+                      topicLetterIndex.indexLetters.map((letter) => (
+                        <div key={letter} id={`topic-letter-${letter}`}>
+                          <div className="sticky top-0 z-[1] bg-[var(--bg-card)] px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--thu-purple)] border-b border-[var(--border-soft)]">
+                            {letter}
+                          </div>
+                          <ul className="divide-y divide-[var(--border-soft)]">
+                            {(topicLetterIndex.groups.get(letter) ?? []).map((t) => (
+                              <li key={t.topic}>
+                                <button
+                                  type="button"
+                                  onClick={() => setUrl({ topic: t.topic, stage: "", file: "" })}
+                                  className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${topic === t.topic ? "thu-btn-primary" : "text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"}`}
+                                >
+                                  {t.label}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))
+                    ) : (
+                      <ul>
+                        {availableTopicsForPanel.map((t) => (
+                          <li key={t.topic}>
+                            <button
+                              type="button"
+                              onClick={() => setUrl({ topic: t.topic, stage: "", file: "" })}
+                              className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${topic === t.topic ? "thu-btn-primary" : "text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"}`}
+                            >
+                              {t.label}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  {topicLetterIndex.indexLetters.length > 1 && (
+                    <div
+                      className="flex max-h-48 w-7 shrink-0 flex-col overflow-y-auto border-l border-[var(--border-soft)] bg-[var(--bg-card)] py-1 pr-1"
+                      aria-label="按首字母快速定位"
+                    >
+                      <div className="grid grid-cols-2 gap-x-0.5 gap-y-0 text-[9px] font-medium leading-tight text-[var(--text-muted)]">
+                        {topicLetterIndex.indexLetters.map((letter) => (
+                          <button
+                            key={letter}
+                            type="button"
+                            onClick={() => scrollToTopicLetter(letter)}
+                            className="flex min-h-0 items-center justify-center py-0.5 hover:text-[var(--thu-purple)] hover:bg-[var(--thu-purple-subtle)] rounded transition-colors"
+                            title={`跳转到 ${letter}`}
+                          >
+                            {letter}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   )}
-                  {topics.map((t) => (
-                    <li key={t.topic}>
-                      <button
-                        type="button"
-                        onClick={() => setUrl({ topic: t.topic, stage: "", file: "" })}
-                        className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${topic === t.topic ? "thu-btn-primary" : "text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"}`}
-                      >
-                        {t.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                </div>
                 {meta && (
                   <>
                     <p className="mt-3 mb-2 text-xs text-[var(--text-muted)]">阶段 · 文件</p>
@@ -871,6 +948,7 @@ function HomeContent() {
                                             <li>
                                               <a
                                                 href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1&format=docx`}
+                                                download={(`${f.name.replace(/\.md$/i, "") || "document"}.docx`)}
                                                 className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
                                                 onClick={() => setFileMenuPath(null)}
                                               >
@@ -880,6 +958,7 @@ function HomeContent() {
                                             <li>
                                               <a
                                                 href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1&format=pdf`}
+                                                download={(`${f.name.replace(/\.md$/i, "") || "document"}.pdf`)}
                                                 className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
                                                 onClick={() => setFileMenuPath(null)}
                                               >
@@ -1039,6 +1118,7 @@ function HomeContent() {
                         <li>
                           <a
                             href={`/api/file?source=${encodeURIComponent(source)}&path=${encodeURIComponent(filePathForApi)}&download=1&format=markdown`}
+                            download={((filePathForApi?.split("/").pop() ?? "").replace(/\.md$/i, "") || "document") + ".md"}
                             className="block px-3 py-1.5 text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
                             onClick={() => setExportMenuOpen(false)}
                           >
@@ -1048,6 +1128,7 @@ function HomeContent() {
                         <li>
                           <a
                             href={`/api/file?source=${encodeURIComponent(source)}&path=${encodeURIComponent(filePathForApi)}&download=1&format=docx`}
+                            download={((filePathForApi?.split("/").pop() ?? "").replace(/\.md$/i, "") || "document") + ".docx"}
                             className="block px-3 py-1.5 text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
                             onClick={() => setExportMenuOpen(false)}
                           >
@@ -1057,6 +1138,7 @@ function HomeContent() {
                         <li>
                           <a
                             href={`/api/file?source=${encodeURIComponent(source)}&path=${encodeURIComponent(filePathForApi)}&download=1&format=pdf`}
+                            download={((filePathForApi?.split("/").pop() ?? "").replace(/\.md$/i, "") || "document") + ".pdf"}
                             className="block px-3 py-1.5 text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
                             onClick={() => setExportMenuOpen(false)}
                           >

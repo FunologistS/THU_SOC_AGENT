@@ -43,10 +43,23 @@ export async function POST(request: Request) {
     );
   }
 
-  const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}${ext}`;
+  const nameRaw = formData.get("name");
+  let baseName: string;
+  if (typeof nameRaw === "string" && nameRaw.trim()) {
+    baseName = nameRaw.trim().replace(/[^a-zA-Z0-9_.-]/g, "_").replace(/_+/g, "_").replace(/^_|_$/g, "").slice(0, 100) || "unnamed";
+  } else {
+    baseName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  }
+  const safeName = baseName.endsWith(ext) ? baseName : baseName + ext;
   const dir = path.join(ASSETS_BASE, style);
   fs.mkdirSync(dir, { recursive: true });
   const destPath = path.join(dir, safeName);
+  if (fs.existsSync(destPath)) {
+    return NextResponse.json(
+      { error: "该名称已存在，请换一个名称或留空使用自动命名" },
+      { status: 409 }
+    );
+  }
 
   const bytes = await file.arrayBuffer();
   fs.writeFileSync(destPath, Buffer.from(bytes));

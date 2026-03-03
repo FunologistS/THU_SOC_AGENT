@@ -49,7 +49,7 @@ export function ThUAlertConfirmProvider({ children }: { children: React.ReactNod
 
   const alert = useCallback((message: string) => {
     return new Promise<void>((resolve) => {
-      resolveRef.current = (value?: boolean) => {
+      resolveRef.current = (_value?: boolean | ConfirmThreeResult) => {
         resolveRef.current = null;
         setState(null);
         resolve();

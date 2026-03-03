@@ -5,8 +5,10 @@ import { getRepoRoot } from "@/lib/pathSafety";
 
 const REPO_ROOT = getRepoRoot();
 const ASSETS_BASE = path.join(REPO_ROOT, ".claude/skills/paper-writing/assets");
+const SUBMIT_BASE = path.join(REPO_ROOT, ".claude/skills/paper-writing/references/submit");
 
 const SAFE_NAME = /^[a-z0-9_.-]+\.(pdf|docx)$/i;
+const SAFE_MD_NAME = /^[a-z0-9_.-]+\.md$/i;
 
 function listDir(style: "academic" | "colloquial") {
   const dir = path.join(ASSETS_BASE, style);
@@ -19,12 +21,27 @@ function listDir(style: "academic" | "colloquial") {
     }));
 }
 
-/** GET /api/writing-samples — 返回 { academic: [{ name, size }], colloquial: [...] } */
+function listSubmitMd(style: "academic" | "colloquial") {
+  const dir = path.join(SUBMIT_BASE, style);
+  if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) return [];
+  return fs.readdirSync(dir)
+    .filter((n) => n.endsWith(".md") && SAFE_MD_NAME.test(n))
+    .map((name) => ({
+      name,
+      size: fs.statSync(path.join(dir, name)).size,
+    }));
+}
+
+/** GET /api/writing-samples — 返回 { academic, colloquial, submitMd: { academic, colloquial } } */
 export async function GET() {
   try {
     const academic = listDir("academic");
     const colloquial = listDir("colloquial");
-    return NextResponse.json({ academic, colloquial });
+    const submitMd = {
+      academic: listSubmitMd("academic"),
+      colloquial: listSubmitMd("colloquial"),
+    };
+    return NextResponse.json({ academic, colloquial, submitMd });
   } catch (e) {
     return NextResponse.json({ error: (e as Error).message }, { status: 500 });
   }

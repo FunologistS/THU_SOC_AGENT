@@ -4,6 +4,14 @@ import { getRepoRoot, resolveUnder, safeReadFile } from "@/lib/pathSafety";
 import { Document, Packer, Paragraph } from "docx";
 import PDFDocument from "pdfkit";
 
+/** 确保在 Node 环境运行（docx/pdfkit 依赖 Node Buffer、stream） */
+export const runtime = "nodejs";
+
+/** 仅保留 PDF 默认字体（Helvetica）可渲染的字符，避免 500；中文等会变为空格 */
+function pdfSafeText(s: string): string {
+  return s.replace(/[^\x00-\xFF]/g, " ");
+}
+
 /** 将 Markdown 简单降级为纯文本，保留链接文字与 URL，去掉粗体/标题标记等 */
 function stripMarkdownToPlainText(markdown: string): string {
   let t = markdown.replace(/\r\n/g, "\n");
@@ -39,6 +47,7 @@ async function markdownToDocxBuffer(markdown: string): Promise<Buffer> {
 
 async function markdownToPdfBuffer(markdown: string): Promise<Buffer> {
   const plain = stripMarkdownToPlainText(markdown);
+  const safe = pdfSafeText(plain || "").trim() || " ";
   const doc = new PDFDocument({ margin: 50 });
   const chunks: Buffer[] = [];
 
@@ -46,16 +55,10 @@ async function markdownToPdfBuffer(markdown: string): Promise<Buffer> {
     doc.on("data", (chunk) => {
       chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
     });
-    doc.on("end", () => {
-      resolve(Buffer.concat(chunks));
-    });
-    doc.on("error", (err) => {
-      reject(err);
-    });
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
 
-    doc.fontSize(12).text(plain || "", {
-      align: "left",
-    });
+    doc.fontSize(12).text(safe, { align: "left" });
     doc.end();
   });
 }
@@ -106,7 +109,7 @@ export async function GET(request: Request) {
         const encoded = encodeURIComponent(fileName);
         headers["Content-Disposition"] = `attachment; filename*=UTF-8''${encoded}`;
       }
-      return new NextResponse(buf, { headers });
+      return new NextResponse(new Uint8Array(buf), { headers });
     }
 
     if (format === "pdf") {
@@ -119,10 +122,12 @@ export async function GET(request: Request) {
         const encoded = encodeURIComponent(fileName);
         headers["Content-Disposition"] = `attachment; filename*=UTF-8''${encoded}`;
       }
-      return new NextResponse(buf, { headers });
+      return new NextResponse(new Uint8Array(buf), { headers });
     }
   } catch (err) {
-    return NextResponse.json({ error: "Failed to convert document" }, { status: 500 });
+    console.error("[api/file] docx/pdf conversion failed:", err);
+    const message = err instanceof Error ? err.message : "Failed to convert document";
+    return NextResponse.json({ error: "Failed to convert document", detail: message }, { status: 500 });
   }
 
   const fileName = originalName;

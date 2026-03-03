@@ -137,6 +137,8 @@ const styledDirFlag = getFlagValue("--styled-dir"); // directory path for merge-
 const userPromptFlag = getFlagValue("--user-prompt"); // 用户额外提示词（UI 传入）
 /** 显式指定输出语言：en | zh。UI 选英文/中文样例时传入，优先于样本文本检测 */
 const langFlag = getFlagValue("--lang");
+/** 指定 05_report 下输入文件名（如 report_latest.md），用于 UI 选具体文档 */
+const reportFileFlag = getFlagValue("--report-file");
 
 function getFlagValue(flag) {
   const idx = argv.indexOf(flag);
@@ -784,7 +786,8 @@ function parseStyleFilesFromArgs() {
       a === "--lang" ||
       a === "--user-prompt" ||
       a === "--provider" ||
-      a === "--model"
+      a === "--model" ||
+      a === "--report-file"
     ) {
       i += 1; // skip value
       continue;
@@ -809,14 +812,18 @@ const topic =
 const reportDir = path.join(PROJECT_ROOT, "outputs", topic, "05_report");
 const chunkDir = path.join(reportDir, "chunks");
 
-// 单文件输入：若 arg1 是 .md 则强制用它；否则用 report_latest.md
+// 单文件输入：--report-file 指定文件名 > arg1 为 .md 路径 > 默认 report_latest.md
 const defaultReportPath = path.join(reportDir, "report_latest.md");
 function resolveInputPath(p) {
   if (path.isAbsolute(p)) return p;
   if (p.startsWith("./") || p.startsWith("../")) return path.resolve(p);
   return path.join(PROJECT_ROOT, p);
 }
-const inputFile = isMdPath(arg1) ? resolveInputPath(arg1) : defaultReportPath;
+const inputFile = reportFileFlag
+  ? path.join(reportDir, reportFileFlag)
+  : isMdPath(arg1)
+    ? resolveInputPath(arg1)
+    : defaultReportPath;
 
 // 输出目录：允许 OUTPUT_DIR 覆盖，但默认按 topic 走
 const OUTPUT_DIR = process.env.OUTPUT_DIR || path.join(PROJECT_ROOT, "outputs", topic, "06_review");

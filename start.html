@@ -64,6 +64,8 @@
         radial-gradient(ellipse 70% 50% at 20% 60%, rgba(217, 51, 121, 0.05), transparent 50%);
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
     }
     .header {
       flex-shrink: 0;
@@ -230,9 +232,59 @@
     .theme-toggle .icon-sun { display: block; }
     [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
     [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+    /* 启动页 · 波纹（同心圆向外扩散并淡出，变化明显） */
+    @keyframes ripple-out {
+      0% { transform: scale(0.15); opacity: 0.7; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+    .start-page-ripples {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .ripple-origin {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      margin-top: -60px;
+      margin-left: -60px;
+    }
+    .ripple-origin--left { top: 35%; left: 25%; }
+    .ripple-origin--right { top: 60%; left: 75%; }
+    .ripple-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid rgba(102, 8, 116, 0.45);
+      animation: ripple-out 2.2s ease-out infinite;
+    }
+    .ripple-origin--right .ripple-ring { border-color: rgba(217, 51, 121, 0.4); }
+    [data-theme="dark"] .ripple-ring { border-color: rgba(157, 77, 168, 0.5); }
+    [data-theme="dark"] .ripple-origin--right .ripple-ring { border-color: rgba(232, 90, 154, 0.45); }
+    .ripple-ring:nth-child(1) { animation-delay: 0s; }
+    .ripple-ring:nth-child(2) { animation-delay: 0.4s; }
+    .ripple-ring:nth-child(3) { animation-delay: 0.8s; }
+    .ripple-ring:nth-child(4) { animation-delay: 1.2s; }
+    .ripple-ring:nth-child(5) { animation-delay: 1.6s; }
+    .ripple-ring:nth-child(6) { animation-delay: 2s; }
+    .header { position: relative; z-index: 1; }
+    main { position: relative; z-index: 1; }
   </style>
 </head>
 <body>
+  <div class="start-page-ripples" aria-hidden>
+    <div class="ripple-origin ripple-origin--left">
+      <div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div>
+    </div>
+    <div class="ripple-origin ripple-origin--right">
+      <div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div>
+    </div>
+  </div>
   <header class="header">
     <div class="thu-logo-ring">
       <div class="thu-logo-inner">
