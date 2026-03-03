@@ -5,7 +5,7 @@ import { getRepoRoot } from "@/lib/pathSafety";
 
 const TOPIC_REGEX = /^[a-z0-9_/-]+$/;
 
-/** 从作者串中提取仅姓氏（与 literature-synthesis 中 authorsStrToSurnames 一致） */
+/** 从作者串中提取仅姓氏（与 literature-synthesis 一致）；如 "Lauren Alfrey France Winddance Twine"（无逗号）按 2+3 词 -> ["Alfrey","Twine"]。 */
 function authorsStrToSurnames(authorsStr: string | null): string[] {
   const raw = authorsStr != null ? String(authorsStr).trim() : "";
   if (!raw) return [];
@@ -21,9 +21,17 @@ function authorsStrToSurnames(authorsStr: string | null): string[] {
   }
   const words = raw.split(/\s+/).filter(Boolean);
   if (words.length <= 2) return words.length ? [words[words.length - 1]!] : [];
+  if (words.length === 3) return [words[2]!]; // 单作者 "First Middle Last"
+  if (words.length % 2 === 0) {
+    const surnames: string[] = [];
+    for (let i = 1; i < words.length; i += 2) surnames.push(words[i]!);
+    return surnames;
+  }
+  const n = words.length;
   const surnames: string[] = [];
-  for (let i = 1; i < words.length; i += 2) surnames.push(words[i]!);
-  return surnames.length ? surnames : [words[words.length - 1]!];
+  for (let i = 0; i < (n - 3) / 2; i++) surnames.push(words[1 + 2 * i]!);
+  surnames.push(words[n - 1]!);
+  return surnames;
 }
 
 /** 将作者串转为文内引用格式（仅姓氏）：2人 (A & B, Year)，3人及以上 (First et al., Year) */

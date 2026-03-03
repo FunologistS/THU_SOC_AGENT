@@ -44,7 +44,7 @@
  *  - OPENAI_BASE_URL（可选，默认 https://api.gptsapi.net/v1）
  *  - OPENAI_MODEL（可选，默认 gpt-5.2）
  *  - OUTPUT_DIR（可选，默认 outputs/<topic>/06_review）
- *  - TZ（可选，默认 America/Los_Angeles，用于日期命名）
+ *  - TZ（可选，默认 Asia/Shanghai，用于日期命名）
  *  - MAX_STYLE_CHARS（可选，默认 1000；风格样本总字数上限）
  *  - CHUNK_MAX_CHARS（可选，默认 16000；每个 chunk 送入模型的最大字符数，超出截断）
  *  - CHUNK_MAX_TOKENS（可选，默认 1800；每个 chunk 输出 token 上限）
@@ -108,7 +108,7 @@ if (PROVIDER === "glm") {
   BASE_URL = process.env.OPENAI_BASE_URL || "https://api.gptsapi.net/v1";
   MODEL = process.env.OPENAI_MODEL || "gpt-5.2";
 }
-const MODEL_LABEL = PROVIDER === "glm" ? `智谱 ${MODEL}` : "OpenAI GPT-5.2";
+const MODEL_LABEL = PROVIDER === "glm" ? `智谱 ${MODEL}` : `OpenAI ${MODEL}`;
 
 const MAX_STYLE_CHARS = Number(process.env.MAX_STYLE_CHARS) || 1000;
 const CHUNK_MAX_CHARS = Number(process.env.CHUNK_MAX_CHARS) || 16000;
@@ -125,7 +125,7 @@ const CHUNK_TEMPERATURE = Number(process.env.CHUNK_TEMPERATURE ?? 0.35);
 const MERGE_TEMPERATURE = Number(process.env.MERGE_TEMPERATURE ?? 0.25);
 const SMOOTH_TEMPERATURE = Number(process.env.SMOOTH_TEMPERATURE ?? 0.2);
 
-const DEFAULT_TZ = process.env.TZ || "America/Los_Angeles";
+const DEFAULT_TZ = process.env.TZ || "Asia/Shanghai";
 
 /** ---------- args / flags ---------- **/
 const argv = process.argv.slice(2);
@@ -151,7 +151,7 @@ function stripBom(s) {
   return s ?? "";
 }
 
-/** 从作者串中提取仅姓氏（与 literature-synthesis / papers-citations 一致） */
+/** 从作者串中提取仅姓氏（与 literature-synthesis / papers-citations 一致）；如 "Lauren Alfrey France Winddance Twine"（无逗号）按 2+3 词 -> ["Alfrey","Twine"]。 */
 function authorsStrToSurnames(authorsStr) {
   const raw = authorsStr != null ? String(authorsStr).trim() : "";
   if (!raw) return [];
@@ -167,9 +167,17 @@ function authorsStrToSurnames(authorsStr) {
   }
   const words = raw.split(/\s+/).filter(Boolean);
   if (words.length <= 2) return words.length ? [words[words.length - 1]] : [];
+  if (words.length === 3) return [words[2]]; // 单作者 "First Middle Last"
+  if (words.length % 2 === 0) {
+    const surnames = [];
+    for (let i = 1; i < words.length; i += 2) surnames.push(words[i]);
+    return surnames;
+  }
+  const n = words.length;
   const surnames = [];
-  for (let i = 1; i < words.length; i += 2) surnames.push(words[i]);
-  return surnames.length ? surnames : [words[words.length - 1]];
+  for (let i = 0; i < (n - 3) / 2; i++) surnames.push(words[1 + 2 * i]);
+  surnames.push(words[n - 1]);
+  return surnames;
 }
 
 function toInTextCitation(authorsStr, year) {
@@ -207,6 +215,13 @@ function loadCitationReplacements(projectRoot, topic) {
     const escaped = authors.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pattern = new RegExp(`[（(]\\s*${escaped}\\s*[,，]\\s*${year}\\s*[）)]`, "g");
     list.push({ pattern, canonical });
+    // 同时匹配“无逗号”的全名形式（如模型输出 "Claudia Padovani Elena Pavan"），便于统一替换为（姓氏，年份）
+    const authorsNoComma = authors.replace(/[,，、;；]\s*/g, " ").trim();
+    if (authorsNoComma !== authors) {
+      const escapedNoComma = authorsNoComma.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const patternNoComma = new RegExp(`[（(]\\s*${escapedNoComma}\\s*[,，]\\s*${year}\\s*[）)]`, "g");
+      list.push({ pattern: patternNoComma, canonical });
+    }
   }
   list.sort((a, b) => (b.pattern.source.length - a.pattern.source.length));
   return list;

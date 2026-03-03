@@ -156,7 +156,7 @@ function parseMetaClusters(md) {
 
 /** ---------------- Parse summaries_latest.md ---------------- **/
 
-/** 从作者串中提取仅姓氏：如 "Claudia Padovani, Elena Pavan" -> ["Padovani","Pavan"]；"Claudia Padovani Elena Pavan"（无逗号）按“名 姓”对取每段最后一词。 */
+/** 从作者串中提取仅姓氏：如 "Claudia Padovani, Elena Pavan" -> ["Padovani","Pavan"]；"Lauren Alfrey France Winddance Twine"（无逗号）按 2+3 词两位作者 -> ["Alfrey","Twine"]。 */
 function authorsStrToSurnames(authorsStr) {
   const raw = authorsStr != null ? String(authorsStr).trim() : "";
   if (!raw) return [];
@@ -172,9 +172,18 @@ function authorsStrToSurnames(authorsStr) {
   }
   const words = raw.split(/\s+/).filter(Boolean);
   if (words.length <= 2) return words.length ? [words[words.length - 1]] : [];
+  if (words.length === 3) return [words[2]]; // 单作者 "First Middle Last"
+  // 无逗号且 ≥4 词：偶数按“名 姓”对取 1,3,5...；奇数假定最后一位 3 词（名 中 姓），其余各 2 词
+  if (words.length % 2 === 0) {
+    const surnames = [];
+    for (let i = 1; i < words.length; i += 2) surnames.push(words[i]);
+    return surnames;
+  }
+  const n = words.length;
   const surnames = [];
-  for (let i = 1; i < words.length; i += 2) surnames.push(words[i]);
-  return surnames.length ? surnames : [words[words.length - 1]];
+  for (let i = 0; i < (n - 3) / 2; i++) surnames.push(words[1 + 2 * i]);
+  surnames.push(words[n - 1]);
+  return surnames;
 }
 
 /** 将作者串转为文内引用格式（仅姓氏）：如 "Claudia Padovani, Elena Pavan" -> "(Padovani & Pavan, Year)"；3人及以上为 "(First et al., Year)"。 */
@@ -328,13 +337,37 @@ async function openAIChat(messages, modelOverride) {
   }
 }
 
+/** 将报告中可能出现的（全名, 年份）统一替换为（姓氏, 年份）文内引用格式 */
+function normalizeReportCitations(text, papers) {
+  if (!text || !Array.isArray(papers) || papers.length === 0) return text;
+  const replacements = [];
+  for (const p of papers) {
+    const citation = p.citation != null ? String(p.citation).trim() : "";
+    const inText = p.inTextCitation != null ? String(p.inTextCitation).trim() : "";
+    const year = p.year != null ? String(Number(p.year)) : "";
+    if (!citation || !inText || !year) continue;
+    const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pat1 = new RegExp(`[（(]\\s*${escape(citation)}\\s*[,，]\\s*${year}\\s*[）)]`, "g");
+    replacements.push({ pattern: pat1, canonical: inText });
+    const citationNoComma = citation.replace(/[,，、;；]\s*/g, " ").trim();
+    if (citationNoComma !== citation) {
+      const pat2 = new RegExp(`[（(]\\s*${escape(citationNoComma)}\\s*[,，]\\s*${year}\\s*[）)]`, "g");
+      replacements.push({ pattern: pat2, canonical: inText });
+    }
+  }
+  replacements.sort((a, b) => (b.pattern.source.length - a.pattern.source.length));
+  let out = text;
+  for (const { pattern, canonical } of replacements) out = out.replace(pattern, canonical);
+  return out;
+}
+
 /** ---------------- Prompt builders ---------------- **/
 
 function formatCardForLLM(c) {
   const parts = [];
   const citeLabel = c.inTextCitation || (c.citation ? `(${c.citation})` : "");
   parts.push(`**${c.title || "（无标题）"}** (${c.year || "?"}) — ${c.journal || "（未指定）"}`);
-  if (citeLabel) parts.push(`- 文内引用：${citeLabel}（ID=${c.id}，用于链接锚点 #paper-${c.id}）`);
+  if (citeLabel) parts.push(`- 文内引用（链接文字必须仅用此格式，勿用全名）：${citeLabel}（ID=${c.id}，用于链接锚点 #paper-${c.id}）`);
   if (c.rq) parts.push(`- 问题：${clamp(c.rq, 400)}`);
   if (c.data_material) parts.push(`- 数据/材料：${clamp(c.data_material, 200)}`);
   if (c.method) parts.push(`- 方法：${clamp(c.method, 200)}`);
@@ -353,7 +386,7 @@ function buildClusterPrompt({ topic, clusterId, clusterSize, cards, wantAppendix
 你的写作风格应简洁、实质性强，适合研究简报，并融入社会学理论与视角。
 
 **引用纪律（必须遵守）**：简报中的每条论述若来自某一篇或某几篇具体文献，必须“有理有据”——在该句或该要点末尾（或句中合适处）标明文内引用。不得出现“有研究指出”“部分文献认为”等无引用支撑的概括句；每条基于文献的论断都要带引用。
-**可点击引用（必须遵守）**：正文与各小节中出现的每一处文内引用，都必须写成 Markdown 可点击链接形式，以便读者点击查看文献详情。格式为 [(Surname & Surname, Year)](#paper-<id>) 或 [(Surname et al., Year)](#paper-<id>)（仅用姓氏：2人用 A & B，3人及以上用第一作者姓氏+et al.），其中 <id> 为该文献在下方卡片中的 ID。多篇时每篇单独成链接，例如：[(Padovani & Pavan, 2016)](#paper-1)；[(Almanza-Alcalde et al., 2021)](#paper-2)。**链接文字已含括号，不要在链接外再加括号**，即只写 [...] 形式，不要写成（[(…)](#paper-id)）。不要写纯括号 (Author, Year)，一律用带 #paper-id 的链接形式。
+**可点击引用（必须遵守）**：正文与各小节中出现的每一处文内引用，都必须写成 Markdown 可点击链接形式，以便读者点击查看文献详情。格式为 [(Surname & Surname, Year)](#paper-<id>) 或 [(Surname et al., Year)](#paper-<id>)（仅用姓氏：2人用 A & B，3人及以上用第一作者姓氏+et al.），其中 <id> 为该文献在下方卡片中的 ID。**链接文字必须与下方卡片中的「文内引用」完全一致（仅姓氏），严禁使用作者全名。**多篇时每篇单独成链接，例如：[(Padovani & Pavan, 2016)](#paper-1)；[(Almanza-Alcalde et al., 2021)](#paper-2)。**链接文字已含括号，不要在链接外再加括号**，即只写 [...] 形式，不要写成（[(…)](#paper-id)）。不要写纯括号 (Author, Year)，一律用带 #paper-id 的链接形式。
 `;
 
   const context = [
@@ -634,7 +667,10 @@ for (let i = 0; i < toProcess.length; i++) {
 
 const version = v ?? nextVersion(outDir, "report", date);
 const briefingPath = path.join(outDir, `report_${date}_v${version}.md`);
-writeText(briefingPath, briefingParts.join("\n\n"));
+const rawReport = briefingParts.join("\n\n");
+const allPapersForNorm = toProcess.flatMap((d) => d.papers);
+const normalizedReport = normalizeReportCitations(rawReport, allPapersForNorm);
+writeText(briefingPath, normalizedReport);
 writeLatest(path.join(outDir, "report_latest.md"), briefingPath);
 
 console.log(`[concept_synthesis] Wrote: ${briefingPath}`);
