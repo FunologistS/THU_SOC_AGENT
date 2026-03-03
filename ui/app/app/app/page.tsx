@@ -163,7 +163,29 @@ function HomeContent() {
   const [renameError, setRenameError] = useState<string | null>(null);
   const [journalDataSourceLabel, setJournalDataSourceLabel] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [theme, setThemeState] = useState<"light" | "dark">("light");
   const [lastCommitIso, setLastCommitIso] = useState<string | null>(null);
+  /** 技能工作台是否有任务正在运行（用于返回启动页前确认） */
+  const [skillRunning, setSkillRunning] = useState(false);
+  /** 文档预览区域右上角导出菜单开关 */
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const t = document.documentElement.getAttribute("data-theme") as "light" | "dark" | null;
+    if (t === "dark" || t === "light") setThemeState(t);
+    else {
+      const stored = localStorage.getItem("thu_soc_theme") as "light" | "dark" | null;
+      if (stored === "dark" || stored === "light") setThemeState(stored);
+    }
+  }, []);
+  const setTheme = useCallback((next: "light" | "dark") => {
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("thu_soc_theme", next);
+    setThemeState(next);
+  }, []);
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }, [theme, setTheme]);
   const [sidebarOpen, setSidebarOpen] = useState<SidebarSections>({
     writingSamples: false,
     journalDb: false,
@@ -550,6 +572,23 @@ function HomeContent() {
           </div>
           <button
             type="button"
+            onClick={toggleTheme}
+            className="flex-shrink-0 inline-flex items-center justify-center rounded-[10px] p-2 text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors"
+            aria-label={theme === "dark" ? "切换为日间" : "切换为夜间"}
+            title={theme === "dark" ? "日间模式" : "夜间模式"}
+          >
+            {theme === "dark" ? (
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            ) : (
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            )}
+          </button>
+          <button
+            type="button"
             onClick={() => setSettingsOpen(true)}
             className="flex-shrink-0 inline-flex items-center justify-center rounded-[10px] p-2 text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors"
             aria-label="设置"
@@ -558,6 +597,23 @@ function HomeContent() {
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={async () => {
+              if (skillRunning) {
+                const ok = await thuConfirm("回到启动页将终止运行中技能，是否确认？");
+                if (!ok) return;
+              }
+              window.location.href = "/start.html";
+            }}
+            className="flex-shrink-0 inline-flex items-center justify-center rounded-[10px] p-2 text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors"
+            aria-label="返回启动页"
+            title="返回启动页"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
           </button>
           <button
@@ -662,6 +718,7 @@ function HomeContent() {
                       asideRef.current?.querySelector('[data-run-log-section="skills"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
                     }, 150);
                   }}
+                  onRunningChange={setSkillRunning}
                 />
               </div>
             )}
@@ -803,12 +860,30 @@ function HomeContent() {
                                           <ul className="absolute right-0 top-full z-20 mt-0.5 min-w-[8rem] rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] py-1 shadow-thu-soft">
                                             <li>
                                               <a
-                                                href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1`}
+                                                href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1&format=markdown`}
                                                 download={f.name}
                                                 className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
                                                 onClick={() => setFileMenuPath(null)}
                                               >
-                                                导出文档
+                                                导出为 Markdown
+                                              </a>
+                                            </li>
+                                            <li>
+                                              <a
+                                                href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1&format=docx`}
+                                                className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                                                onClick={() => setFileMenuPath(null)}
+                                              >
+                                                导出为 Word（.docx）
+                                              </a>
+                                            </li>
+                                            <li>
+                                              <a
+                                                href={`/api/file?source=outputs&path=${encodeURIComponent(pathForApi(f.path))}&download=1&format=pdf`}
+                                                className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                                                onClick={() => setFileMenuPath(null)}
+                                              >
+                                                导出为 PDF
                                               </a>
                                             </li>
                                             <li>
@@ -913,25 +988,85 @@ function HomeContent() {
         <main ref={mainRef} className="flex-1 min-w-0 overflow-auto bg-[var(--bg-page)]">
           <div className="sticky top-0 z-10 border-b border-[var(--border-soft)] bg-[var(--bg-card)]/90 px-6 py-3 shadow-thu-soft backdrop-blur-md min-h-[3.25rem] flex items-center">
             <div className="absolute inset-x-0 bottom-0 h-px gradient-thu-line" aria-hidden />
-            <div className="text-sm text-[var(--text-muted)]">
-              {file ? (
-                <>
-                  <span className="font-medium text-[var(--text)]">{displaySource}</span>
-                  {displayStage && (
+            <div className="flex w-full items-center justify-between gap-4">
+              <div className="text-sm text-[var(--text-muted)] min-w-0">
+                {file ? (
+                  <>
+                    <span className="font-medium text-[var(--text)]">{displaySource}</span>
+                    {displayStage && (
+                      <>
+                        <span className="mx-1.5">·</span>
+                        <span>{displayStage}</span>
+                      </>
+                    )}
+                    {displayFile && (
+                      <>
+                        <span className="mx-1.5">·</span>
+                        <span className="text-[var(--text)]">{displayFile}</span>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <span className="font-medium text-[var(--text)]">说明书</span>
+                )}
+              </div>
+              {file && source === "outputs" && filePathForApi && (
+                <div className="relative flex-shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setExportMenuOpen((open) => !open)}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-1.5 text-xs font-medium text-[var(--text)] hover:border-[var(--thu-purple)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+                    aria-expanded={exportMenuOpen}
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span>导出文档</span>
+                    <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                      <path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.25a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" />
+                    </svg>
+                  </button>
+                  {exportMenuOpen && (
                     <>
-                      <span className="mx-1.5">·</span>
-                      <span>{displayStage}</span>
+                      <div
+                        className="fixed inset-0 z-10"
+                        aria-hidden
+                        onClick={() => setExportMenuOpen(false)}
+                      />
+                      <ul className="absolute right-0 top-full z-20 mt-1 min-w-[10rem] rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] py-1 shadow-thu-soft text-xs">
+                        <li>
+                          <a
+                            href={`/api/file?source=${encodeURIComponent(source)}&path=${encodeURIComponent(filePathForApi)}&download=1&format=markdown`}
+                            className="block px-3 py-1.5 text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                            onClick={() => setExportMenuOpen(false)}
+                          >
+                            导出为 Markdown
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href={`/api/file?source=${encodeURIComponent(source)}&path=${encodeURIComponent(filePathForApi)}&download=1&format=docx`}
+                            className="block px-3 py-1.5 text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                            onClick={() => setExportMenuOpen(false)}
+                          >
+                            导出为 Word（.docx）
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href={`/api/file?source=${encodeURIComponent(source)}&path=${encodeURIComponent(filePathForApi)}&download=1&format=pdf`}
+                            className="block px-3 py-1.5 text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]"
+                            onClick={() => setExportMenuOpen(false)}
+                          >
+                            导出为 PDF
+                          </a>
+                        </li>
+                      </ul>
                     </>
                   )}
-                  {displayFile && (
-                    <>
-                      <span className="mx-1.5">·</span>
-                      <span className="text-[var(--text)]">{displayFile}</span>
-                    </>
-                  )}
-                </>
-              ) : (
-                <span className="font-medium text-[var(--text)]">说明书</span>
+                </div>
               )}
             </div>
           </div>

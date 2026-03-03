@@ -141,7 +141,11 @@ export function PipelineRunner({
                   : "border-[var(--border)] bg-white"
               }`}
             >
-              <img src="/llm/chatgpt_logo.png" alt="" className="h-4 w-4 object-contain" />
+              <img
+                src="/llm/chatgpt_logo.png"
+                alt=""
+                className="h-4 w-4 object-contain llm-logo llm-logo--openai"
+              />
               <span>OpenAI GPT-5.2</span>
             </button>
             <button
@@ -153,7 +157,11 @@ export function PipelineRunner({
                   : "border-[var(--border)] bg-white"
               }`}
             >
-              <img src="/llm/zhipu_z_icon.svg" alt="" className="h-4 w-4 object-contain" />
+              <img
+                src="/llm/zhipu_z_icon.svg"
+                alt=""
+                className="h-4 w-4 object-contain llm-logo llm-logo--zhipu"
+              />
               <span>智谱 GLM-4.7-Flash</span>
             </button>
             <button
@@ -165,7 +173,11 @@ export function PipelineRunner({
                   : "border-[var(--border)] bg-white"
               }`}
             >
-              <img src="/llm/zhipu_z_icon.svg" alt="" className="h-4 w-4 object-contain" />
+              <img
+                src="/llm/zhipu_z_icon.svg"
+                alt=""
+                className="h-4 w-4 object-contain llm-logo llm-logo--zhipu"
+              />
               <span>智谱 GLM-5</span>
             </button>
           </div>

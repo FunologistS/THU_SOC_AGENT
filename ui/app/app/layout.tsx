@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Suspense } from "react";
 import "./globals.css";
 import "./thu-theme.css";
@@ -19,8 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <body className="min-h-screen antialiased">
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var s=document.location.search;var m=s.match(/[?&]theme=(dark|light)/);var t=m?m[1]:localStorage.getItem('thu_soc_theme');if(t==='dark'||t==='light'){try{localStorage.setItem('thu_soc_theme',t);}catch(e){}document.documentElement.setAttribute('data-theme',t);}})();`,
+          }}
+        />
         <ThUAlertConfirmProvider>
           <Suspense fallback={<div className="p-4 text-[var(--text-muted)]">加载中…</div>}>
             {children}

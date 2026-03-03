@@ -2,6 +2,7 @@
 
 /**
  * 清华大学社会学系 logo：外围渐变光带；animate 为 true 时外圈持续旋转、悬停时内圈旋转
+ * 夜间模式通过 CSS filter 将 logo 紫色区域变为白色、透明区域保持透明
  */
 export function ThuLogo({
   className = "",

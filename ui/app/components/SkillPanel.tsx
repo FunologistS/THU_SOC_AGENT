@@ -67,6 +67,7 @@ export function SkillPanel({
   getJournalSearchDefaults,
   onRunJournalSearch,
   onRunStarted,
+  onRunningChange,
 }: {
   topic: string;
   availableTopics?: { topic: string; label: string }[];
@@ -93,6 +94,8 @@ export function SkillPanel({
   }) => void;
   /** 技能真正开始运行（jobId 已设置）时调用，用于页面滚动到运行日志 */
   onRunStarted?: () => void;
+  /** 运行状态变化时通知父组件（用于返回启动页前确认是否终止） */
+  onRunningChange?: (running: boolean) => void;
 }) {
   const highlightSet = new Set(highlightedCardIds);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -140,9 +143,22 @@ export function SkillPanel({
   const [modalYearTo, setModalYearTo] = useState("");
   const [modalSearchMode, setModalSearchMode] = useState<"strict" | "relaxed">("strict");
   const [abortConfirmOpen, setAbortConfirmOpen] = useState(false);
+  /** 一键综述（或上传/转录并综述）失败时，弹窗展示的通俗原因；由日志 [FAILURE_REASON] 解析 */
+  const [writingFailureReason, setWritingFailureReason] = useState<string | null>(null);
   /** 用于暂停运行：runOne 收到 jobId 后立即写入，避免 state 未更新时点击取消拿不到 id */
   const latestJobIdRef = useRef<string | null>(null);
   const { confirm: thuConfirm, confirmThree: thuConfirmThree } = useThUAlertConfirm();
+
+  /** 从 run 日志中解析 [FAILURE_REASON] 行，用于弹窗展示 */
+  function parseFailureReason(logContent: string): string {
+    const line = logContent.split("\n").find((l) => l.includes("[FAILURE_REASON]"));
+    if (line) {
+      const idx = line.indexOf("[FAILURE_REASON]");
+      const after = line.slice(idx + "[FAILURE_REASON]".length).trim();
+      if (after) return after;
+    }
+    return "综述生成未完成，可能因接口超时或服务异常。建议稍后重试，或查看运行日志了解详情。";
+  }
 
   /** 弹窗内选中的管线主题（仅限已有主题），用于产出目录 outputs/<topic> */
   const [modalPipelineTopic, setModalPipelineTopic] = useState("");
@@ -205,6 +221,12 @@ export function SkillPanel({
         setModalDisciplinesLoading(false);
       });
   }, [journalSearchConfirmOpen, modalSelectedDisciplines]);
+
+  // 运行状态变化时通知父组件（用于返回启动页前确认；不在此处 cleanup 以便折叠侧栏后仍能正确提示）
+  const running = !!(runningSkill || jobId);
+  useEffect(() => {
+    onRunningChange?.(running);
+  }, [running, onRunningChange]);
 
   // 运行中每秒更新已用秒数与进度条；已用秒数始终递增，保证超过预估后时间仍持续显示
   useEffect(() => {
@@ -287,7 +309,15 @@ export function SkillPanel({
                   setProgress(100);
                   setRunStartTime(null);
                   setElapsedSec(0);
-                  if (ld.exitCode === 0) onJobComplete?.(jobType);
+                  if (ld.exitCode === 0) {
+                    onJobComplete?.(jobType);
+                  } else if (
+                    jobType === "writing_under_style" ||
+                    jobType === "upload_and_writing" ||
+                    jobType === "transcribe_submit_and_writing"
+                  ) {
+                    setWritingFailureReason(parseFailureReason(ld.content ?? ""));
+                  }
                   resolve(ld.exitCode === 0);
                 } else {
                   setTimeout(poll, 800);
@@ -689,7 +719,11 @@ export function SkillPanel({
                   }`}
                   aria-pressed={conceptSynthesizeModel === "gpt"}
                 >
-                  <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <img
+                    src="/llm/chatgpt_logo.png"
+                    alt=""
+                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai"
+                  />
                   <span>OpenAI GPT-5.2</span>
                 </button>
                 <button
@@ -702,7 +736,11 @@ export function SkillPanel({
                   }`}
                   aria-pressed={conceptSynthesizeModel === "glm-4.7-flash"}
                 >
-                  <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <img
+                    src="/llm/zhipu_z_icon.svg"
+                    alt=""
+                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
+                  />
                   <span>智谱 GLM-4.7-Flash</span>
                 </button>
                 <button
@@ -715,7 +753,11 @@ export function SkillPanel({
                   }`}
                   aria-pressed={conceptSynthesizeModel === "glm-5"}
                 >
-                  <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <img
+                    src="/llm/zhipu_z_icon.svg"
+                    alt=""
+                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
+                  />
                   <span>智谱 GLM-5</span>
                 </button>
               </div>
@@ -773,7 +815,11 @@ export function SkillPanel({
                   }`}
                   aria-pressed={writingModel === "gpt"}
                 >
-                  <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <img
+                    src="/llm/chatgpt_logo.png"
+                    alt=""
+                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai"
+                  />
                   <span>OpenAI GPT-5.2</span>
                 </button>
                 <button
@@ -786,7 +832,11 @@ export function SkillPanel({
                   }`}
                   aria-pressed={writingModel === "glm-4.7-flash"}
                 >
-                  <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <img
+                    src="/llm/zhipu_z_icon.svg"
+                    alt=""
+                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
+                  />
                   <span>智谱 GLM-4.7-Flash</span>
                 </button>
                 <button
@@ -799,7 +849,11 @@ export function SkillPanel({
                   }`}
                   aria-pressed={writingModel === "glm-5"}
                 >
-                  <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain" />
+                  <img
+                    src="/llm/zhipu_z_icon.svg"
+                    alt=""
+                    className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu"
+                  />
                   <span>智谱 GLM-5</span>
                 </button>
               </div>
@@ -844,6 +898,36 @@ export function SkillPanel({
                 取消运行
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {writingFailureReason && (
+        <div
+          className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="writing-failure-reason-title"
+          onClick={() => setWritingFailureReason(null)}
+        >
+          <div className="thu-modal-card relative mx-4 w-full max-w-lg p-5" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setWritingFailureReason(null)}
+              className="thu-modal-close absolute right-4 top-4 p-1"
+              aria-label="关闭"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="writing-failure-reason-title" className="thu-modal-title mb-3 text-base pr-8">综述生成未完成</h3>
+            <p className="mb-4 text-sm text-[var(--text)] leading-relaxed whitespace-pre-wrap">{writingFailureReason}</p>
+            <p className="mb-4 text-[11px] text-[var(--text-muted)]">失败说明已写入当前主题的「一键综述」产出文件顶部，可打开 06_review 下最新文档查看。</p>
+            <button
+              type="button"
+              onClick={() => setWritingFailureReason(null)}
+              className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+            >
+              知道了
+            </button>
           </div>
         </div>
       )}

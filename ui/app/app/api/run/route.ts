@@ -291,10 +291,13 @@ export async function POST(request: Request) {
     args = [topic];
     if (writingStyle === "zh") {
       args.push("--style", getWritingStyleList("zh", REPO_ROOT));
+      args.push("--lang", "zh");
     } else if (writingStyle === "en") {
       args.push("--style", getWritingStyleList("en", REPO_ROOT));
+      args.push("--lang", "en");
     } else if (writingStyle === "colloquial") {
       args.push("--style", getWritingStyleList("colloquial", REPO_ROOT));
+      // colloquial 不传 --lang，由脚本按样本文本检测
     } else {
       args.push("--no-style");
     }

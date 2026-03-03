@@ -39,6 +39,81 @@
   --overlay: rgba(28, 25, 36, 0.45);
 }
 
+/* ========== 夜间版 · 清华深紫渐变（深紫底 + 渐变光晕 + 白字） ========== */
+[data-theme="dark"] {
+  /* 标准色 · 清华紫（夜间略提亮以在深底上清晰） */
+  --thu-purple: #9d4da8;
+  --thu-purple-light: #b56fc0;
+  --thu-purple-dark: #7b3d85;
+  --thu-purple-subtle: rgba(157, 77, 168, 0.18);
+  --thu-purple-focus: rgba(157, 77, 168, 0.35);
+  /* 辅助色 · 玫红 */
+  --accent: #e85a9a;
+  --accent-light: #f08ab5;
+  --accent-subtle: rgba(232, 90, 154, 0.15);
+  --gradient-thu: linear-gradient(135deg, var(--thu-purple) 0%, var(--accent) 100%);
+  --gradient-thu-soft: linear-gradient(90deg, rgba(157, 77, 168, 0.12) 0%, rgba(232, 90, 154, 0.08) 100%);
+  /* 深紫背景基色（用于变量引用；实际页面用渐变） */
+  --bg-page: #1c1628;
+  --bg-sidebar: #221c32;
+  --bg-card: #2a2340;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-soft: rgba(255, 255, 255, 0.06);
+  /* 夜间文字：整体更白一点，提高清晰度 */
+  --text: #faf7ff;
+  --text-muted: #c2bdd5;
+  /* 阴影 · 带一点紫调 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25), 0 0 1px rgba(102, 8, 116, 0.15);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(102, 8, 116, 0.12);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(102, 8, 116, 0.1);
+  --shadow-card: var(--shadow-md);
+  --shadow-dialog: 0 24px 56px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(102, 8, 116, 0.15);
+  --overlay: rgba(28, 22, 40, 0.75);
+}
+
+/* 夜间版 · 页面：深紫底 + 多层渐变光晕（不黑、有层次） */
+[data-theme="dark"] body {
+  background-attachment: fixed;
+  background-image:
+    radial-gradient(ellipse 100% 70% at 50% -20%, rgba(102, 8, 116, 0.35), transparent 48%),
+    radial-gradient(ellipse 80% 50% at 85% 60%, rgba(217, 51, 121, 0.2), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 10% 80%, rgba(139, 61, 150, 0.18), transparent 45%),
+    linear-gradient(165deg, #1a1428 0%, #221a35 25%, #1e1832 50%, #251d3d 75%, #1c1628 100%);
+  background-color: #1c1628;
+}
+[data-theme="dark"] .header-brand {
+  background: linear-gradient(180deg, rgba(42, 35, 64, 0.97) 0%, rgba(34, 28, 50, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+}
+[data-theme="dark"] .start-page-root {
+  background-color: #1a1428;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% 10%, rgba(102, 8, 116, 0.28), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 20% 70%, rgba(217, 51, 121, 0.15), transparent 48%),
+    radial-gradient(ellipse 60% 40% at 90% 50%, rgba(139, 61, 150, 0.12), transparent 45%),
+    linear-gradient(165deg, #1a1428 0%, #221a35 30%, #1e1832 60%, #251d3d 100%);
+}
+[data-theme="dark"] .thu-logo-inner {
+  background: var(--bg-card);
+}
+/* 夜间版 logo：同一张图，紫色区域变白、透明区域保持透明（大小不变） */
+[data-theme="dark"] .thu-logo-inner img {
+  filter: brightness(0) invert(1);
+}
+[data-theme="dark"] .gradient-thu-bar {
+  box-shadow: 0 2px 12px rgba(157, 77, 168, 0.35);
+}
+[data-theme="dark"] .prose-output-table thead {
+  background: linear-gradient(135deg, var(--thu-purple-subtle) 0%, var(--bg-card) 100%);
+}
+[data-theme="dark"] .manual-table-head-row {
+  background: linear-gradient(135deg, var(--thu-purple-subtle) 0%, rgba(157, 77, 168, 0.12) 100%);
+}
+[data-theme="dark"] .manual-table-td-area {
+  background: rgba(255, 255, 255, 0.04);
+}
+
 /* 顶栏 · 轻量玻璃感 + 与 logo 规范一致的留白 */
 .header-brand {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
@@ -119,6 +194,30 @@ body {
 }
 .run-status-spinner {
   animation: run-spin 1.8s linear infinite, run-flash 1s ease-in-out infinite;
+}
+
+/* LLM 模型 logo：日间/夜间切换用 */
+.llm-logo {
+  display: inline-block;
+  object-fit: contain;
+}
+
+/* 智谱：统一用 Z 图标，夜间通过滤镜变白 */
+.llm-logo--zhipu {
+  filter: none;
+}
+
+[data-theme="dark"] .llm-logo--zhipu {
+  filter: brightness(0) invert(1);
+}
+
+/* OpenAI：夜间变为白色 */
+.llm-logo--openai {
+  filter: none;
+}
+
+[data-theme="dark"] .llm-logo--openai {
+  filter: brightness(0) invert(1);
 }
 
 /* 表单控件 · 现代圆角与焦点 */

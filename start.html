@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>启动 · 社会科学文献处理综合智能体</title>
   <link rel="icon" href="ui/design/thu-assets/department/社会学系logo.png" type="image/png" />
+  <script>
+    (function(){ var t = localStorage.getItem('thu_soc_theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); })();
+  </script>
   <style>
     :root {
       --thu-purple: #660874;
@@ -17,6 +20,37 @@
       --text-muted: #6d6575;
       --radius-lg: 14px;
       --shadow: 0 4px 12px rgba(102, 8, 116, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    [data-theme="dark"] {
+      --thu-purple: #9d4da8;
+      --thu-purple-subtle: rgba(157, 77, 168, 0.18);
+      --bg-page: #1c1628;
+      --bg-card: #2a2340;
+      --bg-sidebar: #221c32;
+      --border-soft: rgba(255,255,255,0.06);
+      /* 夜间文字：整体更白一点，和应用内保持一致 */
+      --text: #faf7ff;
+      --text-muted: #c2bdd5;
+      --shadow: 0 4px 16px rgba(0,0,0,0.3), 0 2px 6px rgba(102, 8, 116, 0.12);
+    }
+    [data-theme="dark"] body {
+      background-color: #1c1628;
+      background-image:
+        radial-gradient(ellipse 100% 70% at 50% -20%, rgba(102, 8, 116, 0.32), transparent 48%),
+        radial-gradient(ellipse 80% 50% at 85% 60%, rgba(217, 51, 121, 0.18), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 10% 80%, rgba(139, 61, 150, 0.15), transparent 45%),
+        linear-gradient(165deg, #1a1428 0%, #221a35 25%, #1e1832 50%, #251d3d 75%, #1c1628 100%);
+    }
+    [data-theme="dark"] .header {
+      background: linear-gradient(180deg, rgba(42, 35, 64, 0.97) 0%, rgba(34, 28, 50, 0.95) 100%);
+      border-bottom-color: rgba(255,255,255,0.07);
+    }
+    [data-theme="dark"] main::before {
+      background-image: linear-gradient(rgba(157, 77, 168, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(157, 77, 168, 0.08) 1px, transparent 1px);
+    }
+    [data-theme="dark"] .box {
+      background: rgba(42, 35, 64, 0.92);
+      border-color: rgba(255,255,255,0.08);
     }
     * { box-sizing: border-box; }
     body {
@@ -40,15 +74,44 @@
       align-items: center;
       gap: 1.25rem;
     }
-    .logo {
-      width: 3.5rem;
-      height: 3.5rem;
+    /* 启动页 logo：结构与智能体页 ThuLogo 保持一致，但不旋转 */
+    .thu-logo-ring {
+      flex-shrink: 0;
+      position: relative;
       border-radius: 50%;
       padding: 3px;
-      background: conic-gradient(from 0deg, var(--thu-purple), #d93379, #8b3d96, #e85a9a, var(--thu-purple));
-      flex-shrink: 0;
+      width: 3.5rem;
+      height: 3.5rem;
+      background: conic-gradient(
+        from 0deg,
+        var(--thu-purple),
+        #d93379,
+        #8b3d96,
+        #e85a9a,
+        var(--thu-purple)
+      );
     }
-    .logo img { width: 100%; height: 100%; border-radius: 50%; object-fit: contain; background: var(--bg-card); padding: 4px; }
+    .thu-logo-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      box-shadow: var(--shadow);
+    }
+    .thu-logo-inner img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: contain;
+    }
+    /* 夜间：仅将 logo 图案由紫变白，透明区域保持透明；外围渐变圈和内圈背景颜色不变 */
+    [data-theme="dark"] .thu-logo-inner img {
+      filter: brightness(0) invert(1);
+    }
     .header h1 { font-size: 1.25rem; font-weight: 600; margin: 0; letter-spacing: -0.02em; }
     .header h1 .muted { color: var(--text-muted); font-weight: 500; }
     .header .tagline { margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.1em; }
@@ -147,15 +210,43 @@
       line-height: 1.5;
     }
     .footer-note a { color: var(--thu-purple); }
+    .header-text { flex: 1; min-width: 0; }
+    .theme-toggle {
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, background 0.2s;
+    }
+    .theme-toggle:hover { background: var(--thu-purple-subtle); color: var(--text); }
+    .theme-toggle .icon-moon { display: none; }
+    .theme-toggle .icon-sun { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   </style>
 </head>
 <body>
   <header class="header">
-    <div class="logo"><img src="ui/app/public/thu-soc-logo.png" alt="清华大学社会学系" onerror="this.style.display='none'" /></div>
-    <div>
+    <div class="thu-logo-ring">
+      <div class="thu-logo-inner">
+        <img src="ui/app/public/thu-soc-logo.png" alt="清华大学社会学系" onerror="this.style.display='none'" />
+      </div>
+    </div>
+    <div class="header-text">
       <h1>社会科学文献处理 <span class="muted">｜ 综合智能体</span></h1>
       <p class="tagline">批量检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述</p>
     </div>
+    <button type="button" id="themeBtn" class="theme-toggle" aria-label="切换日间/夜间" title="切换日间/夜间">
+      <svg class="icon-sun" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      <svg class="icon-moon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+    </button>
   </header>
 
   <main>
@@ -172,11 +263,11 @@
 
       <div class="buttons">
         <button type="button" id="copyBtn" class="btn btn-primary">一键复制命令</button>
-        <a href="http://localhost:9301" class="btn btn-secondary">已启动，进入应用</a>
+        <a id="appLink" href="http://localhost:9301/app" class="btn btn-secondary">已启动，进入应用</a>
       </div>
 
       <p class="footer-note">
-        复制命令后粘贴到终端执行；看到 “Ready” 或 “localhost:9301” 后，在浏览器访问 <a href="http://localhost:9301">http://localhost:9301</a> 即可使用。
+        复制命令后粘贴到终端执行；看到 “Ready” 或 “localhost:9301” 后，在浏览器访问 <a id="footerAppLink" href="http://localhost:9301/app">http://localhost:9301</a> 即可使用。
       </p>
     </div>
   </main>
@@ -203,6 +294,32 @@
       document.getElementById('copyBtn').onclick = copy;
       el.onclick = copy;
       el.onkeydown = function(e) { if (e.key === 'Enter') copy(); };
+
+      (function() {
+        var btn = document.getElementById('themeBtn');
+        var appLink = document.getElementById('appLink');
+        var footerLink = document.getElementById('footerAppLink');
+        function getTheme() { return document.documentElement.getAttribute('data-theme') || 'light'; }
+        function appBase() {
+          if (typeof location !== 'undefined' && location.origin && location.origin.indexOf('localhost') !== -1)
+            return location.origin + '/app';
+          return 'http://localhost:9301/app';
+        }
+        function updateAppLinks() {
+          var theme = getTheme();
+          var base = appBase();
+          var href = base + '?theme=' + theme;
+          if (appLink) appLink.href = href;
+          if (footerLink) footerLink.href = href;
+        }
+        function setTheme(t) {
+          document.documentElement.setAttribute('data-theme', t);
+          try { localStorage.setItem('thu_soc_theme', t); } catch (e) {}
+          updateAppLinks();
+        }
+        if (btn) btn.onclick = function() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); };
+        updateAppLinks();
+      })();
     })();
   </script>
 </body>
