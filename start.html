@@ -161,12 +161,11 @@
   <main>
     <div class="card">
       <p class="hint">
-        <strong>无需访问任何网站</strong>：本文件在您电脑上的项目文件夹里。双击本文件（start.html）即可用浏览器打开本页。<br />
-        请在本机<strong>终端</strong>执行下方命令以启动智能体。
+        <strong>无需访问任何网站</strong>：复制下方一条命令到电脑终端，执行后即可启动智能体。
       </p>
 
       <div class="box">
-        <p class="box-label">一条命令完成安装并启动（在项目根目录执行）</p>
+        <p class="box-label">一条命令完成安装并启动</p>
         <pre id="cmd" class="cmd-block" role="button" tabindex="0" title="点击复制命令"></pre>
         <p class="cmd-hint">点击上方命令可复制</p>
       </div>
@@ -184,10 +183,12 @@
 
   <script>
     (function() {
-      var path = location.pathname || '';
-      path = path.replace(/\/[^/]*$/, '');
-      try { path = decodeURIComponent(path); } catch (e) {}
-      var appDir = path + '/ui/app';
+      var appDir = '/Users/bryson_sun/Library/Mobile Documents/com~apple~CloudDocs/Desktop/孙百承/THU_SOC_AGENT/ui/app';
+      try {
+        var path = (location.pathname || '').replace(/\/[^/]*$/, '');
+        if (path && path.length > 10) path = decodeURIComponent(path);
+        if (path && path.indexOf('/') === 0) appDir = path + '/ui/app';
+      } catch (e) {}
       var cmd = 'cd "' + appDir + '" && npm install && npm run dev';
       var el = document.getElementById('cmd');
       el.textContent = cmd;
