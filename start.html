@@ -232,58 +232,78 @@
     .theme-toggle .icon-sun { display: block; }
     [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
     [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
-    /* 启动页 · 波纹（同心圆向外扩散并淡出，变化明显） */
-    @keyframes ripple-out {
-      0% { transform: scale(0.15); opacity: 0.7; }
-      100% { transform: scale(2.2); opacity: 0; }
+    /* 启动页 · 动态光球（用 vw/vh 在整页范围漂移，变化明显） */
+    @keyframes orb-float-1 {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.85; }
+      25% { transform: translate(35vw, 25vh) scale(1.05); opacity: 1; }
+      50% { transform: translate(-25vw, -20vh) scale(0.95); opacity: 0.9; }
+      75% { transform: translate(15vw, -30vh) scale(1.08); opacity: 1; }
     }
-    .start-page-ripples {
+    @keyframes orb-float-2 {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+      25% { transform: translate(-40vw, -28vh) scale(1.08); opacity: 1; }
+      50% { transform: translate(30vw, 22vh) scale(0.92); opacity: 0.85; }
+      75% { transform: translate(-18vw, 35vh) scale(1.05); opacity: 1; }
+    }
+    @keyframes orb-float-3 {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.75; }
+      33% { transform: translate(-32vw, -22vh) scale(1.1); opacity: 1; }
+      66% { transform: translate(38vw, 28vh) scale(0.9); opacity: 0.85; }
+    }
+    .start-page-orbs {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
       overflow: hidden;
     }
-    .ripple-origin {
+    .start-page-orb {
       position: absolute;
-      width: 120px;
-      height: 120px;
       border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      margin-top: -60px;
-      margin-left: -60px;
+      filter: blur(60px);
     }
-    .ripple-origin--left { top: 35%; left: 25%; }
-    .ripple-origin--right { top: 60%; left: 75%; }
-    .ripple-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 3px solid rgba(102, 8, 116, 0.45);
-      animation: ripple-out 2.2s ease-out infinite;
+    .start-page-orb-1 {
+      width: 70vmax;
+      height: 70vmax;
+      left: -15%;
+      top: -20%;
+      background: radial-gradient(circle, rgba(102, 8, 116, 0.18) 0%, rgba(102, 8, 116, 0.05) 40%, transparent 70%);
+      animation: orb-float-1 8s ease-in-out infinite;
     }
-    .ripple-origin--right .ripple-ring { border-color: rgba(217, 51, 121, 0.4); }
-    [data-theme="dark"] .ripple-ring { border-color: rgba(157, 77, 168, 0.5); }
-    [data-theme="dark"] .ripple-origin--right .ripple-ring { border-color: rgba(232, 90, 154, 0.45); }
-    .ripple-ring:nth-child(1) { animation-delay: 0s; }
-    .ripple-ring:nth-child(2) { animation-delay: 0.4s; }
-    .ripple-ring:nth-child(3) { animation-delay: 0.8s; }
-    .ripple-ring:nth-child(4) { animation-delay: 1.2s; }
-    .ripple-ring:nth-child(5) { animation-delay: 1.6s; }
-    .ripple-ring:nth-child(6) { animation-delay: 2s; }
+    .start-page-orb-2 {
+      width: 55vmax;
+      height: 55vmax;
+      right: -10%;
+      bottom: -15%;
+      background: radial-gradient(circle, rgba(217, 51, 121, 0.14) 0%, rgba(217, 51, 121, 0.04) 45%, transparent 70%);
+      animation: orb-float-2 10s ease-in-out infinite;
+    }
+    .start-page-orb-3 {
+      width: 45vmax;
+      height: 45vmax;
+      left: 40%;
+      bottom: -5%;
+      background: radial-gradient(circle, rgba(102, 8, 116, 0.12) 0%, transparent 60%);
+      animation: orb-float-3 6s ease-in-out infinite;
+    }
+    [data-theme="dark"] .start-page-orb-1 {
+      background: radial-gradient(circle, rgba(102, 8, 116, 0.4) 0%, rgba(102, 8, 116, 0.1) 40%, transparent 70%);
+    }
+    [data-theme="dark"] .start-page-orb-2 {
+      background: radial-gradient(circle, rgba(217, 51, 121, 0.3) 0%, rgba(217, 51, 121, 0.08) 45%, transparent 70%);
+    }
+    [data-theme="dark"] .start-page-orb-3 {
+      background: radial-gradient(circle, rgba(139, 61, 150, 0.35) 0%, transparent 60%);
+    }
     .header { position: relative; z-index: 1; }
     main { position: relative; z-index: 1; }
   </style>
 </head>
 <body>
-  <div class="start-page-ripples" aria-hidden>
-    <div class="ripple-origin ripple-origin--left">
-      <div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div>
-    </div>
-    <div class="ripple-origin ripple-origin--right">
-      <div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div><div class="ripple-ring"></div>
-    </div>
+  <div class="start-page-orbs" aria-hidden>
+    <div class="start-page-orb start-page-orb-1"></div>
+    <div class="start-page-orb start-page-orb-2"></div>
+    <div class="start-page-orb start-page-orb-3"></div>
   </div>
   <header class="header">
     <div class="thu-logo-ring">
@@ -292,8 +312,8 @@
       </div>
     </div>
     <div class="header-text">
-      <h1>社会科学文献处理 <span class="muted">｜ 综合智能体</span></h1>
-      <p class="tagline">批量检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述</p>
+      <h1>社会科学文献综合处理 <span class="muted">｜ 智能体</span></h1>
+      <p class="tagline">批量检索 · 清洗规整 · 荟萃分析 · 文献简报 · 一键综述</p>
     </div>
     <button type="button" id="themeBtn" class="theme-toggle" aria-label="切换日间/夜间" title="切换日间/夜间">
       <svg class="icon-sun" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>

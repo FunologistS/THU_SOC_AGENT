@@ -4,13 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import type { JobType } from "@/app/types";
 
 const JOB_LABELS: Record<JobType, string> = {
-  journal_search: "文献检索",
-  paper_summarize: "文章归纳 (paper_summarize)",
-  synthesize: "文献整合 (synthesize)",
-  concept_synthesize: "概念合成 (荟萃分析)",
+  journal_search: "重新检索",
+  paper_summarize: "清洗规整",
+  synthesize: "荟萃分析",
+  concept_synthesize: "文献简报",
   upload_and_writing: "上传写作样本",
   transcribe_submit_and_writing: "转录并综述",
-  writing_under_style: "综述仿写 (writing_under_style)",
+  writing_under_style: "一键综述",
   filter: "筛选",
 };
 

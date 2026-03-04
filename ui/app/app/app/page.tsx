@@ -101,7 +101,7 @@ function HomeFallback() {
               <span className="mx-2 text-[var(--text-muted)] font-normal" aria-hidden>｜</span>
               <span className="font-medium text-[var(--text-muted)]">智能体</span>
             </h1>
-            <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">文献检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述</p>
+            <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">批量检索 · 清洗规整 · 荟萃分析 · 文献简报 · 一键综述</p>
           </div>
         </div>
       </header>
@@ -229,7 +229,7 @@ function HomeContent() {
     const key: keyof SidebarSections | null =
       area === "期刊数据库"
         ? "journalDb"
-        : area === "文献检索"
+        : area === "新增检索"
           ? "journal"
           : area === "技能工作台"
             ? "skills"
@@ -592,7 +592,7 @@ function HomeContent() {
               <span className="font-medium text-[var(--text-muted)]">智能体</span>
             </h1>
             <p className="mt-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
-              文献检索 · 清洗规整 · 主题聚类 · 荟萃分析 · 一键综述
+              批量检索 · 清洗规整 · 荟萃分析 · 文献简报 · 一键综述
             </p>
           </div>
           <button
@@ -687,7 +687,7 @@ function HomeContent() {
               aria-expanded={sidebarOpen.journal}
             >
               <IconSearch />
-              <span className="min-w-0 flex-1">文献检索</span>
+              <span className="min-w-0 flex-1">新增检索</span>
               <IconChevron open={sidebarOpen.journal} />
             </button>
             {sidebarOpen.journal && (

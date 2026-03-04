@@ -287,7 +287,7 @@ export function JournalCatalog({
     <div className="space-y-4">
       {!hideTitle && (
         <h3 className="thu-heading text-xs font-medium uppercase tracking-wider">
-          {mode === "database" ? "期刊数据库" : "文献检索"}
+          {mode === "database" ? "期刊数据库" : "新增检索"}
         </h3>
       )}
       {showSsciDisclaimer && (
@@ -555,7 +555,7 @@ export function JournalCatalog({
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
             <h4 id="dialog-title" className="thu-modal-title text-lg pr-8">
-              文献检索
+              新增检索
             </h4>
             <p className="mt-1 text-sm text-[var(--text-muted)]">
               {journals.length > 0

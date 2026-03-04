@@ -73,9 +73,10 @@ if (!fs.existsSync(path.join(PROJECT_ROOT, "outputs"))) {
 }
 
 const REFERENCE_STYLE = (process.env.REFERENCE_STYLE || "academic").toLowerCase();
+/** 默认写作样例目录：学术型 references/academic，通俗型 references/colloquial */
 const REFERENCES_DIR = path.join(PAPER_WRITING_ROOT, "references", REFERENCE_STYLE);
 const REFERENCES_ACADEMIC = REFERENCES_DIR;
-/** 用户上传并转录的样例目录（与 REFERENCES_DIR 同类型时生效：academic → submit/academic，colloquial → submit/colloquial） */
+/** 用户上传并转录的样例目录：学术型 references/submit/academic，通俗型 references/submit/colloquial。默认样例模式下会同时使用 REFERENCES_DIR 与本目录解析 --style 中的文件名。 */
 const REFERENCES_SUBMIT_DIR =
   REFERENCE_STYLE === "academic"
     ? path.join(PAPER_WRITING_ROOT, "references", "submit", "academic")
@@ -324,7 +325,7 @@ function detectLanguageFromStyle(styleText) {
 /** ---------- style loading (keep behavior + strict cap) ---------- **/
 function loadStyleSamples(files = [], maxTotalChars = 1000) {
   if (!fs.existsSync(REFERENCES_ACADEMIC)) {
-    console.warn("[writing_under_style] references/academic 目录不存在，将不注入风格样本");
+    console.warn(`[writing_under_style] references/${REFERENCE_STYLE} 目录不存在，将不注入风格样本`);
     return "";
   }
   if (files.length === 0) {
@@ -878,7 +879,10 @@ async function main() {
   console.log("[writing_under_style] PROJECT_ROOT:", PROJECT_ROOT);
   console.log("[writing_under_style] topic:", topic);
   console.log("[writing_under_style] TZ:", DEFAULT_TZ, "=>", today);
-  console.log("[writing_under_style] 风格参考:", REFERENCES_ACADEMIC);
+  console.log("[writing_under_style] 风格参考（先查）:", REFERENCES_ACADEMIC);
+  if (REFERENCES_SUBMIT_DIR) {
+    console.log("[writing_under_style] 风格参考（再查 submit）:", REFERENCES_SUBMIT_DIR);
+  }
   console.log("[writing_under_style] 风格参考上限:", MAX_STYLE_CHARS, "chars");
   console.log("[writing_under_style] OUTPUT_DIR:", OUTPUT_DIR);
   console.log("[writing_under_style] 输出:", outputFile);

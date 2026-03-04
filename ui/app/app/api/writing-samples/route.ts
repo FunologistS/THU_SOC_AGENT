@@ -72,17 +72,42 @@ export async function DELETE(request: Request) {
   }
 }
 
-/** PATCH /api/writing-samples — body: { style, oldName, newName } 重命名 */
+/** PATCH /api/writing-samples — body: { style, oldName, newName, source?: "assets"|"submit" } 重命名 */
 export async function PATCH(request: Request) {
-  let body: { style?: string; oldName?: string; newName?: string };
+  let body: { style?: string; oldName?: string; newName?: string; source?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
   const style = body?.style === "colloquial" ? "colloquial" : "academic";
+  const source = body?.source === "submit" ? "submit" : "assets";
   const oldName = typeof body?.oldName === "string" ? body.oldName.trim() : "";
   const newName = typeof body?.newName === "string" ? body.newName.trim() : "";
+
+  if (source === "submit") {
+    if (!oldName || !SAFE_MD_NAME.test(oldName) || !newName || !SAFE_MD_NAME.test(newName)) {
+      return NextResponse.json({ error: "Invalid oldName or newName (submit 仅支持 .md)" }, { status: 400 });
+    }
+    if (path.extname(newName).toLowerCase() !== ".md") {
+      return NextResponse.json({ error: "newName must be .md" }, { status: 400 });
+    }
+    const oldPath = path.join(SUBMIT_BASE, style, oldName);
+    const newPath = path.join(SUBMIT_BASE, style, newName);
+    if (!fs.existsSync(oldPath) || !fs.statSync(oldPath).isFile()) {
+      return NextResponse.json({ error: "File not found" }, { status: 404 });
+    }
+    if (fs.existsSync(newPath)) {
+      return NextResponse.json({ error: "Target name already exists" }, { status: 409 });
+    }
+    try {
+      fs.renameSync(oldPath, newPath);
+      return NextResponse.json({ ok: true, fileName: newName });
+    } catch (e) {
+      return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+    }
+  }
+
   if (!oldName || !SAFE_NAME.test(oldName) || !newName || !SAFE_NAME.test(newName)) {
     return NextResponse.json({ error: "Invalid oldName or newName (e.g. name.pdf / name.docx)" }, { status: 400 });
   }

@@ -1,17 +1,22 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
+import { MarkdownPreview } from "@/components/MarkdownPreview";
 
 type SampleItem = { name: string; size?: number };
 type SamplesList = { academic: SampleItem[]; colloquial: SampleItem[]; submitMd?: { academic: SampleItem[]; colloquial: SampleItem[] } };
 
 const SAFE_NAME = /^[a-z0-9_.-]+\.(pdf|docx)$/i;
+const SAFE_MD_NAME = /^[a-z0-9_.-]+\.md$/i;
 
 export function WritingSamplesPanel({ hideTitle = false }: { hideTitle?: boolean }) {
   const [list, setList] = useState<SamplesList>({ academic: [], colloquial: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
+  /** 当前打开的下拉菜单信息，用于 Portal 渲染与定位 */
+  const [openMenuInfo, setOpenMenuInfo] = useState<{ style: "academic" | "colloquial"; name: string; isMd: boolean } | null>(null);
   const [renameTarget, setRenameTarget] = useState<{ style: "academic" | "colloquial"; name: string } | null>(null);
   const [renameValue, setRenameValue] = useState("");
   /** 上传：类型 + 文件 + 用户命名；上传后刷新列表 */
@@ -23,6 +28,11 @@ export function WritingSamplesPanel({ hideTitle = false }: { hideTitle?: boolean
   /** 正在转 Markdown 的 item key */
   const [transcribingKey, setTranscribingKey] = useState<string | null>(null);
   const [transcribeError, setTranscribeError] = useState<string | null>(null);
+  /** 查看预览：.md 在弹层内展示，.pdf/.docx 在新标签页打开 */
+  const [viewState, setViewState] = useState<{ style: "academic" | "colloquial"; name: string; source: "submit" | "assets" } | null>(null);
+  const [viewContent, setViewContent] = useState<string | null>(null);
+  const [viewLoading, setViewLoading] = useState(false);
+  const [viewError, setViewError] = useState<string | null>(null);
 
   const fetchList = useCallback(() => {
     setLoading(true);
@@ -40,6 +50,7 @@ export function WritingSamplesPanel({ hideTitle = false }: { hideTitle?: boolean
 
   const deleteSample = async (style: "academic" | "colloquial", fileName: string) => {
     setMenuOpen(null);
+    setOpenMenuInfo(null);
     try {
       const res = await fetch("/api/writing-samples", {
         method: "DELETE",
@@ -58,26 +69,33 @@ export function WritingSamplesPanel({ hideTitle = false }: { hideTitle?: boolean
 
   const startRename = (style: "academic" | "colloquial", name: string) => {
     setMenuOpen(null);
+    setOpenMenuInfo(null);
     setRenameTarget({ style, name });
     setRenameValue(name);
   };
 
   const submitRename = async () => {
-    if (!renameTarget || !SAFE_NAME.test(renameValue)) return;
+    if (!renameTarget) return;
+    const isMd = renameTarget.name.toLowerCase().endsWith(".md");
+    const valid = isMd ? SAFE_MD_NAME.test(renameValue) : SAFE_NAME.test(renameValue);
+    if (!valid) return;
     const ext = renameValue.slice(renameValue.lastIndexOf("."));
-    if (renameValue === renameTarget.name) {
+    const newName = renameValue.endsWith(ext) ? renameValue : renameValue + (isMd ? ".md" : ext);
+    if (newName === renameTarget.name) {
       setRenameTarget(null);
       return;
     }
     try {
+      const body: { style: string; oldName: string; newName: string; source?: string } = {
+        style: renameTarget.style,
+        oldName: renameTarget.name,
+        newName,
+      };
+      if (isMd) body.source = "submit";
       const res = await fetch("/api/writing-samples", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          style: renameTarget.style,
-          oldName: renameTarget.name,
-          newName: renameValue.endsWith(ext) ? renameValue : renameValue + ext,
-        }),
+        body: JSON.stringify(body),
       });
       if (!res.ok) {
         const d = await res.json();
@@ -92,6 +110,40 @@ export function WritingSamplesPanel({ hideTitle = false }: { hideTitle?: boolean
 
   const exportUrl = (style: "academic" | "colloquial", fileName: string, source: "assets" | "submit" = "assets") =>
     `/api/writing-samples/download?style=${style}&fileName=${encodeURIComponent(fileName)}&source=${source}`;
+
+  const closeView = useCallback(() => {
+    setViewState(null);
+    setViewContent(null);
+    setViewError(null);
+  }, []);
+
+  const openView = useCallback(
+    (style: "academic" | "colloquial", name: string, isMd: boolean, source: "submit" | "assets") => {
+      setMenuOpen(null);
+      setOpenMenuInfo(null);
+      if (!isMd) {
+        window.open(exportUrl(style, name, source), "_blank", "noopener");
+        return;
+      }
+      setViewState({ style, name, source });
+      setViewContent(null);
+      setViewError(null);
+      setViewLoading(true);
+      const params = new URLSearchParams({ style, fileName: name, source });
+      fetch(`/api/writing-samples/content?${params}`)
+        .then((r) => (r.ok ? r.json() : r.json().then((d) => Promise.reject(new Error(d.error || "加载失败")))))
+        .then((data: { content?: string }) => {
+          setViewContent(typeof data.content === "string" ? data.content : "");
+          setViewError(null);
+        })
+        .catch((e) => {
+          setViewError(e instanceof Error ? e.message : "加载失败");
+          setViewContent(null);
+        })
+        .finally(() => setViewLoading(false));
+    },
+    [exportUrl]
+  );
 
   const handleUpload = async () => {
     if (!uploadFile) return;
@@ -141,6 +193,8 @@ export function WritingSamplesPanel({ hideTitle = false }: { hideTitle?: boolean
     error,
     menuOpen,
     setMenuOpen,
+    openMenuInfo,
+    setOpenMenuInfo,
     renameTarget,
     renameValue,
     setRenameValue,
@@ -162,6 +216,12 @@ export function WritingSamplesPanel({ hideTitle = false }: { hideTitle?: boolean
     transcribingKey,
     transcribeError,
     transcribeToMarkdown,
+    openView,
+    closeView,
+    viewState,
+    viewContent,
+    viewLoading,
+    viewError,
   };
 
   if (!hideTitle) {
@@ -182,6 +242,8 @@ function WritingSamplesPanelContent({
   error,
   menuOpen,
   setMenuOpen,
+  openMenuInfo,
+  setOpenMenuInfo,
   renameTarget,
   renameValue,
   setRenameValue,
@@ -203,12 +265,20 @@ function WritingSamplesPanelContent({
   transcribingKey,
   transcribeError,
   transcribeToMarkdown,
+  openView,
+  closeView,
+  viewState,
+  viewContent,
+  viewLoading,
+  viewError,
 }: {
   list: SamplesList;
   loading: boolean;
   error: string | null;
   menuOpen: string | null;
   setMenuOpen: (v: string | null) => void;
+  openMenuInfo: { style: "academic" | "colloquial"; name: string; isMd: boolean } | null;
+  setOpenMenuInfo: (v: typeof openMenuInfo) => void;
   renameTarget: { style: "academic" | "colloquial"; name: string } | null;
   renameValue: string;
   setRenameValue: (v: string) => void;
@@ -230,7 +300,34 @@ function WritingSamplesPanelContent({
   transcribingKey: string | null;
   transcribeError: string | null;
   transcribeToMarkdown: (style: "academic" | "colloquial", fileName: string) => void;
+  openView: (style: "academic" | "colloquial", name: string, isMd: boolean, source: "submit" | "assets") => void;
+  closeView: () => void;
+  viewState: { style: "academic" | "colloquial"; name: string; source: "submit" | "assets" } | null;
+  viewContent: string | null;
+  viewLoading: boolean;
+  viewError: string | null;
 }) {
+  const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const renameRowRef = useRef<HTMLLIElement | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
+
+  useLayoutEffect(() => {
+    if (!menuOpen || typeof document === "undefined") return;
+    const el = menuTriggerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    setMenuPosition({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+  }, [menuOpen]);
+
+  useLayoutEffect(() => {
+    if (renameTarget) renameRowRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [renameTarget]);
+
+  const closeMenu = useCallback(() => {
+    setMenuOpen(null);
+    setOpenMenuInfo(null);
+    setMenuPosition(null);
+  }, [setMenuOpen, setOpenMenuInfo]);
   const submitMd = list.submitMd ?? { academic: [], colloquial: [] };
   const transcribingLabel = transcribingKey ? (() => {
     const [s, n] = transcribingKey.split(":");
@@ -246,8 +343,9 @@ function WritingSamplesPanelContent({
           const key = `${style}:${name}`;
           const isMenu = menuOpen === key;
           const isRenaming = renameTarget?.style === style && renameTarget?.name === name;
+          const source: "submit" | "assets" = isMd ? "submit" : "assets";
           return (
-            <li key={key} className="group flex items-center gap-1">
+            <li key={key} ref={isRenaming ? renameRowRef : undefined} className="group flex items-center gap-1">
               {isRenaming ? (
                 <div className="flex flex-1 items-center gap-1">
                   <input
@@ -266,41 +364,33 @@ function WritingSamplesPanelContent({
                 </div>
               ) : (
                 <>
-                  <span className="min-w-0 flex-1 truncate text-xs text-[var(--text)]" title={name}>{name}</span>
+                  <button
+                    type="button"
+                    onClick={() => openView(style, name, isMd, source)}
+                    className="min-w-0 flex-1 truncate text-left text-xs text-[var(--text)] underline-offset-2 hover:underline hover:text-[var(--thu-purple)]"
+                    title={isMd ? "查看" : "在新标签页打开"}
+                  >
+                    {name}
+                  </button>
                   <div className="relative flex-shrink-0">
                     <button
+                      ref={isMenu ? menuTriggerRef : undefined}
                       type="button"
-                      onClick={(e) => { e.stopPropagation(); setMenuOpen(isMenu ? null : key); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (isMenu) {
+                          setMenuOpen(null);
+                          setOpenMenuInfo(null);
+                        } else {
+                          setMenuOpen(key);
+                          setOpenMenuInfo({ style, name, isMd });
+                        }
+                      }}
                       className="rounded p-1 text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)] opacity-0 group-hover:opacity-100 focus:opacity-100"
                       aria-expanded={isMenu}
                     >
                       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="12" cy="19" r="1.5" /></svg>
                     </button>
-                    {isMenu && (
-                      <>
-                        <div className="fixed inset-0 z-10" aria-hidden onClick={() => setMenuOpen(null)} />
-                        <ul className="absolute right-0 top-full z-20 mt-0.5 min-w-[8rem] rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] py-1 shadow-thu-soft">
-                          {!isMd && (
-                            <li>
-                              <button type="button" onClick={() => { setMenuOpen(null); transcribeToMarkdown(style, name); }} disabled={transcribingKey === `${style}:${name}`} className="block w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] disabled:opacity-50">{transcribingKey === `${style}:${name}` ? "转 Markdown 中…" : "转 Markdown"}</button>
-                            </li>
-                          )}
-                          <li>
-                            <a href={exportUrl(style, name, isMd ? "submit" : "assets")} download={name} className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]" onClick={() => setMenuOpen(null)}>导出</a>
-                          </li>
-                          {!isMd && (
-                            <>
-                              <li>
-                                <button type="button" onClick={() => startRename(style, name)} className="block w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]">重命名</button>
-                              </li>
-                              <li>
-                                <button type="button" onClick={() => deleteSample(style, name)} className="block w-full px-3 py-2 text-left text-sm text-[var(--accent)] hover:bg-[var(--thu-purple-subtle)]">删除</button>
-                              </li>
-                            </>
-                          )}
-                        </ul>
-                      </>
-                    )}
                   </div>
                 </>
               )}
@@ -378,6 +468,38 @@ function WritingSamplesPanelContent({
           正在将「{transcribingLabel}」转为 Markdown…
         </p>
       )}
+      {typeof document !== "undefined" && openMenuInfo && menuPosition && createPortal(
+        <>
+          <div className="fixed inset-0 z-[100]" aria-hidden onClick={closeMenu} />
+          <ul
+            className="fixed z-[101] min-w-[8rem] rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] py-1 shadow-thu-soft"
+            style={{ top: menuPosition.top, right: menuPosition.right }}
+          >
+            <li>
+              <button type="button" onClick={() => { openView(openMenuInfo.style, openMenuInfo.name, openMenuInfo.isMd, openMenuInfo.isMd ? "submit" : "assets"); }} className="block w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]">
+                {openMenuInfo.isMd ? "查看" : "在新标签页打开"}
+              </button>
+            </li>
+            {!openMenuInfo.isMd && (
+              <li>
+                <button type="button" onClick={() => { closeMenu(); transcribeToMarkdown(openMenuInfo.style, openMenuInfo.name); }} disabled={transcribingKey === `${openMenuInfo.style}:${openMenuInfo.name}`} className="block w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] disabled:opacity-50">{transcribingKey === `${openMenuInfo.style}:${openMenuInfo.name}` ? "转 Markdown 中…" : "转 Markdown"}</button>
+              </li>
+            )}
+            <li>
+              <a href={exportUrl(openMenuInfo.style, openMenuInfo.name, openMenuInfo.isMd ? "submit" : "assets")} download={openMenuInfo.name} className="block px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]" onClick={closeMenu}>导出</a>
+            </li>
+            <li>
+              <button type="button" onClick={() => { startRename(openMenuInfo.style, openMenuInfo.name); closeMenu(); }} className="block w-full px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-[var(--thu-purple-subtle)]">修改名称</button>
+            </li>
+            {!openMenuInfo.isMd && (
+              <li>
+                <button type="button" onClick={() => { deleteSample(openMenuInfo.style, openMenuInfo.name); }} className="block w-full px-3 py-2 text-left text-sm text-[var(--accent)] hover:bg-[var(--thu-purple-subtle)]">删除</button>
+              </li>
+            )}
+          </ul>
+        </>,
+        document.body
+      )}
       {renderList("academic", list.academic, "学术型")}
       {renderList("colloquial", list.colloquial, "通俗型")}
       {(submitMd.academic.length > 0 || submitMd.colloquial.length > 0) && (
@@ -386,6 +508,27 @@ function WritingSamplesPanelContent({
           {renderList("academic", submitMd.academic, "学术型", true)}
           {renderList("colloquial", submitMd.colloquial, "通俗型", true)}
         </>
+      )}
+      {viewState && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4" role="dialog" aria-modal aria-labelledby="writing-sample-view-title">
+          <div className="absolute inset-0 bg-black/50" aria-hidden onClick={closeView} />
+          <div className="relative flex max-h-[90vh] w-full max-w-3xl flex-col rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-thu-soft">
+            <div className="flex shrink-0 items-center justify-between gap-2 border-b border-[var(--border-soft)] px-4 py-2">
+              <h2 id="writing-sample-view-title" className="truncate text-sm font-medium text-[var(--text)]">{viewState.name}</h2>
+              <button type="button" onClick={closeView} className="shrink-0 rounded p-1.5 text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)]" aria-label="关闭">×</button>
+            </div>
+            <div className="min-h-0 flex-1 overflow-y-auto p-4">
+              {viewLoading && <p className="text-sm text-[var(--text-muted)]">加载中…</p>}
+              {viewError && <p className="text-sm text-[var(--accent)]">{viewError}</p>}
+              {!viewLoading && !viewError && viewContent !== null && (
+                <div className="manual-view prose prose-sm max-w-none dark:prose-invert">
+                  <MarkdownPreview content={viewContent} emptyPlaceholder="暂无内容" />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   );

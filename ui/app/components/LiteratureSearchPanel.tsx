@@ -220,7 +220,7 @@ export const LiteratureSearchPanel = forwardRef<
     <div className="space-y-4">
       {!hideTitle && (
         <h3 className="thu-heading text-xs font-medium uppercase tracking-wider">
-          文献检索
+          新增检索
         </h3>
       )}
       <p className="text-[11px] text-[var(--text-muted)]">

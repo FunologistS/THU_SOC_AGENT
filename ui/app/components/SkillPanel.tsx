@@ -22,10 +22,10 @@ const YEAR_OPTIONS = Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i)
 export type SkillId = JobType;
 
 const SKILLS: { step: number; id: SkillId; label: string; desc: string }[] = [
-  { step: 1, id: "journal_search", label: "重新检索", desc: "选期刊数据源（学科/分区/年份）与主题，批量抓取论文（01_raw）" },
-  { step: 2, id: "paper_summarize", label: "清洗规整", desc: "清洗去噪（02_clean），并生成结构化摘要（03_summaries）" },
-  { step: 3, id: "synthesize", label: "主题聚类", desc: "基于结构化摘要做主题聚类，梳理主要研究方向，生成元数据（04_meta）" },
-  { step: 4, id: "concept_synthesize", label: "荟萃分析", desc: "在元数据的基础上作荟萃分析，生成文献简报（05_report）" },
+  { step: 1, id: "journal_search", label: "重新检索", desc: "在选定主题和数据源下，再次批量抓取论文" },
+  { step: 2, id: "paper_summarize", label: "清洗规整", desc: "清洗去噪，并生成结构化论文信息" },
+  { step: 3, id: "synthesize", label: "荟萃分析", desc: "基于结构化论文信息进行荟萃分析，生成主题聚类、质检报告等论文元数据" },
+  { step: 4, id: "concept_synthesize", label: "文献简报", desc: "基于荟萃分析结果生成文献简报" },
   { step: 5, id: "writing_under_style", label: "一键综述", desc: "若用户未上传则采用默认样本作为参考，若用户上传写作样本则以用户新上传样本为参考，将文献简报改写为成文综述" },
 ];
 
@@ -78,9 +78,9 @@ export function SkillPanel({
   highlightedCardIds?: string[];
   /** 当前主题的产出 meta，用于依赖检查（未完成前置步骤时提示） */
   topicMeta?: TopicMeta | null;
-  /** 当前期刊数据源展示名（来自文献检索 / 期刊数据库），用于灰色提示 */
+  /** 当前期刊数据源展示名（来自新增检索 / 期刊数据库），用于灰色提示 */
   journalDataSourceLabel?: string | null;
-  /** 点击「重新检索」弹窗内「去侧栏修改」时：聚焦/展开侧栏文献检索区块 */
+  /** 点击「重新检索」弹窗内「去侧栏修改」时：聚焦/展开侧栏新增检索区块 */
   onFocusLiteratureSearch?: () => void;
   /** 打开重新检索弹窗时拉取当前设定作为默认值 */
   getJournalSearchDefaults?: () => JournalSearchParams | null;
@@ -399,7 +399,7 @@ export function SkillPanel({
       return;
     }
     if (skillId === "concept_synthesize" && !hasStageFiles(topicMeta, "04_meta")) {
-      setError("尚未完成「主题聚类」，请先运行该步骤。");
+      setError("尚未完成「荟萃分析」，请先运行该步骤。");
       return;
     }
     if (skillId === "writing_under_style" && !hasStageFiles(topicMeta, "05_report")) {
@@ -543,7 +543,7 @@ export function SkillPanel({
     <div ref={panelRef} className="space-y-3">
       {journalDataSourceLabel && (
         <p className="text-[11px] text-[var(--text-muted)] leading-snug">
-          当前数据源：OpenAlex 解析（Sociology, Anthropology, Economics的Q1期刊)。如需更改检索学科，请前往「文献检索」侧栏重新选择。
+          当前数据源：OpenAlex 解析（Sociology, Anthropology, Economics的Q1期刊)。如需更改检索学科，请前往「新增检索」侧栏重新选择。
         </p>
       )}
       <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2">
@@ -571,7 +571,7 @@ export function SkillPanel({
         )}
       </div>
       <p className="text-[11px] text-[var(--text-muted)] leading-snug">
-        顺序：① 重新检索 → ② 清洗规整 → ③ 主题聚类 → ④ 荟萃分析 → ⑤ 一键综述（可选在弹窗内上传写作样本）
+        顺序：① 重新检索 → ② 清洗规整 → ③ 荟萃分析 → ④ 文献简报 → ⑤ 一键综述（可选在弹窗内上传写作样本）
       </p>
       <div className="grid gap-1.5">
         {SKILLS.slice(0, 2).map((s) => (
@@ -601,7 +601,7 @@ export function SkillPanel({
             </button>
           </div>
         ))}
-        {/* ③ 主题聚类 */}
+        {/* ③ 荟萃分析 */}
         <div
           data-skill-id="synthesize"
           className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
@@ -615,9 +615,9 @@ export function SkillPanel({
               3
             </span>
             <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-[var(--text)]">主题聚类</div>
+              <div className="text-sm font-medium text-[var(--text)]">荟萃分析</div>
               <div className="text-[11px] text-[var(--text-muted)] leading-tight">
-                基于结构化摘要做主题聚类，梳理主要研究方向，生成元数据（04_meta）
+                基于结构化论文信息进行荟萃分析，生成主题聚类、质检报告等论文元数据
               </div>
             </div>
             <button
@@ -630,7 +630,7 @@ export function SkillPanel({
             </button>
           </div>
         </div>
-        {/* ④ 荟萃分析 */}
+        {/* ④ 文献简报 */}
         <div
           data-skill-id="concept_synthesize"
           className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
@@ -644,9 +644,9 @@ export function SkillPanel({
               4
             </span>
             <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-[var(--text)]">荟萃分析</div>
+              <div className="text-sm font-medium text-[var(--text)]">文献简报</div>
               <div className="text-[11px] text-[var(--text-muted)] leading-tight">
-                在元数据的基础上作荟萃分析，生成文献简报（05_report）
+                基于荟萃分析结果生成文献简报
               </div>
             </div>
             <button
@@ -746,7 +746,7 @@ export function SkillPanel({
             <button type="button" onClick={() => setSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <h3 id="synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">主题聚类</h3>
+            <h3 id="synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">荟萃分析</h3>
             <div className="mb-4 space-y-3">
               <div>
                 <label className="mb-1.5 block text-[11px] font-medium text-[var(--text-muted)]">聚类数</label>
@@ -813,7 +813,7 @@ export function SkillPanel({
             <button type="button" onClick={() => setConceptSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <h3 id="concept-synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">荟萃分析</h3>
+            <h3 id="concept-synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">文献简报</h3>
             <p className="mb-3 text-sm text-[var(--text-muted)]">选择模型与输入文档后点击「确认运行」。</p>
             <div className="mb-4 space-y-3">
               <div>

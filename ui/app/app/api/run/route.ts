@@ -95,7 +95,12 @@ function normalizeIssn(issn: string): string {
   return String(issn ?? "").replace(/\D/g, "");
 }
 
-/** 学术型/通俗型默认样例 + references/submit/<style> 下用户转录的 .md，合并为 --style 列表 */
+/**
+ * 一键综述「使用默认写作样例」时的风格文件列表：
+ * - 学术型(zh/en)：references/academic 下的默认样例 + references/submit/academic 下全部 .md
+ * - 通俗型：references/colloquial 下默认样例 + references/submit/colloquial 下全部 .md
+ * 脚本 writing_under_style.mjs 会按此列表依次在 references/<style> 与 references/submit/<style> 中解析文件。
+ */
 const DEFAULT_ZH = "academic-2a-tsyzm.md,academic-2b-qnyj.md";
 const DEFAULT_EN = "academic-1a-IR.md,academic-1b-CSR.md";
 const DEFAULT_COLLOQUIAL = "colloquial-1-wwewbw.md,colloquial-2-acknowledgement.md";
