@@ -601,14 +601,20 @@ function workMatchesTopic(w, query, strictMode) {
 /**
  * 严格检索：API 仅按摘要匹配（abstract.search），结果在后处理中再要求关键词也包含。
  * 宽松检索：API 用 search 拉取标题/摘要/全文匹配，结果在后处理中保留标题 or 摘要 or 关键词任一包含。
+ * yearFrom/yearTo 可选，格式为数字年份，会追加 from_publication_date / to_publication_date 过滤。
  */
-async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 200, strictMode = false }) {
+async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 200, strictMode = false, yearFrom, yearTo }) {
   const all = [];
   const email = process.env.OPENALEX_EMAIL;
 
-  console.log("search query =", topic, "| strict =", strictMode, "| source count =", sourceIds.length);
+  console.log("search query =", topic, "| strict =", strictMode, "| source count =", sourceIds.length, "| year =", yearFrom ?? "-", "~", yearTo ?? "-");
   console.log("sourceIds sample =", sourceIds.slice(0, 5));
   console.log("maxPerJournal =", maxPerJournal);
+
+  const yearFilters = [];
+  if (yearFrom != null && Number.isFinite(Number(yearFrom))) yearFilters.push(`from_publication_date:${Number(yearFrom)}-01-01`);
+  if (yearTo != null && Number.isFinite(Number(yearTo))) yearFilters.push(`to_publication_date:${Number(yearTo)}-12-31`);
+  const yearFilterStr = yearFilters.length ? "," + yearFilters.join(",") : "";
 
   for (const sourceId of sourceIds) {
     let cursor = "*";
@@ -623,10 +629,10 @@ async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 
       const url = new URL("https://api.openalex.org/works");
 
       if (strictMode) {
-        url.searchParams.set("filter", `${sourceFilter},abstract.search:${topic}`);
+        url.searchParams.set("filter", `${sourceFilter},abstract.search:${topic}${yearFilterStr}`);
       } else {
         url.searchParams.set("search", topic);
-        url.searchParams.set("filter", sourceFilter);
+        url.searchParams.set("filter", `${sourceFilter}${yearFilterStr}`);
       }
       url.searchParams.set("per-page", String(perPage));
       url.searchParams.set("cursor", cursor);
@@ -673,6 +679,11 @@ async function main() {
   const query = topicSlug.replace(/_/g, " ").trim();
   const strictMode = hasFlag("--strict");
   const WITH_ABSTRACT = process.env.ABSTRACT_FALLBACK === "1" || hasFlag("--with-abstract");
+  const yearFromRaw = getArg("--year-from", "");
+  const yearToRaw = getArg("--year-to", "");
+  const yearFrom = yearFromRaw && !Number.isNaN(Number(yearFromRaw)) ? Number(yearFromRaw) : undefined;
+  const yearTo = yearToRaw && !Number.isNaN(Number(yearToRaw)) ? Number(yearToRaw) : undefined;
+  const instruction = (getArg("--instruction", "") || "").trim() || undefined;
 
   const projectRoot = process.cwd();
   const journalsPath = getArg(
@@ -709,7 +720,7 @@ async function main() {
     process.exit(1);
   }
 
-  const works = await fetchAllWorks({ topic: query, sourceIds, maxPerJournal: 100, strictMode });
+  const works = await fetchAllWorks({ topic: query, sourceIds, maxPerJournal: 100, strictMode, yearFrom, yearTo });
   console.log("[works fetched]", works.length);
 
   let skipped = 0;
@@ -972,14 +983,30 @@ async function main() {
 
   const outPath = nextVersionedPath(outDir, "papers", date);
 
-  let md = `# Papers for topic: ${topicSlug}\n\n`;
-  md += `- query: ${mdEscape(query)}\n`;
-  md += `- search_mode: ${strictMode ? "strict" : "relaxed"}\n`;
-  md += `- journals: ${mdEscape(journalsPath)}\n`;
-  md += `- with_abstract: ${WITH_ABSTRACT ? "true" : "false"}\n`;
-  md += `- rows: ${rows.length}\n\n`;
+  // 用户可读的检索条件说明（中文、规范、通俗）
+  const searchTypeLabel = strictMode ? "严格检索" : "宽松检索";
+  let yearRangeLabel = "";
+  if (yearFrom != null && yearTo != null) yearRangeLabel = `${yearFrom}–${yearTo} 年`;
+  else if (yearFrom != null) yearRangeLabel = `自 ${yearFrom} 年起`;
+  else if (yearTo != null) yearRangeLabel = `至 ${yearTo} 年止`;
 
-  md += `| journal | year | title | authors | DOI | OpenAlex | abstract |\n|---|---:|---|---|---|---|---|\n`;
+  let md = `# 文献检索结果 · 主题：${mdEscape(query)}\n\n`;
+  md += `---\n\n`;
+  md += `### 📋 检索条件\n\n`;
+  md += `- 检索主题：${mdEscape(query)}\n`;
+  md += `- 检索类型：${searchTypeLabel}\n`;
+  if (yearRangeLabel) md += `- 年份范围：${yearRangeLabel}\n`;
+  if (instruction) md += `- 提示词：${mdEscape(instruction)}\n`;
+  const abstractFilledCount = KPI.landingOk + KPI.firecrawlOk + KPI.crossrefOk;
+  if (WITH_ABSTRACT) {
+    md += `- 摘要补全：是\n`;
+    if (abstractFilledCount > 0) md += `- 摘要补全条数：${abstractFilledCount}\n`;
+  } else {
+    md += `- 摘要补全：否\n`;
+  }
+  md += `- 结果条数：${rows.length} 条\n\n`;
+
+  md += `| 期刊 | 年份 | 标题 | 作者 | DOI | OpenAlex | 摘要 |\n|---|---:|---|---|---|---|---|\n`;
 
   for (const r of rows) {
     const doiLink = r.doi ? `[${mdEscape(r.doi)}](${r.doi})` : "";

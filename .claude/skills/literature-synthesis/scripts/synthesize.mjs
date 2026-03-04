@@ -790,12 +790,12 @@ function relevanceScore(tokens, queryTokens = null) {
   return s;
 }
 
-/** 从 outputs/<topic>/01_raw/papers_latest.md 解析 "- query: ..." 得到用户检索词，用于 relevance。 */
+/** 从 outputs/<topic>/01_raw/papers_latest.md 解析用户检索词（支持 "- query: ..." 或 "- 检索主题：..."），用于 relevance。 */
 function readUserQueryFrom01Raw(topic, projectRoot) {
   const papersPath = path.join(projectRoot, "outputs", topic, "01_raw", "papers_latest.md");
   if (!fs.existsSync(papersPath)) return null;
   const text = fs.readFileSync(papersPath, "utf-8");
-  const m = text.match(/^\s*-\s*query:\s*(.+?)\s*$/m);
+  const m = text.match(/^\s*-\s*(?:query|检索主题)[：:]\s*(.+?)\s*$/m);
   if (!m) return null;
   return m[1].trim() || null;
 }

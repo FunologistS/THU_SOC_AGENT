@@ -146,6 +146,12 @@ export async function POST(request: Request) {
     writingModel?: "gpt" | "glm" | "glm-4.7-flash" | "glm-5";
     qualityOnly?: boolean;
     searchMode?: "strict" | "relaxed";
+    yearFrom?: number;
+    yearTo?: number;
+    /** 检索提示词（可选），写入 01_raw 文档标注 */
+    instruction?: string;
+    /** 是否开启摘要补全（缺摘要时抓取出版商页 / Firecrawl） */
+    abstractFallback?: boolean;
     synthesizeK?: string;
     writingStyle?: "zh" | "en" | "colloquial" | "none";
     writingPrompt?: string;
@@ -174,6 +180,10 @@ export async function POST(request: Request) {
     writingModel: writingModelRaw,
     qualityOnly,
     searchMode,
+    yearFrom,
+    yearTo,
+    instruction,
+    abstractFallback,
     synthesizeK,
     writingStyle,
     writingPrompt,
@@ -186,8 +196,21 @@ export async function POST(request: Request) {
   const conceptSynthesizeModel = conceptSynthesizeModelRaw === "glm" ? "glm-4.7-flash" : conceptSynthesizeModelRaw;
   const writingModel = writingModelRaw === "glm" ? "glm-4.7-flash" : writingModelRaw;
   let extraArgs = Array.isArray(extraArgsRaw) ? [...extraArgsRaw] : undefined;
-  if (jobType === "journal_search" && searchMode === "strict") {
-    extraArgs = [...(extraArgs ?? []), "--strict"];
+  if (jobType === "journal_search") {
+    extraArgs = extraArgs ?? [];
+    if (searchMode === "strict") extraArgs = [...extraArgs, "--strict"];
+    if (yearFrom != null && Number.isFinite(Number(yearFrom))) {
+      extraArgs = [...extraArgs, "--year-from", String(yearFrom)];
+    }
+    if (yearTo != null && Number.isFinite(Number(yearTo))) {
+      extraArgs = [...extraArgs, "--year-to", String(yearTo)];
+    }
+    if (instruction != null && String(instruction).trim() !== "") {
+      extraArgs = [...extraArgs, "--instruction", String(instruction).trim()];
+    }
+    if (abstractFallback === true) {
+      extraArgs = [...extraArgs, "--with-abstract"];
+    }
   }
   if (jobType === "synthesize" && synthesizeK != null && String(synthesizeK).trim() !== "") {
     extraArgs = [...(extraArgs ?? []), "--k", String(synthesizeK).trim()];

@@ -202,6 +202,81 @@ function joinRow(cells) {
   return `| ${cells.join(" | ")} |`;
 }
 
+/**
+ * 从上游 01_raw 的文档头（table.pre）解析摘要补全信息，供 02_clean 表头展示。
+ * 检索脚本会写入「摘要补全：是/否」和可选的「摘要补全条数：N」。
+ */
+function parseUpstreamAbstractCompletion(preLines) {
+  let abstractCompletion = null; // "是" | "否"
+  let abstractCompletionCount = null;
+  const pre = (preLines || []).join("\n");
+  const matchYesNo = pre.match(/\b摘要补全[：:]\s*([是否])/);
+  if (matchYesNo) abstractCompletion = matchYesNo[1];
+  const matchCount = pre.match(/\b摘要补全条数[：:]\s*(\d+)/);
+  if (matchCount) abstractCompletionCount = parseInt(matchCount[1], 10);
+  return { abstractCompletion, abstractCompletionCount };
+}
+
+/** 将 ISO 时间格式化为北京时间字符串（便于阅读） */
+function formatBeijingTime(isoString) {
+  try {
+    const d = new Date(isoString);
+    return d.toLocaleString("zh-CN", {
+      timeZone: "Asia/Shanghai",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+  } catch {
+    return isoString || "";
+  }
+}
+
+/**
+ * 生成清洗规整结果的中文版文档头（与检索结果风格一致，便于用户阅读）。
+ * @param {Object} opts
+ * @param {string} opts.topic - 主题 slug
+ * @param {string} opts.sourceRelative - 数据源相对路径，如 outputs/xxx/01_raw/papers_latest.md
+ * @param {string} opts.filterDescChinese - 筛选方式中文描述
+ * @param {number} opts.kept - 保留条数
+ * @param {number} opts.dropped - 剔除条数
+ * @param {string} opts.generatedIso - 生成时间 ISO 字符串
+ * @param {string|null} opts.abstractCompletion - 上游摘要补全："是"|"否"|null
+ * @param {number|null} opts.abstractCompletionCount - 上游摘要补全条数，可选
+ */
+function buildFilterHeaderChinese(opts) {
+  const topicLabel = (opts.topic || "").replace(/_/g, " ");
+  const lines = [
+    `# 清洗规整结果 · 主题：${topicLabel}`,
+    ``,
+    `---`,
+    ``,
+    `### 📋 清洗条件`,
+    ``,
+    `- 数据源：${opts.sourceRelative}`,
+    `- 筛选方式：${opts.filterDescChinese}`,
+    `- 保留：${opts.kept} 条`,
+    `- 剔除：${opts.dropped} 条`,
+  ];
+  if (opts.abstractCompletion !== undefined && opts.abstractCompletion !== null) {
+    if (opts.abstractCompletion === "是" && opts.abstractCompletionCount != null && opts.abstractCompletionCount > 0) {
+      lines.push(`- 摘要补全（上游）：是，本次新增 ${opts.abstractCompletionCount} 条`);
+    } else if (opts.abstractCompletion === "是") {
+      lines.push(`- 摘要补全（上游）：是`);
+    } else {
+      lines.push(`- 摘要补全（上游）：否`);
+    }
+  }
+  lines.push(`- 生成时间：${formatBeijingTime(opts.generatedIso)}（北京时间）`);
+  lines.push(``);
+  lines.push(``);
+  return lines.join("\n");
+}
+
 function findDateColumnIndex(headerLine, expectedCols) {
   const cells = splitRow(headerLine, expectedCols).map((c) => c.toLowerCase());
   const candidates = [
@@ -359,17 +434,26 @@ function runFilterLogic({
       : mode === "between"
       ? `${y1}–${y2}`
       : "none";
+  const filterDescChinese =
+    mode === "before"
+      ? `年份 < ${y1}`
+      : mode === "after"
+      ? `年份 > ${y1}`
+      : mode === "between"
+      ? `年份 ${y1}–${y2}`
+      : "主题 + 强关键词相关性";
 
-  const headerNote = [
-    `# Cleaned papers (${topic})`,
-    ``,
-    `- Source: ${path.relative(process.cwd(), inPath)}`,
-    `- Filter: ${filterDesc}`,
-    `- Kept: ${keptRows.length}`,
-    `- Dropped: ${droppedTotal}`,
-    `- Generated: ${new Date().toISOString()}`,
-    ``,
-  ].join("\n");
+  const { abstractCompletion, abstractCompletionCount } = parseUpstreamAbstractCompletion(table.pre);
+  const headerNote = buildFilterHeaderChinese({
+    topic,
+    sourceRelative: path.relative(process.cwd(), inPath),
+    filterDescChinese,
+    kept: keptRows.length,
+    dropped: droppedTotal,
+    generatedIso: new Date().toISOString(),
+    abstractCompletion,
+    abstractCompletionCount,
+  });
 
   const outLines = [
     ...table.pre,
@@ -469,16 +553,17 @@ async function main() {
       const base = `papers_clean_${todayYYYYMMDD()}`;
       const outPath = nextVersionedPath(cleanDir, base);
       const latestPath = path.join(cleanDir, "papers_clean_latest.md");
-      const headerNote = [
-        `# Cleaned papers (${topic})`,
-        ``,
-        `- Source: ${path.relative(process.cwd(), inPath)}`,
-        `- Filter: relevance (topic + strong keywords)`,
-        `- Kept: ${keptRows.length}`,
-        `- Dropped: ${droppedTotal}`,
-        `- Generated: ${new Date().toISOString()}`,
-        ``,
-      ].join("\n");
+      const { abstractCompletion, abstractCompletionCount } = parseUpstreamAbstractCompletion(table.pre);
+      const headerNote = buildFilterHeaderChinese({
+        topic,
+        sourceRelative: path.relative(process.cwd(), inPath),
+        filterDescChinese: "主题 + 强关键词相关性",
+        kept: keptRows.length,
+        dropped: droppedTotal,
+        generatedIso: new Date().toISOString(),
+        abstractCompletion,
+        abstractCompletionCount,
+      });
       const outLines = [
         ...table.pre,
         ...(table.pre.length ? [""] : []),

@@ -3,12 +3,39 @@ import path from "node:path";
 import fs from "node:fs";
 import { getRepoRoot, isSafeTopic } from "@/lib/pathSafety";
 
+/** 去掉 URL、DOI、OpenAlex 等“链接型”内容后，返回摘要中的核心文字 */
+function stripLinkLikeContent(text: string): string {
+  const raw = String(text ?? "");
+  // 去掉 http/https URL
+  let t = raw.replace(/https?:\/\/\S+/gi, " ");
+  // 去掉形如 10.xxxx 的 DOI
+  t = t.replace(/\b10\.\d{4,9}\/\S+/gi, " ");
+  // 去掉前缀说明 + 链接/ID
+  t = t.replace(/\b(?:doi|openalex|link|url)\s*[:：]\s*\S+/gi, " ");
+  // 典型 ID 类占位
+  t = t.replace(/\b(?:ISSN|ISBN|PMID)\s*\S*/gi, " ");
+  return t.replace(/\s+/g, " ").trim();
+}
+
 /** 判断摘要是否视为“缺失”（需手填） */
 function isEmptyOrNoAbstract(text: string): boolean {
   const t = String(text ?? "").trim();
   if (!t) return true;
+  // 明确的占位 / 无摘要标记
   if (/^(no usable abstract|n\/a|none|unknown)\.?$/i.test(t)) return true;
+
+  // 只有很短的一句，基本可以视为缺失
   if (t.length < 20) return true;
+
+  // 典型“看链接/见原文”类说明
+  if (/^see (the )?(abstract|link|url|paper)/i.test(t)) return true;
+  if (/^(abstract )?see:/i.test(t)) return true;
+
+  // 去掉 URL / DOI / OpenAlex 等“链接型内容”后，如果剩下的中文或英文文字非常少，也视为缺失
+  const core = stripLinkLikeContent(t);
+  if (!core) return true;
+  if (core.length < 30) return true;
+
   return false;
 }
 

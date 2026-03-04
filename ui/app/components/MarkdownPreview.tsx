@@ -22,6 +22,18 @@ function stripOuterParensAroundLinks(content: string): string {
   );
 }
 
+/** 去掉小标题/表头后残留的提示语（如 2-4句话、必须覆盖所有论文 等），展示更简洁。适用于文献简报(05_report)、一键综述(06_review)及所有经本组件渲染的 Markdown。 */
+function stripHeadingHintParens(content: string): string {
+  return content
+    .replace(/（2-4句话）/g, "")
+    .replace(/（2-5个要点）/g, "")
+    .replace(/（2-4个要点）/g, "")
+    .replace(/（必须覆盖所有论文；用表格；使用文内引用）/g, "")
+    .replace(/（必须覆盖所有论文；按年份降序；用表格）/g, "")
+    .replace(/（必须覆盖所有论文；用表格）/g, "")
+    .replace(/（基于卡片中的[^）]+2-4个要点）/g, "");
+}
+
 /** 将正文中尚未成链接的纯文字引用 (Author, Year) 转为 [(Author, Year)](#paper-id)，以便点击查看 */
 function linkifyPlainCitations(
   content: string,
@@ -64,7 +76,6 @@ export function MarkdownPreview({
   /** 当为 05_report 等展示报告时传入 topic，则 #paper-<id> 链接会变为可点击并弹出论文详情 */
   citationLinkTopic?: string;
 }) {
-  const [expandedCell, setExpandedCell] = useState<React.ReactNode>(null);
   const [citationPaper, setCitationPaper] = useState<PaperDetail | null>(null);
   const [citationLoading, setCitationLoading] = useState(false);
   const [papersCitations, setPapersCitations] = useState<{ id: number; inTextCitation: string }[]>([]);
@@ -112,14 +123,6 @@ export function MarkdownPreview({
           <div className="prose-cell-scroll">
             {children}
           </div>
-          <button
-            type="button"
-            className="prose-cell-expand"
-            onClick={() => setExpandedCell(children)}
-            title="点击放大查看"
-          >
-            展开
-          </button>
         </td>
       ),
       a: ({ href, children, ...props }: React.ComponentPropsWithoutRef<"a">) => {
@@ -153,7 +156,8 @@ export function MarkdownPreview({
     );
   }
   const unwrapped = unwrapMarkdownCodeBlock(content);
-  const cleaned = stripOuterParensAroundLinks(unwrapped);
+  const noHint = stripHeadingHintParens(unwrapped);
+  const cleaned = stripOuterParensAroundLinks(noHint);
   const toRender =
     citationLinkTopic && papersCitations.length > 0
       ? linkifyPlainCitations(cleaned, papersCitations)
@@ -163,33 +167,6 @@ export function MarkdownPreview({
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
         {toRender}
       </ReactMarkdown>
-      {expandedCell != null && (
-        <div
-          className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label="放大查看"
-          onClick={() => setExpandedCell(null)}
-        >
-          <div
-            className="thu-modal-card prose-expand-modal relative max-h-[85vh] w-full max-w-2xl overflow-y-auto p-5 flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button type="button" onClick={() => setExpandedCell(null)} className="thu-modal-close absolute right-4 top-4 z-10 p-1" aria-label="关闭">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            <div className="prose-reader text-sm flex-1 min-h-0 overflow-y-auto pr-6">{expandedCell}</div>
-            <button
-              type="button"
-              className="thu-modal-btn-primary mt-4 px-4 py-2 text-sm font-medium shrink-0"
-              onClick={() => setExpandedCell(null)}
-            >
-              关闭
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* 引用论文详情弹窗 */}
       {(citationLoading || citationPaper != null) && (
         <div

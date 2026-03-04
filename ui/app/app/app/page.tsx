@@ -17,7 +17,9 @@ import {
   stageDisplayLabel,
   fileDisplayName,
   sourceDisplayLabel,
+  jobDisplayLabel,
 } from "@/lib/displayLabels";
+import { useSkillCompleteToast } from "@/components/SkillCompleteToast";
 import type { TopicMeta } from "../types";
 import type { JobType } from "../types";
 
@@ -179,6 +181,7 @@ function HomeContent() {
   const [journalSearchLog, setJournalSearchLog] = useState("");
   const [journalSearchDone, setJournalSearchDone] = useState(false);
   const [journalSearchExitCode, setJournalSearchExitCode] = useState<number | undefined>();
+  const [journalSearchProgress, setJournalSearchProgress] = useState(0);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [pendingJumpToOutputs, setPendingJumpToOutputs] = useState(false);
   const [lastCompletedSkillId, setLastCompletedSkillId] = useState<JobType | null>(null);
@@ -192,8 +195,27 @@ function HomeContent() {
   const [lastCommitIso, setLastCommitIso] = useState<string | null>(null);
   /** 技能工作台是否有任务正在运行（用于返回启动页前确认） */
   const [skillRunning, setSkillRunning] = useState(false);
+  const skillRunningPrevRef = useRef(false);
   /** 文档预览区域右上角导出菜单开关 */
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
+
+  const skillCompleteToast = useSkillCompleteToast();
+  // 重新检索结束时显示右上角完成通知
+  const journalSearchDonePrevRef = useRef(false);
+  useEffect(() => {
+    if (journalSearchDonePrevRef.current === false && journalSearchDone) {
+      skillCompleteToast.notify({
+        label: "重新检索",
+        success: journalSearchExitCode === 0,
+        onClick: () => {
+          setLastCompletedSkillId("journal_search");
+          setPendingJumpToOutputs(true);
+          setMetaRefreshKey((k) => k + 1);
+        },
+      });
+    }
+    journalSearchDonePrevRef.current = journalSearchDone;
+  }, [journalSearchDone, journalSearchExitCode, skillCompleteToast]);
 
   useEffect(() => {
     const t = document.documentElement.getAttribute("data-theme") as "light" | "dark" | null;
@@ -219,6 +241,8 @@ function HomeContent() {
     manual: false,
     docs: false,
   });
+  /** 点击「检索新主题」后触发「新增检索」标题高亮淡出，每次点击递增以重播动画 */
+  const [journalHighlightTrigger, setJournalHighlightTrigger] = useState(0);
   const { alert: thuAlert, confirm: thuConfirm } = useThUAlertConfirm();
   const toggleSidebarSection = useCallback((key: keyof SidebarSections) => {
     setSidebarOpen((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -484,6 +508,21 @@ function HomeContent() {
     if (skillId === "paper_summarize") setHoveredManualSkillId((prev) => (prev === "paper-summarize" ? null : prev));
   }, []);
 
+  const handleJobFinished = useCallback(
+    (skillId: JobType, success: boolean) => {
+      skillCompleteToast.notify({
+        label: jobDisplayLabel(skillId),
+        success,
+        onClick: () => {
+          setLastCompletedSkillId(skillId);
+          setPendingJumpToOutputs(true);
+          setMetaRefreshKey((k) => k + 1);
+        },
+      });
+    },
+    [skillCompleteToast]
+  );
+
   const refreshGitInfo = useCallback(() => {
     fetch("/api/git-info")
       .then((r) => r.json())
@@ -498,6 +537,7 @@ function HomeContent() {
     [setUrl]
   );
 
+  const JOURNAL_SEARCH_ESTIMATED_SEC = 180;
   const runJournalSearch = useCallback(
     (params: {
       topicSlug: string;
@@ -506,12 +546,15 @@ function HomeContent() {
       yearFrom?: number;
       yearTo?: number;
       searchMode?: "strict" | "relaxed";
+      instruction?: string;
+      abstractFallback?: boolean;
     }) => {
       setUrl({ topic: params.topicSlug, source: "outputs" });
       setJournalSearchJobId(null);
       setJournalSearchLog("");
       setJournalSearchDone(false);
       setJournalSearchExitCode(undefined);
+      setJournalSearchProgress(0);
       const body: Record<string, unknown> = {
         jobType: "journal_search",
         topic: params.topicSlug,
@@ -521,6 +564,8 @@ function HomeContent() {
       if (params.yearFrom != null) body.yearFrom = params.yearFrom;
       if (params.yearTo != null) body.yearTo = params.yearTo;
       if (params.searchMode) body.searchMode = params.searchMode;
+      if (params.instruction != null && String(params.instruction).trim() !== "") body.instruction = String(params.instruction).trim();
+      if (params.abstractFallback === true) body.abstractFallback = true;
       fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -533,6 +578,7 @@ function HomeContent() {
             return;
           }
           setJournalSearchJobId(data.jobId);
+          const startTime = Date.now();
           const poll = () => {
             fetch(`/api/logs?jobId=${data.jobId}`)
               .then((l) => l.json())
@@ -540,7 +586,12 @@ function HomeContent() {
                 setJournalSearchLog(ld.content);
                 setJournalSearchDone(ld.done);
                 setJournalSearchExitCode(ld.exitCode);
-                if (!ld.done) setTimeout(poll, 800);
+                if (ld.done) {
+                  setJournalSearchProgress(100);
+                } else {
+                  setJournalSearchProgress(Math.min(95, ((Date.now() - startTime) / JOURNAL_SEARCH_ESTIMATED_SEC) * 100));
+                  setTimeout(poll, 800);
+                }
               });
           };
           poll();
@@ -549,6 +600,37 @@ function HomeContent() {
     },
     [setUrl]
   );
+
+  /** 重新检索运行中时滚动到运行日志区域 */
+  useEffect(() => {
+    if (!journalSearchJobId) return;
+    const t = setTimeout(() => {
+      asideRef.current?.querySelector('[data-run-log-section="journal"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }, 150);
+    return () => clearTimeout(t);
+  }, [journalSearchJobId]);
+
+  /** 点击「暂停运行」时先打开确认弹窗，不直接中止 */
+  const [journalSearchAbortConfirmOpen, setJournalSearchAbortConfirmOpen] = useState(false);
+  const openJournalSearchAbortConfirm = useCallback(() => {
+    if (journalSearchJobId) setJournalSearchAbortConfirmOpen(true);
+  }, [journalSearchJobId]);
+  const confirmAbortJournalSearch = useCallback(() => {
+    const id = journalSearchJobId;
+    setJournalSearchAbortConfirmOpen(false);
+    if (!id) return;
+    fetch("/api/run/abort", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jobId: id }),
+    }).finally(() => {
+      setJournalSearchJobId(null);
+      setJournalSearchLog("");
+      setJournalSearchDone(false);
+      setJournalSearchExitCode(undefined);
+      setJournalSearchProgress(0);
+    });
+  }, [journalSearchJobId]);
 
   const displaySource = sourceDisplayLabel(source);
   const displayStage = stage ? stageDisplayLabel(stage) : "";
@@ -683,11 +765,18 @@ function HomeContent() {
             <button
               type="button"
               onClick={() => toggleSidebarSection("journal")}
-              className="section-head flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+              className="section-head relative flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors overflow-hidden"
               aria-expanded={sidebarOpen.journal}
             >
+              {journalHighlightTrigger > 0 && (
+                <span
+                  key={journalHighlightTrigger}
+                  className="journal-section-highlight-fade absolute inset-0 z-0 pointer-events-none rounded-none"
+                  aria-hidden
+                />
+              )}
               <IconSearch />
-              <span className="min-w-0 flex-1">新增检索</span>
+              <span className="min-w-0 flex-1 relative z-[1]">新增检索</span>
               <IconChevron open={sidebarOpen.journal} />
             </button>
             {sidebarOpen.journal && (
@@ -700,13 +789,17 @@ function HomeContent() {
                   runLog={journalSearchLog}
                   runDone={journalSearchDone}
                   runExitCode={journalSearchExitCode}
+                  onAbort={openJournalSearchAbortConfirm}
                   onDataSourceChange={setJournalDataSourceLabel}
                   onJumpToOutputs={jumpToOutputsPreview}
                 />
               </div>
             )}
           </section>
-          <section data-sidebar-section="skills" className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]">
+          <section
+            data-sidebar-section="skills"
+            className={`thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)] ${skillRunning ? "ring-1 ring-inset ring-[var(--thu-purple)]/30" : ""}`}
+          >
             <button
               type="button"
               onClick={() => toggleSidebarSection("skills")}
@@ -715,6 +808,11 @@ function HomeContent() {
             >
               <IconWorkbench />
               <span className="min-w-0 flex-1">技能工作台</span>
+              {skillRunning && (
+                <span className="flex-shrink-0 rounded bg-[var(--thu-purple)]/20 px-1.5 py-0.5 text-[10px] font-medium text-[var(--thu-purple)]">
+                  运行中
+                </span>
+              )}
               <IconChevron open={sidebarOpen.skills} />
             </button>
             {sidebarOpen.skills && (
@@ -725,25 +823,36 @@ function HomeContent() {
                   onTopicChange={changeTopic}
                   onJumpToOutputs={jumpToOutputsPreview}
                   onJobComplete={handleJobComplete}
+                  onJobFinished={handleJobFinished}
                   highlightedCardIds={highlightedCardIds}
                   topicMeta={meta}
                   journalDataSourceLabel={journalDataSourceLabel}
-                  onFocusLiteratureSearch={() => setSidebarOpen((prev) => ({ ...prev, journal: true }))}
+                  onFocusLiteratureSearch={() => {
+                    setSidebarOpen((prev) => ({ ...prev, journal: true }));
+                    setJournalHighlightTrigger((t) => t + 1);
+                  }}
                   getJournalSearchDefaults={() => literatureSearchRef.current?.getCurrentParams() ?? null}
                   onRunJournalSearch={(params) => {
                     runJournalSearch(params);
-                    setSidebarOpen((prev) => ({ ...prev, journal: true }));
-                    setTimeout(() => {
-                      asideRef.current?.querySelector('[data-run-log-section="journal"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-                    }, 150);
-                  }}
-                  onRunStarted={() => {
                     setSidebarOpen((prev) => ({ ...prev, skills: true }));
                     setTimeout(() => {
-                      asideRef.current?.querySelector('[data-run-log-section="skills"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                      asideRef.current?.querySelector('[data-run-log-skill="journal_search"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                    }, 150);
+                  }}
+                  onRunStarted={(skillId) => {
+                    setSidebarOpen((prev) => ({ ...prev, skills: true }));
+                    setTimeout(() => {
+                      asideRef.current?.querySelector(`[data-run-log-skill="${skillId}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
                     }, 150);
                   }}
                   onRunningChange={setSkillRunning}
+                  journalSearchJobId={journalSearchJobId}
+                  journalSearchLog={journalSearchLog}
+                  journalSearchDone={journalSearchDone}
+                  journalSearchExitCode={journalSearchExitCode}
+                  journalSearchProgress={journalSearchProgress}
+                  onAbortJournalSearch={openJournalSearchAbortConfirm}
+                  onDismissJournalSearchLog={() => setJournalSearchJobId(null)}
                 />
               </div>
             )}
@@ -1196,6 +1305,45 @@ function HomeContent() {
         )}
       </footer>
       <SessionLogPanel />
+      {/* 重新检索「暂停运行」确认弹窗：确定取消 / 继续运行 */}
+      {journalSearchAbortConfirmOpen && journalSearchJobId && (
+        <div
+          className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="journal-abort-confirm-title"
+          onClick={() => setJournalSearchAbortConfirmOpen(false)}
+        >
+          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setJournalSearchAbortConfirmOpen(false)}
+              className="thu-modal-close absolute right-4 top-4 p-1"
+              aria-label="关闭"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="journal-abort-confirm-title" className="thu-modal-title mb-3 text-base pr-8">暂停运行</h3>
+            <p className="mb-4 text-sm text-[var(--text)]">是否中止当前检索？</p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setJournalSearchAbortConfirmOpen(false)}
+                className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                继续运行
+              </button>
+              <button
+                type="button"
+                onClick={confirmAbortJournalSearch}
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                确定取消
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

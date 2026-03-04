@@ -18,6 +18,10 @@ function toSlug(s: string): string {
 /** 年份下拉：2026 在上 */
 const YEAR_OPTIONS = Array.from({ length: 2026 - 1900 + 1 }, (_, i) => 2026 - i);
 
+/** 重新检索弹窗内「检索类型」说明，与 LiteratureSearchPanel 一致 */
+const SEARCH_TYPE_TOOLTIP =
+  "严格检索：摘要与关键词都包含检索词才保留。宽松检索：标题、摘要或关键词任一包含即可。";
+
 /** 5 步：层层递进，对应后端 jobType */
 export type SkillId = JobType;
 
@@ -60,6 +64,7 @@ export function SkillPanel({
   onTopicChange,
   onJumpToOutputs,
   onJobComplete,
+  onJobFinished,
   highlightedCardIds = [],
   topicMeta = null,
   journalDataSourceLabel = null,
@@ -68,6 +73,14 @@ export function SkillPanel({
   onRunJournalSearch,
   onRunStarted,
   onRunningChange,
+  onProgressUpdate,
+  journalSearchJobId = null,
+  journalSearchLog = "",
+  journalSearchDone = false,
+  journalSearchExitCode,
+  journalSearchProgress = 0,
+  onAbortJournalSearch,
+  onDismissJournalSearchLog,
 }: {
   topic: string;
   availableTopics?: { topic: string; label: string }[];
@@ -75,6 +88,8 @@ export function SkillPanel({
   onJumpToOutputs?: () => void;
   /** 任务成功结束时调用，传入刚完成的 skillId，用于「查看产出」跳转到对应阶段 */
   onJobComplete?: (skillId: SkillId) => void;
+  /** 任务结束（成功或失败）时调用，用于右上角完成通知 */
+  onJobFinished?: (skillId: SkillId, success: boolean) => void;
   highlightedCardIds?: string[];
   /** 当前主题的产出 meta，用于依赖检查（未完成前置步骤时提示） */
   topicMeta?: TopicMeta | null;
@@ -91,11 +106,24 @@ export function SkillPanel({
     yearFrom?: number;
     yearTo?: number;
     searchMode?: "strict" | "relaxed";
+    instruction?: string;
+    abstractFallback?: boolean;
   }) => void;
-  /** 技能真正开始运行（jobId 已设置）时调用，用于页面滚动到运行日志 */
-  onRunStarted?: () => void;
+  /** 技能真正开始运行（jobId 已设置）时调用，传入 skillId 用于滚动到该技能下的运行日志 */
+  onRunStarted?: (skillId: SkillId) => void;
   /** 运行状态变化时通知父组件（用于返回启动页前确认是否终止） */
   onRunningChange?: (running: boolean) => void;
+  /** 进度与完成状态变化时通知父组件（用于右上角圆形进度浮窗与 Done 提示） */
+  onProgressUpdate?: (progress: number, done: boolean) => void;
+  /** 重新检索运行状态（由页面传入），用于在「重新检索」卡片下展示运行日志 */
+  journalSearchJobId?: string | null;
+  journalSearchLog?: string;
+  journalSearchDone?: boolean;
+  journalSearchExitCode?: number;
+  journalSearchProgress?: number;
+  onAbortJournalSearch?: () => void;
+  /** 用户点击「重新检索」运行日志框的关闭按钮时调用，用于收起该框 */
+  onDismissJournalSearchLog?: () => void;
 }) {
   const highlightSet = new Set(highlightedCardIds);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -106,6 +134,8 @@ export function SkillPanel({
     (el as HTMLElement)?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [highlightedCardIds]);
   const [runningSkill, setRunningSkill] = useState<SkillId | null>(null);
+  /** 上一轮完成的技能 ID，用于完成后继续展示运行日志框与「查看产出」，直到用户刷新、开启下一技能或点击关闭 */
+  const [lastCompletedSkillIdForLog, setLastCompletedSkillIdForLog] = useState<SkillId | null>(null);
   const [jobId, setJobId] = useState<string | null>(null);
   const [log, setLog] = useState("");
   const [done, setDone] = useState(false);
@@ -116,7 +146,7 @@ export function SkillPanel({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [writingReviewModalOpen, setWritingReviewModalOpen] = useState(false);
   /** 一键综述弹窗步骤：先选是否上传 → 是则上传表单，否则选默认风格 */
-  const [writingReviewStep, setWritingReviewStep] = useState<"upload_choice" | "upload_style_pick" | "upload_form" | "default_style" | "confirm">("upload_choice");
+  const [writingReviewStep, setWritingReviewStep] = useState<"upload_choice" | "upload_style_pick" | "upload_form" | "default_style" | "no_style_options" | "confirm">("upload_choice");
   /** 在「确认」步骤中待运行的风格与提示（选择参考样例后先进入确认，再点确认并运行才真正跑） */
   const [pendingWritingStyle, setPendingWritingStyle] = useState<"zh" | "en" | "colloquial" | "none" | null>(null);
   const [pendingWritingPrompt, setPendingWritingPrompt] = useState<string>("");
@@ -136,7 +166,8 @@ export function SkillPanel({
   const [conceptSummaries, setConceptSummaries] = useState("");
   /** 一键综述：05_report 下输入文件名 */
   const [writingReportFile, setWritingReportFile] = useState("");
-  const [writingModel, setWritingModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
+  /** 一键综述模型：初始无选中，避免误以为已选；传 API 时未选则用 glm-4.7-flash */
+  const [writingModel, setWritingModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5" | "">("");
   /** 荟萃分析：运行前弹窗，在弹窗内选择模型与文档 */
   const [conceptSynthesizeModalOpen, setConceptSynthesizeModalOpen] = useState(false);
   const [conceptSynthesizePendingQualityOnly, setConceptSynthesizePendingQualityOnly] = useState(false);
@@ -172,18 +203,21 @@ export function SkillPanel({
 
   /** 弹窗内选中的管线主题（仅限已有主题），用于产出目录 outputs/<topic> */
   const [modalPipelineTopic, setModalPipelineTopic] = useState("");
+  /** 重新检索弹窗内「检索类型」说明 tooltip 是否显示 */
+  const [journalSearchTypeTooltipVisible, setJournalSearchTypeTooltipVisible] = useState(false);
   /** 弹窗内选中的检索学科，与侧栏文献检索一致 */
   const [modalSelectedDisciplines, setModalSelectedDisciplines] = useState<string[]>([]);
   /** 弹窗内根据学科拉取的期刊 source id 列表，用于运行检索 */
   const [modalDisciplineJournalIds, setModalDisciplineJournalIds] = useState<string[]>([]);
   const [modalDisciplinesLoading, setModalDisciplinesLoading] = useState(false);
   const modalDisciplinesRequestId = useRef(0);
+  /** 重新检索弹窗内是否开启摘要补全（缺摘要时抓取出版商页等，耗时会变长） */
+  const [modalAbstractFallback, setModalAbstractFallback] = useState(false);
 
-  /** 打开重新检索弹窗时，用侧栏当前设定填充默认值，主题默认当前页主题（若当前不在已有主题列表中则取第一个） */
+  /** 打开重新检索弹窗时，用侧栏当前设定填充默认值；主题一律默认当前页主题，避免跑错主题（如 trace_analysis 不在列表时之前会误用第一项） */
   useEffect(() => {
     if (!journalSearchConfirmOpen) return;
-    const inList = availableTopics.some((t) => t.topic === topic);
-    setModalPipelineTopic(inList ? topic : availableTopics[0]?.topic ?? topic);
+    setModalPipelineTopic(topic);
     if (!getJournalSearchDefaults) return;
     const def = getJournalSearchDefaults();
     setJournalSearchModalDefaults(def);
@@ -193,13 +227,22 @@ export function SkillPanel({
       setModalYearFrom(def.yearFrom != null ? String(def.yearFrom) : "");
       setModalYearTo(def.yearTo != null ? String(def.yearTo) : "");
       setModalSearchMode(def.searchMode);
+      setModalAbstractFallback(def.abstractFallback ?? false);
       setModalSelectedDisciplines(def.selectedDisciplines?.length ? [...def.selectedDisciplines] : ["Sociology", "Anthropology", "Economics"]);
       setModalDisciplineJournalIds(def.journalSourceIds?.length ? [...def.journalSourceIds] : []);
     } else {
+      setModalAbstractFallback(false);
       setModalSelectedDisciplines(["Sociology", "Anthropology", "Economics"]);
       setModalDisciplineJournalIds([]);
     }
   }, [journalSearchConfirmOpen, topic, availableTopics, getJournalSearchDefaults]);
+
+  /** 打开一键综述弹窗时清除模型与风格的高亮，避免误以为已选 */
+  useEffect(() => {
+    if (writingReviewModalOpen) {
+      setWritingModel("");
+    }
+  }, [writingReviewModalOpen]);
 
   /** 弹窗内学科变更时拉取对应期刊列表 */
   useEffect(() => {
@@ -237,6 +280,11 @@ export function SkillPanel({
   useEffect(() => {
     onRunningChange?.(running);
   }, [running, onRunningChange]);
+
+  // 进度与完成状态变化时通知父组件（用于右上角圆形进度浮窗与 Done 提示）
+  useEffect(() => {
+    if (running || done) onProgressUpdate?.(progress, done);
+  }, [progress, done, running, onProgressUpdate]);
 
   // 运行中每秒更新已用秒数与进度条；已用秒数始终递增，保证超过预估后时间仍持续显示
   useEffect(() => {
@@ -322,7 +370,7 @@ export function SkillPanel({
           setRunStartTime(Date.now());
           setProgress(0);
           setElapsedSec(0);
-          onRunStarted?.();
+          onRunStarted?.(jobType);
           const poll = () => {
             fetch(`/api/logs?jobId=${data.jobId}`)
               .then((l) => l.json())
@@ -334,7 +382,9 @@ export function SkillPanel({
                   setProgress(100);
                   setRunStartTime(null);
                   setElapsedSec(0);
-                  if (ld.exitCode === 0) {
+                  const success = ld.exitCode === 0;
+                  onJobFinished?.(jobType, success);
+                  if (success) {
                     onJobComplete?.(jobType);
                   } else if (
                     jobType === "writing_under_style" ||
@@ -435,6 +485,7 @@ export function SkillPanel({
       return;
     }
 
+    setLastCompletedSkillIdForLog(null);
     latestJobIdRef.current = null;
     setJobId(null);
     setLog("");
@@ -457,8 +508,10 @@ export function SkillPanel({
             })
           : await runOne(skillId);
       if (ok) onJobComplete?.(skillId);
+      setLastCompletedSkillIdForLog(skillId);
       setRunningSkill(null);
     } catch {
+      setLastCompletedSkillIdForLog(skillId);
       setRunningSkill(null);
     }
   };
@@ -480,7 +533,7 @@ export function SkillPanel({
       return false;
     }
     const savedFileName = uploadData.savedFileName as string;
-    const ok = await runOne("transcribe_submit_and_writing", [uploadStyle ?? "academic", savedFileName], { writingModel });
+    const ok = await runOne("transcribe_submit_and_writing", [uploadStyle ?? "academic", savedFileName], { writingModel: writingModel || "glm-4.7-flash" });
     if (ok) onJobComplete?.("transcribe_submit_and_writing");
     return ok;
   };
@@ -492,6 +545,7 @@ export function SkillPanel({
     if (!uploadFile) return;
     setUploadError(null);
     setError(null);
+    setLastCompletedSkillIdForLog(null);
     latestJobIdRef.current = null;
     setJobId(null);
     setLog("");
@@ -505,6 +559,7 @@ export function SkillPanel({
     setWritingReviewStep("upload_choice");
     const ok = await uploadAndTranscribeSubmitWriting(uploadFile);
     setUploadFile(null);
+    setLastCompletedSkillIdForLog("transcribe_submit_and_writing");
     setRunningSkill(null);
     if (ok) onRunStarted?.();
   };
@@ -519,6 +574,7 @@ export function SkillPanel({
     setWritingReviewPrompt("");
     setUploadError(null);
     setError(null);
+    setLastCompletedSkillIdForLog(null);
     latestJobIdRef.current = null;
     setJobId(null);
     setLog("");
@@ -529,13 +585,19 @@ export function SkillPanel({
     setElapsedSec(0);
     setRunningSkill("writing_under_style");
     runOne("writing_under_style", undefined, {
-      writingModel,
+      writingModel: writingModel || "glm-4.7-flash",
       writingStyle: styleChoice,
       writingPrompt: promptToUse ?? undefined,
       writingReportFile: writingReportFile || undefined,
     })
-      .then(() => setRunningSkill(null))
-      .catch(() => setRunningSkill(null));
+      .then(() => {
+        setLastCompletedSkillIdForLog("writing_under_style");
+        setRunningSkill(null);
+      })
+      .catch(() => {
+        setLastCompletedSkillIdForLog("writing_under_style");
+        setRunningSkill(null);
+      });
     onRunStarted?.();
   };
 
@@ -573,121 +635,149 @@ export function SkillPanel({
       <p className="text-[11px] text-[var(--text-muted)] leading-snug">
         顺序：① 重新检索 → ② 清洗规整 → ③ 荟萃分析 → ④ 文献简报 → ⑤ 一键综述（可选在弹窗内上传写作样本）
       </p>
-      <div className="grid gap-1.5">
-        {SKILLS.slice(0, 2).map((s) => (
-          <div
-            key={s.id}
-            data-skill-id={s.id}
-            className={`card-modern flex items-center gap-2 rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
-              highlightSet.has(s.id)
-                ? "skill-card-highlight border-[var(--thu-purple)]"
-                : "border-[var(--border-soft)] bg-[var(--bg-card)]"
-            }`}
-          >
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--thu-purple)] text-[10px] font-medium text-white shadow-sm">
-              {s.step}
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-[var(--text)]">{s.label}</div>
-              <div className="text-[11px] text-[var(--text-muted)] leading-tight">{s.desc}</div>
-            </div>
-            <button
-              type="button"
-              onClick={() => run(s.id)}
-              disabled={!!runningSkill || !topic}
-              className="thu-btn-primary flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+      <div className="space-y-1.5">
+        {SKILLS.map((s) => (
+          <div key={s.id}>
+            <div
+              data-skill-id={s.id}
+              className={`card-modern flex items-center gap-2 rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
+                highlightSet.has(s.id)
+                  ? "skill-card-highlight border-[var(--thu-purple)]"
+                  : "border-[var(--border-soft)] bg-[var(--bg-card)]"
+              }`}
             >
-              {runningSkill === s.id ? "…" : "运行"}
-            </button>
+              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--thu-purple)] text-[10px] font-medium text-white shadow-sm">
+                {s.step}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-medium text-[var(--text)]">{s.label}</div>
+                <div className="text-[11px] text-[var(--text-muted)] leading-tight">{s.desc}</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => run(s.id)}
+                disabled={s.id === "journal_search" ? (!!journalSearchJobId && !journalSearchDone) || !!runningSkill : !!runningSkill || !topic}
+                className="thu-btn-primary flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+              >
+                {runningSkill === s.id || (s.id === "journal_search" && journalSearchJobId && !journalSearchDone) ? "…" : "运行"}
+              </button>
+            </div>
+            {/* 重新检索：运行日志放在本卡片下方，数据来自页面 */}
+            {s.id === "journal_search" && journalSearchJobId && (
+              <div className="mt-1.5 rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2.5" data-run-log-section="skills" data-run-log-skill="journal_search">
+                {!journalSearchDone && (
+                  <div className="mb-2 space-y-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
+                    <div className="flex items-center gap-2">
+                      <div className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent" aria-hidden />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-medium text-[var(--text)]">重新检索 · 正在运行</p>
+                        <p className="text-[11px] text-[var(--text-muted)]">进度 {Math.round(journalSearchProgress)}%</p>
+                      </div>
+                      {onAbortJournalSearch && (
+                        <button type="button" onClick={onAbortJournalSearch} className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium">
+                          暂停运行
+                        </button>
+                      )}
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
+                      <div className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out" style={{ width: `${Math.round(journalSearchProgress)}%` }} role="progressbar" aria-valuenow={Math.round(journalSearchProgress)} aria-valuemin={0} aria-valuemax={100} />
+                    </div>
+                  </div>
+                )}
+                {journalSearchDone && (
+                  <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-2.5 py-1.5">
+                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-sidebar)]">
+                      <div className="h-full w-full rounded-full bg-[var(--thu-purple)]" style={{ width: "100%" }} role="progressbar" aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} />
+                    </div>
+                    <span className="text-[11px] font-medium text-[var(--text-muted)]">100%</span>
+                  </div>
+                )}
+                <div className="mb-1 flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-medium text-[var(--text-muted)]">运行日志</span>
+                  {onDismissJournalSearchLog && (
+                    <button
+                      type="button"
+                      onClick={onDismissJournalSearchLog}
+                      className="rounded p-1 text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)]"
+                      aria-label="关闭运行日志"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  )}
+                </div>
+                <pre className="max-h-32 overflow-auto whitespace-pre-wrap rounded bg-[var(--bg-card)] p-2 text-[11px] text-[var(--text)]">{journalSearchLog || "（等待…）"}</pre>
+                {journalSearchDone && (
+                  <div className="mt-2 flex items-center gap-2 text-xs">
+                    <span className={journalSearchExitCode === 0 ? "text-[var(--text)]" : "text-[var(--accent)]"}>{journalSearchExitCode === 0 ? "✓ 完成" : `退出 ${journalSearchExitCode}`}</span>
+                    {onJumpToOutputs && (
+                      <button type="button" onClick={onJumpToOutputs} className="thu-title hover:underline">查看产出</button>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+            {/* 其他技能：运行日志放在对应卡片下方；完成后保留直到用户刷新、开启下一技能或点击关闭 */}
+            {s.id !== "journal_search" && (runningSkill === s.id || lastCompletedSkillIdForLog === s.id) && (
+              <div className="mt-1.5 rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2.5" data-run-log-section="skills" data-run-log-skill={s.id}>
+                {!done && runningSkill === s.id && (
+                  <div className="mb-2 space-y-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
+                    <div className="flex items-center gap-2">
+                      <div className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent" aria-hidden />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-medium text-[var(--text)]">
+                          {jobId ? "正在运行" : "正在启动"} · {SKILLS.find((sk) => sk.id === runningSkill)?.label ?? EXTRA_RUNNING_LABELS[runningSkill] ?? runningSkill}
+                        </p>
+                        <p className="text-[11px] text-[var(--text-muted)]">
+                          {runStartTime != null && runningSkill
+                            ? (() => {
+                                const estSec = SKILL_ESTIMATED_SECONDS[runningSkill] ?? 180;
+                                const estMin = Math.round(estSec / 60);
+                                return `预估约 ${estMin} 分钟（仅供参考）· 已用 ${elapsedSec} 秒 · 进度 ${Math.round(progress)}%`;
+                              })()
+                            : "正在启动…"}
+                        </p>
+                      </div>
+                      <button type="button" onClick={() => setAbortConfirmOpen(true)} disabled={!jobId} className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium disabled:opacity-50">
+                        暂停运行
+                      </button>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
+                      <div className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out" style={{ width: `${Math.round(runStartTime == null ? 0 : progress)}%` }} role="progressbar" aria-valuenow={Math.round(runStartTime == null ? 0 : progress)} aria-valuemin={0} aria-valuemax={100} />
+                    </div>
+                  </div>
+                )}
+                {((done && runningSkill === s.id) || lastCompletedSkillIdForLog === s.id) && (
+                  <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-2.5 py-1.5">
+                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-sidebar)]">
+                      <div className="h-full w-full rounded-full bg-[var(--thu-purple)]" style={{ width: "100%" }} role="progressbar" aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} />
+                    </div>
+                    <span className="text-[11px] font-medium text-[var(--text-muted)]">100%</span>
+                  </div>
+                )}
+                <div className="mb-1 flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-medium text-[var(--text-muted)]">运行日志</span>
+                  {(done || lastCompletedSkillIdForLog === s.id) && (
+                    <button
+                      type="button"
+                      onClick={() => setLastCompletedSkillIdForLog(null)}
+                      className="rounded p-1 text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)]"
+                      aria-label="关闭运行日志"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  )}
+                </div>
+                <pre className="max-h-32 overflow-auto whitespace-pre-wrap rounded bg-[var(--bg-card)] p-2 text-[11px] text-[var(--text)]">{log || "（等待…）"}</pre>
+                {(done || lastCompletedSkillIdForLog === s.id) && (
+                  <div className="mt-2 flex items-center gap-2 text-xs">
+                    <span className={exitCode === 0 ? "text-[var(--text)]" : "text-[var(--accent)]"}>{exitCode === 0 ? "✓ 完成" : `退出 ${exitCode}`}</span>
+                    {onJumpToOutputs && <button type="button" onClick={onJumpToOutputs} className="thu-title hover:underline">查看产出</button>}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
-        {/* ③ 荟萃分析 */}
-        <div
-          data-skill-id="synthesize"
-          className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
-            highlightSet.has("synthesize")
-              ? "skill-card-highlight border-[var(--thu-purple)]"
-              : "border-[var(--border-soft)] bg-[var(--bg-card)]"
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--thu-purple)] text-[10px] font-medium text-white shadow-sm">
-              3
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-[var(--text)]">荟萃分析</div>
-              <div className="text-[11px] text-[var(--text-muted)] leading-tight">
-                基于结构化论文信息进行荟萃分析，生成主题聚类、质检报告等论文元数据
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => run("synthesize")}
-              disabled={!!runningSkill || !topic}
-              className="thu-btn-primary flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
-            >
-              {runningSkill === "synthesize" ? "…" : "运行"}
-            </button>
-          </div>
-        </div>
-        {/* ④ 文献简报 */}
-        <div
-          data-skill-id="concept_synthesize"
-          className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
-            highlightSet.has("concept_synthesize")
-              ? "skill-card-highlight border-[var(--thu-purple)]"
-              : "border-[var(--border-soft)] bg-[var(--bg-card)]"
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--thu-purple)] text-[10px] font-medium text-white shadow-sm">
-              4
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-[var(--text)]">文献简报</div>
-              <div className="text-[11px] text-[var(--text-muted)] leading-tight">
-                基于荟萃分析结果生成文献简报
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => run("concept_synthesize")}
-              disabled={!!runningSkill || !topic}
-              className="thu-btn-primary flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
-            >
-              {runningSkill === "concept_synthesize" ? "…" : "运行"}
-            </button>
-          </div>
-        </div>
-        {/* ⑤ 一键综述 */}
-        <div
-          data-skill-id="writing_under_style"
-          className={`card-modern rounded-[var(--radius-md)] border p-2.5 transition-all duration-200 ${
-            highlightSet.has("writing_under_style")
-              ? "skill-card-highlight border-[var(--thu-purple)]"
-              : "border-[var(--border-soft)] bg-[var(--bg-card)]"
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--thu-purple)] text-[10px] font-medium text-white shadow-sm">
-              5
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-[var(--text)]">一键综述</div>
-              <div className="text-[11px] text-[var(--text-muted)] leading-tight">
-                若用户未上传则采用默认样本作为参考，若用户上传写作样本则以用户新上传样本为参考，将文献简报改写为成文综述
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => run("writing_under_style")}
-              disabled={!!runningSkill || !topic}
-              className="thu-btn-primary flex-shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-50"
-            >
-              {runningSkill === "writing_under_style" ? "…" : "运行"}
-            </button>
-          </div>
-        </div>
       </div>
       {abortConfirmOpen && jobId && (
         <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="abort-confirm-title" onClick={() => setAbortConfirmOpen(false)}>
@@ -718,6 +808,7 @@ export function SkillPanel({
                         body: JSON.stringify({ jobId: idToAbort }),
                       });
                       if (res.ok) {
+                        setLastCompletedSkillIdForLog(runningSkill ?? null);
                         setJobId(null);
                         setRunningSkill(null);
                         setDone(true);
@@ -726,6 +817,7 @@ export function SkillPanel({
                         setElapsedSec(0);
                       }
                     } catch {
+                      setLastCompletedSkillIdForLog(runningSkill ?? null);
                       setJobId(null);
                       setRunningSkill(null);
                       setDone(true);
@@ -782,6 +874,7 @@ export function SkillPanel({
                 type="button"
                 onClick={async () => {
                   setSynthesizeModalOpen(false);
+                  setLastCompletedSkillIdForLog(null);
                   latestJobIdRef.current = null;
                   setJobId(null);
                   setLog("");
@@ -796,6 +889,7 @@ export function SkillPanel({
                     synthesizeInPath: synthesizeInPath || undefined,
                   });
                   if (ok) onJobComplete?.("synthesize");
+                  setLastCompletedSkillIdForLog("synthesize");
                   setRunningSkill(null);
                   onRunStarted?.();
                 }}
@@ -861,6 +955,7 @@ export function SkillPanel({
                 type="button"
                 onClick={async () => {
                   setConceptSynthesizeModalOpen(false);
+                  setLastCompletedSkillIdForLog(null);
                   latestJobIdRef.current = null;
                   setJobId(null);
                   setLog("");
@@ -878,6 +973,7 @@ export function SkillPanel({
                     conceptSummaries: conceptSummaries || undefined,
                   });
                   if (ok) onJobComplete?.("concept_synthesize");
+                  setLastCompletedSkillIdForLog("concept_synthesize");
                   setRunningSkill(null);
                   onRunStarted?.();
                 }}
@@ -928,26 +1024,28 @@ export function SkillPanel({
             <h3 id="journal-search-confirm-title" className="thu-modal-title mb-3 text-base pr-8">重新检索</h3>
             <p className="mb-3 text-xs text-[var(--text-muted)]">可在下方调整检索选项（默认沿用当前设定），确认后直接运行。</p>
             <div className="mb-4 space-y-3">
-              {availableTopics.length > 0 && (
-                <label className="block">
-                  <span className="text-[11px] text-[var(--text-muted)]">主题</span>
-                  <select
-                    value={modalPipelineTopic}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      if (v) setModalPipelineTopic(v);
-                    }}
-                    className="thu-input mt-1 w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
-                  >
-                    {availableTopics.map((t) => (
+              <label className="block">
+                <span className="text-[11px] text-[var(--text-muted)]">主题</span>
+                <select
+                  value={modalPipelineTopic}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v) setModalPipelineTopic(v);
+                  }}
+                  className="thu-input mt-1 w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text)]"
+                >
+                  {(() => {
+                    const hasCurrent = availableTopics.some((t) => t.topic === topic);
+                    const options = hasCurrent ? availableTopics : [{ topic, label: topic.replace(/_/g, " ") }, ...availableTopics];
+                    return options.map((t) => (
                       <option key={t.topic} value={t.topic}>
                         {t.label}
                       </option>
-                    ))}
-                  </select>
-                  <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">产出将保存到该主题下，仅可在已有主题中选择。</p>
-                </label>
-              )}
+                    ));
+                  })()}
+                </select>
+                <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">产出将保存到该主题下；默认当前页主题，可切换为其他已有主题。</p>
+              </label>
               {onFocusLiteratureSearch && (
                 <button
                   type="button"
@@ -956,6 +1054,7 @@ export function SkillPanel({
                     onFocusLiteratureSearch();
                   }}
                   className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2 text-sm font-medium text-[var(--thu-purple)] transition-colors hover:bg-[var(--thu-purple-subtle)]"
+                  aria-label="关闭弹窗并定位到新增检索"
                 >
                   检索新主题
                 </button>
@@ -1025,7 +1124,26 @@ export function SkillPanel({
                 </label>
               </div>
               <div>
-                <span className="text-[11px] text-[var(--text-muted)]">检索类型</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[11px] text-[var(--text-muted)]">检索类型</span>
+                  <span
+                    className="relative inline-flex h-[1em] w-[1em] cursor-help items-center justify-center rounded-full border border-current text-[11px]"
+                    onMouseEnter={() => setJournalSearchTypeTooltipVisible(true)}
+                    onMouseLeave={() => setJournalSearchTypeTooltipVisible(false)}
+                    aria-label="检索类型说明"
+                  >
+                    <span className="opacity-70">ⓘ</span>
+                    {journalSearchTypeTooltipVisible && (
+                      <span
+                        className="absolute bottom-full left-0 z-50 mb-1 w-56 rounded-lg border border-gray-200 px-2.5 py-2 text-[11px] leading-snug shadow-lg"
+                        role="tooltip"
+                        style={{ backgroundColor: "#ffffff", color: "#1c1924", opacity: 1 }}
+                      >
+                        {SEARCH_TYPE_TOOLTIP}
+                      </span>
+                    )}
+                  </span>
+                </div>
                 <div className="mt-1 flex gap-2">
                   <button
                     type="button"
@@ -1052,6 +1170,16 @@ export function SkillPanel({
                   </button>
                 </div>
               </div>
+              <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm transition-colors has-[:checked]:border-[var(--thu-purple)] has-[:checked]:bg-[var(--thu-purple-subtle)]">
+                <input
+                  type="checkbox"
+                  checked={modalAbstractFallback}
+                  onChange={(e) => setModalAbstractFallback(e.target.checked)}
+                  className="h-3.5 w-3.5 shrink-0 rounded border-[var(--border)] accent-[var(--thu-purple)]"
+                />
+                <span>摘要补全</span>
+                <span className="text-[11px] text-[var(--text-muted)]">（缺摘要时抓取出版商页，耗时会变长）</span>
+              </label>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
@@ -1064,19 +1192,19 @@ export function SkillPanel({
               <button
                 type="button"
                 onClick={() => {
-                  const topicSlug =
-                    availableTopics.length > 0 && modalPipelineTopic
-                      ? modalPipelineTopic
-                      : toSlug(modalInstructionInput) || topic || "digital_labor";
+                  const topicSlug = modalPipelineTopic || toSlug(modalInstructionInput) || topic || "digital_labor";
                   const from = modalYearFrom ? parseInt(modalYearFrom, 10) : undefined;
                   const to = modalYearTo ? parseInt(modalYearTo, 10) : undefined;
                   setJournalSearchConfirmOpen(false);
+                  const instr = (modalInstructionInput || "").trim() || undefined;
                   onRunJournalSearch?.({
                     topicSlug,
                     journalSourceIds: modalDisciplineJournalIds,
                     yearFrom: from && !Number.isNaN(from) ? from : undefined,
                     yearTo: to && !Number.isNaN(to) ? to : undefined,
                     searchMode: modalSearchMode,
+                    instruction: instr,
+                    abstractFallback: modalAbstractFallback,
                   });
                 }}
                 disabled={modalSelectedDisciplines.length === 0 || modalDisciplineJournalIds.length === 0 || modalDisciplinesLoading}
@@ -1108,14 +1236,21 @@ export function SkillPanel({
                     onClick={() => { setUploadStyle(null); setWritingReviewStep("upload_style_pick"); }}
                     className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
                   >
-                    是，上传我的写作样本
+                    是，上传我的写作样例
                   </button>
                   <button
                     type="button"
                     onClick={() => setWritingReviewStep("default_style")}
                     className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
                   >
-                    否，使用默认风格（可选学术型或通俗型）
+                    否，参考既有风格
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setPendingWritingStyle("none"); setWritingReviewStep("no_style_options"); }}
+                    className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium"
+                  >
+                    否，不参考任何样例，直接生成内容
                   </button>
                 </div>
               </>
@@ -1184,23 +1319,16 @@ export function SkillPanel({
                       <button
                         type="button"
                         onClick={() => { setPendingWritingStyle("zh"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
-                        className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium text-left"
+                        className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-left text-sm font-medium text-[var(--text-muted)] transition-all hover:border-[var(--border)]"
                       >
-                        参考中文样例（academic-2a-tsyzm.md、academic-2b-qnyj.md）
+                        参考中文样例
                       </button>
                       <button
                         type="button"
                         onClick={() => { setPendingWritingStyle("en"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
-                        className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium text-left"
+                        className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-left text-sm font-medium text-[var(--text-muted)] transition-all hover:border-[var(--border)]"
                       >
-                        参考英文样例（academic-1a-IR.md、academic-1b-CSR.md）
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => { setPendingWritingStyle("none"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
-                        className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium text-left border border-[var(--border-soft)]"
-                      >
-                        不参考任何风格，直接生成综述
+                        参考英文样例
                       </button>
                     </div>
                   </div>
@@ -1209,9 +1337,9 @@ export function SkillPanel({
                     <button
                       type="button"
                       onClick={() => { setPendingWritingStyle("colloquial"); setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }}
-                      className="thu-modal-btn-secondary w-full rounded-lg px-3 py-2 text-sm font-medium text-left"
+                      className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-left text-sm font-medium text-[var(--text-muted)] transition-all hover:border-[var(--border)]"
                     >
-                      使用通俗型默认样例（colloquial-1-wwewbw.md、colloquial-2-acknowledgement.md）
+                      使用通俗型默认样例
                     </button>
                   </div>
                 </div>
@@ -1253,6 +1381,51 @@ export function SkillPanel({
               </>
             )}
 
+            {writingReviewStep === "no_style_options" && (
+              <>
+                <p className="mb-1 text-sm font-medium text-[var(--text)]">不参考任何写作样例，直接生成综述</p>
+                <p className="mb-3 text-xs text-[var(--text-muted)]">请选择模型与输入文档（可选填额外提示词）。</p>
+                <div className="mb-3 space-y-1">
+                  <label className="block text-[11px] text-[var(--text-muted)]">额外提示词（可选）</label>
+                  <textarea
+                    value={writingReviewPrompt}
+                    onChange={(e) => setWritingReviewPrompt(e.target.value)}
+                    placeholder="例如：突出某主题、避免某表述…"
+                    rows={2}
+                    className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--thu-purple)] focus:outline-none"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="mb-1.5 block text-[11px] font-medium text-[var(--text-muted)]">选择模型</label>
+                  <div className="flex flex-col gap-1.5">
+                    <button type="button" onClick={() => setWritingModel("gpt")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "gpt" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai" />
+                      <span>OpenAI GPT-5.2</span>
+                    </button>
+                    <button type="button" onClick={() => setWritingModel("glm-4.7-flash")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-4.7-flash" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                      <span>智谱 GLM-4.7-Flash</span>
+                    </button>
+                    <button type="button" onClick={() => setWritingModel("glm-5")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-5" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                      <span>智谱 GLM-5</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">输入文档（05_report）</label>
+                  <select value={writingReportFile} onChange={(e) => setWritingReportFile(e.target.value)} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                    <option value="">默认（chunks 或 report_latest.md）</option>
+                    {(topicMeta?.stages?.find((s) => s.id === "05_report")?.files ?? []).map((f) => (<option key={f.path} value={f.name}>{f.name}</option>))}
+                  </select>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={() => setWritingReviewStep("upload_choice")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回</button>
+                  <button type="button" onClick={() => { setPendingWritingPrompt(writingReviewPrompt); setWritingReviewStep("confirm"); }} className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium">下一步</button>
+                </div>
+              </>
+            )}
+
             {writingReviewStep === "confirm" && pendingWritingStyle && (
               <>
                 <p className="mb-3 text-sm font-medium text-[var(--text)]">请确认您的设置后运行</p>
@@ -1268,7 +1441,7 @@ export function SkillPanel({
                   </div>
                   <div className="flex gap-2">
                     <dt className="text-[var(--text-muted)] shrink-0">模型：</dt>
-                    <dd className="text-[var(--text)]">{writingModel === "gpt" ? "OpenAI GPT-5.2" : writingModel === "glm-5" ? "智谱 GLM-5" : "智谱 GLM-4.7-Flash"}</dd>
+                    <dd className="text-[var(--text)]">{writingModel === "gpt" ? "OpenAI GPT-5.2" : writingModel === "glm-5" ? "智谱 GLM-5" : writingModel === "glm-4.7-flash" ? "智谱 GLM-4.7-Flash" : "未选择（将使用智谱 GLM-4.7-Flash）"}</dd>
                   </div>
                   {writingReportFile && (
                     <div className="flex gap-2">
@@ -1284,7 +1457,7 @@ export function SkillPanel({
                   )}
                 </dl>
                 <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setWritingReviewStep("default_style")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回修改</button>
+                  <button type="button" onClick={() => setWritingReviewStep(pendingWritingStyle === "none" ? "no_style_options" : "default_style")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回修改</button>
                   <button
                     type="button"
                     onClick={() => startWritingReviewWithStyle(pendingWritingStyle, pendingWritingPrompt || null)}
@@ -1312,79 +1485,6 @@ export function SkillPanel({
       )}
       {error && (
         <p className="text-xs text-[var(--accent)]">{error}</p>
-      )}
-      {(jobId || runningSkill) && (
-        <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-2.5" data-run-log-section="skills">
-          {!done && (
-            <div className="mb-2 space-y-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-2.5 py-2">
-              <div className="flex items-center gap-2">
-                <div
-                  className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
-                  aria-hidden
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs font-medium text-[var(--text)]">
-                    {jobId ? "正在运行" : "正在启动"} · {runningSkill ? (SKILLS.find((s) => s.id === runningSkill)?.label ?? EXTRA_RUNNING_LABELS[runningSkill] ?? runningSkill) : ""}
-                  </p>
-                  <p className="text-[11px] text-[var(--text-muted)]">
-                    {runStartTime != null && runningSkill && (() => {
-                      const estSec = SKILL_ESTIMATED_SECONDS[runningSkill] ?? 180;
-                      const estMin = Math.round(estSec / 60);
-                      return `预估约 ${estMin} 分钟（仅供参考）· 已用 ${elapsedSec} 秒 · 进度 ${Math.round(progress)}%`;
-                    })()}
-                    {runningSkill && runStartTime == null && "正在启动…"}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setAbortConfirmOpen(true)}
-                  disabled={!jobId}
-                  className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium disabled:opacity-50"
-                >
-                  暂停运行
-                </button>
-              </div>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
-                <div
-                  className="h-full rounded-full bg-[var(--thu-purple)] transition-[width] duration-500 ease-out"
-                  style={{ width: `${Math.round(progress)}%` }}
-                  role="progressbar"
-                  aria-valuenow={Math.round(progress)}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                />
-              </div>
-            </div>
-          )}
-          {done && (
-            <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-2.5 py-1.5">
-              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-sidebar)]">
-                <div className="h-full w-full rounded-full bg-[var(--thu-purple)]" style={{ width: "100%" }} role="progressbar" aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} />
-              </div>
-              <span className="text-[11px] font-medium text-[var(--text-muted)]">100%</span>
-            </div>
-          )}
-          <div className="mb-1 text-[11px] font-medium text-[var(--text-muted)]">运行日志</div>
-          <pre className="max-h-32 overflow-auto whitespace-pre-wrap rounded bg-[var(--bg-card)] p-2 text-[11px] text-[var(--text)]">
-            {log || "（等待…）"}
-          </pre>
-          {done && (
-            <div className="mt-2 flex items-center gap-2 text-xs">
-              <span className={exitCode === 0 ? "text-[var(--text)]" : "text-[var(--accent)]"}>
-                {exitCode === 0 ? "✓ 完成" : `退出 ${exitCode}`}
-              </span>
-              {onJumpToOutputs && (
-                <button
-                  type="button"
-                  onClick={onJumpToOutputs}
-                  className="thu-title hover:underline"
-                >
-                  查看产出
-                </button>
-              )}
-            </div>
-          )}
-        </div>
       )}
     </div>
   );

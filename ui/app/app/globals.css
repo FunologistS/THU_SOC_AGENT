@@ -71,6 +71,21 @@
   --overlay: rgba(28, 22, 40, 0.75);
 }
 
+/* 侧栏「新增检索」标题：从「检索新主题」跳转时的高亮淡出提示 */
+@keyframes journal-section-highlight-fade-keyframes {
+  0% {
+    background-color: var(--thu-purple-focus);
+    opacity: 1;
+  }
+  100% {
+    background-color: var(--thu-purple-focus);
+    opacity: 0;
+  }
+}
+.journal-section-highlight-fade {
+  animation: journal-section-highlight-fade-keyframes 1.8s ease-out forwards;
+}
+
 /* 夜间版 · 页面：深紫底 + 多层渐变光晕（不黑、有层次） */
 [data-theme="dark"] body {
   background-attachment: fixed;
@@ -206,6 +221,10 @@ body {
 @keyframes run-flash {
   0%, 49.99% { box-shadow: 0 0 24px 8px rgba(102, 8, 116, 0.4); filter: brightness(1.2); }
   50%, 100% { box-shadow: 0 0 0 0 transparent; filter: brightness(1); }
+}
+@keyframes skillToastIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .run-status-spinner {
   animation: run-spin 1.8s linear infinite, run-flash 1s ease-in-out infinite;
@@ -346,14 +365,18 @@ body {
   text-align: left;
   font-weight: 600;
   color: var(--text);
-  white-space: nowrap;
   border-bottom: 2px solid var(--border);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
-/* year 列稍宽，避免 2026 换行 */
+/* 附录论文卡片等：各列可换行，并保证「问题」「方法」列有合理最小宽 */
 .prose-output-table th:nth-child(2),
 .prose-output-table td:nth-child(2) {
-  min-width: 4.5rem;
-  white-space: nowrap;
+  min-width: 8em;
+}
+.prose-output-table th:nth-child(3),
+.prose-output-table td:nth-child(3) {
+  min-width: 8em;
 }
 .prose-output-table td {
   padding: 0.5rem 0.75rem;
@@ -361,8 +384,9 @@ body {
   border-bottom: 1px solid var(--border-soft);
   color: var(--text);
   word-break: break-word;
+  overflow-wrap: break-word;
 }
-/* 最后一列（多为 abstract）更宽，内容可内滚 */
+/* 最后一列（多为 abstract / 主要主张）更宽，内容可内滚 */
 .prose-output-table td:last-child {
   min-width: 20em;
   max-width: 36em;
@@ -372,6 +396,8 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-right: 0.25rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .prose-output-table td:last-child .prose-cell-scroll {
   max-height: 10rem;

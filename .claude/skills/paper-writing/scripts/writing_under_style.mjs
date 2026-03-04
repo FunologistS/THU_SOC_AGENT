@@ -45,7 +45,7 @@
  *  - OPENAI_MODEL（可选，默认 gpt-5.2）
  *  - OUTPUT_DIR（可选，默认 outputs/<topic>/06_review）
  *  - TZ（可选，默认 Asia/Shanghai，用于日期命名）
- *  - MAX_STYLE_CHARS（可选，默认 1000；风格样本总字数上限）
+ *  - MAX_STYLE_CHARS（可选，默认 2000；风格样本总字数上限，按入选样例数 n 均分 2000/n 字）
  *  - CHUNK_MAX_CHARS（可选，默认 16000；每个 chunk 送入模型的最大字符数，超出截断）
  *  - CHUNK_MAX_TOKENS（可选，默认 1800；每个 chunk 输出 token 上限）
  *  - MERGE_MAX_TOKENS（可选，默认 6000；合并后的最终输出 token 上限）
@@ -111,7 +111,7 @@ if (PROVIDER === "glm") {
 }
 const MODEL_LABEL = PROVIDER === "glm" ? `智谱 ${MODEL}` : `OpenAI ${MODEL}`;
 
-const MAX_STYLE_CHARS = Number(process.env.MAX_STYLE_CHARS) || 1000;
+const MAX_STYLE_CHARS = Number(process.env.MAX_STYLE_CHARS) || 2000;
 const CHUNK_MAX_CHARS = Number(process.env.CHUNK_MAX_CHARS) || 16000;
 const CHUNK_MAX_TOKENS = Number(process.env.CHUNK_MAX_TOKENS) || 1800;
 const MERGE_MAX_TOKENS = Number(process.env.MERGE_MAX_TOKENS) || 6000;
@@ -322,8 +322,16 @@ function detectLanguageFromStyle(styleText) {
   return null;
 }
 
-/** ---------- style loading (keep behavior + strict cap) ---------- **/
-function loadStyleSamples(files = [], maxTotalChars = 1000) {
+/** ---------- style loading
+ * 规则：
+ * - 总上限 maxTotalChars（默认 2000）
+ * - 每个入选样例至少 150 字左右（含 header）
+ * - 若样例过多导致 2000/n < 150：
+ *   - 优先保留用户上传样例（references/submit 下），丢弃默认样例
+ *   - 仍超出时，按“越新越优先”（mtime 新）丢弃最早的样例
+ *   - 最终只保留 k 个，使得 floor(2000/k) >= 150
+ **/
+function loadStyleSamples(files = [], maxTotalChars = 2000) {
   if (!fs.existsSync(REFERENCES_ACADEMIC)) {
     console.warn(`[writing_under_style] references/${REFERENCE_STYLE} 目录不存在，将不注入风格样本`);
     return "";
@@ -333,60 +341,90 @@ function loadStyleSamples(files = [], maxTotalChars = 1000) {
     files = ["academic-2a-tsyzm.md", "academic-2b-qnyj.md"];
   }
 
-  const parts = [];
-  let totalUsed = 0;
-
-  // 为避免每个文件都加尾巴导致超限，按 remaining 动态裁剪
+  // 先解析出所有存在的文件路径，确定入选样例，并打上“是否用户上传”的标记
+  const resolved = [];
   for (const name of files) {
-    const remaining = maxTotalChars - totalUsed;
-    if (remaining <= 0) break;
-
     let fullPath = path.join(REFERENCES_ACADEMIC, name);
-    if (!fs.existsSync(fullPath) && REFERENCES_SUBMIT_DIR && fs.existsSync(path.join(REFERENCES_SUBMIT_DIR, name))) {
+    let isUser = false;
+    if (
+      (!fs.existsSync(fullPath) || !fs.statSync(fullPath).isFile()) &&
+      REFERENCES_SUBMIT_DIR &&
+      fs.existsSync(path.join(REFERENCES_SUBMIT_DIR, name))
+    ) {
       fullPath = path.join(REFERENCES_SUBMIT_DIR, name);
+      isUser = true;
+    } else if (REFERENCES_SUBMIT_DIR && fullPath.startsWith(REFERENCES_SUBMIT_DIR)) {
+      isUser = true;
     }
-    if (!fs.existsSync(fullPath)) {
+    if (!fs.existsSync(fullPath) || !fs.statSync(fullPath).isFile()) {
       console.warn(`[writing_under_style] 未找到指定的风格参考文件: ${name}`);
       continue;
     }
+    let mtime = 0;
+    try {
+      mtime = fs.statSync(fullPath).mtimeMs || 0;
+    } catch {
+      mtime = 0;
+    }
+    resolved.push({ name, fullPath, isUser, mtime });
+  }
 
+  if (resolved.length === 0) return "";
+
+  const MIN_PER_SAMPLE = 150;
+  const header = (name) => `--- ${name} ---\n`;
+  const tail = "\n\n[... 略 ...]";
+
+  // 计算在“不减少样例数量”的情况下，每篇最多能分到多少字符
+  const n0 = resolved.length;
+  const perIfAll = Math.floor(maxTotalChars / n0);
+
+  let selected = resolved.slice();
+
+  if (perIfAll < MIN_PER_SAMPLE) {
+    // 样例过多，先尝试只保留用户上传样例
+    const userSamples = resolved.filter((r) => r.isUser);
+    const defaultSamples = resolved.filter((r) => !r.isUser);
+
+    // 最大可容纳的样例数，使得 floor(maxTotalChars / k) >= MIN_PER_SAMPLE
+    const maxK = Math.max(1, Math.floor(maxTotalChars / MIN_PER_SAMPLE));
+
+    if (userSamples.length >= maxK) {
+      // 仅在用户样例中选最近的 maxK 个（mtime 越新越优先）
+      userSamples.sort((a, b) => b.mtime - a.mtime);
+      selected = userSamples.slice(0, maxK);
+    } else {
+      // 先保留全部用户样例，再从默认样例中补足，默认样例按原顺序
+      const remain = maxK - userSamples.length;
+      const extraDefaults = defaultSamples.slice(0, Math.max(0, remain));
+      selected = [...userSamples, ...extraDefaults];
+    }
+  }
+
+  const n = selected.length;
+  if (n === 0) return "";
+
+  const perFileCap = Math.floor(maxTotalChars / n);
+
+  const parts = [];
+  for (const { name, fullPath } of selected) {
+    const h = header(name);
+    const bodyBudget = Math.max(0, perFileCap - h.length);
     let text = stripBom(fs.readFileSync(fullPath, "utf8"));
 
-    // 每个文件最多拿一部分，但严格受 remaining 控制
-    // 先预留 header 与略号尾巴的空间
-    const header = `--- ${name} ---\n`;
-    const tail = "\n\n[... 略 ...]";
-    const overhead = header.length + tail.length;
-
-    if (remaining <= header.length + 10) break; // 剩下太少就别加了
-
-    // 可用于正文的字符
-    const bodyBudget = Math.max(0, remaining - header.length);
-    // 先不急着加 tail，只有截断才加 tail
-    let take = Math.min(text.length, bodyBudget);
-
-    let body = text.slice(0, take);
-
-    // 如果我们截断了正文，且 remaining 够放 tail，则加 tail；否则不加 tail
-    const willTruncate = text.length > take;
-    if (willTruncate) {
-      // 如果加 tail 会超 remaining，就再缩一点
-      if (header.length + body.length + tail.length > remaining) {
-        const shrinkTo = Math.max(0, remaining - header.length - tail.length);
-        body = body.slice(0, shrinkTo);
-      }
-      body += tail;
+    let body;
+    if (text.length <= bodyBudget) {
+      body = text;
+    } else {
+      const take = Math.max(0, bodyBudget - tail.length);
+      body = text.slice(0, take) + tail;
     }
 
-    const chunk = header + body;
+    const chunk = h + body;
     parts.push(chunk);
-
-    // 严格用实际写入的 chunk 长度累计，保证不超 maxTotalChars
-    totalUsed += chunk.length;
   }
 
   const joined = parts.join("\n\n");
-  // 双保险：若仍然超了（极端情况），再硬截一刀并补全围栏
   if (joined.length > maxTotalChars) {
     return truncateByCharsMarkdownSafe(joined, maxTotalChars);
   }
@@ -507,12 +545,13 @@ function buildSystemPromptSingle(styleLang) {
 1）文风与写作样本一致；
 2）以连贯段落呈现，不要用列表或小标题堆砌（允许极少量必要的小标题）；
 3）保留报告中的核心论点和发现，逻辑清晰、段落之间自然衔接；
-4）不要编造报告中未出现的信息。`;
+4）不要编造报告中未出现的信息；
+5）**必须保留文内引用与链接**：报告中已有的 (Surname & Surname, Year) 或 (Surname et al., Year) 以及可点击链接 [文本](#paper-数字) / [文本](../05_report/report_latest.md#paper-数字) 必须完整保留，不得删除或改写成无引用表述；文内引用仅用姓氏（2人 A & B，3人及以上 第一作者 et al.），链接外不要再加一层括号；基于某篇/某几篇文献的论断在改写后仍须带对应引用，做到有理有据。`;
 
   if (styleLang === "en") {
-    base += "\n5）当前写作样本为英文，请使用英文撰写整篇综述，不要混入中文段落。";
+    base += "\n6）当前写作样本为英文，请使用英文撰写整篇综述，不要混入中文段落。";
   } else if (styleLang === "zh") {
-    base += "\n5）当前写作样本为中文，请使用中文撰写整篇综述。";
+    base += "\n6）当前写作样本为中文，请使用中文撰写整篇综述。";
   }
   return base;
 }

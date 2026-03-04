@@ -3,7 +3,23 @@
  * 避免直接显示下划线和文件扩展名
  */
 
-import type { StageId } from "@/app/types";
+import type { StageId, JobType } from "@/app/types";
+
+/** 技能/任务展示名（与 SkillPanel、PipelineRunner 一致，用于完成通知等） */
+export const JOB_DISPLAY_LABELS: Record<JobType, string> = {
+  journal_search: "重新检索",
+  filter: "筛选",
+  paper_summarize: "清洗规整",
+  synthesize: "荟萃分析",
+  concept_synthesize: "文献简报",
+  upload_and_writing: "上传写作样本",
+  transcribe_submit_and_writing: "转录并综述",
+  writing_under_style: "一键综述",
+};
+
+export function jobDisplayLabel(jobType: JobType): string {
+  return JOB_DISPLAY_LABELS[jobType] ?? jobType;
+}
 
 /** 与技能工作台描述一致 */
 const STAGE_LABELS: Record<StageId, string> = {

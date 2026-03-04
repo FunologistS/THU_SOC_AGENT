@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import "./thu-theme.css";
 import { ThUAlertConfirmProvider } from "@/components/ThUAlertConfirm";
+import { SkillCompleteToastProvider } from "@/components/SkillCompleteToast";
 
 export const metadata: Metadata = {
   title: "THU_SOC_AGENT · 社会科学文献综合处理｜智能体",
@@ -30,9 +31,11 @@ export default function RootLayout({
           }}
         />
         <ThUAlertConfirmProvider>
-          <Suspense fallback={<div className="p-4 text-[var(--text-muted)]">加载中…</div>}>
-            {children}
-          </Suspense>
+          <SkillCompleteToastProvider>
+            <Suspense fallback={<div className="p-4 text-[var(--text-muted)]">加载中…</div>}>
+              {children}
+            </Suspense>
+          </SkillCompleteToastProvider>
         </ThUAlertConfirmProvider>
       </body>
     </html>

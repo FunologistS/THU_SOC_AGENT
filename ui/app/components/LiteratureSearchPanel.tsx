@@ -26,6 +26,7 @@ export type JournalSearchParams = {
   journalSourceIds: string[];
   dataSourceLabel: string;
   selectedDisciplines: string[];
+  abstractFallback?: boolean;
 };
 
 export const DISCIPLINES = [
@@ -49,11 +50,15 @@ export const LiteratureSearchPanel = forwardRef<
       journalSourceIds: string[];
       journalIssns?: string[];
       searchMode?: "strict" | "relaxed";
+      instruction?: string;
+      abstractFallback?: boolean;
     }) => void;
     runJobId?: string | null;
     runLog?: string;
     runDone?: boolean;
     runExitCode?: number;
+    /** 取消运行（调用 /api/run/abort），由父组件负责清理 jobId 等状态 */
+    onAbort?: (jobId: string) => void;
     onDataSourceChange?: (label: string) => void;
     onJumpToOutputs?: () => void;
     hideTitle?: boolean;
@@ -65,6 +70,7 @@ export const LiteratureSearchPanel = forwardRef<
     runLog,
     runDone,
     runExitCode,
+    onAbort,
     onDataSourceChange,
     onJumpToOutputs,
     hideTitle,
@@ -79,6 +85,7 @@ export const LiteratureSearchPanel = forwardRef<
   const [yearFrom, setYearFrom] = useState("");
   const [yearTo, setYearTo] = useState("");
   const [searchMode, setSearchMode] = useState<"strict" | "relaxed">("strict");
+  const [abstractFallback, setAbstractFallback] = useState(false);
   const [searchTypeTooltipVisible, setSearchTypeTooltipVisible] = useState(false);
   const [running, setRunning] = useState(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
@@ -165,12 +172,15 @@ export const LiteratureSearchPanel = forwardRef<
       .map((j) => (j.openalex_source_id ?? "").trim())
       .filter(Boolean) as string[];
     setRunning(true);
+    const instr = (instructionInput || "").trim() || undefined;
     onStartSearch({
       topicSlug: slug,
       yearFrom: from && !Number.isNaN(from) ? from : undefined,
       yearTo: to && !Number.isNaN(to) ? to : undefined,
       journalSourceIds: ids,
       searchMode,
+      instruction: instr,
+      abstractFallback,
     });
     setRunning(false);
   }, [
@@ -181,6 +191,7 @@ export const LiteratureSearchPanel = forwardRef<
     yearTo,
     journals,
     searchMode,
+    abstractFallback,
     onStartSearch,
     thuAlert,
   ]);
@@ -204,8 +215,9 @@ export const LiteratureSearchPanel = forwardRef<
       journalSourceIds: ids,
       dataSourceLabel: label,
       selectedDisciplines: [...selectedDisciplines],
+      abstractFallback,
     };
-  }, [journals, selectedDisciplines, topicInput, instructionInput, yearFrom, yearTo, searchMode]);
+  }, [journals, selectedDisciplines, topicInput, instructionInput, yearFrom, yearTo, searchMode, abstractFallback]);
 
   useImperativeHandle(
     ref,
@@ -351,6 +363,16 @@ export const LiteratureSearchPanel = forwardRef<
             </select>
           </label>
         </div>
+        <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm transition-colors has-[:checked]:border-[var(--thu-purple)] has-[:checked]:bg-[var(--thu-purple-subtle)]">
+          <input
+            type="checkbox"
+            checked={abstractFallback}
+            onChange={(e) => setAbstractFallback(e.target.checked)}
+            className="h-3.5 w-3.5 shrink-0 rounded border-[var(--border)] accent-[var(--thu-purple)]"
+          />
+          <span>摘要补全</span>
+          <span className="text-[11px] text-[var(--text-muted)]">（缺摘要时抓取出版商页，耗时会变长）</span>
+        </label>
       </div>
 
       <button
@@ -371,9 +393,18 @@ export const LiteratureSearchPanel = forwardRef<
                   className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent"
                   aria-hidden
                 />
-                <p className="text-[11px] text-[var(--text-muted)]">
+                <p className="min-w-0 flex-1 text-[11px] text-[var(--text-muted)]">
                   预估约 {Math.round(JOURNAL_SEARCH_ESTIMATED_SEC / 60)} 分钟 · 已用 {Math.floor((Date.now() - runStartTime) / 1000)} 秒 · 进度 {Math.round(progress)}%
                 </p>
+                {onAbort && (
+                  <button
+                    type="button"
+                    onClick={() => onAbort(runJobId)}
+                    className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium"
+                  >
+                    暂停运行
+                  </button>
+                )}
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-card)]">
                 <div

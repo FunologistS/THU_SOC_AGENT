@@ -86,7 +86,8 @@ function parseMdTable(md) {
   const headerLine = tableLines[0];
   const coreHeader = headerLine.trim().replace(/^\|/, "").replace(/\|$/, "");
   const headerParts = coreHeader.split(" | ").map((x) => x.trim().toLowerCase());
-  const hasAuthors = headerParts.some((h) => h === "authors" || h.includes("author"));
+  // 支持英文 Authors/author 与中文「作者」表头，否则 7 列表会被误判为 6 列，作者列丢失
+  const hasAuthors = headerParts.some((h) => h === "authors" || h.includes("author") || h === "作者");
   const expectedCols = hasAuthors ? 7 : 6;
   const dataRows = [];
 

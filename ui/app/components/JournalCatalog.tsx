@@ -53,6 +53,8 @@ export function JournalCatalog({
     journalSourceIds: string[];
     journalIssns?: string[];
     searchMode?: "strict" | "relaxed";
+    instruction?: string;
+    abstractFallback?: boolean;
   }) => void;
   runJobId?: string | null;
   runLog?: string;
@@ -81,6 +83,7 @@ export function JournalCatalog({
   const [detailJournal, setDetailJournal] = useState<JournalItem | null>(null);
   const [journalSearchQuery, setJournalSearchQuery] = useState("");
   const [searchMode, setSearchMode] = useState<"strict" | "relaxed">("strict");
+  const [abstractFallback, setAbstractFallback] = useState(false);
   const [searchTypeTooltipVisible, setSearchTypeTooltipVisible] = useState(false);
   const fetchingRef = useRef(false);
   const [runStartTime, setRunStartTime] = useState<number | null>(null);
@@ -197,6 +200,7 @@ export function JournalCatalog({
         .filter(Boolean) as string[];
       setRunning(true);
       setDialogOpen(false);
+      const instr = (instructionInput || "").trim() || undefined;
       onStartSearch({
         topicSlug: slug,
         yearFrom: from && !Number.isNaN(from) ? from : undefined,
@@ -204,6 +208,8 @@ export function JournalCatalog({
         journalSourceIds: [],
         journalIssns: Array.from(new Set(issns)),
         searchMode,
+        instruction: instr,
+        abstractFallback,
       });
     } else if (!useWos && journals.length > 0) {
       const ids = journals
@@ -211,22 +217,28 @@ export function JournalCatalog({
         .filter(Boolean) as string[];
       setRunning(true);
       setDialogOpen(false);
+      const instr = (instructionInput || "").trim() || undefined;
       onStartSearch({
         topicSlug: slug,
         yearFrom: from && !Number.isNaN(from) ? from : undefined,
         yearTo: to && !Number.isNaN(to) ? to : undefined,
         journalSourceIds: ids,
         searchMode,
+        instruction: instr,
+        abstractFallback,
       });
     } else {
       setRunning(true);
       setDialogOpen(false);
+      const instr = (instructionInput || "").trim() || undefined;
       onStartSearch({
         topicSlug: slug,
         yearFrom: from && !Number.isNaN(from) ? from : undefined,
         yearTo: to && !Number.isNaN(to) ? to : undefined,
         journalSourceIds: [],
         searchMode,
+        instruction: instr,
+        abstractFallback,
       });
     }
     setTopicInput("");
@@ -661,6 +673,16 @@ export function JournalCatalog({
                   </select>
                 </label>
               </div>
+              <label className="mt-2 flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm transition-colors has-[:checked]:border-[var(--thu-purple)] has-[:checked]:bg-[var(--thu-purple-subtle)]">
+                <input
+                  type="checkbox"
+                  checked={abstractFallback}
+                  onChange={(e) => setAbstractFallback(e.target.checked)}
+                  className="h-3.5 w-3.5 shrink-0 rounded border-[var(--border)] accent-[var(--thu-purple)]"
+                />
+                <span>摘要补全</span>
+                <span className="text-[11px] text-[var(--text-muted)]">（缺摘要时抓取出版商页，耗时会变长）</span>
+              </label>
             </div>
             <div className="mt-4 flex justify-end gap-2">
               <button
