@@ -62,19 +62,21 @@ export function SessionLogPanel() {
     setClearing(true);
     fetch("/api/logs/session", { method: "POST" })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("Clear failed"))))
-      .then(() => setContent(""))
+      .then(() => fetch("/api/logs/session").then((r) => r.json()).then((d) => setContent(d.content ?? "")))
       .catch(() => {})
       .finally(() => setClearing(false));
   };
 
   const onCleanupClick = async () => {
-    const ok = await thuConfirm("确定仅保留最近 30 条任务日志，其余将删除？");
+    const ok = await thuConfirm(
+      "确定仅保留最近 30 条任务日志？超出部分将移入过期日志（archive/retired/）保留，主目录只留最近 30 条。\n\n不会清空上方常驻运行日志。"
+    );
     if (ok) runManage("cleanup", { keepLast: 30 });
   };
 
   const onClearClick = async () => {
     const ok = await thuConfirm(
-      "清空后当前运行日志将无法恢复。请确认重要内容已通过「归档 3 天前」等方式存档。\n\n确定要清空吗？"
+      "将仅清除已归档任务对应的运行日志，未归档的近期日志会保留。\n\n确定要清空已归档部分吗？"
     );
     if (ok) clearLog();
   };
@@ -109,6 +111,20 @@ export function SessionLogPanel() {
     }
   };
 
+  const onArchiveRetiredClick = async () => {
+    setManaging(true);
+    setManageMsg("");
+    try {
+      const r = await fetch("/api/logs/archive-retired", { method: "POST" });
+      const data = await r.json();
+      setManageMsg(r.ok ? (data.message ?? "已归档") : (data.error ?? "操作失败"));
+    } catch {
+      setManageMsg("请求失败");
+    } finally {
+      setManaging(false);
+    }
+  };
+
   const lineCount = content ? content.trim().split(/\n/).length : 0;
 
   return (
@@ -130,7 +146,7 @@ export function SessionLogPanel() {
           运行日志
           {lineCount > 0 && (
             <span className="text-[11px] font-normal opacity-80">
-              （{lineCount} 行，新日志追加不覆盖）
+              （常驻 {lineCount} 行，新日志追加不覆盖）
             </span>
           )}
         </span>
@@ -158,14 +174,25 @@ export function SessionLogPanel() {
                 type="button"
                 onClick={onCleanupClick}
                 disabled={managing}
+                title="超出条数会移入 archive/retired/，主目录只留最近 30 条；不改上方常驻日志"
                 className="rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1 font-medium hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
               >
-                仅保留最近 30 条
+                仅保留最近 30 条（任务）
+              </button>
+              <button
+                type="button"
+                onClick={onArchiveRetiredClick}
+                disabled={managing}
+                title="将 archive/retired/ 中的任务按日期移入 archive/YYYY-MM/，便于后续按天数清理"
+                className="rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1 font-medium hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
+              >
+                自动归档过期日志
               </button>
               <button
                 type="button"
                 onClick={onClearClick}
                 disabled={clearing || !content}
+                title="仅清除已归档任务对应的日志，未归档的近期日志保留"
                 className="rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1 font-medium hover:bg-[var(--accent-subtle)] hover:text-[var(--accent)] disabled:opacity-50 transition-colors"
               >
                 {clearing ? "清空中…" : "清空"}

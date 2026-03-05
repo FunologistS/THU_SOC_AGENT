@@ -79,20 +79,41 @@ export async function POST(request: Request) {
     }
     const sorted = Array.from(byJob.entries()).sort((a, b) => b[1] - a[1]);
     const toRemove = sorted.slice(body.keepLast).map(([id]) => id);
+    const archiveRetired = path.join(jobsDir, "archive", "retired");
+    fs.mkdirSync(archiveRetired, { recursive: true });
+    let moved = 0;
     for (const jobId of toRemove) {
       for (const ext of [".log", ".meta.json"]) {
-        const p = path.join(jobsDir, `${jobId}${ext}`);
-        if (fs.existsSync(p)) {
-          fs.unlinkSync(p);
-          deleted++;
+        const src = path.join(jobsDir, `${jobId}${ext}`);
+        const dest = path.join(archiveRetired, `${jobId}${ext}`);
+        if (fs.existsSync(src)) {
+          try {
+            fs.renameSync(src, dest);
+            moved++;
+          } catch {
+            try {
+              fs.unlinkSync(src);
+              deleted++;
+            } catch {
+              // skip
+            }
+          }
         }
       }
     }
+    const parts = [];
+    if (moved > 0) parts.push(`已移入 archive/retired/ ${moved} 个文件`);
+    if (deleted > 0) parts.push(`删除 ${deleted} 个（移入失败）`);
+    const message =
+      parts.length > 0
+        ? `${parts.join("，")}，主目录保留最近 ${body.keepLast} 条任务`
+        : "无需清理";
     return NextResponse.json({
       ok: true,
-      deleted,
+      deleted: moved + deleted,
+      moved,
       keepLast: body.keepLast,
-      message: deleted > 0 ? `已删除 ${deleted} 个文件，保留最近 ${body.keepLast} 条任务` : "无需删除",
+      message,
     });
   }
 

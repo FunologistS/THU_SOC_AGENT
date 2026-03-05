@@ -56,6 +56,10 @@ export async function GET() {
       description: "对当前主题下缺摘要的条目进行手填补录，保存后可参与后续步骤。",
     },
     {
+      area: "写作样例",
+      description: "可新增、转码、删减和重命名学术型和通俗型写作案例。",
+    },
+    {
       area: "文档目录",
       description: "可按主题和技能运行结果浏览文件，点击后在右侧预览。",
     },
