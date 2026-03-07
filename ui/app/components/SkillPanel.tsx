@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
-import { type JournalSearchParams, DISCIPLINES } from "@/components/LiteratureSearchPanel";
+import { type JournalSearchParams, FALLBACK_DISCIPLINES } from "@/components/LiteratureSearchPanel";
 import type { JobType } from "@/app/types";
 import type { TopicMeta } from "@/app/types";
 
@@ -13,6 +13,12 @@ function toSlug(s: string): string {
     .toLowerCase()
     .replace(/\s+/g, "_")
     .replace(/[^a-z0-9_-]/g, "");
+}
+
+/** 是否包含非英文字符（仅允许英文字母、数字、空格、下划线、连字符） */
+function hasNonEnglish(s: string): boolean {
+  if (!s.trim()) return false;
+  return /[^a-zA-Z0-9\s_\-]/.test(s);
 }
 
 /** 年份下拉：2026 在上 */
@@ -38,6 +44,33 @@ const EXTRA_RUNNING_LABELS: Record<string, string> = {
   upload_and_writing: "上传写作样本",
   transcribe_submit_and_writing: "转录并综述",
 };
+
+/** 稳定默认：始终保留，不随配置剔除；顺序为新模型在前 */
+const DEFAULT_OPENAI_MODELS = ["gpt-5.2"];
+const DEFAULT_ZHIPU_MODELS = ["glm-5", "glm-4.7-flash"];
+
+/** 解析 env 的逗号分隔模型列表，与默认合并：用户追加的排最前（新模型在上），再接默认且不重复 */
+function parseModelList(raw: string | undefined, defaults: string[]): string[] {
+  const fromEnv = !raw || !String(raw).trim()
+    ? []
+    : String(raw)
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+  const defaultSet = new Set(defaults);
+  const extra = fromEnv.filter((id) => !defaultSet.has(id));
+  return [...extra, ...defaults];
+}
+
+/** 模型 id → 展示名（未知的用「智谱/OpenAI + id」，智谱 id 首段大写为 GLM） */
+function modelDisplayName(id: string, kind: "openai" | "zhipu"): string {
+  const known: Record<string, string> =
+    kind === "openai"
+      ? { "gpt-5.2": "OpenAI GPT-5.2", gpt: "OpenAI GPT" }
+      : { "glm-4.7-flash": "智谱 GLM-4.7-Flash", "glm-5": "智谱 GLM-5" };
+  if (known[id]) return known[id];
+  return kind === "openai" ? `OpenAI ${id}` : `智谱 ${id.replace(/^glm/, "GLM")}`;
+}
 
 /** 各技能预估耗时（秒），仅作进度条参考；实际用时以「已用 X 秒」为准 */
 const SKILL_ESTIMATED_SECONDS: Record<SkillId, number> = {
@@ -79,6 +112,8 @@ export function SkillPanel({
   journalSearchDone = false,
   journalSearchExitCode,
   journalSearchProgress = 0,
+  journalSearchElapsedSec = 0,
+  journalSearchEstimatedSec = 180,
   onAbortJournalSearch,
   onDismissJournalSearchLog,
 }: {
@@ -106,7 +141,8 @@ export function SkillPanel({
     yearFrom?: number;
     yearTo?: number;
     searchMode?: "strict" | "relaxed";
-    instruction?: string;
+    searchTerms?: string[];
+    searchLogics?: ("and" | "or")[];
     abstractFallback?: boolean;
   }) => void;
   /** 技能真正开始运行（jobId 已设置）时调用，传入 skillId 用于滚动到该技能下的运行日志 */
@@ -121,6 +157,10 @@ export function SkillPanel({
   journalSearchDone?: boolean;
   journalSearchExitCode?: number;
   journalSearchProgress?: number;
+  /** 重新检索已用秒数（由页面每秒更新），用于展示预估/已用/进度 */
+  journalSearchElapsedSec?: number;
+  /** 重新检索预估耗时（秒），用于展示「预估约 X 分钟」 */
+  journalSearchEstimatedSec?: number;
   onAbortJournalSearch?: () => void;
   /** 用户点击「重新检索」运行日志框的关闭按钮时调用，用于收起该框 */
   onDismissJournalSearchLog?: () => void;
@@ -151,8 +191,12 @@ export function SkillPanel({
   const [pendingWritingStyle, setPendingWritingStyle] = useState<"zh" | "en" | "colloquial" | "none" | null>(null);
   const [pendingWritingPrompt, setPendingWritingPrompt] = useState<string>("");
   const [writingReviewPrompt, setWritingReviewPrompt] = useState("");
-  /** 荟萃分析/一键综述可选：gpt | 智谱 glm-4.7-flash | 智谱 glm-5 */
-  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
+  /** 荟萃分析/一键综述可选：gpt 或配置中的智谱模型 id（来自设置 OPENAI_MODELS / ZHIPU_MODELS） */
+  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<string>("glm-5");
+  /** UI 可选智谱模型列表（从设置 ZHIPU_MODELS 读取，空则用内置默认） */
+  const [zhipuModelsList, setZhipuModelsList] = useState<string[]>(DEFAULT_ZHIPU_MODELS);
+  /** UI 可选 OpenAI 模型列表（从设置 OPENAI_MODELS 读取，仅用于展示；实际「gpt」固定为 OpenAI） */
+  const [openaiModelsList, setOpenaiModelsList] = useState<string[]>(DEFAULT_OPENAI_MODELS);
   /** 主题聚类：auto=自动选k，fixed6=常规6类，custom=用户设定(2-20) */
   const [synthesizeKMode, setSynthesizeKMode] = useState<"auto" | "fixed6" | "custom">("auto");
   const [synthesizeKCustom, setSynthesizeKCustom] = useState(6);
@@ -166,8 +210,8 @@ export function SkillPanel({
   const [conceptSummaries, setConceptSummaries] = useState("");
   /** 一键综述：05_report 下输入文件名 */
   const [writingReportFile, setWritingReportFile] = useState("");
-  /** 一键综述模型：初始无选中，避免误以为已选；传 API 时未选则用 glm-4.7-flash */
-  const [writingModel, setWritingModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5" | "">("");
+  /** 一键综述模型：初始无选中；传 API 时未选则用列表第一项或 glm-4.7-flash */
+  const [writingModel, setWritingModel] = useState<string>("");
   /** 荟萃分析：运行前弹窗，在弹窗内选择模型与文档 */
   const [conceptSynthesizeModalOpen, setConceptSynthesizeModalOpen] = useState(false);
   const [conceptSynthesizePendingQualityOnly, setConceptSynthesizePendingQualityOnly] = useState(false);
@@ -178,8 +222,9 @@ export function SkillPanel({
   const [journalSearchConfirmOpen, setJournalSearchConfirmOpen] = useState(false);
   /** 弹窗打开时拉取的默认值（含 journalSourceIds），用于本次运行的参数 */
   const [journalSearchModalDefaults, setJournalSearchModalDefaults] = useState<JournalSearchParams | null>(null);
-  const [modalTopicInput, setModalTopicInput] = useState("");
-  const [modalInstructionInput, setModalInstructionInput] = useState("");
+  const [modalExtraTerms, setModalExtraTerms] = useState<{ logic: "and" | "or"; term: string }[]>([]);
+  const [modalExtraInput, setModalExtraInput] = useState("");
+  const [modalNextLogic, setModalNextLogic] = useState<"and" | "or">("or");
   const [modalYearFrom, setModalYearFrom] = useState("");
   const [modalYearTo, setModalYearTo] = useState("");
   const [modalSearchMode, setModalSearchMode] = useState<"strict" | "relaxed">("strict");
@@ -189,6 +234,21 @@ export function SkillPanel({
   /** 用于暂停运行：runOne 收到 jobId 后立即写入，避免 state 未更新时点击取消拿不到 id */
   const latestJobIdRef = useRef<string | null>(null);
   const { confirm: thuConfirm, confirmThree: thuConfirmThree } = useThUAlertConfirm();
+
+  /** 拉取设置中的可选模型列表（OPENAI_MODELS / ZHIPU_MODELS），供荟萃分析、一键综述选择 */
+  useEffect(() => {
+    fetch("/api/settings/env")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.env && typeof d.env === "object") {
+          const zhipu = parseModelList(d.env.ZHIPU_MODELS, DEFAULT_ZHIPU_MODELS);
+          const openai = parseModelList(d.env.OPENAI_MODELS, DEFAULT_OPENAI_MODELS);
+          setZhipuModelsList(zhipu);
+          setOpenaiModelsList(openai);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   /** 从 run 日志中解析 [FAILURE_REASON] 行，用于弹窗展示 */
   function parseFailureReason(logContent: string): string {
@@ -205,8 +265,12 @@ export function SkillPanel({
   const [modalPipelineTopic, setModalPipelineTopic] = useState("");
   /** 重新检索弹窗内「检索类型」说明 tooltip 是否显示 */
   const [journalSearchTypeTooltipVisible, setJournalSearchTypeTooltipVisible] = useState(false);
+  /** 弹窗内可选学科列表（来自 API） */
+  const [modalAvailableDisciplines, setModalAvailableDisciplines] = useState<{ id: string; label: string }[]>([]);
   /** 弹窗内选中的检索学科，与侧栏文献检索一致 */
   const [modalSelectedDisciplines, setModalSelectedDisciplines] = useState<string[]>([]);
+  /** 弹窗内选中的分区（Q1–Q4），可多选 */
+  const [modalSelectedQuartiles, setModalSelectedQuartiles] = useState<string[]>([]);
   /** 弹窗内根据学科拉取的期刊 source id 列表，用于运行检索 */
   const [modalDisciplineJournalIds, setModalDisciplineJournalIds] = useState<string[]>([]);
   const [modalDisciplinesLoading, setModalDisciplinesLoading] = useState(false);
@@ -222,17 +286,24 @@ export function SkillPanel({
     const def = getJournalSearchDefaults();
     setJournalSearchModalDefaults(def);
     if (def) {
-      setModalTopicInput(def.topicInput);
-      setModalInstructionInput(def.instructionInput);
+      if (def.searchTerms?.length && def.searchLogics?.length === def.searchTerms.length - 1) {
+        setModalExtraTerms(
+          def.searchTerms.slice(1).map((term, i) => ({ logic: (def.searchLogics?.[i] ?? "or") as "and" | "or", term }))
+        );
+      } else {
+        setModalExtraTerms([]);
+      }
       setModalYearFrom(def.yearFrom != null ? String(def.yearFrom) : "");
       setModalYearTo(def.yearTo != null ? String(def.yearTo) : "");
       setModalSearchMode(def.searchMode);
       setModalAbstractFallback(def.abstractFallback ?? false);
-      setModalSelectedDisciplines(def.selectedDisciplines?.length ? [...def.selectedDisciplines] : ["Sociology", "Anthropology", "Economics"]);
+      setModalSelectedDisciplines(def.selectedDisciplines?.length ? [...def.selectedDisciplines] : []);
+      setModalSelectedQuartiles(def.selectedQuartiles ?? []);
       setModalDisciplineJournalIds(def.journalSourceIds?.length ? [...def.journalSourceIds] : []);
     } else {
       setModalAbstractFallback(false);
-      setModalSelectedDisciplines(["Sociology", "Anthropology", "Economics"]);
+      setModalSelectedDisciplines([]);
+      setModalSelectedQuartiles([]);
       setModalDisciplineJournalIds([]);
     }
   }, [journalSearchConfirmOpen, topic, availableTopics, getJournalSearchDefaults]);
@@ -244,7 +315,20 @@ export function SkillPanel({
     }
   }, [writingReviewModalOpen]);
 
-  /** 弹窗内学科变更时拉取对应期刊列表 */
+  /** 打开弹窗或挂载时拉取可选学科列表 */
+  useEffect(() => {
+    if (!journalSearchConfirmOpen && modalAvailableDisciplines.length > 0) return;
+    fetch("/api/journals-by-discipline")
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.disciplines) && d.disciplines.length > 0) {
+          setModalAvailableDisciplines(d.disciplines.map((x: string) => ({ id: x, label: x })));
+        }
+      })
+      .catch(() => {});
+  }, [journalSearchConfirmOpen, modalAvailableDisciplines.length]);
+
+  /** 弹窗内学科/分区变更时拉取对应期刊列表 */
   useEffect(() => {
     if (!journalSearchConfirmOpen || modalSelectedDisciplines.length === 0) {
       setModalDisciplineJournalIds([]);
@@ -256,6 +340,8 @@ export function SkillPanel({
     setModalDisciplinesLoading(true);
     const params = new URLSearchParams();
     params.set("disciplines", modalSelectedDisciplines.join(","));
+    const validQuartiles = modalSelectedQuartiles.filter((q) => /^Q[1-4]$/.test(q));
+    if (validQuartiles.length > 0) params.set("quartile", validQuartiles.join(","));
     fetch(`/api/journals-by-discipline?${params}`)
       .then((r) => r.json())
       .then((d) => {
@@ -273,7 +359,7 @@ export function SkillPanel({
         if (myId !== modalDisciplinesRequestId.current) return;
         setModalDisciplinesLoading(false);
       });
-  }, [journalSearchConfirmOpen, modalSelectedDisciplines]);
+  }, [journalSearchConfirmOpen, modalSelectedDisciplines, modalSelectedQuartiles]);
 
   // 运行状态变化时通知父组件（用于返回启动页前确认；不在此处 cleanup 以便折叠侧栏后仍能正确提示）
   const running = !!(runningSkill || jobId);
@@ -305,8 +391,8 @@ export function SkillPanel({
     jobType: JobType,
     extraArgs?: string[],
     options?: {
-      conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5";
-      writingModel?: "gpt" | "glm-4.7-flash" | "glm-5";
+      conceptSynthesizeModel?: string;
+      writingModel?: string;
       qualityOnly?: boolean;
       writingStyle?: "zh" | "en" | "colloquial" | "none";
       writingPrompt?: string;
@@ -323,8 +409,8 @@ export function SkillPanel({
         jobType: string;
         topic: string;
         args?: string[];
-        conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5";
-        writingModel?: "gpt" | "glm-4.7-flash" | "glm-5";
+        conceptSynthesizeModel?: string;
+        writingModel?: string;
         qualityOnly?: boolean;
         writingStyle?: "zh" | "en" | "colloquial" | "none";
         writingPrompt?: string;
@@ -533,7 +619,7 @@ export function SkillPanel({
       return false;
     }
     const savedFileName = uploadData.savedFileName as string;
-    const ok = await runOne("transcribe_submit_and_writing", [uploadStyle ?? "academic", savedFileName], { writingModel: writingModel || "glm-4.7-flash" });
+    const ok = await runOne("transcribe_submit_and_writing", [uploadStyle ?? "academic", savedFileName], { writingModel: writingModel || zhipuModelsList[0] || "glm-4.7-flash" });
     if (ok) onJobComplete?.("transcribe_submit_and_writing");
     return ok;
   };
@@ -585,7 +671,7 @@ export function SkillPanel({
     setElapsedSec(0);
     setRunningSkill("writing_under_style");
     runOne("writing_under_style", undefined, {
-      writingModel: writingModel || "glm-4.7-flash",
+      writingModel: writingModel || zhipuModelsList[0] || "glm-4.7-flash",
       writingStyle: styleChoice,
       writingPrompt: promptToUse ?? undefined,
       writingReportFile: writingReportFile || undefined,
@@ -605,7 +691,7 @@ export function SkillPanel({
     <div ref={panelRef} className="space-y-3">
       {journalDataSourceLabel && (
         <p className="text-[11px] text-[var(--text-muted)] leading-snug">
-          当前数据源：OpenAlex 解析（Sociology, Anthropology, Economics的Q1期刊)。如需更改检索学科，请前往「新增检索」侧栏重新选择。
+          当前数据源：OpenAlex 解析期刊（学科与分区以侧栏选择为准）。如需更改检索学科或分区，请前往「新增检索」侧栏重新选择。
         </p>
       )}
       <div className="rounded-[var(--radius-md)] border border-[var(--border-soft)] bg-[var(--bg-sidebar)] px-3 py-2">
@@ -671,7 +757,9 @@ export function SkillPanel({
                       <div className="run-status-spinner h-6 w-6 flex-shrink-0 rounded-full border-2 border-[var(--thu-purple)] border-t-transparent" aria-hidden />
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-medium text-[var(--text)]">重新检索 · 正在运行</p>
-                        <p className="text-[11px] text-[var(--text-muted)]">进度 {Math.round(journalSearchProgress)}%</p>
+                        <p className="text-[11px] text-[var(--text-muted)]">
+                          预估约 {Math.round(journalSearchEstimatedSec / 60)} 分钟（仅供参考）· 已用 {journalSearchElapsedSec} 秒 · 进度 {Math.round(journalSearchProgress)}%
+                        </p>
                       </div>
                       {onAbortJournalSearch && (
                         <button type="button" onClick={onAbortJournalSearch} className="thu-modal-btn-secondary flex-shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-medium">
@@ -709,7 +797,8 @@ export function SkillPanel({
                 {journalSearchDone && (
                   <div className="mt-2 flex items-center gap-2 text-xs">
                     <span className={journalSearchExitCode === 0 ? "text-[var(--text)]" : "text-[var(--accent)]"}>{journalSearchExitCode === 0 ? "✓ 完成" : `退出 ${journalSearchExitCode}`}</span>
-                    {onJumpToOutputs && (
+                    {journalSearchElapsedSec > 0 && <span className="text-[var(--text-muted)]">总用时 {journalSearchElapsedSec} 秒</span>}
+                    {journalSearchExitCode === 0 && onJumpToOutputs && (
                       <button type="button" onClick={onJumpToOutputs} className="thu-title hover:underline">查看产出</button>
                     )}
                   </div>
@@ -771,7 +860,7 @@ export function SkillPanel({
                 {(done || lastCompletedSkillIdForLog === s.id) && (
                   <div className="mt-2 flex items-center gap-2 text-xs">
                     <span className={exitCode === 0 ? "text-[var(--text)]" : "text-[var(--accent)]"}>{exitCode === 0 ? "✓ 完成" : `退出 ${exitCode}`}</span>
-                    {onJumpToOutputs && <button type="button" onClick={onJumpToOutputs} className="thu-title hover:underline">查看产出</button>}
+                    {exitCode === 0 && onJumpToOutputs && <button type="button" onClick={onJumpToOutputs} className="thu-title hover:underline">查看产出</button>}
                   </div>
                 )}
               </div>
@@ -781,7 +870,8 @@ export function SkillPanel({
       </div>
       {abortConfirmOpen && jobId && (
         <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="abort-confirm-title" onClick={() => setAbortConfirmOpen(false)}>
-          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5" onClick={(e) => e.stopPropagation()}>
+          <div className="thu-modal-card relative mx-4 flex w-full max-w-md flex-col max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex-1 min-h-0 overflow-y-auto p-5">
             <button type="button" onClick={() => setAbortConfirmOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
@@ -829,16 +919,20 @@ export function SkillPanel({
                 确认取消
               </button>
             </div>
+            </div>
           </div>
         </div>
       )}
       {synthesizeModalOpen && (
         <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="synthesize-modal-title" onClick={() => setSynthesizeModalOpen(false)}>
-          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5" onClick={(e) => e.stopPropagation()}>
-            <button type="button" onClick={() => setSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            <h3 id="synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">荟萃分析</h3>
+          <div className="thu-modal-card relative mx-4 flex w-full max-w-md flex-col max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex-shrink-0 relative p-5 pb-0 pr-12">
+              <button type="button" onClick={() => setSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <h3 id="synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">荟萃分析</h3>
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto p-5 pt-3">
             <div className="mb-4 space-y-3">
               <div>
                 <label className="mb-1.5 block text-[11px] font-medium text-[var(--text-muted)]">聚类数</label>
@@ -898,33 +992,35 @@ export function SkillPanel({
                 确认运行
               </button>
             </div>
+            </div>
           </div>
         </div>
       )}
       {conceptSynthesizeModalOpen && (
         <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="concept-synthesize-modal-title" onClick={() => setConceptSynthesizeModalOpen(false)}>
-          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <button type="button" onClick={() => setConceptSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            <h3 id="concept-synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">文献简报</h3>
-            <p className="mb-3 text-sm text-[var(--text-muted)]">选择模型与输入文档后点击「确认运行」。</p>
+          <div className="thu-modal-card relative mx-4 flex w-full max-w-md flex-col max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex-shrink-0 relative p-5 pb-0 pr-12">
+              <button type="button" onClick={() => setConceptSynthesizeModalOpen(false)} className="thu-modal-close absolute right-4 top-4 p-1" aria-label="关闭">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <h3 id="concept-synthesize-modal-title" className="thu-modal-title mb-3 text-base pr-8">文献简报</h3>
+              <p className="mb-3 text-sm text-[var(--text-muted)]">选择模型与输入文档后点击「确认运行」。</p>
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto p-5 pt-3">
             <div className="mb-4 space-y-3">
               <div>
                 <label className="mb-1.5 block text-[11px] font-medium text-[var(--text-muted)]">选择模型</label>
                 <div className="flex flex-col gap-1.5">
                   <button type="button" onClick={() => setConceptSynthesizeModel("gpt")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${conceptSynthesizeModel === "gpt" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
                     <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai" />
-                    <span>OpenAI GPT-5.2</span>
+                    <span>{modelDisplayName(openaiModelsList[0] ?? "gpt-5.2", "openai")}</span>
                   </button>
-                  <button type="button" onClick={() => setConceptSynthesizeModel("glm-4.7-flash")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${conceptSynthesizeModel === "glm-4.7-flash" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
-                    <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
-                    <span>智谱 GLM-4.7-Flash</span>
-                  </button>
-                  <button type="button" onClick={() => setConceptSynthesizeModel("glm-5")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${conceptSynthesizeModel === "glm-5" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
-                    <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
-                    <span>智谱 GLM-5</span>
-                  </button>
+                  {zhipuModelsList.map((mid) => (
+                    <button key={mid} type="button" onClick={() => setConceptSynthesizeModel(mid)} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${conceptSynthesizeModel === mid ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                      <span>{modelDisplayName(mid, "zhipu")}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
               <div>
@@ -982,6 +1078,7 @@ export function SkillPanel({
                 确认运行
               </button>
             </div>
+            </div>
           </div>
         </div>
       )}
@@ -993,36 +1090,43 @@ export function SkillPanel({
           aria-labelledby="writing-failure-reason-title"
           onClick={() => setWritingFailureReason(null)}
         >
-          <div className="thu-modal-card relative mx-4 w-full max-w-lg p-5" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              onClick={() => setWritingFailureReason(null)}
-              className="thu-modal-close absolute right-4 top-4 p-1"
-              aria-label="关闭"
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            <h3 id="writing-failure-reason-title" className="thu-modal-title mb-3 text-base pr-8">综述生成未完成</h3>
-            <p className="mb-4 text-sm text-[var(--text)] leading-relaxed whitespace-pre-wrap">{writingFailureReason}</p>
-            <p className="mb-4 text-[11px] text-[var(--text-muted)]">失败说明已写入当前主题的「一键综述」产出文件顶部，可打开 06_review 下最新文档查看。</p>
-            <button
-              type="button"
-              onClick={() => setWritingFailureReason(null)}
-              className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
-            >
-              知道了
-            </button>
+          <div className="thu-modal-card relative mx-4 flex w-full max-w-lg flex-col max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex-shrink-0 relative p-5 pb-0 pr-12">
+              <button
+                type="button"
+                onClick={() => setWritingFailureReason(null)}
+                className="thu-modal-close absolute right-4 top-4 p-1"
+                aria-label="关闭"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <h3 id="writing-failure-reason-title" className="thu-modal-title mb-3 text-base pr-8">综述生成未完成</h3>
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto p-5 pt-3">
+              <p className="mb-4 text-sm text-[var(--text)] leading-relaxed whitespace-pre-wrap">{writingFailureReason}</p>
+              <p className="mb-4 text-[11px] text-[var(--text-muted)]">失败说明已写入当前主题的「一键综述」产出文件顶部，可打开 06_review 下最新文档查看。</p>
+              <button
+                type="button"
+                onClick={() => setWritingFailureReason(null)}
+                className="thu-modal-btn-primary rounded-lg px-3 py-2 text-sm font-medium"
+              >
+                知道了
+              </button>
+            </div>
           </div>
         </div>
       )}
       {journalSearchConfirmOpen && (
         <div className="thu-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="journal-search-confirm-title" onClick={() => setJournalSearchConfirmOpen(false)}>
-          <div className="thu-modal-card relative mx-4 w-full max-w-md p-5 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <button type="button" onClick={() => setJournalSearchConfirmOpen(false)} className="thu-modal-close absolute right-4 top-4 z-10 p-1 shrink-0" aria-label="关闭">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            <h3 id="journal-search-confirm-title" className="thu-modal-title mb-3 text-base pr-8">重新检索</h3>
-            <p className="mb-3 text-xs text-[var(--text-muted)]">可在下方调整检索选项（默认沿用当前设定），确认后直接运行。</p>
+          <div className="thu-modal-card relative mx-4 flex w-full max-w-md flex-col max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex-shrink-0 relative p-5 pb-0 pr-12">
+              <button type="button" onClick={() => setJournalSearchConfirmOpen(false)} className="thu-modal-close absolute right-4 top-4 z-10 p-1 shrink-0" aria-label="关闭">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <h3 id="journal-search-confirm-title" className="thu-modal-title mb-3 text-base pr-8">重新检索</h3>
+              <p className="mb-3 text-xs text-[var(--text-muted)]">可在下方调整检索选项（默认沿用当前设定），确认后直接运行。</p>
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto p-5 pt-3">
             <div className="mb-4 space-y-3">
               <label className="block">
                 <span className="text-[11px] text-[var(--text-muted)]">主题</span>
@@ -1060,9 +1164,35 @@ export function SkillPanel({
                 </button>
               )}
               <div className="space-y-2">
-                <span className="text-[11px] text-[var(--text-muted)]">检索学科</span>
-                <div className="flex flex-col gap-1.5">
-                  {DISCIPLINES.map((d) => (
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className="text-[11px] text-[var(--text-muted)] shrink-0">检索学科</span>
+                  <span className="inline-flex items-center gap-x-2 shrink-0">
+                    {(modalAvailableDisciplines.length ? modalAvailableDisciplines : FALLBACK_DISCIPLINES).length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setModalSelectedDisciplines(
+                            (modalAvailableDisciplines.length ? modalAvailableDisciplines : FALLBACK_DISCIPLINES).map((d) => d.id)
+                          )
+                        }
+                        className="text-[11px] font-medium text-[var(--thu-purple)] hover:underline whitespace-nowrap"
+                      >
+                        全选
+                      </button>
+                    )}
+                    {modalSelectedDisciplines.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setModalSelectedDisciplines([])}
+                        className="text-[11px] font-medium text-[var(--thu-purple)] hover:underline whitespace-nowrap"
+                      >
+                        一键清空
+                      </button>
+                    )}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1.5 max-h-36 overflow-y-auto">
+                  {(modalAvailableDisciplines.length ? modalAvailableDisciplines : FALLBACK_DISCIPLINES).map((d) => (
                     <label
                       key={d.id}
                       className="flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-3 py-2 text-sm transition-colors has-[:checked]:border-[var(--thu-purple)] has-[:checked]:bg-[var(--thu-purple-subtle)]"
@@ -1081,19 +1211,112 @@ export function SkillPanel({
                     </label>
                   ))}
                 </div>
-                <p className="text-[11px] text-[var(--text-muted)]">
-                  {modalDisciplinesLoading ? "加载中…" : `共 ${modalDisciplineJournalIds.length} 本期刊（已选学科）`}
-                </p>
+                <div className="space-y-1">
+                  <span className="text-[11px] text-[var(--text-muted)]">分区</span>
+                  <div className="flex flex-wrap gap-2">
+                    {(["Q1", "Q2", "Q3", "Q4"] as const).map((q) => (
+                      <button
+                        key={q}
+                        type="button"
+                        onClick={() =>
+                          setModalSelectedQuartiles((prev) =>
+                            prev.includes(q) ? prev.filter((x) => x !== q) : [...prev, q].sort()
+                          )
+                        }
+                        className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                          modalSelectedQuartiles.includes(q)
+                            ? "bg-[var(--thu-purple)] text-white"
+                            : "border border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--thu-purple)] hover:text-[var(--text)]"
+                        }`}
+                        aria-pressed={modalSelectedQuartiles.includes(q)}
+                        aria-label={`分区 ${q}`}
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-[var(--text-muted)]">可多选；不选则全部分区</p>
+                  <p className="text-[11px] text-[var(--text-muted)] whitespace-nowrap">
+                    {modalDisciplinesLoading ? "加载中…" : `已选 ${modalSelectedDisciplines.length} 个学科 · 共 ${modalDisciplineJournalIds.length} 本期刊`}
+                  </p>
+                </div>
+              </div>
+              <p className="text-[11px] text-[var(--text-muted)]">仅支持英文检索</p>
+              <div className="block">
+                <span className="text-[11px] text-[var(--text-muted)]">主要检索词</span>
+                <div className="mt-1 w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-muted)] px-3 py-2 text-sm text-[var(--text)]">
+                  {availableTopics.find((t) => t.topic === modalPipelineTopic)?.label ?? modalPipelineTopic.replace(/_/g, " ")}
+                </div>
+                <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">与上方选定的主题一致，不可修改；可仅通过下方「添加检索词」追加条件。</p>
               </div>
               <label className="block">
-                <span className="text-[11px] text-[var(--text-muted)]">提示词（可选）</span>
-                <textarea
-                  value={modalInstructionInput}
-                  onChange={(e) => setModalInstructionInput(e.target.value)}
-                  placeholder="例如：在选定期刊中搜索数字劳动相关、2024-2026年间的论文"
-                  rows={2}
-                  className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm resize-y"
-                />
+                <span className="text-[11px] text-[var(--text-muted)]">添加检索词</span>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <input
+                    type="text"
+                    value={modalExtraInput}
+                    onChange={(e) => setModalExtraInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        const t = modalExtraInput.trim();
+                        if (t) {
+                          setModalExtraTerms((prev) => [...prev, { logic: modalNextLogic, term: t }]);
+                          setModalExtraInput("");
+                        }
+                      }
+                    }}
+                    placeholder="输入后选逻辑并添加"
+                    className="thu-input min-w-0 flex-1 rounded-lg px-2.5 py-1.5 text-sm"
+                  />
+                  <select
+                    value={modalNextLogic}
+                    onChange={(e) => setModalNextLogic(e.target.value as "and" | "or")}
+                    className="shrink-0 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]"
+                    aria-label="与前一词的逻辑"
+                  >
+                    <option value="or">或</option>
+                    <option value="and">且</option>
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const t = modalExtraInput.trim();
+                      if (t) {
+                        setModalExtraTerms((prev) => [...prev, { logic: modalNextLogic, term: t }]);
+                        setModalExtraInput("");
+                      }
+                    }}
+                    className="thu-modal-btn-secondary shrink-0 rounded-lg px-2.5 py-1.5 text-sm font-medium"
+                  >
+                    添加
+                  </button>
+                </div>
+                {(modalExtraInput.trim() && hasNonEnglish(modalExtraInput)) || modalExtraTerms.some((e) => hasNonEnglish(e.term)) ? (
+                  <p className="mt-0.5 text-[11px] text-[var(--accent)]">请输入英文，单词间下划线和空格等价。</p>
+                ) : null}
+                {modalExtraTerms.length > 0 && (
+                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                    <span className="text-[11px] text-[var(--text-muted)]">已添加：</span>
+                    {modalExtraTerms.map((e, i) => (
+                      <span
+                        key={`${e.term}-${i}`}
+                        className="inline-flex items-center gap-1 rounded-md border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-0.5 text-xs"
+                      >
+                        <span className="text-[var(--text-muted)]">{e.logic === "and" ? "且" : "或"}</span>
+                        <span>{e.term}</span>
+                        <button
+                          type="button"
+                          onClick={() => setModalExtraTerms((prev) => prev.filter((_, j) => j !== i))}
+                          className="text-[var(--text-muted)] hover:text-[var(--text)]"
+                          aria-label={`移除 ${e.term}`}
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </label>
               <div className="flex gap-2">
                 <label className="flex-1">
@@ -1192,18 +1415,27 @@ export function SkillPanel({
               <button
                 type="button"
                 onClick={() => {
-                  const topicSlug = modalPipelineTopic || toSlug(modalInstructionInput) || topic || "digital_labor";
+                  const baseTerm = modalPipelineTopic ? modalPipelineTopic.replace(/_/g, " ").trim() : "";
+                  const terms = baseTerm
+                    ? [baseTerm, ...modalExtraTerms.map((e) => e.term.trim())].filter(Boolean)
+                    : modalExtraTerms.map((e) => e.term.trim()).filter(Boolean);
+                  const topicSlug =
+                    modalPipelineTopic ||
+                    (terms.length > 0 ? toSlug(terms[0]) : null) ||
+                    topic ||
+                    "digital_labor";
                   const from = modalYearFrom ? parseInt(modalYearFrom, 10) : undefined;
                   const to = modalYearTo ? parseInt(modalYearTo, 10) : undefined;
                   setJournalSearchConfirmOpen(false);
-                  const instr = (modalInstructionInput || "").trim() || undefined;
+                  const logics = modalExtraTerms.map((e) => e.logic);
                   onRunJournalSearch?.({
-                    topicSlug,
+                    topicSlug: topicSlug || "digital_labor",
                     journalSourceIds: modalDisciplineJournalIds,
                     yearFrom: from && !Number.isNaN(from) ? from : undefined,
                     yearTo: to && !Number.isNaN(to) ? to : undefined,
                     searchMode: modalSearchMode,
-                    instruction: instr,
+                    searchTerms: terms.length > 0 ? terms : undefined,
+                    searchLogics: logics.length > 0 ? logics : undefined,
                     abstractFallback: modalAbstractFallback,
                   });
                 }}
@@ -1212,6 +1444,7 @@ export function SkillPanel({
               >
                 确认并运行
               </button>
+            </div>
             </div>
           </div>
         </div>
@@ -1358,16 +1591,14 @@ export function SkillPanel({
                   <div className="flex flex-col gap-1.5">
                     <button type="button" onClick={() => setWritingModel("gpt")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "gpt" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
                       <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai" />
-                      <span>OpenAI GPT-5.2</span>
+                      <span>{modelDisplayName(openaiModelsList[0] ?? "gpt-5.2", "openai")}</span>
                     </button>
-                    <button type="button" onClick={() => setWritingModel("glm-4.7-flash")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-4.7-flash" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
-                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
-                      <span>智谱 GLM-4.7-Flash</span>
-                    </button>
-                    <button type="button" onClick={() => setWritingModel("glm-5")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-5" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
-                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
-                      <span>智谱 GLM-5</span>
-                    </button>
+                    {zhipuModelsList.map((mid) => (
+                      <button key={mid} type="button" onClick={() => setWritingModel(mid)} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === mid ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                        <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                        <span>{modelDisplayName(mid, "zhipu")}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
                 <div className="mb-3">
@@ -1400,16 +1631,14 @@ export function SkillPanel({
                   <div className="flex flex-col gap-1.5">
                     <button type="button" onClick={() => setWritingModel("gpt")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "gpt" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
                       <img src="/llm/chatgpt_logo.png" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--openai" />
-                      <span>OpenAI GPT-5.2</span>
+                      <span>{modelDisplayName(openaiModelsList[0] ?? "gpt-5.2", "openai")}</span>
                     </button>
-                    <button type="button" onClick={() => setWritingModel("glm-4.7-flash")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-4.7-flash" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
-                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
-                      <span>智谱 GLM-4.7-Flash</span>
-                    </button>
-                    <button type="button" onClick={() => setWritingModel("glm-5")} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === "glm-5" ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
-                      <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
-                      <span>智谱 GLM-5</span>
-                    </button>
+                    {zhipuModelsList.map((mid) => (
+                      <button key={mid} type="button" onClick={() => setWritingModel(mid)} className={`flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${writingModel === mid ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] text-[var(--text)]" : "border-[var(--border-soft)] bg-[var(--bg-card)] text-[var(--text-muted)] hover:border-[var(--border)]"}`}>
+                        <img src="/llm/zhipu_z_icon.svg" alt="" className="h-5 w-5 flex-shrink-0 object-contain llm-logo llm-logo--zhipu" />
+                        <span>{modelDisplayName(mid, "zhipu")}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
                 <div className="mb-3">
@@ -1441,7 +1670,7 @@ export function SkillPanel({
                   </div>
                   <div className="flex gap-2">
                     <dt className="text-[var(--text-muted)] shrink-0">模型：</dt>
-                    <dd className="text-[var(--text)]">{writingModel === "gpt" ? "OpenAI GPT-5.2" : writingModel === "glm-5" ? "智谱 GLM-5" : writingModel === "glm-4.7-flash" ? "智谱 GLM-4.7-Flash" : "未选择（将使用智谱 GLM-4.7-Flash）"}</dd>
+                    <dd className="text-[var(--text)]">{writingModel ? (writingModel === "gpt" ? modelDisplayName(openaiModelsList[0] ?? "gpt-5.2", "openai") : modelDisplayName(writingModel, "zhipu")) : `未选择（将使用${modelDisplayName(zhipuModelsList[0] ?? "glm-4.7-flash", "zhipu")}）`}</dd>
                   </div>
                   {writingReportFile && (
                     <div className="flex gap-2">

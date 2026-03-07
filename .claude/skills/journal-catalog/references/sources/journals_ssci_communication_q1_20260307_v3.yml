@@ -1,0 +1,1062 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Communication_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.232Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 94
+  count_unique_journals: 94
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: African Journalism Studies
+    short: AFR JOURNAL STUD
+    issn: "23743670"
+    eissn: "23743689"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.59"
+    oa_citable_pct: "21.67"
+    total_citations: "382"
+  - name: Argumentation
+    short: ARGUMENTATION
+    issn: 0920427X
+    eissn: "15728374"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.3"
+    jci: "1.26"
+    oa_citable_pct: "54.17"
+    total_citations: "746"
+  - name: Asian Journal of Communication
+    short: ASIAN J COMMUN
+    issn: "01292986"
+    eissn: "17420911"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.82"
+    oa_citable_pct: "1.18"
+    total_citations: "872"
+  - name: Chinese Journal of Communication
+    short: CHIN J COMMUN
+    issn: "17544750"
+    eissn: "17544769"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.88"
+    oa_citable_pct: "5.95"
+    total_citations: "877"
+  - name: Communication & Sport
+    short: COMMUN SPORT
+    issn: "21674795"
+    eissn: "21674809"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.07"
+    oa_citable_pct: "19.25"
+    total_citations: "1457"
+  - name: Communication and Critical-Cultural Studies
+    short: COMMUN CRIT-CULT STU
+    issn: "14791420"
+    eissn: "14794233"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.89"
+    oa_citable_pct: "1.16"
+    total_citations: "749"
+  - name: Communication Culture & Critique
+    short: COMMUN CULT CRIT
+    issn: "17539129"
+    eissn: "17539137"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.66"
+    oa_citable_pct: "20.18"
+    total_citations: "871"
+  - name: Communication Methods and Measures
+    short: COMMUN METHODS MEAS
+    issn: "19312458"
+    eissn: "19312466"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.7"
+    jci: "2.48"
+    oa_citable_pct: "34.62"
+    total_citations: "2410"
+  - name: COMMUNICATION MONOGRAPHS
+    short: COMMUN MONOGR
+    issn: "03637751"
+    eissn: "14795787"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "1.01"
+    oa_citable_pct: "10.67"
+    total_citations: "4264"
+  - name: COMMUNICATION RESEARCH
+    short: COMMUN RES
+    issn: "00936502"
+    eissn: "15523810"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.2"
+    jci: "1.96"
+    oa_citable_pct: "21.62"
+    total_citations: "6023"
+  - name: COMMUNICATION THEORY
+    short: COMMUN THEOR
+    issn: "10503293"
+    eissn: "14682885"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "6.2"
+    jci: "2.28"
+    oa_citable_pct: "46.3"
+    total_citations: "3815"
+  - name: Communications-European Journal of Communication Research
+    short: COMMUNICATIONS-GER
+    issn: "03412059"
+    eissn: "16134087"
+    site: ""
+    notes: WOS/JCR; DE GRUYTER MOUTON
+    quartile: Q1
+    jif: "2.3"
+    jci: "0.86"
+    oa_citable_pct: "38.26"
+    total_citations: "1066"
+  - name: Continuum-Journal of Media & Cultural Studies
+    short: CONTINUUM-J MEDIA CU
+    issn: "10304312"
+    eissn: "14693666"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.9"
+    jci: "1.03"
+    oa_citable_pct: "43.45"
+    total_citations: "1172"
+  - name: Convergence-The International Journal of Research into New Media
+      Technologies
+    short: CONVERGENCE-US
+    issn: "13548565"
+    eissn: "17487382"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.9"
+    jci: "1.28"
+    oa_citable_pct: "39.88"
+    total_citations: "2334"
+  - name: Critical Discourse Studies
+    short: CRIT DISCOURSE STUD
+    issn: "17405904"
+    eissn: "17405912"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.1"
+    jci: "1"
+    oa_citable_pct: "30.58"
+    total_citations: "1157"
+  - name: CRITICAL STUDIES IN MEDIA COMMUNICATION
+    short: CRIT STUD MEDIA COMM
+    issn: "15295036"
+    eissn: "14795809"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.56"
+    oa_citable_pct: "2.53"
+    total_citations: "978"
+  - name: Cyberpsychology-Journal of Psychosocial Research on Cyberspace
+    short: CYBERPSYCHOLOGY
+    issn: "18027962"
+    eissn: "18027962"
+    site: ""
+    notes: WOS/JCR; MASARYKOVA UNIV, FAC SOCIAL STUDIES
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.01"
+    oa_citable_pct: "94.37"
+    total_citations: "1159"
+  - name: Digital Journalism
+    short: DIGIT JOURNAL
+    issn: "21670811"
+    eissn: 2167082X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "5.4"
+    jci: "2.3"
+    oa_citable_pct: "32.55"
+    total_citations: "5347"
+  - name: Discourse & Communication
+    short: DISCOURSE COMMUN
+    issn: "17504813"
+    eissn: "17504821"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.2"
+    jci: "1"
+    oa_citable_pct: "25.19"
+    total_citations: "1087"
+  - name: DISCOURSE & SOCIETY
+    short: DISCOURSE SOC
+    issn: "09579265"
+    eissn: "14603624"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.12"
+    oa_citable_pct: "28.28"
+    total_citations: "2878"
+  - name: Discourse Context & Media
+    short: DISCOURSE CONTEXT ME
+    issn: "22116958"
+    eissn: "22116966"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.17"
+    oa_citable_pct: "45.92"
+    total_citations: "1150"
+  - name: DISCOURSE STUDIES
+    short: DISCOURSE STUD
+    issn: "14614456"
+    eissn: "14617080"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.89"
+    oa_citable_pct: "29.08"
+    total_citations: "1941"
+  - name: Environmental Communication-A Journal of Nature and Culture
+    short: ENVIRON COMMUN
+    issn: "17524032"
+    eissn: "17524040"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.1"
+    jci: "1.11"
+    oa_citable_pct: "25.93"
+    total_citations: "2929"
+  - name: EUROPEAN JOURNAL OF COMMUNICATION
+    short: EUR J COMMUN
+    issn: "02673231"
+    eissn: "14603705"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.9"
+    jci: "1.11"
+    oa_citable_pct: "45.36"
+    total_citations: "1963"
+  - name: Feminist Media Studies
+    short: FEM MEDIA STUD
+    issn: "14680777"
+    eissn: "14715902"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.87"
+    oa_citable_pct: "23.6"
+    total_citations: "3405"
+  - name: Games and Culture
+    short: GAMES CULT
+    issn: "15554120"
+    eissn: "15554139"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.6"
+    jci: "1.44"
+    oa_citable_pct: "31.28"
+    total_citations: "1633"
+  - name: HEALTH COMMUNICATION
+    short: HEALTH COMMUN
+    issn: "10410236"
+    eissn: "15327027"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.26"
+    oa_citable_pct: "8.85"
+    total_citations: "8824"
+  - name: HUMAN COMMUNICATION RESEARCH
+    short: HUM COMMUN RES
+    issn: "03603989"
+    eissn: "14682958"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.84"
+    oa_citable_pct: "20.35"
+    total_citations: "4591"
+  - name: IEEE TRANSACTIONS ON PROFESSIONAL COMMUNICATION
+    short: IEEE T PROF COMMUN
+    issn: "03611434"
+    eissn: "15581500"
+    site: ""
+    notes: WOS/JCR; IEEE-INST ELECTRICAL ELECTRONICS ENGINEERS INC
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.64"
+    oa_citable_pct: "4.82"
+    total_citations: "1111"
+  - name: Information Communication & Society
+    short: INFORM COMMUN SOC
+    issn: 1369118X
+    eissn: "14684462"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.68"
+    oa_citable_pct: "33.16"
+    total_citations: "9069"
+  - name: INFORMATION SOCIETY
+    short: INFORM SOC
+    issn: "01972243"
+    eissn: "10876537"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q1
+    jif: "3"
+    jci: "1.17"
+    oa_citable_pct: "30.88"
+    total_citations: "1666"
+  - name: Interaction Studies
+    short: INTERACT STUD
+    issn: "15720373"
+    eissn: "15720381"
+    site: ""
+    notes: WOS/JCR; JOHN BENJAMINS PUBLISHING CO
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.64"
+    oa_citable_pct: "18.6"
+    total_citations: "681"
+  - name: International Communication Gazette
+    short: INT COMMUN GAZ
+    issn: "17480485"
+    eissn: "17480493"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.65"
+    oa_citable_pct: "14.15"
+    total_citations: "1259"
+  - name: International Journal of Advertising
+    short: INT J ADVERT
+    issn: "02650487"
+    eissn: "17593948"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "5.9"
+    jci: "1.84"
+    oa_citable_pct: "12.5"
+    total_citations: "5191"
+  - name: International Journal of Business Communication
+    short: INT J BUS COMMUN
+    issn: "23294884"
+    eissn: "23294892"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.09"
+    oa_citable_pct: "7.96"
+    total_citations: "1225"
+  - name: International Journal of Communication
+    short: INT J COMMUN-US
+    issn: "19328036"
+    eissn: "19328036"
+    site: ""
+    notes: WOS/JCR; USC ANNENBERG PRESS
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.76"
+    oa_citable_pct: "0"
+    total_citations: "6299"
+  - name: INTERNATIONAL JOURNAL OF CONFLICT MANAGEMENT
+    short: INT J CONFL MANAGE
+    issn: "10444068"
+    eissn: "17588545"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.12"
+    oa_citable_pct: "4.48"
+    total_citations: "1473"
+  - name: International Journal of Mobile Communications
+    short: INT J MOB COMMUN
+    issn: 1470949X
+    eissn: "17415217"
+    site: ""
+    notes: WOS/JCR; INDERSCIENCE ENTERPRISES LTD
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.61"
+    oa_citable_pct: "0.81"
+    total_citations: "634"
+  - name: International Journal of Press-Politics
+    short: INT J PRESS/POLIT
+    issn: "19401612"
+    eissn: "19401620"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "4.3"
+    jci: "2"
+    oa_citable_pct: "31.69"
+    total_citations: "2666"
+  - name: INTERNATIONAL JOURNAL OF PUBLIC OPINION RESEARCH
+    short: INT J PUBLIC OPIN R
+    issn: "09542892"
+    eissn: "14716909"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.84"
+    oa_citable_pct: "20.86"
+    total_citations: "1805"
+  - name: JAVNOST-THE PUBLIC
+    short: JAVNOST-PUBLIC
+    issn: "13183222"
+    eissn: "18548377"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.84"
+    oa_citable_pct: "41.98"
+    total_citations: "822"
+  - name: JOURNAL OF ADVERTISING
+    short: J ADVERTISING
+    issn: "00913367"
+    eissn: "15577805"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "7"
+    jci: "1.91"
+    oa_citable_pct: "12.4"
+    total_citations: "7234"
+  - name: JOURNAL OF ADVERTISING RESEARCH
+    short: J ADVERTISING RES
+    issn: "00218499"
+    eissn: "17401909"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.4"
+    jci: "0.72"
+    oa_citable_pct: "1.39"
+    total_citations: "2669"
+  - name: Journal of African Media Studies
+    short: J AFR MEDIA STUD
+    issn: 2040199X
+    eissn: "17517974"
+    site: ""
+    notes: WOS/JCR; INTELLECT LTD
+    quartile: Q3
+    jif: "0.8"
+    jci: "1.04"
+    oa_citable_pct: "11.29"
+    total_citations: "177"
+  - name: JOURNAL OF APPLIED COMMUNICATION RESEARCH
+    short: J APPL COMMUN RES
+    issn: "00909882"
+    eissn: "14795752"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.77"
+    oa_citable_pct: "4.55"
+    total_citations: "1806"
+  - name: JOURNAL OF BROADCASTING & ELECTRONIC MEDIA
+    short: J BROADCAST ELECTRON
+    issn: "08838151"
+    eissn: "15506878"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.2"
+    jci: "2.77"
+    oa_citable_pct: "10.19"
+    total_citations: "2928"
+  - name: JOURNAL OF BUSINESS AND TECHNICAL COMMUNICATION
+    short: J BUS TECH COMMUN
+    issn: "10506519"
+    eissn: "15524574"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2"
+    jci: "0.66"
+    oa_citable_pct: "4.17"
+    total_citations: "782"
+  - name: Journal of Children and Media
+    short: J CHILD MEDIA
+    issn: "17482798"
+    eissn: "17482801"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.1"
+    jci: "1.09"
+    oa_citable_pct: "18.85"
+    total_citations: "1220"
+  - name: JOURNAL OF COMMUNICATION
+    short: J COMMUN
+    issn: "00219916"
+    eissn: "14602466"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "5.5"
+    jci: "2.67"
+    oa_citable_pct: "27.2"
+    total_citations: "10234"
+  - name: Journal of Computer-Mediated Communication
+    short: J COMPUT-MEDIAT COMM
+    issn: "10836101"
+    eissn: "10836101"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "5.7"
+    jci: "2.2"
+    oa_citable_pct: "100"
+    total_citations: "5722"
+  - name: JOURNAL OF HEALTH COMMUNICATION
+    short: J HEALTH COMMUN
+    issn: "10810730"
+    eissn: "10870415"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.09"
+    oa_citable_pct: "14.45"
+    total_citations: "5852"
+  - name: Journal of Information Technology & Politics
+    short: J INF TECHNOL POLITI
+    issn: "19331681"
+    eissn: 1933169X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.18"
+    oa_citable_pct: "22.22"
+    total_citations: "1149"
+  - name: JOURNAL OF LANGUAGE AND SOCIAL PSYCHOLOGY
+    short: J LANG SOC PSYCHOL
+    issn: 0261927X
+    eissn: "15526526"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.3"
+    jci: "1.02"
+    oa_citable_pct: "24.42"
+    total_citations: "2615"
+  - name: JOURNAL OF MEDIA ECONOMICS
+    short: J MEDIA ECON
+    issn: "08997764"
+    eissn: "15327736"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.41"
+    oa_citable_pct: "4.35"
+    total_citations: "242"
+  - name: Journal of Media Ethics
+    short: J MEDIA ETHICS
+    issn: "23736992"
+    eissn: 2373700X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.45"
+    oa_citable_pct: "8.47"
+    total_citations: "504"
+  - name: Journal of Media Psychology-Theories Methods and Applications
+    short: J MEDIA PSYCHOL-GER
+    issn: "18641105"
+    eissn: "21512388"
+    site: ""
+    notes: WOS/JCR; HOGREFE PUBLISHING CORP
+    quartile: Q1
+    jif: "2.4"
+    jci: "0.9"
+    oa_citable_pct: "10.57"
+    total_citations: "981"
+  - name: Journal of Public Relations Research
+    short: J PUBLIC RELAT RES
+    issn: 1062726X
+    eissn: 1532754X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.68"
+    oa_citable_pct: "5.95"
+    total_citations: "1756"
+  - name: JOURNAL OF SOCIAL AND PERSONAL RELATIONSHIPS
+    short: J SOC PERS RELAT
+    issn: "02654075"
+    eissn: "14603608"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.3"
+    jci: "1"
+    oa_citable_pct: "24.85"
+    total_citations: "6671"
+  - name: Journalism
+    short: JOURNALISM
+    issn: "14648849"
+    eissn: "17413001"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.23"
+    oa_citable_pct: "33.92"
+    total_citations: "4980"
+  - name: JOURNALISM & MASS COMMUNICATION QUARTERLY
+    short: J MASS COMMUN Q
+    issn: "10776990"
+    eissn: 2161430X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.41"
+    oa_citable_pct: "16.56"
+    total_citations: "3595"
+  - name: Journalism Practice
+    short: JOURNAL PRACT
+    issn: "17512786"
+    eissn: "17512794"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2"
+    jci: "1.01"
+    oa_citable_pct: "20.6"
+    total_citations: "3424"
+  - name: Journalism Studies
+    short: JOURNALISM STUD
+    issn: 1461670X
+    eissn: "14699699"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.9"
+    jci: "1.43"
+    oa_citable_pct: "32.62"
+    total_citations: "4860"
+  - name: LANGUAGE & COMMUNICATION
+    short: LANG COMMUN
+    issn: "02715309"
+    eissn: "18733395"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.74"
+    oa_citable_pct: "43.53"
+    total_citations: "1779"
+  - name: Management Communication Quarterly
+    short: MANAGE COMMUN Q
+    issn: "08933189"
+    eissn: "15526798"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.4"
+    jci: "0.82"
+    oa_citable_pct: "15.15"
+    total_citations: "1848"
+  - name: Mass Communication and Society
+    short: MASS COMMUN SOC
+    issn: "15205436"
+    eissn: "15327825"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.32"
+    oa_citable_pct: "23.81"
+    total_citations: "2619"
+  - name: Media and Communication
+    short: MEDIA COMMUN-LISBON
+    issn: "21832439"
+    eissn: "21832439"
+    site: ""
+    notes: WOS/JCR; COGITATIO PRESS
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.45"
+    oa_citable_pct: "98.87"
+    total_citations: "2469"
+  - name: MEDIA CULTURE & SOCIETY
+    short: MEDIA CULT SOC
+    issn: "01634437"
+    eissn: "14603675"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.55"
+    oa_citable_pct: "37.12"
+    total_citations: "4391"
+  - name: Media International Australia
+    short: MEDIA INT AUST
+    issn: 1329878X
+    eissn: 2200467X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.4"
+    jci: "0.87"
+    oa_citable_pct: "40.56"
+    total_citations: "1316"
+  - name: MEDIA PSYCHOLOGY
+    short: MEDIA PSYCHOL
+    issn: "15213269"
+    eissn: 1532785X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.6"
+    jci: "2.75"
+    oa_citable_pct: "15.04"
+    total_citations: "3369"
+  - name: Mobile Media & Communication
+    short: MOB MEDIA COMMUN
+    issn: "20501579"
+    eissn: "20501587"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.8"
+    jci: "1.24"
+    oa_citable_pct: "25.77"
+    total_citations: "1064"
+  - name: NARRATIVE INQUIRY
+    short: NARRAT INQ
+    issn: "13876740"
+    eissn: "15699935"
+    site: ""
+    notes: WOS/JCR; JOHN BENJAMINS PUBLISHING CO
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.74"
+    oa_citable_pct: "13.04"
+    total_citations: "613"
+  - name: NEW MEDIA & SOCIETY
+    short: NEW MEDIA SOC
+    issn: "14614448"
+    eissn: "14617315"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "4.3"
+    jci: "1.99"
+    oa_citable_pct: "41.75"
+    total_citations: "15253"
+  - name: PERSONAL RELATIONSHIPS
+    short: PERS RELATIONSHIP
+    issn: "13504126"
+    eissn: "14756811"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.8"
+    oa_citable_pct: "37.18"
+    total_citations: "3004"
+  - name: Policy and Internet
+    short: POLICY INTERNET
+    issn: "19442866"
+    eissn: "19442866"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.73"
+    oa_citable_pct: "60.8"
+    total_citations: "1348"
+  - name: POLITICAL COMMUNICATION
+    short: POLIT COMMUN
+    issn: "10584609"
+    eissn: "10917675"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q1
+    jif: "5.1"
+    jci: "2.51"
+    oa_citable_pct: "27.61"
+    total_citations: "4004"
+  - name: Psychology of Popular Media
+    short: PSYCHOL POP MEDIA
+    issn: "26896567"
+    eissn: "26896575"
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.85"
+    oa_citable_pct: "6.52"
+    total_citations: "701"
+  - name: PUBLIC OPINION QUARTERLY
+    short: PUBLIC OPIN QUART
+    issn: 0033362X
+    eissn: "15375331"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.44"
+    oa_citable_pct: "21.28"
+    total_citations: "7182"
+  - name: PUBLIC RELATIONS REVIEW
+    short: PUBLIC RELAT REV
+    issn: "03638111"
+    eissn: "18734537"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.26"
+    oa_citable_pct: "13.91"
+    total_citations: "5622"
+  - name: PUBLIC UNDERSTANDING OF SCIENCE
+    short: PUBLIC UNDERST SCI
+    issn: "09636625"
+    eissn: "13616609"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.3"
+    jci: "2.27"
+    oa_citable_pct: "34.85"
+    total_citations: "3998"
+  - name: QUARTERLY JOURNAL OF SPEECH
+    short: Q J SPEECH
+    issn: "00335630"
+    eissn: "14795779"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.57"
+    oa_citable_pct: "4.12"
+    total_citations: "1274"
+  - name: RESEARCH ON LANGUAGE AND SOCIAL INTERACTION
+    short: RES LANG SOC INTERAC
+    issn: "08351813"
+    eissn: "15327973"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.1"
+    jci: "1.38"
+    oa_citable_pct: "53.7"
+    total_citations: "2325"
+  - name: Rhetoric Society Quarterly
+    short: RHETOR SOC Q
+    issn: "02773945"
+    eissn: 1930322X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.6"
+    jci: "1.59"
+    oa_citable_pct: "6.48"
+    total_citations: "494"
+  - name: SCIENCE COMMUNICATION
+    short: SCI COMMUN
+    issn: "10755470"
+    eissn: "15528545"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "4.1"
+    jci: "1.69"
+    oa_citable_pct: "23.4"
+    total_citations: "2730"
+  - name: Signs and Society
+    short: SIGNS SOC
+    issn: "23264489"
+    eissn: "23264497"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.93"
+    oa_citable_pct: "87.23"
+    total_citations: "238"
+  - name: Social Media + Society
+    short: SOC MEDIA SOC
+    issn: "20563051"
+    eissn: "20563051"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "4.9"
+    jci: "2.47"
+    oa_citable_pct: "98.75"
+    total_citations: "7355"
+  - name: Social Semiotics
+    short: SOC SEMIOT
+    issn: "10350330"
+    eissn: "14701219"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.2"
+    jci: "1.32"
+    oa_citable_pct: "19.27"
+    total_citations: "1250"
+  - name: TECHNICAL COMMUNICATION
+    short: TECH COMMUN-STC
+    issn: "00493155"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SOC TECHNICAL COMMUNICATION
+    quartile: Q1
+    jif: "2.3"
+    jci: "0.54"
+    oa_citable_pct: "0"
+    total_citations: "714"
+  - name: TELECOMMUNICATIONS POLICY
+    short: TELECOMMUN POLICY
+    issn: "03085961"
+    eissn: "18793258"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "6.4"
+    jci: "2.3"
+    oa_citable_pct: "27.53"
+    total_citations: "5212"
+  - name: Television & New Media
+    short: TELEV NEW MEDIA
+    issn: "15274764"
+    eissn: "15528316"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.9"
+    jci: "2.65"
+    oa_citable_pct: "22.52"
+    total_citations: "1671"
+  - name: Text & Talk
+    short: TEXT TALK
+    issn: "18607330"
+    eissn: "18607349"
+    site: ""
+    notes: WOS/JCR; DE GRUYTER MOUTON
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.58"
+    oa_citable_pct: "20.35"
+    total_citations: "841"
+  - name: Tijdschrift voor Communicatiewetenschap
+    short: TIJDSCHR COMMUNWET
+    issn: "13846930"
+    eissn: "18757286"
+    site: ""
+    notes: WOS/JCR; AMSTERDAM UNIV PRESS
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.14"
+    oa_citable_pct: "39.66"
+    total_citations: "44"
+  - name: Translator
+    short: TRANSLATOR
+    issn: "13556509"
+    eissn: "17570409"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.48"
+    oa_citable_pct: "26.51"
+    total_citations: "623"
+  - name: Visual Communication
+    short: VISUAL COMMUN-US
+    issn: "14703572"
+    eissn: "17413214"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.57"
+    oa_citable_pct: "36.28"
+    total_citations: "875"
+  - name: WRITTEN COMMUNICATION
+    short: WRIT COMMUN
+    issn: "07410883"
+    eissn: "15528472"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.2"
+    jci: "1.06"
+    oa_citable_pct: "29.27"
+    total_citations: "1377"

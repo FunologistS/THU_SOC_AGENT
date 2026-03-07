@@ -1,0 +1,973 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Area_and_Asian_Studies_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.221Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 86
+  count_unique_journals: 86
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: AFRICA
+    short: AFRICA
+    issn: "00019720"
+    eissn: "17500184"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.1"
+    jci: "0.92"
+    oa_citable_pct: "38.04"
+    total_citations: "1511"
+  - name: Africa Spectrum
+    short: AFR SPECTR
+    issn: "00020397"
+    eissn: "18686869"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.2"
+    jci: "2.23"
+    oa_citable_pct: "100"
+    total_citations: "485"
+  - name: AFRICAN AFFAIRS
+    short: AFR AFFAIRS
+    issn: "00019909"
+    eissn: "14682621"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "2.2"
+    jci: "1.85"
+    oa_citable_pct: "47.89"
+    total_citations: "1942"
+  - name: African and Asian Studies
+    short: AFR ASIAN STUD
+    issn: "15692094"
+    eissn: "15692108"
+    site: ""
+    notes: WOS/JCR; BRILL
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.34"
+    oa_citable_pct: "5.13"
+    total_citations: "116"
+  - name: AFRICAN STUDIES
+    short: AFR STUD-UK
+    issn: "00020184"
+    eissn: "14692872"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.9"
+    jci: "1.05"
+    oa_citable_pct: "14.29"
+    total_citations: "511"
+  - name: African Studies Review
+    short: AFR STUD REV
+    issn: "00020206"
+    eissn: "15552462"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.8"
+    jci: "1.05"
+    oa_citable_pct: "53.85"
+    total_citations: "1214"
+  - name: Asia & the Pacific Policy Studies
+    short: ASIA PAC POLICY STUD
+    issn: "20502680"
+    eissn: "20502680"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "0.8"
+    jci: "1.58"
+    oa_citable_pct: "95.83"
+    total_citations: "486"
+  - name: Asia Pacific Viewpoint
+    short: ASIA PAC VIEWP
+    issn: "13607456"
+    eissn: "14678373"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "1.5"
+    jci: "1.46"
+    oa_citable_pct: "37.23"
+    total_citations: "811"
+  - name: Asian Journal of Social Science
+    short: ASIAN J SOC SCI
+    issn: "15684849"
+    eissn: "15685314"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "1.2"
+    jci: "0.8"
+    oa_citable_pct: "4.88"
+    total_citations: "547"
+  - name: Asian Studies Review
+    short: ASIAN STUD REV
+    issn: "10357823"
+    eissn: "14678403"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.1"
+    jci: "1.89"
+    oa_citable_pct: "15"
+    total_citations: "815"
+  - name: ASIAN SURVEY
+    short: ASIAN SURV
+    issn: "00044687"
+    eissn: 1533838X
+    site: ""
+    notes: WOS/JCR; UNIV CALIFORNIA PRESS
+    quartile: Q1
+    jif: "1.2"
+    jci: "1.52"
+    oa_citable_pct: "2.16"
+    total_citations: "1636"
+  - name: Bilig
+    short: BILIG
+    issn: "13010549"
+    eissn: "13010549"
+    site: ""
+    notes: WOS/JCR; AHMET YESEVI UNIV
+    quartile: Q3
+    jif: "0.4"
+    jci: "0.3"
+    oa_citable_pct: "55.81"
+    total_citations: "170"
+  - name: British Journal of Middle Eastern Studies
+    short: BRIT J MIDDLE E STUD
+    issn: "13530194"
+    eissn: "14693542"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.6"
+    jci: "1.39"
+    oa_citable_pct: "30.95"
+    total_citations: "753"
+  - name: BULLETIN OF INDONESIAN ECONOMIC STUDIES
+    short: B INDONES ECON STUD
+    issn: "00074918"
+    eissn: "14727234"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.3"
+    jci: "1.78"
+    oa_citable_pct: "12.82"
+    total_citations: "568"
+  - name: Bulletin of Latin American Research
+    short: B LAT AM RES
+    issn: "02613050"
+    eissn: "14709856"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.9"
+    oa_citable_pct: "41.84"
+    total_citations: "683"
+  - name: Central Asian Survey
+    short: CENT ASIAN SURV
+    issn: "02634937"
+    eissn: "14653354"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.8"
+    jci: "1.73"
+    oa_citable_pct: "23.85"
+    total_citations: "850"
+  - name: China Information
+    short: CHINA INFORM
+    issn: 0920203X
+    eissn: 1741590X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "1.7"
+    jci: "2.49"
+    oa_citable_pct: "23.91"
+    total_citations: "504"
+  - name: CHINA JOURNAL
+    short: CHINA J
+    issn: "13249347"
+    eissn: "18358535"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "3.4"
+    jci: "4.34"
+    oa_citable_pct: "0"
+    total_citations: "942"
+  - name: China Perspectives
+    short: CHINA PERSPECT
+    issn: "20703449"
+    eissn: "19964617"
+    site: ""
+    notes: WOS/JCR; FRENCH CENTRE RESEARCH CONTEMPORARY CHINA
+    quartile: Q2
+    jif: "0.9"
+    jci: "1.02"
+    oa_citable_pct: "0"
+    total_citations: "554"
+  - name: CHINA QUARTERLY
+    short: CHINA QUART
+    issn: "03057410"
+    eissn: "14682648"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "2.5"
+    jci: "2.8"
+    oa_citable_pct: "61.21"
+    total_citations: "3888"
+  - name: China Review-An Interdisciplinary Journal on Greater China
+    short: CHINA REV
+    issn: "16802012"
+    eissn: "16802012"
+    site: ""
+    notes: WOS/JCR; CHINESE UNIV PRESS
+    quartile: Q1
+    jif: "1.4"
+    jci: "1.77"
+    oa_citable_pct: "0"
+    total_citations: "686"
+  - name: China-An International Journal
+    short: CHINA INT J
+    issn: "02197472"
+    eissn: "02198614"
+    site: ""
+    notes: WOS/JCR; NUS PRESS PTE LTD
+    quartile: Q2
+    jif: "0.7"
+    jci: "0.8"
+    oa_citable_pct: "0"
+    total_citations: "403"
+  - name: CONTEMPORARY PACIFIC
+    short: CONTEMP PACIFIC
+    issn: 1043898X
+    eissn: "15279464"
+    site: ""
+    notes: WOS/JCR; UNIV HAWAII PRESS
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.41"
+    oa_citable_pct: "0"
+    total_citations: "561"
+  - name: Contemporary South Asia
+    short: CONTEMP SOUTH ASIA
+    issn: "09584935"
+    eissn: 1469364X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.8"
+    jci: "1.43"
+    oa_citable_pct: "27.27"
+    total_citations: "578"
+  - name: Contemporary Southeast Asia
+    short: CONTEMP SE ASIA
+    issn: 0129797X
+    eissn: 1793284X
+    site: ""
+    notes: WOS/JCR; INST SOUTHEAST ASIAN STUDIES-ISEAS
+    quartile: Q2
+    jif: "0.9"
+    jci: "0.61"
+    oa_citable_pct: "0"
+    total_citations: "592"
+  - name: CRITICAL ASIAN STUDIES
+    short: CRIT ASIAN STUD
+    issn: "14672715"
+    eissn: "14726033"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.4"
+    jci: "1.88"
+    oa_citable_pct: "19.35"
+    total_citations: "976"
+  - name: East Asian Science Technology and Society-An International Journal
+    short: E ASIAN SCI TECH SOC
+    issn: "18752160"
+    eissn: "18752152"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.79"
+    oa_citable_pct: "43.08"
+    total_citations: "300"
+  - name: East European Politics
+    short: EAST EUR POLITICS
+    issn: "21599165"
+    eissn: "21599173"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.98"
+    oa_citable_pct: "43.48"
+    total_citations: "993"
+  - name: EAST EUROPEAN POLITICS AND SOCIETIES
+    short: E EUR POLIT SOC
+    issn: "08883254"
+    eissn: "15338371"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1"
+    jci: "0.64"
+    oa_citable_pct: "22.63"
+    total_citations: "982"
+  - name: ECONOMIC DEVELOPMENT AND CULTURAL CHANGE
+    short: ECON DEV CULT CHANGE
+    issn: "00130079"
+    eissn: "15392988"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "1.8"
+    jci: "1.28"
+    oa_citable_pct: "4.51"
+    total_citations: "2872"
+  - name: EURASIAN GEOGRAPHY AND ECONOMICS
+    short: EURASIAN GEOGR ECON
+    issn: "15387216"
+    eissn: "19382863"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.2"
+    jci: "1.56"
+    oa_citable_pct: "27"
+    total_citations: "1356"
+  - name: EUROPE-ASIA STUDIES
+    short: EUROPE-ASIA STUD
+    issn: "09668136"
+    eissn: "14653427"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.2"
+    jci: "0.8"
+    oa_citable_pct: "24.74"
+    total_citations: "1952"
+  - name: European Review
+    short: EUR REV
+    issn: "10627987"
+    eissn: "14740575"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.71"
+    oa_citable_pct: "59.38"
+    total_citations: "682"
+  - name: European Security
+    short: EUR SECUR
+    issn: "09662839"
+    eissn: "17461545"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.98"
+    oa_citable_pct: "57.28"
+    total_citations: "934"
+  - name: GERMAN STUDIES REVIEW
+    short: GER STUD REV
+    issn: "01497952"
+    eissn: "21648646"
+    site: ""
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+    quartile: Q3
+    jif: "0.3"
+    jci: "0.32"
+    oa_citable_pct: "1.49"
+    total_citations: "196"
+  - name: IDS BULLETIN-INSTITUTE OF DEVELOPMENT STUDIES
+    short: IDS BULL-I DEV STUD
+    issn: "02655012"
+    eissn: "17595436"
+    site: ""
+    notes: WOS/JCR; INST DEVELOPMENT STUDIES
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.41"
+    oa_citable_pct: "86.42"
+    total_citations: "1137"
+  - name: India Review
+    short: INDIA REV
+    issn: "14736489"
+    eissn: "15573036"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.64"
+    oa_citable_pct: "11.11"
+    total_citations: "248"
+  - name: INTERNATIONAL JOURNAL OF MIDDLE EAST STUDIES
+    short: INT J MIDDLE E STUD
+    issn: "00207438"
+    eissn: "14716380"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.4"
+    jci: "1.11"
+    oa_citable_pct: "72.16"
+    total_citations: "1715"
+  - name: Iranian Studies
+    short: IRAN STUD-UK
+    issn: "00210862"
+    eissn: "14754819"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.9"
+    jci: "1.22"
+    oa_citable_pct: "52.81"
+    total_citations: "744"
+  - name: Israel Affairs
+    short: ISR AFF
+    issn: "13537121"
+    eissn: "17439086"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.6"
+    oa_citable_pct: "23.12"
+    total_citations: "442"
+  - name: JOURNAL OF ASIAN AND AFRICAN STUDIES
+    short: J ASIAN AFR STUD
+    issn: "00219096"
+    eissn: "17452538"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "0.9"
+    jci: "1.18"
+    oa_citable_pct: "14.45"
+    total_citations: "1448"
+  - name: Journal of Asian Public Policy
+    short: J ASIAN PUBLIC POLIC
+    issn: "17516234"
+    eissn: "17516242"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.1"
+    jci: "1.7"
+    oa_citable_pct: "7.63"
+    total_citations: "526"
+  - name: JOURNAL OF ASIAN STUDIES
+    short: J ASIAN STUD
+    issn: "00219118"
+    eissn: "17520401"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    quartile: Q2
+    jif: "0.8"
+    jci: "2.3"
+    oa_citable_pct: "1.43"
+    total_citations: "1769"
+  - name: Journal of Australian Studies
+    short: J AUST STUD
+    issn: "14443058"
+    eissn: "18356419"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.85"
+    oa_citable_pct: "42.31"
+    total_citations: "506"
+  - name: Journal of Balkan and Near Eastern Studies
+    short: J BALKAN NEAR E STUD
+    issn: "19448953"
+    eissn: "19448961"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.1"
+    jci: "1.2"
+    oa_citable_pct: "8.7"
+    total_citations: "618"
+  - name: JOURNAL OF BALTIC STUDIES
+    short: J BALTIC STUD
+    issn: "01629778"
+    eissn: "17517877"
+    site: ""
+    notes: WOS/JCR; ASSOC ADVANCEMENT BALTIC STUDIES INC
+    quartile: Q3
+    jif: "0.5"
+    jci: "1"
+    oa_citable_pct: "8.13"
+    total_citations: "385"
+  - name: Journal of Chinese Political Science
+    short: J CHIN POLIT SCI
+    issn: "10806954"
+    eissn: "18746357"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3.5"
+    jci: "3.32"
+    oa_citable_pct: "13.83"
+    total_citations: "1028"
+  - name: JOURNAL OF CONTEMPORARY ASIA
+    short: J CONTEMP ASIA
+    issn: "00472336"
+    eissn: "17527554"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.8"
+    jci: "2.28"
+    oa_citable_pct: "18.42"
+    total_citations: "1373"
+  - name: Journal of Contemporary China
+    short: J CONTEMP CHINA
+    issn: "10670564"
+    eissn: "14699400"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.4"
+    jci: "2.69"
+    oa_citable_pct: "14.36"
+    total_citations: "2654"
+  - name: Journal of Contemporary European Studies
+    short: J CONTEMP EUR STUD
+    issn: "14782804"
+    eissn: "14782790"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.8"
+    jci: "1.17"
+    oa_citable_pct: "26.43"
+    total_citations: "861"
+  - name: Journal of Current Southeast Asian Affairs
+    short: J CURR SE ASIAN AFF
+    issn: "18681034"
+    eissn: "18684882"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "1.7"
+    jci: "1.59"
+    oa_citable_pct: "98.51"
+    total_citations: "422"
+  - name: Journal of East Asian Studies
+    short: J EAST ASIAN STUD
+    issn: "15982408"
+    eissn: "22346643"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.6"
+    jci: "1.18"
+    oa_citable_pct: "50.79"
+    total_citations: "509"
+  - name: Journal of Eastern African Studies
+    short: J EAST AFR STUD
+    issn: "17531055"
+    eissn: "17531063"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.71"
+    oa_citable_pct: "40"
+    total_citations: "892"
+  - name: JOURNAL OF JAPANESE STUDIES
+    short: J JPN STUD
+    issn: "00956848"
+    eissn: "15494721"
+    site: ""
+    notes: WOS/JCR; SOC JAPANESE STUD
+    quartile: Q3
+    jif: "0.4"
+    jci: "0.61"
+    oa_citable_pct: "0"
+    total_citations: "242"
+  - name: JOURNAL OF LATIN AMERICAN STUDIES
+    short: J LAT AM STUD
+    issn: 0022216X
+    eissn: 1469767X
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.9"
+    jci: "1.32"
+    oa_citable_pct: "40.32"
+    total_citations: "1044"
+  - name: JOURNAL OF MODERN AFRICAN STUDIES
+    short: J MOD AFR STUD
+    issn: 0022278X
+    eissn: "14697777"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.1"
+    jci: "1.28"
+    oa_citable_pct: "60.34"
+    total_citations: "1446"
+  - name: JOURNAL OF PALESTINE STUDIES
+    short: J PALESTINE STUD
+    issn: 0377919X
+    eissn: "15338614"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.3"
+    jci: "1.43"
+    oa_citable_pct: "17.44"
+    total_citations: "1025"
+  - name: JOURNAL OF SOUTHEAST ASIAN STUDIES
+    short: J SOUTHEAST ASIAN ST
+    issn: "00224634"
+    eissn: "14740680"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "0.4"
+    jci: "0.86"
+    oa_citable_pct: "12"
+    total_citations: "668"
+  - name: JOURNAL OF SOUTHERN AFRICAN STUDIES
+    short: J S AFR STUD
+    issn: "03057070"
+    eissn: "14653893"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.9"
+    jci: "0.88"
+    oa_citable_pct: "30.65"
+    total_citations: "1818"
+  - name: Korea Observer
+    short: KOREA OBS
+    issn: "00233919"
+    eissn: "00233919"
+    site: ""
+    notes: WOS/JCR; INST KOREAN STUDIES
+    quartile: Q3
+    jif: "0.3"
+    jci: "0.26"
+    oa_citable_pct: "0"
+    total_citations: "167"
+  - name: LATIN AMERICAN PERSPECTIVES
+    short: LAT AM PERSPECT
+    issn: 0094582X
+    eissn: 1552678X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "0.7"
+    jci: "0.54"
+    oa_citable_pct: "5.26"
+    total_citations: "1582"
+  - name: LATIN AMERICAN POLITICS AND SOCIETY
+    short: LAT AM POLIT SOC
+    issn: 1531426X
+    eissn: "15482456"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.5"
+    jci: "1.18"
+    oa_citable_pct: "54"
+    total_citations: "1077"
+  - name: LATIN AMERICAN RESEARCH REVIEW
+    short: LAT AM RES REV
+    issn: ""
+    eissn: "15424278"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.8"
+    jci: "0.85"
+    oa_citable_pct: "99.47"
+    total_citations: "1537"
+  - name: London Journal
+    short: LOND J
+    issn: "03058034"
+    eissn: "17496322"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.3"
+    jci: "0.62"
+    oa_citable_pct: "23.68"
+    total_citations: "122"
+  - name: Mediterranean Politics
+    short: MEDITERR POLIT
+    issn: "13629395"
+    eissn: "17439418"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.6"
+    jci: "1.24"
+    oa_citable_pct: "34.51"
+    total_citations: "880"
+  - name: Middle East Critique
+    short: MIDDLE EAST CRIT
+    issn: "19436149"
+    eissn: "19436157"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.5"
+    jci: "1.6"
+    oa_citable_pct: "27.93"
+    total_citations: "464"
+  - name: MIDDLE EAST JOURNAL
+    short: MIDDLE EAST J
+    issn: "00263141"
+    eissn: "19403461"
+    site: ""
+    notes: WOS/JCR; MIDDLE EAST INST
+    quartile: Q1
+    jif: "1.1"
+    jci: "0.75"
+    oa_citable_pct: "0"
+    total_citations: "853"
+  - name: MIDDLE EAST POLICY
+    short: MIDDLE EAST POLICY
+    issn: "10611924"
+    eissn: "14754967"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "1.1"
+    jci: "0.78"
+    oa_citable_pct: "24.17"
+    total_citations: "501"
+  - name: MIDDLE EASTERN STUDIES
+    short: MIDDLE EASTERN STUD
+    issn: "00263206"
+    eissn: "17437881"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.4"
+    jci: "0.53"
+    oa_citable_pct: "14.91"
+    total_citations: "1302"
+  - name: MODERN ASIAN STUDIES
+    short: MOD ASIAN STUD
+    issn: 0026749X
+    eissn: "14698099"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.8"
+    jci: "1.06"
+    oa_citable_pct: "55.76"
+    total_citations: "1949"
+  - name: MODERN CHINA
+    short: MOD CHINA
+    issn: "00977004"
+    eissn: "15526836"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "0.9"
+    jci: "1.02"
+    oa_citable_pct: "13.41"
+    total_citations: "913"
+  - name: Modern Italy
+    short: MOD ITALY
+    issn: "13532944"
+    eissn: "14699877"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.6"
+    jci: "1.34"
+    oa_citable_pct: "72.46"
+    total_citations: "261"
+  - name: Nationalities Papers-The Journal of Nationalism and Ethnicity
+    short: NATL PAP
+    issn: "00905992"
+    eissn: "14653923"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.6"
+    jci: "2.06"
+    oa_citable_pct: "61.29"
+    total_citations: "1323"
+  - name: New Perspectives on Turkey
+    short: NEW PERSPECT TURK
+    issn: "08966346"
+    eissn: "13053299"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.1"
+    jci: "1.05"
+    oa_citable_pct: "46.81"
+    total_citations: "388"
+  - name: NWIG-New West Indian Guide-Nieuwe West-Indische Gids
+    short: NWIG-NEW W INDIAN GU
+    issn: "13822373"
+    eissn: "13822373"
+    site: ""
+    notes: WOS/JCR; KITLV PRESS
+    quartile: Q3
+    jif: "0.4"
+    jci: "0.36"
+    oa_citable_pct: "84"
+    total_citations: "119"
+  - name: PACIFIC AFFAIRS
+    short: PAC AFF
+    issn: 0030851X
+    eissn: "17153379"
+    site: ""
+    notes: WOS/JCR; PACIFIC AFFAIRS UNIV BRITISH COLUMBIA
+    quartile: Q1
+    jif: "1.2"
+    jci: "1.39"
+    oa_citable_pct: "0"
+    total_citations: "881"
+  - name: Pacific Focus
+    short: PAC FOCUS
+    issn: "12254657"
+    eissn: "19765118"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.55"
+    oa_citable_pct: "13.33"
+    total_citations: "170"
+  - name: PACIFIC REVIEW
+    short: PAC REV
+    issn: "09512748"
+    eissn: "14701332"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2"
+    jci: "1.76"
+    oa_citable_pct: "21.19"
+    total_citations: "1288"
+  - name: POST-SOVIET AFFAIRS
+    short: POST-SOV AFF
+    issn: 1060586X
+    eissn: "19382855"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3"
+    jci: "1.79"
+    oa_citable_pct: "28.41"
+    total_citations: "1005"
+  - name: Review of African Political Economy
+    short: REV AFR POLIT ECON
+    issn: "03056244"
+    eissn: "17401720"
+    site: ""
+    notes: WOS/JCR; ScienceOpen
+    quartile: Q1
+    jif: "1.6"
+    jci: "1.28"
+    oa_citable_pct: "3.28"
+    total_citations: "1382"
+  - name: SLAVIC REVIEW
+    short: SLAVIC REV
+    issn: "00376779"
+    eissn: "23257784"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "0.7"
+    jci: "1.36"
+    oa_citable_pct: "29.17"
+    total_citations: "1074"
+  - name: Social Dynamics-A Journal of African Studies
+    short: SOC DYNAMICS
+    issn: "02533952"
+    eissn: "19407874"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "0.6"
+    jci: "0.64"
+    oa_citable_pct: "17.57"
+    total_citations: "476"
+  - name: Social Science Japan Journal
+    short: SOC SCI JPN J
+    issn: "13691465"
+    eissn: "14682680"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "0.8"
+    jci: "0.85"
+    oa_citable_pct: "26.83"
+    total_citations: "220"
+  - name: SOUTH ASIA-JOURNAL OF SOUTH ASIAN STUDIES
+    short: S ASIA
+    issn: "00856401"
+    eissn: "14790270"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.4"
+    jci: "1.21"
+    oa_citable_pct: "17.8"
+    total_citations: "901"
+  - name: Southeast European and Black Sea Studies
+    short: SE EUR BLACK SEA STU
+    issn: "14683857"
+    eissn: "17439639"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.2"
+    jci: "1.35"
+    oa_citable_pct: "13.75"
+    total_citations: "744"
+  - name: Turkish Studies
+    short: TURK STUD
+    issn: "14683849"
+    eissn: "17439663"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.7"
+    jci: "2.01"
+    oa_citable_pct: "12.28"
+    total_citations: "838"

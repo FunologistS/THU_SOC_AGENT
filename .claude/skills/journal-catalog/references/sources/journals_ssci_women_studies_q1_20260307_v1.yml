@@ -1,0 +1,299 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Women_Studies_260306_normalized.csv
+  generated_at: 2026-03-07T02:28:59.108Z
+  date_tag: "20260307"
+  version: 1
+  count_filtered_rows: 46
+  count_unique_journals: 46
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Affilia-Feminist Inquiry in Social Work
+    short: AFFILIA
+    issn: "08861099"
+    eissn: "15523020"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: ASIAN JOURNAL OF WOMENS STUDIES
+    short: ASIAN J WOMEN STUD
+    issn: "12259276"
+    eissn: 2377004X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Asian Women
+    short: ASIAN WOMEN
+    issn: 1225925X
+    eissn: "25865714"
+    site: ""
+    notes: WOS/JCR; SOOKMYUNG WOMENS UNIV
+  - name: AUSTRALIAN FEMINIST STUDIES
+    short: AUST FEMINIST STUD
+    issn: "08164649"
+    eissn: "14653303"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Differences-A Journal of Feminist Cultural Studies
+    short: DIFFERENCES
+    issn: "10407391"
+    eissn: "15271986"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+  - name: EUROPEAN JOURNAL OF WOMENS STUDIES
+    short: EUR J WOMENS STUD
+    issn: "13505068"
+    eissn: "14617420"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: FEMINISM & PSYCHOLOGY
+    short: FEM PSYCHOL
+    issn: "09593535"
+    eissn: "14617161"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: FEMINIST ECONOMICS
+    short: FEM ECON
+    issn: "13545701"
+    eissn: "14664372"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Feminist Legal Studies
+    short: FEM LEGAL STUD
+    issn: "09663622"
+    eissn: "15728455"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Feminist Media Studies
+    short: FEM MEDIA STUD
+    issn: "14680777"
+    eissn: "14715902"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: FEMINIST REVIEW
+    short: FEMINIST REV
+    issn: "01417789"
+    eissn: "14664380"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: FEMINIST STUDIES
+    short: FEMINIST STUD
+    issn: "00463663"
+    eissn: "21533873"
+    site: ""
+    notes: WOS/JCR; FEMINIST STUD INC
+  - name: Feminist Theory
+    short: FEM THEOR
+    issn: "14647001"
+    eissn: "17412773"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Feministische Studien
+    short: FEMINISTISCHE STUD
+    issn: "07235186"
+    eissn: "23659920"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+  - name: FRONTIERS-A JOURNAL OF WOMEN STUDIES
+    short: FRONTIERS
+    issn: "01609009"
+    eissn: "15360334"
+    site: ""
+    notes: WOS/JCR; UNIV NEBRASKA PRESS
+  - name: GENDER & SOCIETY
+    short: GENDER SOC
+    issn: "08912432"
+    eissn: "15523977"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Gender and History
+    short: GEND HIST
+    issn: "09535233"
+    eissn: "14680424"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Gender and Language
+    short: GENDER LANG
+    issn: "17476321"
+    eissn: 1747633X
+    site: ""
+    notes: WOS/JCR; UNIV TORONTO PRESS INC
+  - name: Gender in Management
+    short: GEND MANAG
+    issn: "17542413"
+    eissn: "17542421"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Gender Place and Culture
+    short: GENDER PLACE CULT
+    issn: 0966369X
+    eissn: "13600524"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: GENDER WORK AND ORGANIZATION
+    short: GENDER WORK ORGAN
+    issn: "09686673"
+    eissn: "14680432"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Health Care for Women International
+    short: HEALTH CARE WOMEN IN
+    issn: "07399332"
+    eissn: "10964665"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Hypatia-A Journal of Feminist Philosophy
+    short: HYPATIA
+    issn: "08875367"
+    eissn: "15272001"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Indian Journal of Gender Studies
+    short: INDIAN J GEND STUD
+    issn: "09715215"
+    eissn: "09730672"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INDIA PVT LTD
+  - name: International Feminist Journal of Politics
+    short: INT FEM J POLIT
+    issn: "14616742"
+    eissn: "14684470"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: International Journal of Feminist Approaches To Bioethics
+    short: INT J FEM APPROACHES
+    issn: "19374585"
+    eissn: "19374577"
+    site: ""
+    notes: WOS/JCR; UNIV TORONTO PRESS INC
+  - name: JOURNAL OF GENDER STUDIES
+    short: J GENDER STUD
+    issn: "09589236"
+    eissn: "14653869"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Middle East Womens Studies
+    short: J MIDDLE E WOMENS ST
+    issn: "15525864"
+    eissn: "15589579"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+  - name: JOURNAL OF WOMEN & AGING
+    short: J WOMEN AGING
+    issn: "08952841"
+    eissn: "15407322"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Women Politics & Policy
+    short: J WOMEN POLIT POLICY
+    issn: 1554477X
+    eissn: "15544788"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF WOMENS HEALTH
+    short: J WOMENS HEALTH
+    issn: "15409996"
+    eissn: 1931843X
+    site: ""
+    notes: WOS/JCR; MARY ANN LIEBERT, INC
+  - name: JOURNAL OF WOMENS HISTORY
+    short: J WOMENS HIST
+    issn: "10427961"
+    eissn: "15272036"
+    site: ""
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+  - name: LGBTQ Family-An Interdisciplinary Journal
+    short: LGBTQ FAM
+    issn: "27703371"
+    eissn: 2770338X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Politics & Gender
+    short: POLIT GENDER
+    issn: 1743923X
+    eissn: "17439248"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: PSYCHOLOGY OF WOMEN QUARTERLY
+    short: PSYCHOL WOMEN QUART
+    issn: "03616843"
+    eissn: "14716402"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: RADICAL PHILOSOPHY
+    short: RADICAL PHILOS
+    issn: 0300211X
+    eissn: 0030211X
+    site: ""
+    notes: WOS/JCR; RADICAL PHILOSOPHY
+  - name: SEX ROLES
+    short: SEX ROLES
+    issn: "03600025"
+    eissn: "15732762"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+  - name: SIGNS
+    short: SIGNS
+    issn: "00979740"
+    eissn: "15456943"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: SOCIAL POLITICS
+    short: SOC POLIT
+    issn: "10724745"
+    eissn: "14682893"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Travail Genre et Societes
+    short: TRAV GENRE SOC
+    issn: "12946303"
+    eissn: "12946303"
+    site: ""
+    notes: WOS/JCR; EDITIONS LA DECOUVERTE
+  - name: VIOLENCE AGAINST WOMEN
+    short: VIOLENCE AGAINST WOM
+    issn: "10778012"
+    eissn: "15528448"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Women & Criminal Justice
+    short: WOMEN CRIM JUSTICE
+    issn: "08974454"
+    eissn: "15410323"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: WOMEN & HEALTH
+    short: WOMEN HEALTH
+    issn: "03630242"
+    eissn: "15410331"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: WOMEN & THERAPY
+    short: WOMEN THER
+    issn: "02703149"
+    eissn: "15410315"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: WOMENS HEALTH ISSUES
+    short: WOMEN HEALTH ISS
+    issn: "10493867"
+    eissn: "18784321"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: WOMENS STUDIES INTERNATIONAL FORUM
+    short: WOMEN STUD INT FORUM
+    issn: "02775395"
+    eissn: 1879243X
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD

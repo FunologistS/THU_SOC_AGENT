@@ -66,8 +66,8 @@ export function SkillCompleteToastProvider({ children }: { children: React.React
           aria-live="polite"
           aria-label={
             toast.onClick
-              ? `${toast.label} ${toast.success ? "已完成" : "运行结束"}，点击查看产出`
-              : `${toast.label} ${toast.success ? "已完成" : "运行结束"}`
+              ? `${toast.label} ${toast.success ? "已完成" : "运行失败"}，点击查看产出`
+              : `${toast.label} ${toast.success ? "已完成" : "运行失败"}，请查看运行日志`
           }
           tabIndex={toast.onClick ? 0 : undefined}
           onClick={() => {
@@ -115,16 +115,14 @@ export function SkillCompleteToastProvider({ children }: { children: React.React
             )}
             <div className="min-w-0 pt-0.5">
               <p className="font-medium">
-                「{toast.label}」{toast.success ? "已完成" : "运行结束"}
+                「{toast.label}」{toast.success ? "已完成" : "运行失败"}
               </p>
               <p className="mt-1 text-sm text-[var(--text-muted)]">
                 {toast.success
                   ? toast.onClick
                     ? "点击此处查看产出"
                     : "可回到本页查看产出"
-                  : toast.onClick
-                    ? "点击此处跳转到对应阶段"
-                    : "请查看运行日志"}
+                  : "请查看运行日志排查原因"}
               </p>
             </div>
           </div>

@@ -1,0 +1,1644 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260218_Sociology_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.290Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 147
+  count_unique_journals: 147
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: ACTA SOCIOLOGICA
+    short: ACTA SOCIOL
+    issn: "00016993"
+    eissn: "15023869"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.61"
+    oa_citable_pct: "57.69"
+    total_citations: "1411"
+  - name: AGRICULTURE AND HUMAN VALUES
+    short: AGR HUM VALUES
+    issn: 0889048X
+    eissn: "15728366"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.95"
+    oa_citable_pct: "54.24"
+    total_citations: "4322"
+  - name: American Journal of Cultural Sociology
+    short: AM J CULT SOCIOL
+    issn: "20497113"
+    eissn: "20497121"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.55"
+    oa_citable_pct: "28.77"
+    total_citations: "483"
+  - name: AMERICAN JOURNAL OF ECONOMICS AND SOCIOLOGY
+    short: AM J ECON SOCIOL
+    issn: "00029246"
+    eissn: "15367150"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1"
+    jci: "0.4"
+    oa_citable_pct: "15.6"
+    total_citations: "1193"
+  - name: AMERICAN JOURNAL OF SOCIOLOGY
+    short: AM J SOCIOL
+    issn: "00029602"
+    eissn: "15375390"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.99"
+    oa_citable_pct: "0"
+    total_citations: "21533"
+  - name: AMERICAN SOCIOLOGICAL REVIEW
+    short: AM SOCIOL REV
+    issn: "00031224"
+    eissn: "19398271"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "6.2"
+    jci: "3.72"
+    oa_citable_pct: "29.36"
+    total_citations: "24369"
+  - name: ANNALS OF TOURISM RESEARCH
+    short: ANN TOURISM RES
+    issn: "01607383"
+    eissn: "18737722"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "7.8"
+    jci: "2.99"
+    oa_citable_pct: "33.24"
+    total_citations: "18474"
+  - name: Annual Review of Law and Social Science
+    short: ANNU REV LAW SOC SCI
+    issn: "15503585"
+    eissn: "15503631"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "3"
+    jci: "2.04"
+    oa_citable_pct: "67.8"
+    total_citations: "1629"
+  - name: Annual Review of Sociology
+    short: ANNU REV SOCIOL
+    issn: "03600572"
+    eissn: "15452115"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "9"
+    jci: "4.13"
+    oa_citable_pct: "62.65"
+    total_citations: "16679"
+  - name: ANTHROZOOS
+    short: ANTHROZOOS
+    issn: "08927936"
+    eissn: "17530377"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.3"
+    jci: "0.96"
+    oa_citable_pct: "27.04"
+    total_citations: "2599"
+  - name: ARMED FORCES & SOCIETY
+    short: ARMED FORCES SOC
+    issn: 0095327X
+    eissn: "15560848"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.65"
+    oa_citable_pct: "16.96"
+    total_citations: "1447"
+  - name: BERLINER JOURNAL FUR SOZIOLOGIE
+    short: BERL J SOZIOL
+    issn: "08631808"
+    eissn: "18622593"
+    site: ""
+    notes: WOS/JCR; VS VERLAG SOZIALWISSENSCHAFTEN-GWV FACHVERLAGE GMBH
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.5"
+    oa_citable_pct: "96.15"
+    total_citations: "171"
+  - name: Biodemography and Social Biology
+    short: BIODEMOGR SOC BIOL
+    issn: "19485565"
+    eissn: "19485573"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1"
+    jci: "0.48"
+    oa_citable_pct: "4.55"
+    total_citations: "324"
+  - name: Body & Society
+    short: BODY SOC
+    issn: 1357034X
+    eissn: "14603632"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.61"
+    oa_citable_pct: "55.32"
+    total_citations: "1279"
+  - name: BRITISH JOURNAL OF SOCIOLOGY
+    short: BRIT J SOCIOL
+    issn: "00071315"
+    eissn: "14684446"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.52"
+    oa_citable_pct: "76.74"
+    total_citations: "4720"
+  - name: BRITISH JOURNAL OF SOCIOLOGY OF EDUCATION
+    short: BRIT J SOCIOL EDUC
+    issn: "01425692"
+    eissn: "14653346"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.1"
+    jci: "1.03"
+    oa_citable_pct: "44.55"
+    total_citations: "3094"
+  - name: Canadian Review of Sociology-Revue Canadienne de Sociologie
+    short: CAN REV SOCIOL
+    issn: "17556171"
+    eissn: 1755618X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.59"
+    oa_citable_pct: "37.14"
+    total_citations: "833"
+  - name: Chinese Sociological Review
+    short: CHINESE SOCIOL REV
+    issn: "21620555"
+    eissn: "21620563"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.87"
+    oa_citable_pct: "7.94"
+    total_citations: "795"
+  - name: City & Community
+    short: CITY COMMUNITY
+    issn: "15356841"
+    eissn: "15406040"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3"
+    jci: "1.03"
+    oa_citable_pct: "14.58"
+    total_citations: "1596"
+  - name: COMPARATIVE STUDIES IN SOCIETY AND HISTORY
+    short: COMP STUD SOC HIST
+    issn: "00104175"
+    eissn: "14752999"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "1.1"
+    jci: "1.59"
+    oa_citable_pct: "72.81"
+    total_citations: "2748"
+  - name: CONTEMPORARY SOCIOLOGY-A JOURNAL OF REVIEWS
+    short: CONTEMP SOCIOL
+    issn: "00943061"
+    eissn: "19398638"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.07"
+    oa_citable_pct: "2.6"
+    total_citations: "1762"
+  - name: CONTRIBUTIONS TO INDIAN SOCIOLOGY
+    short: CONTRIB INDIAN SOC
+    issn: "00699659"
+    eissn: "09730648"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INDIA PVT LTD
+    quartile: Q4
+    jif: "0.1"
+    jci: "0.15"
+    oa_citable_pct: "3.45"
+    total_citations: "391"
+  - name: Convergencia-Revista de Ciencias Sociales
+    short: CONVERGENCIA
+    issn: "24485799"
+    eissn: "24485799"
+    site: ""
+    notes: WOS/JCR; UNIV AUTONOMA ESTADO MEXICO
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.17"
+    oa_citable_pct: "97.56"
+    total_citations: "263"
+  - name: Cornell Hospitality Quarterly
+    short: CORNELL HOSP Q
+    issn: "19389655"
+    eissn: "19389663"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3"
+    jci: "0.93"
+    oa_citable_pct: "14.44"
+    total_citations: "1974"
+  - name: Crime Media Culture
+    short: CRIME MEDIA CULT
+    issn: "17416590"
+    eissn: "17416604"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.97"
+    oa_citable_pct: "44.29"
+    total_citations: "730"
+  - name: Critical Sociology
+    short: CRIT SOCIOL
+    issn: "08969205"
+    eissn: "15691632"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.79"
+    oa_citable_pct: "28.57"
+    total_citations: "2230"
+  - name: Cultural Sociology
+    short: CULT SOCIOL-LONDON
+    issn: "17499755"
+    eissn: "17499763"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.87"
+    oa_citable_pct: "40.95"
+    total_citations: "929"
+  - name: CURRENT SOCIOLOGY
+    short: CURR SOCIOL
+    issn: "00113921"
+    eissn: "14617064"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.87"
+    oa_citable_pct: "34.55"
+    total_citations: "3031"
+  - name: Deviance et Societe
+    short: DEVIANCE SOC
+    issn: "03787931"
+    eissn: "03785807"
+    site: ""
+    notes: WOS/JCR; MEDECINE ET HYGIENE
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.08"
+    oa_citable_pct: "4.55"
+    total_citations: "151"
+  - name: DEVIANT BEHAVIOR
+    short: DEVIANT BEHAV
+    issn: "01639625"
+    eissn: "15210456"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.73"
+    oa_citable_pct: "17.46"
+    total_citations: "2611"
+  - name: DISCOURSE & SOCIETY
+    short: DISCOURSE SOC
+    issn: "09579265"
+    eissn: "14603624"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.12"
+    oa_citable_pct: "28.28"
+    total_citations: "2878"
+  - name: DRUSTVENA ISTRAZIVANJA
+    short: DRUS ISTRAZ
+    issn: "13300288"
+    eissn: "18486096"
+    site: ""
+    notes: WOS/JCR; INST OF SOCIAL SCIENCES IVO PILAR
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.17"
+    oa_citable_pct: "98.88"
+    total_citations: "243"
+  - name: Du Bois Review-Social Science Research on Race
+    short: DU BOIS REV
+    issn: 1742058X
+    eissn: "17420598"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "2"
+    jci: "0.79"
+    oa_citable_pct: "56"
+    total_citations: "1361"
+  - name: ECONOMIC AND SOCIAL REVIEW
+    short: ECON SOC REV
+    issn: "00129984"
+    eissn: "00129984"
+    site: ""
+    notes: WOS/JCR; ECONOMIC & SOCIAL STUDIES
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.18"
+    oa_citable_pct: "0"
+    total_citations: "308"
+  - name: ECONOMY AND SOCIETY
+    short: ECON SOC
+    issn: "03085147"
+    eissn: "14695766"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.3"
+    jci: "1.36"
+    oa_citable_pct: "50.6"
+    total_citations: "3221"
+  - name: ETHNIC AND RACIAL STUDIES
+    short: ETHNIC RACIAL STUD
+    issn: "01419870"
+    eissn: "14664356"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2"
+    jci: "1.22"
+    oa_citable_pct: "42.77"
+    total_citations: "8278"
+  - name: Ethnography
+    short: ETHNOGRAPHY
+    issn: "14661381"
+    eissn: "17412714"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.55"
+    oa_citable_pct: "23.14"
+    total_citations: "1638"
+  - name: European Journal of Social Theory
+    short: EUR J SOC THEORY
+    issn: "13684310"
+    eissn: "14617137"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "1.1"
+    oa_citable_pct: "50"
+    total_citations: "2135"
+  - name: European Journal of Sociology-Archives Europeennes de Sociologie
+    short: EUR J SOCIOL
+    issn: "00039756"
+    eissn: "14740583"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.73"
+    oa_citable_pct: "59.52"
+    total_citations: "962"
+  - name: EUROPEAN SOCIETIES
+    short: EUR SOC
+    issn: "14616696"
+    eissn: "14698307"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+    quartile: Q1
+    jif: "2.2"
+    jci: "1.2"
+    oa_citable_pct: "46.36"
+    total_citations: "1954"
+  - name: EUROPEAN SOCIOLOGICAL REVIEW
+    short: EUR SOCIOL REV
+    issn: "02667215"
+    eissn: "14682672"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "3"
+    jci: "1.49"
+    oa_citable_pct: "55.88"
+    total_citations: "5322"
+  - name: Filosofija-Sociologija
+    short: FILOS-SOCIOL
+    issn: "02357186"
+    eissn: "02357186"
+    site: ""
+    notes: WOS/JCR; LITHUANIAN ACAD SCIENCES
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.49"
+    oa_citable_pct: "70.86"
+    total_citations: "95"
+  - name: Food Culture & Society
+    short: FOOD CULT SOC
+    issn: "15528014"
+    eissn: "17517443"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.56"
+    oa_citable_pct: "25.26"
+    total_citations: "922"
+  - name: GENDER & SOCIETY
+    short: GENDER SOC
+    issn: "08912432"
+    eissn: "15523977"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.4"
+    jci: "3.07"
+    oa_citable_pct: "31.18"
+    total_citations: "7172"
+  - name: GLOBAL NETWORKS-A JOURNAL OF TRANSNATIONAL AFFAIRS
+    short: GLOBAL NETW
+    issn: "14702266"
+    eissn: "14710374"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.2"
+    jci: "1.3"
+    oa_citable_pct: "55.63"
+    total_citations: "2105"
+  - name: Health Sociology Review
+    short: HEALTH SOCIOL REV
+    issn: "14461242"
+    eissn: "18393551"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.38"
+    oa_citable_pct: "45.16"
+    total_citations: "871"
+  - name: HUMAN ECOLOGY
+    short: HUM ECOL
+    issn: "03007839"
+    eissn: "15729915"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.82"
+    oa_citable_pct: "34.86"
+    total_citations: "3213"
+  - name: Human Ecology Review
+    short: HUM ECOL REV
+    issn: "10744827"
+    eissn: "22040919"
+    site: ""
+    notes: WOS/JCR; ANU PRESS
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.18"
+    oa_citable_pct: "100"
+    total_citations: "920"
+  - name: HUMAN STUDIES
+    short: HUM STUD
+    issn: "01638548"
+    eissn: 1572851X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1"
+    jci: "0.48"
+    oa_citable_pct: "58.78"
+    total_citations: "1077"
+  - name: Information Communication & Society
+    short: INFORM COMMUN SOC
+    issn: 1369118X
+    eissn: "14684462"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.68"
+    oa_citable_pct: "33.16"
+    total_citations: "9069"
+  - name: Innovation-The European Journal of Social Science Research
+    short: INNOVATION-ABINGDON
+    issn: "13511610"
+    eissn: "14698412"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.77"
+    oa_citable_pct: "29.09"
+    total_citations: "1203"
+  - name: INTERNATIONAL JOURNAL OF COMPARATIVE SOCIOLOGY
+    short: INT J COMP SOCIOL
+    issn: "00207152"
+    eissn: "17452554"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.98"
+    oa_citable_pct: "33.33"
+    total_citations: "1181"
+  - name: International Journal of Intercultural Relations
+    short: INT J INTERCULT REL
+    issn: "01471767"
+    eissn: "18737552"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.24"
+    oa_citable_pct: "29.37"
+    total_citations: "5570"
+  - name: International Political Sociology
+    short: INT POLIT SOCIOL
+    issn: "17495679"
+    eissn: "17495687"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.58"
+    oa_citable_pct: "63.83"
+    total_citations: "1664"
+  - name: International Review for the Sociology of Sport
+    short: INT REV SOCIOL SPORT
+    issn: "10126902"
+    eissn: "14617218"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.6"
+    jci: "0.87"
+    oa_citable_pct: "49.47"
+    total_citations: "2698"
+  - name: INTERNATIONAL SOCIOLOGY
+    short: INT SOCIOL
+    issn: "02685809"
+    eissn: "14617242"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.48"
+    oa_citable_pct: "17.65"
+    total_citations: "1964"
+  - name: JOURNAL FOR THE SCIENTIFIC STUDY OF RELIGION
+    short: J SCI STUD RELIG
+    issn: "00218294"
+    eissn: "14685906"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.9"
+    jci: "2.63"
+    oa_citable_pct: "40.15"
+    total_citations: "3370"
+  - name: Journal of Consumer Culture
+    short: J CONSUM CULT
+    issn: "14695405"
+    eissn: "17412900"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.5"
+    jci: "1.79"
+    oa_citable_pct: "34.62"
+    total_citations: "1887"
+  - name: JOURNAL OF CONTEMPORARY ETHNOGRAPHY
+    short: J CONTEMP ETHNOGR
+    issn: "08912416"
+    eissn: "15525414"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.49"
+    oa_citable_pct: "42.05"
+    total_citations: "1571"
+  - name: Journal of Cultural Economy
+    short: J CULT ECON-UK
+    issn: "17530350"
+    eissn: "17530369"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.96"
+    oa_citable_pct: "33.14"
+    total_citations: "1979"
+  - name: JOURNAL OF HEALTH AND SOCIAL BEHAVIOR
+    short: J HEALTH SOC BEHAV
+    issn: "00221465"
+    eissn: "21506000"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.88"
+    oa_citable_pct: "23.77"
+    total_citations: "10931"
+  - name: JOURNAL OF HISTORICAL SOCIOLOGY
+    short: J HIST SOCIOL
+    issn: "09521909"
+    eissn: "14676443"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.6"
+    jci: "1.12"
+    oa_citable_pct: "20"
+    total_citations: "732"
+  - name: Journal of Immigrant & Refugee Studies
+    short: J IMMIGR REFUG STUD
+    issn: "15562948"
+    eissn: "15562956"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.71"
+    oa_citable_pct: "28.92"
+    total_citations: "1113"
+  - name: JOURNAL OF LAW AND SOCIETY
+    short: J LAW SOC
+    issn: 0263323X
+    eissn: "14676478"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.9"
+    jci: "1.25"
+    oa_citable_pct: "69.44"
+    total_citations: "1168"
+  - name: JOURNAL OF LEISURE RESEARCH
+    short: J LEISURE RES
+    issn: "00222216"
+    eissn: "21596417"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.93"
+    oa_citable_pct: "6.5"
+    total_citations: "2628"
+  - name: JOURNAL OF MARRIAGE AND FAMILY
+    short: J MARRIAGE FAM
+    issn: "00222445"
+    eissn: "17413737"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.54"
+    oa_citable_pct: "52.94"
+    total_citations: "12165"
+  - name: JOURNAL OF MATHEMATICAL SOCIOLOGY
+    short: J MATH SOCIOL
+    issn: 0022250X
+    eissn: "15455874"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.4"
+    oa_citable_pct: "25"
+    total_citations: "1321"
+  - name: JOURNAL OF SOCIOLOGY
+    short: J SOCIOL
+    issn: "14407833"
+    eissn: "17412978"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "2"
+    jci: "0.82"
+    oa_citable_pct: "45.36"
+    total_citations: "1865"
+  - name: JOURNAL OF SPORT & SOCIAL ISSUES
+    short: J SPORT SOC ISSUES
+    issn: "01937235"
+    eissn: "15527638"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.78"
+    oa_citable_pct: "14.81"
+    total_citations: "1514"
+  - name: JOURNAL OF THE HISTORY OF SEXUALITY
+    short: J HIST SEXUALITY
+    issn: "10434070"
+    eissn: "15353605"
+    site: ""
+    notes: WOS/JCR; UNIV TEXAS PRESS
+    quartile: Q4
+    jif: "0.5"
+    jci: "1.14"
+    oa_citable_pct: "0"
+    total_citations: "537"
+  - name: KOLNER ZEITSCHRIFT FUR SOZIOLOGIE UND SOZIALPSYCHOLOGIE
+    short: KOLNER Z SOZIOL SOZ
+    issn: "00232653"
+    eissn: 1861891X
+    site: ""
+    notes: WOS/JCR; SPRINGER VIEWEG-SPRINGER FACHMEDIEN WIESBADEN GMBH
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.47"
+    oa_citable_pct: "97.03"
+    total_citations: "890"
+  - name: LANGUAGE IN SOCIETY
+    short: LANG SOC
+    issn: "00474045"
+    eissn: "14698013"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.27"
+    oa_citable_pct: "57.94"
+    total_citations: "2904"
+  - name: LAW & SOCIETY REVIEW
+    short: LAW SOC REV
+    issn: "00239216"
+    eissn: "15405893"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "2.1"
+    jci: "2.07"
+    oa_citable_pct: "48.1"
+    total_citations: "3275"
+  - name: LEISURE SCIENCES
+    short: LEISURE SCI
+    issn: "01490400"
+    eissn: "15210588"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.81"
+    oa_citable_pct: "12.41"
+    total_citations: "3266"
+  - name: MEDIA CULTURE & SOCIETY
+    short: MEDIA CULT SOC
+    issn: "01634437"
+    eissn: "14603675"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.55"
+    oa_citable_pct: "37.12"
+    total_citations: "4391"
+  - name: Men and Masculinities
+    short: MEN MASC
+    issn: 1097184X
+    eissn: "15526828"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.5"
+    jci: "1.11"
+    oa_citable_pct: "33.71"
+    total_citations: "1796"
+  - name: Mobilization
+    short: MOBILIZATION
+    issn: 1086671X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SAN DIEGO STATE UNIV
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.79"
+    oa_citable_pct: "2.74"
+    total_citations: "1099"
+  - name: Nations and Nationalism
+    short: NATIONS NATL
+    issn: "13545078"
+    eissn: "14698129"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2"
+    jci: "2.04"
+    oa_citable_pct: "52.54"
+    total_citations: "2075"
+  - name: New Directions for Child and Adolescent Development
+    short: NEW DIR CHILD ADOLES
+    issn: "15203247"
+    eissn: "15348687"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.1"
+    jci: "1.09"
+    oa_citable_pct: "47.22"
+    total_citations: "2015"
+  - name: POETICS
+    short: POETICS
+    issn: 0304422X
+    eissn: "18727514"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "1.7"
+    jci: "5.88"
+    oa_citable_pct: "39.55"
+    total_citations: "2881"
+  - name: Polish Sociological Review
+    short: POL SOCIOL REV
+    issn: "12311413"
+    eissn: "12311413"
+    site: ""
+    notes: WOS/JCR; POLSKIE TOWARZYSTWO SOCJOLOGICZNE-POLISH SOCIOLOGICAL ASSOC
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.23"
+    oa_citable_pct: "0"
+    total_citations: "276"
+  - name: POLITICS & SOCIETY
+    short: POLIT SOC
+    issn: "00323292"
+    eissn: "15527514"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.39"
+    oa_citable_pct: "36.36"
+    total_citations: "2343"
+  - name: POPULATION AND DEVELOPMENT REVIEW
+    short: POPUL DEV REV
+    issn: "00987921"
+    eissn: "17284457"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "4.8"
+    jci: "2.19"
+    oa_citable_pct: "54.88"
+    total_citations: "6014"
+  - name: Qualitative Research
+    short: QUAL RES
+    issn: "14687941"
+    eissn: "17413109"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.9"
+    jci: "1.52"
+    oa_citable_pct: "100"
+    total_citations: "6080"
+  - name: Qualitative Sociology
+    short: QUAL SOCIOL
+    issn: "01620436"
+    eissn: "15737837"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "2.1"
+    jci: "1.02"
+    oa_citable_pct: "32.39"
+    total_citations: "2099"
+  - name: RACE & CLASS
+    short: RACE CLASS
+    issn: "03063968"
+    eissn: "17413125"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.22"
+    oa_citable_pct: "38.1"
+    total_citations: "1158"
+  - name: Race and Social Problems
+    short: RACE SOC PROBL
+    issn: "18671748"
+    eissn: "18671756"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.4"
+    jci: "1.23"
+    oa_citable_pct: "18.18"
+    total_citations: "1037"
+  - name: RATIONALITY AND SOCIETY
+    short: RATION SOC
+    issn: "10434631"
+    eissn: "14617358"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.69"
+    oa_citable_pct: "40.32"
+    total_citations: "935"
+  - name: Research in Social Stratification and Mobility
+    short: RES SOC STRAT MOBIL
+    issn: "02765624"
+    eissn: "18785654"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q2
+    jif: "2"
+    jci: "1.31"
+    oa_citable_pct: "45.25"
+    total_citations: "1871"
+  - name: REVIEW OF RELIGIOUS RESEARCH
+    short: REV RELIG RES
+    issn: 0034673X
+    eissn: "22114866"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.7"
+    jci: "2.19"
+    oa_citable_pct: "7.95"
+    total_citations: "1006"
+  - name: Revista Espanola de Investigaciones Sociologicas
+    short: REV ESP INVESTIG SOC
+    issn: "02105233"
+    eissn: "19885903"
+    site: ""
+    notes: WOS/JCR; CENTRO INVESTIGACIONES SOCIOLOGICAS
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.44"
+    oa_citable_pct: "91.51"
+    total_citations: "623"
+  - name: Revista Internacional de Sociologia
+    short: REV INT SOCIOL
+    issn: "00349712"
+    eissn: 1988429X
+    site: ""
+    notes: WOS/JCR; CONSEJO SUPERIOR INVESTIGACIONES CIENTIFICAS-CSIC
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.25"
+    oa_citable_pct: "95"
+    total_citations: "366"
+  - name: REVUE FRANCAISE DE SOCIOLOGIE
+    short: REV FR SOCIOL
+    issn: "00352969"
+    eissn: "19585691"
+    site: ""
+    notes: WOS/JCR; PRESSES SCIENCES PO
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.12"
+    oa_citable_pct: "0"
+    total_citations: "622"
+  - name: RURAL SOCIOLOGY
+    short: RURAL SOCIOL
+    issn: "00360112"
+    eissn: "15490831"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.9"
+    jci: "1.1"
+    oa_citable_pct: "41.44"
+    total_citations: "2242"
+  - name: Scandinavian Journal of Hospitality and Tourism
+    short: SCAND J HOSP TOUR
+    issn: "15022250"
+    eissn: "15022269"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.25"
+    oa_citable_pct: "54.55"
+    total_citations: "1494"
+  - name: Sexualities
+    short: SEXUALITIES
+    issn: "13634607"
+    eissn: "14617382"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.89"
+    oa_citable_pct: "44.73"
+    total_citations: "2323"
+  - name: SOCIAL COMPASS
+    short: SOC COMPASS
+    issn: "00377686"
+    eissn: "14617404"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "0.7"
+    jci: "1.06"
+    oa_citable_pct: "21.05"
+    total_citations: "650"
+  - name: SOCIAL FORCES
+    short: SOC FORCES
+    issn: "00377732"
+    eissn: "15347605"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.52"
+    oa_citable_pct: "20.63"
+    total_citations: "9703"
+  - name: SOCIAL INDICATORS RESEARCH
+    short: SOC INDIC RES
+    issn: "03038300"
+    eissn: "15730921"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.51"
+    oa_citable_pct: "45.26"
+    total_citations: "16348"
+  - name: Social Justice Research
+    short: SOC JUSTICE RES
+    issn: "08857466"
+    eissn: "15736725"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.79"
+    oa_citable_pct: "48.28"
+    total_citations: "1474"
+  - name: Social Movement Studies
+    short: SOC MOVEMENT STUD
+    issn: "14742837"
+    eissn: "14742829"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.19"
+    oa_citable_pct: "25.83"
+    total_citations: "2050"
+  - name: SOCIAL NETWORKS
+    short: SOC NETWORKS
+    issn: "03788733"
+    eissn: "18792111"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.74"
+    oa_citable_pct: "41.62"
+    total_citations: "6786"
+  - name: SOCIAL PROBLEMS
+    short: SOC PROBL
+    issn: "00377791"
+    eissn: "15338533"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "2.9"
+    jci: "1.63"
+    oa_citable_pct: "9.87"
+    total_citations: "6082"
+  - name: SOCIAL PSYCHOLOGY QUARTERLY
+    short: SOC PSYCHOL QUART
+    issn: "01902725"
+    eissn: "19398999"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.1"
+    jci: "0.95"
+    oa_citable_pct: "14.29"
+    total_citations: "3919"
+  - name: SOCIAL SCIENCE QUARTERLY
+    short: SOC SCI QUART
+    issn: "00384941"
+    eissn: "15406237"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.84"
+    oa_citable_pct: "31.16"
+    total_citations: "5870"
+  - name: SOCIAL SCIENCE RESEARCH
+    short: SOC SCI RES
+    issn: 0049089X
+    eissn: "10960317"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "3.5"
+    jci: "1.74"
+    oa_citable_pct: "26.16"
+    total_citations: "6628"
+  - name: SOCIETY
+    short: SOCIETY
+    issn: "01472011"
+    eissn: "19364725"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.65"
+    oa_citable_pct: "27.54"
+    total_citations: "1222"
+  - name: SOCIETY & ANIMALS
+    short: SOC ANIM
+    issn: "10631119"
+    eissn: "15685306"
+    site: ""
+    notes: WOS/JCR; BRILL
+    quartile: Q3
+    jif: "1"
+    jci: "0.64"
+    oa_citable_pct: "14.41"
+    total_citations: "938"
+  - name: SOCIETY & NATURAL RESOURCES
+    short: SOC NATUR RESOUR
+    issn: "08941920"
+    eissn: "15210723"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.63"
+    oa_citable_pct: "17.2"
+    total_citations: "4500"
+  - name: Society and Mental Health
+    short: SOC MENT HEALTH
+    issn: "21568693"
+    eissn: "21568731"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3"
+    jci: "1.61"
+    oa_citable_pct: "24.14"
+    total_citations: "791"
+  - name: Socio-Economic Review
+    short: SOCIO-ECON REV
+    issn: "14751461"
+    eissn: 1475147X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.36"
+    oa_citable_pct: "41.13"
+    total_citations: "3055"
+  - name: SOCIOLOGIA
+    short: SOCIOLOGIA-BRATISLAV
+    issn: "00491225"
+    eissn: "13368613"
+    site: ""
+    notes: WOS/JCR; INST SOCIOLOGY SLOVAK ACAD SCIENCES
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.31"
+    oa_citable_pct: "100"
+    total_citations: "129"
+  - name: SOCIOLOGIA RURALIS
+    short: SOCIOL RURALIS
+    issn: "00380199"
+    eissn: "14679523"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.48"
+    oa_citable_pct: "70"
+    total_citations: "2853"
+  - name: SOCIOLOGICAL FORUM
+    short: SOCIOL FORUM
+    issn: "08848971"
+    eissn: "15737861"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.84"
+    oa_citable_pct: "39.41"
+    total_citations: "2862"
+  - name: SOCIOLOGICAL INQUIRY
+    short: SOCIOL INQ
+    issn: "00380245"
+    eissn: 1475682X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.9"
+    oa_citable_pct: "28.95"
+    total_citations: "2072"
+  - name: Sociological Methodology
+    short: SOCIOL METHODOL
+    issn: "00811750"
+    eissn: "14679531"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.5"
+    jci: "1.43"
+    oa_citable_pct: "32.43"
+    total_citations: "3097"
+  - name: SOCIOLOGICAL METHODS & RESEARCH
+    short: SOCIOL METHOD RES
+    issn: "00491241"
+    eissn: "15528294"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "6.5"
+    jci: "2.9"
+    oa_citable_pct: "27.42"
+    total_citations: "8621"
+  - name: SOCIOLOGICAL PERSPECTIVES
+    short: SOCIOL PERSPECT
+    issn: "07311214"
+    eissn: "15338673"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.9"
+    oa_citable_pct: "21.59"
+    total_citations: "2154"
+  - name: SOCIOLOGICAL QUARTERLY
+    short: SOCIOL QUART
+    issn: "00380253"
+    eissn: "15338525"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.73"
+    oa_citable_pct: "9.72"
+    total_citations: "2549"
+  - name: SOCIOLOGICAL RESEARCH ONLINE
+    short: SOCIOL RES ONLINE
+    issn: "13607804"
+    eissn: "13607804"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.7"
+    oa_citable_pct: "48.95"
+    total_citations: "2024"
+  - name: SOCIOLOGICAL REVIEW
+    short: SOCIOL REV
+    issn: "00380261"
+    eissn: 1467954X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.15"
+    oa_citable_pct: "62.66"
+    total_citations: "5533"
+  - name: Sociological Science
+    short: SOCIOL SCI
+    issn: ""
+    eissn: "23306696"
+    site: ""
+    notes: WOS/JCR; SOC SOCIOLOGICAL SCIENCE
+    quartile: Q1
+    jif: "2.1"
+    jci: "1.27"
+    oa_citable_pct: "82.98"
+    total_citations: "1370"
+  - name: SOCIOLOGICAL SPECTRUM
+    short: SOCIOL SPECTRUM
+    issn: "02732173"
+    eissn: "15210707"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.79"
+    oa_citable_pct: "2.38"
+    total_citations: "884"
+  - name: SOCIOLOGICAL THEORY
+    short: SOCIOL THEOR
+    issn: "07352751"
+    eissn: "14679558"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "5"
+    jci: "2.5"
+    oa_citable_pct: "18"
+    total_citations: "3954"
+  - name: SOCIOLOGICKY CASOPIS-CZECH SOCIOLOGICAL REVIEW
+    short: SOCIOL CAS
+    issn: ""
+    eissn: 2336128X
+    site: ""
+    notes: WOS/JCR; INST SOCIOLOGY, ACAD SCIENCES CZECH REPUBLIC
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.27"
+    oa_citable_pct: "92.65"
+    total_citations: "276"
+  - name: SOCIOLOGIE DU TRAVAIL
+    short: SOCIOL TRAV
+    issn: "00380296"
+    eissn: "17775701"
+    site: ""
+    notes: WOS/JCR; REVUES ORG
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.03"
+    oa_citable_pct: "61.02"
+    total_citations: "349"
+  - name: SOCIOLOGISK FORSKNING
+    short: SOCIOL FORSKNIN
+    issn: "00380342"
+    eissn: "00380342"
+    site: ""
+    notes: WOS/JCR; SOCIOLOGISK FORSKNING
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.22"
+    oa_citable_pct: "90"
+    total_citations: "131"
+  - name: Sociology Compass
+    short: SOCIOL COMPASS
+    issn: "17519020"
+    eissn: "17519020"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.1"
+    jci: "1.19"
+    oa_citable_pct: "41.44"
+    total_citations: "4301"
+  - name: SOCIOLOGY OF EDUCATION
+    short: SOCIOL EDUC
+    issn: "00380407"
+    eissn: "19398573"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.65"
+    oa_citable_pct: "32.69"
+    total_citations: "3368"
+  - name: SOCIOLOGY OF HEALTH & ILLNESS
+    short: SOCIOL HEALTH ILL
+    issn: "01419889"
+    eissn: "14679566"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.07"
+    oa_citable_pct: "72.79"
+    total_citations: "5767"
+  - name: Sociology of Race and Ethnicity
+    short: SOCIOL RACE ETHNIC
+    issn: "23326492"
+    eissn: "23326506"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.24"
+    oa_citable_pct: "11.02"
+    total_citations: "1594"
+  - name: SOCIOLOGY OF RELIGION
+    short: SOCIOL RELIG
+    issn: "10694404"
+    eissn: "17598818"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q2
+    jif: "1.7"
+    jci: "2.65"
+    oa_citable_pct: "21.21"
+    total_citations: "1213"
+  - name: SOCIOLOGY OF SPORT JOURNAL
+    short: SOCIOL SPORT J
+    issn: "07411235"
+    eissn: "15432785"
+    site: ""
+    notes: WOS/JCR; HUMAN KINETICS PUBL INC
+    quartile: Q1
+    jif: "2.2"
+    jci: "0.82"
+    oa_citable_pct: "4.64"
+    total_citations: "1627"
+  - name: SOCIOLOGY-THE JOURNAL OF THE BRITISH SOCIOLOGICAL ASSOCIATION
+    short: SOCIOLOGY
+    issn: "00380385"
+    eissn: "14698684"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.9"
+    jci: "1.37"
+    oa_citable_pct: "64.38"
+    total_citations: "7413"
+  - name: SOTSIOLOGICHESKIE ISSLEDOVANIYA
+    short: SOTSIOL ISSLED+
+    issn: "01321625"
+    eissn: "01321625"
+    site: ""
+    notes: WOS/JCR; Russian Acad Sciences, State Acad Univ Humanities (GAUGN)
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.24"
+    oa_citable_pct: "0"
+    total_citations: "1403"
+  - name: SOZIALE WELT-ZEITSCHRIFT FUR SOZIALWISSENSCHAFTLICHE FORSCHUNG UND PRAXIS
+    short: SOZ WELT
+    issn: "00386073"
+    eissn: "00386073"
+    site: ""
+    notes: WOS/JCR; NOMOS VERLAGSGESELLSCHAFT MBH & CO KG
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.2"
+    oa_citable_pct: "5.26"
+    total_citations: "336"
+  - name: Sport in Society
+    short: SPORT SOC
+    issn: "17430437"
+    eissn: "17430445"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.55"
+    oa_citable_pct: "31.91"
+    total_citations: "2736"
+  - name: SYMBOLIC INTERACTION
+    short: SYMB INTERACT
+    issn: "01956086"
+    eissn: "15338665"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.82"
+    oa_citable_pct: "50.6"
+    total_citations: "1852"
+  - name: TEACHING SOCIOLOGY
+    short: TEACH SOCIOL
+    issn: 0092055X
+    eissn: 1939862X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.55"
+    oa_citable_pct: "11.36"
+    total_citations: "899"
+  - name: Telos
+    short: TELOS-US
+    issn: "00906514"
+    eissn: 1940459X
+    site: ""
+    notes: WOS/JCR; TELOS PRESS LTD
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.16"
+    oa_citable_pct: "2.41"
+    total_citations: "138"
+  - name: Tempo Social
+    short: TEMPO SOC
+    issn: "01032070"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; UNIV SAO PAOLO, DEPT SOCIOLOGIA
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.18"
+    oa_citable_pct: "89"
+    total_citations: "333"
+  - name: THEORY AND SOCIETY
+    short: THEOR SOC
+    issn: "03042421"
+    eissn: "15737853"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.87"
+    oa_citable_pct: "47.17"
+    total_citations: "4186"
+  - name: WORK AND OCCUPATIONS
+    short: WORK OCCUPATION
+    issn: "07308884"
+    eissn: "15528464"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.93"
+    oa_citable_pct: "33.82"
+    total_citations: "1794"
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.8"
+    jci: "1.22"
+    oa_citable_pct: "59.32"
+    total_citations: "4823"
+  - name: Young
+    short: YOUNG
+    issn: "11033088"
+    eissn: "17413222"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.95"
+    oa_citable_pct: "80.46"
+    total_citations: "805"
+  - name: YOUTH & SOCIETY
+    short: YOUTH SOC
+    issn: 0044118X
+    eissn: "15528499"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.86"
+    oa_citable_pct: "16.77"
+    total_citations: "2419"
+  - name: ZEITSCHRIFT FUR SOZIOLOGIE
+    short: Z SOZIOL
+    issn: "03401804"
+    eissn: "23660325"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.4"
+    oa_citable_pct: "94.94"
+    total_citations: "1121"

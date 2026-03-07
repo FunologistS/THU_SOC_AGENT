@@ -1,0 +1,539 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Area_and_Asian_Studies_260306_normalized.csv
+  generated_at: 2026-03-07T04:29:56.402Z
+  date_tag: "20260307"
+  version: 2
+  count_filtered_rows: 86
+  count_unique_journals: 86
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: AFRICA
+    short: AFRICA
+    issn: "00019720"
+    eissn: "17500184"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Africa Spectrum
+    short: AFR SPECTR
+    issn: "00020397"
+    eissn: "18686869"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: AFRICAN AFFAIRS
+    short: AFR AFFAIRS
+    issn: "00019909"
+    eissn: "14682621"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: African and Asian Studies
+    short: AFR ASIAN STUD
+    issn: "15692094"
+    eissn: "15692108"
+    site: ""
+    notes: WOS/JCR; BRILL
+  - name: AFRICAN STUDIES
+    short: AFR STUD-UK
+    issn: "00020184"
+    eissn: "14692872"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: African Studies Review
+    short: AFR STUD REV
+    issn: "00020206"
+    eissn: "15552462"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Asia & the Pacific Policy Studies
+    short: ASIA PAC POLICY STUD
+    issn: "20502680"
+    eissn: "20502680"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Asia Pacific Viewpoint
+    short: ASIA PAC VIEWP
+    issn: "13607456"
+    eissn: "14678373"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Asian Journal of Social Science
+    short: ASIAN J SOC SCI
+    issn: "15684849"
+    eissn: "15685314"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Asian Studies Review
+    short: ASIAN STUD REV
+    issn: "10357823"
+    eissn: "14678403"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: ASIAN SURVEY
+    short: ASIAN SURV
+    issn: "00044687"
+    eissn: 1533838X
+    site: ""
+    notes: WOS/JCR; UNIV CALIFORNIA PRESS
+  - name: Bilig
+    short: BILIG
+    issn: "13010549"
+    eissn: "13010549"
+    site: ""
+    notes: WOS/JCR; AHMET YESEVI UNIV
+  - name: British Journal of Middle Eastern Studies
+    short: BRIT J MIDDLE E STUD
+    issn: "13530194"
+    eissn: "14693542"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: BULLETIN OF INDONESIAN ECONOMIC STUDIES
+    short: B INDONES ECON STUD
+    issn: "00074918"
+    eissn: "14727234"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Bulletin of Latin American Research
+    short: B LAT AM RES
+    issn: "02613050"
+    eissn: "14709856"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Central Asian Survey
+    short: CENT ASIAN SURV
+    issn: "02634937"
+    eissn: "14653354"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: China Information
+    short: CHINA INFORM
+    issn: 0920203X
+    eissn: 1741590X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: CHINA JOURNAL
+    short: CHINA J
+    issn: "13249347"
+    eissn: "18358535"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: China Perspectives
+    short: CHINA PERSPECT
+    issn: "20703449"
+    eissn: "19964617"
+    site: ""
+    notes: WOS/JCR; FRENCH CENTRE RESEARCH CONTEMPORARY CHINA
+  - name: CHINA QUARTERLY
+    short: CHINA QUART
+    issn: "03057410"
+    eissn: "14682648"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: China Review-An Interdisciplinary Journal on Greater China
+    short: CHINA REV
+    issn: "16802012"
+    eissn: "16802012"
+    site: ""
+    notes: WOS/JCR; CHINESE UNIV PRESS
+  - name: China-An International Journal
+    short: CHINA INT J
+    issn: "02197472"
+    eissn: "02198614"
+    site: ""
+    notes: WOS/JCR; NUS PRESS PTE LTD
+  - name: CONTEMPORARY PACIFIC
+    short: CONTEMP PACIFIC
+    issn: 1043898X
+    eissn: "15279464"
+    site: ""
+    notes: WOS/JCR; UNIV HAWAII PRESS
+  - name: Contemporary South Asia
+    short: CONTEMP SOUTH ASIA
+    issn: "09584935"
+    eissn: 1469364X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Contemporary Southeast Asia
+    short: CONTEMP SE ASIA
+    issn: 0129797X
+    eissn: 1793284X
+    site: ""
+    notes: WOS/JCR; INST SOUTHEAST ASIAN STUDIES-ISEAS
+  - name: CRITICAL ASIAN STUDIES
+    short: CRIT ASIAN STUD
+    issn: "14672715"
+    eissn: "14726033"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: East Asian Science Technology and Society-An International Journal
+    short: E ASIAN SCI TECH SOC
+    issn: "18752160"
+    eissn: "18752152"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: East European Politics
+    short: EAST EUR POLITICS
+    issn: "21599165"
+    eissn: "21599173"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: EAST EUROPEAN POLITICS AND SOCIETIES
+    short: E EUR POLIT SOC
+    issn: "08883254"
+    eissn: "15338371"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: ECONOMIC DEVELOPMENT AND CULTURAL CHANGE
+    short: ECON DEV CULT CHANGE
+    issn: "00130079"
+    eissn: "15392988"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: EURASIAN GEOGRAPHY AND ECONOMICS
+    short: EURASIAN GEOGR ECON
+    issn: "15387216"
+    eissn: "19382863"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: EUROPE-ASIA STUDIES
+    short: EUROPE-ASIA STUD
+    issn: "09668136"
+    eissn: "14653427"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: European Review
+    short: EUR REV
+    issn: "10627987"
+    eissn: "14740575"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: European Security
+    short: EUR SECUR
+    issn: "09662839"
+    eissn: "17461545"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: GERMAN STUDIES REVIEW
+    short: GER STUD REV
+    issn: "01497952"
+    eissn: "21648646"
+    site: ""
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+  - name: IDS BULLETIN-INSTITUTE OF DEVELOPMENT STUDIES
+    short: IDS BULL-I DEV STUD
+    issn: "02655012"
+    eissn: "17595436"
+    site: ""
+    notes: WOS/JCR; INST DEVELOPMENT STUDIES
+  - name: India Review
+    short: INDIA REV
+    issn: "14736489"
+    eissn: "15573036"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INTERNATIONAL JOURNAL OF MIDDLE EAST STUDIES
+    short: INT J MIDDLE E STUD
+    issn: "00207438"
+    eissn: "14716380"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Iranian Studies
+    short: IRAN STUD-UK
+    issn: "00210862"
+    eissn: "14754819"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Israel Affairs
+    short: ISR AFF
+    issn: "13537121"
+    eissn: "17439086"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF ASIAN AND AFRICAN STUDIES
+    short: J ASIAN AFR STUD
+    issn: "00219096"
+    eissn: "17452538"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Asian Public Policy
+    short: J ASIAN PUBLIC POLIC
+    issn: "17516234"
+    eissn: "17516242"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF ASIAN STUDIES
+    short: J ASIAN STUD
+    issn: "00219118"
+    eissn: "17520401"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+  - name: Journal of Australian Studies
+    short: J AUST STUD
+    issn: "14443058"
+    eissn: "18356419"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Balkan and Near Eastern Studies
+    short: J BALKAN NEAR E STUD
+    issn: "19448953"
+    eissn: "19448961"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF BALTIC STUDIES
+    short: J BALTIC STUD
+    issn: "01629778"
+    eissn: "17517877"
+    site: ""
+    notes: WOS/JCR; ASSOC ADVANCEMENT BALTIC STUDIES INC
+  - name: Journal of Chinese Political Science
+    short: J CHIN POLIT SCI
+    issn: "10806954"
+    eissn: "18746357"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF CONTEMPORARY ASIA
+    short: J CONTEMP ASIA
+    issn: "00472336"
+    eissn: "17527554"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Contemporary China
+    short: J CONTEMP CHINA
+    issn: "10670564"
+    eissn: "14699400"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Contemporary European Studies
+    short: J CONTEMP EUR STUD
+    issn: "14782804"
+    eissn: "14782790"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Current Southeast Asian Affairs
+    short: J CURR SE ASIAN AFF
+    issn: "18681034"
+    eissn: "18684882"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of East Asian Studies
+    short: J EAST ASIAN STUD
+    issn: "15982408"
+    eissn: "22346643"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Journal of Eastern African Studies
+    short: J EAST AFR STUD
+    issn: "17531055"
+    eissn: "17531063"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF JAPANESE STUDIES
+    short: J JPN STUD
+    issn: "00956848"
+    eissn: "15494721"
+    site: ""
+    notes: WOS/JCR; SOC JAPANESE STUD
+  - name: JOURNAL OF LATIN AMERICAN STUDIES
+    short: J LAT AM STUD
+    issn: 0022216X
+    eissn: 1469767X
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF MODERN AFRICAN STUDIES
+    short: J MOD AFR STUD
+    issn: 0022278X
+    eissn: "14697777"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF PALESTINE STUDIES
+    short: J PALESTINE STUD
+    issn: 0377919X
+    eissn: "15338614"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF SOUTHEAST ASIAN STUDIES
+    short: J SOUTHEAST ASIAN ST
+    issn: "00224634"
+    eissn: "14740680"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF SOUTHERN AFRICAN STUDIES
+    short: J S AFR STUD
+    issn: "03057070"
+    eissn: "14653893"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Korea Observer
+    short: KOREA OBS
+    issn: "00233919"
+    eissn: "00233919"
+    site: ""
+    notes: WOS/JCR; INST KOREAN STUDIES
+  - name: LATIN AMERICAN PERSPECTIVES
+    short: LAT AM PERSPECT
+    issn: 0094582X
+    eissn: 1552678X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: LATIN AMERICAN POLITICS AND SOCIETY
+    short: LAT AM POLIT SOC
+    issn: 1531426X
+    eissn: "15482456"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: LATIN AMERICAN RESEARCH REVIEW
+    short: LAT AM RES REV
+    issn: ""
+    eissn: "15424278"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: London Journal
+    short: LOND J
+    issn: "03058034"
+    eissn: "17496322"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Mediterranean Politics
+    short: MEDITERR POLIT
+    issn: "13629395"
+    eissn: "17439418"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Middle East Critique
+    short: MIDDLE EAST CRIT
+    issn: "19436149"
+    eissn: "19436157"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: MIDDLE EAST JOURNAL
+    short: MIDDLE EAST J
+    issn: "00263141"
+    eissn: "19403461"
+    site: ""
+    notes: WOS/JCR; MIDDLE EAST INST
+  - name: MIDDLE EAST POLICY
+    short: MIDDLE EAST POLICY
+    issn: "10611924"
+    eissn: "14754967"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: MIDDLE EASTERN STUDIES
+    short: MIDDLE EASTERN STUD
+    issn: "00263206"
+    eissn: "17437881"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: MODERN ASIAN STUDIES
+    short: MOD ASIAN STUD
+    issn: 0026749X
+    eissn: "14698099"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: MODERN CHINA
+    short: MOD CHINA
+    issn: "00977004"
+    eissn: "15526836"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Modern Italy
+    short: MOD ITALY
+    issn: "13532944"
+    eissn: "14699877"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Nationalities Papers-The Journal of Nationalism and Ethnicity
+    short: NATL PAP
+    issn: "00905992"
+    eissn: "14653923"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: New Perspectives on Turkey
+    short: NEW PERSPECT TURK
+    issn: "08966346"
+    eissn: "13053299"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: NWIG-New West Indian Guide-Nieuwe West-Indische Gids
+    short: NWIG-NEW W INDIAN GU
+    issn: "13822373"
+    eissn: "13822373"
+    site: ""
+    notes: WOS/JCR; KITLV PRESS
+  - name: PACIFIC AFFAIRS
+    short: PAC AFF
+    issn: 0030851X
+    eissn: "17153379"
+    site: ""
+    notes: WOS/JCR; PACIFIC AFFAIRS UNIV BRITISH COLUMBIA
+  - name: Pacific Focus
+    short: PAC FOCUS
+    issn: "12254657"
+    eissn: "19765118"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: PACIFIC REVIEW
+    short: PAC REV
+    issn: "09512748"
+    eissn: "14701332"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: POST-SOVIET AFFAIRS
+    short: POST-SOV AFF
+    issn: 1060586X
+    eissn: "19382855"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Review of African Political Economy
+    short: REV AFR POLIT ECON
+    issn: "03056244"
+    eissn: "17401720"
+    site: ""
+    notes: WOS/JCR; ScienceOpen
+  - name: SLAVIC REVIEW
+    short: SLAVIC REV
+    issn: "00376779"
+    eissn: "23257784"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Social Dynamics-A Journal of African Studies
+    short: SOC DYNAMICS
+    issn: "02533952"
+    eissn: "19407874"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Social Science Japan Journal
+    short: SOC SCI JPN J
+    issn: "13691465"
+    eissn: "14682680"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: SOUTH ASIA-JOURNAL OF SOUTH ASIAN STUDIES
+    short: S ASIA
+    issn: "00856401"
+    eissn: "14790270"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Southeast European and Black Sea Studies
+    short: SE EUR BLACK SEA STU
+    issn: "14683857"
+    eissn: "17439639"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Turkish Studies
+    short: TURK STUD
+    issn: "14683849"
+    eissn: "17439663"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD

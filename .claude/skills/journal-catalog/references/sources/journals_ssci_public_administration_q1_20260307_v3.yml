@@ -1,0 +1,556 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Public_Administration_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.286Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 48
+  count_unique_journals: 48
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: ADMINISTRATION & SOCIETY
+    short: ADMIN SOC
+    issn: "00953997"
+    eissn: "15523039"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.3"
+    jci: "1.03"
+    oa_citable_pct: "25.33"
+    total_citations: "2779"
+  - name: AMERICAN REVIEW OF PUBLIC ADMINISTRATION
+    short: AM REV PUBLIC ADM
+    issn: "02750740"
+    eissn: "15523357"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.5"
+    jci: "1.01"
+    oa_citable_pct: "12.75"
+    total_citations: "2999"
+  - name: Amme Idaresi Dergisi
+    short: AMME IDARESI DERG
+    issn: "13001795"
+    eissn: "13001795"
+    site: ""
+    notes: WOS/JCR; ANKARA HACI BAYRAM VELI UNIV
+    quartile: Q4
+    jif: "0.1"
+    jci: "0.06"
+    oa_citable_pct: "0"
+    total_citations: "65"
+  - name: AUSTRALIAN JOURNAL OF PUBLIC ADMINISTRATION
+    short: AUST J PUBL ADMIN
+    issn: "03136647"
+    eissn: "14678500"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.87"
+    oa_citable_pct: "65.12"
+    total_citations: "1425"
+  - name: CANADIAN PUBLIC ADMINISTRATION-ADMINISTRATION PUBLIQUE DU CANADA
+    short: CAN PUBLIC ADMIN
+    issn: "00084840"
+    eissn: "17547121"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.4"
+    jci: "0.46"
+    oa_citable_pct: "54.46"
+    total_citations: "609"
+  - name: CANADIAN PUBLIC POLICY-ANALYSE DE POLITIQUES
+    short: CAN PUBLIC POL
+    issn: "03170861"
+    eissn: "19119917"
+    site: ""
+    notes: WOS/JCR; UNIV TORONTO PRESS INC
+    quartile: Q3
+    jif: "1.4"
+    jci: "0.54"
+    oa_citable_pct: "3.19"
+    total_citations: "1008"
+  - name: Civil Szemle
+    short: CIV SZLE
+    issn: "17863341"
+    eissn: "17863341"
+    site: ""
+    notes: WOS/JCR; UJ MANDATUM KONYVKIADO
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.12"
+    oa_citable_pct: "0"
+    total_citations: "130"
+  - name: CLIMATE POLICY
+    short: CLIM POLICY
+    issn: "14693062"
+    eissn: "17527457"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "5.2"
+    jci: "1.66"
+    oa_citable_pct: "34.74"
+    total_citations: "6353"
+  - name: CONTEMPORARY ECONOMIC POLICY
+    short: CONTEMP ECON POLICY
+    issn: "10743529"
+    eissn: "14657287"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.56"
+    oa_citable_pct: "22.64"
+    total_citations: "1192"
+  - name: Critical Policy Studies
+    short: CRIT POLICY STUD
+    issn: "19460171"
+    eissn: 1946018X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.95"
+    oa_citable_pct: "40.59"
+    total_citations: "1138"
+  - name: Environment and Planning C-Politics and Space
+    short: ENVIRON PLAN C-POLIT
+    issn: "23996544"
+    eissn: "23996552"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.62"
+    oa_citable_pct: "43.01"
+    total_citations: "3544"
+  - name: Gestion y Politica Publica
+    short: GEST POLIT PUBLICA
+    issn: "14051079"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; CENTRO DE INVESTIGACION Y DOCENCIA ECONOMICAS
+    quartile: Q4
+    jif: "0.6"
+    jci: "0.14"
+    oa_citable_pct: "5.88"
+    total_citations: "135"
+  - name: GOVERNANCE-AN INTERNATIONAL JOURNAL OF POLICY ADMINISTRATION AND
+      INSTITUTIONS
+    short: GOVERNANCE
+    issn: "09521895"
+    eissn: "14680491"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.2"
+    oa_citable_pct: "54.59"
+    total_citations: "3539"
+  - name: Human Service Organizations Management Leadership & Governance
+    short: HUM SERV ORG MANAGE
+    issn: "23303131"
+    eissn: 2330314X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.4"
+    jci: "0.78"
+    oa_citable_pct: "13.68"
+    total_citations: "691"
+  - name: International Public Management Journal
+    short: INT PUBLIC MANAG J
+    issn: "10967494"
+    eissn: "15593169"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3"
+    jci: "0.89"
+    oa_citable_pct: "24.17"
+    total_citations: "1789"
+  - name: INTERNATIONAL REVIEW OF ADMINISTRATIVE SCIENCES
+    short: INT REV ADM SCI
+    issn: "00208523"
+    eissn: "14617226"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "2.6"
+    jci: "1.09"
+    oa_citable_pct: "23.76"
+    total_citations: "2412"
+  - name: JOURNAL OF ACCOUNTING AND PUBLIC POLICY
+    short: J ACCOUNT PUBLIC POL
+    issn: "02784254"
+    eissn: "18732070"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.9"
+    oa_citable_pct: "13.79"
+    total_citations: "3943"
+  - name: Journal of Chinese Governance
+    short: J CHIN GOV
+    issn: "23812346"
+    eissn: "23812354"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.23"
+    oa_citable_pct: "6.12"
+    total_citations: "493"
+  - name: Journal of Comparative Policy Analysis
+    short: J COMP POLICY ANAL
+    issn: "13876988"
+    eissn: "15725448"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.4"
+    jci: "1.26"
+    oa_citable_pct: "22.78"
+    total_citations: "1240"
+  - name: JOURNAL OF EUROPEAN PUBLIC POLICY
+    short: J EUR PUBLIC POLICY
+    issn: "13501763"
+    eissn: "14664429"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.5"
+    jci: "2.21"
+    oa_citable_pct: "59.07"
+    total_citations: "7667"
+  - name: JOURNAL OF EUROPEAN SOCIAL POLICY
+    short: J EUR SOC POLICY
+    issn: "09589287"
+    eissn: "14617269"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.2"
+    jci: "1.04"
+    oa_citable_pct: "49.57"
+    total_citations: "2333"
+  - name: Journal of Homeland Security and Emergency Management
+    short: J HOMEL SECUR EMERG
+    issn: "21946361"
+    eissn: "15477355"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q3
+    jif: "1"
+    jci: "0.37"
+    oa_citable_pct: "12.77"
+    total_citations: "729"
+  - name: JOURNAL OF POLICY ANALYSIS AND MANAGEMENT
+    short: J POLICY ANAL MANAG
+    issn: ""
+    eissn: "15206688"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.6"
+    jci: "0.98"
+    oa_citable_pct: "27.45"
+    total_citations: "3075"
+  - name: JOURNAL OF PUBLIC ADMINISTRATION RESEARCH AND THEORY
+    short: J PUBL ADM RES THEOR
+    issn: "10531858"
+    eissn: "14779803"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "6.3"
+    jci: "2.34"
+    oa_citable_pct: "26.92"
+    total_citations: "7664"
+  - name: Journal of Public Policy
+    short: J PUBLIC POLICY
+    issn: 0143814X
+    eissn: "14697815"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.91"
+    oa_citable_pct: "71.68"
+    total_citations: "1542"
+  - name: JOURNAL OF SOCIAL POLICY
+    short: J SOC POLICY
+    issn: "00472794"
+    eissn: "14697823"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "2.6"
+    jci: "1.05"
+    oa_citable_pct: "72.16"
+    total_citations: "2536"
+  - name: Lex Localis-Journal of Local Self-Government
+    short: LEX LOCALIS
+    issn: "15815374"
+    eissn: 1855363X
+    site: ""
+    notes: WOS/JCR; UK Zhende Publishing Ltd
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.24"
+    oa_citable_pct: "17.09"
+    total_citations: "268"
+  - name: LOCAL GOVERNMENT STUDIES
+    short: LOCAL GOV STUD
+    issn: "03003930"
+    eissn: "17439388"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.71"
+    oa_citable_pct: "26.25"
+    total_citations: "1861"
+  - name: Nonprofit Management & Leadership
+    short: NONPROFIT MANAG LEAD
+    issn: "10486682"
+    eissn: "15427854"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.73"
+    oa_citable_pct: "25.42"
+    total_citations: "1506"
+  - name: POLICY AND POLITICS
+    short: POLICY POLIT
+    issn: "03055736"
+    eissn: "14708442"
+    site: ""
+    notes: WOS/JCR; POLICY PRESS
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.79"
+    oa_citable_pct: "17.24"
+    total_citations: "1909"
+  - name: Policy and Society
+    short: POLICY SOC
+    issn: "14494035"
+    eissn: "18393373"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "6.1"
+    jci: "2.63"
+    oa_citable_pct: "99.08"
+    total_citations: "2301"
+  - name: POLICY SCIENCES
+    short: POLICY SCI
+    issn: "00322687"
+    eissn: "15730891"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.68"
+    oa_citable_pct: "56.6"
+    total_citations: "3336"
+  - name: Policy Studies
+    short: POLICY STUD-UK
+    issn: "01442872"
+    eissn: "14701006"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.3"
+    jci: "1.07"
+    oa_citable_pct: "33.11"
+    total_citations: "1317"
+  - name: POLICY STUDIES JOURNAL
+    short: POLICY STUD J
+    issn: 0190292X
+    eissn: "15410072"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "4.9"
+    jci: "2.19"
+    oa_citable_pct: "40.91"
+    total_citations: "3906"
+  - name: PUBLIC ADMINISTRATION
+    short: PUBLIC ADMIN
+    issn: "00333298"
+    eissn: "14679299"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "5.1"
+    jci: "1.99"
+    oa_citable_pct: "56.19"
+    total_citations: "5829"
+  - name: PUBLIC ADMINISTRATION AND DEVELOPMENT
+    short: PUBLIC ADMIN DEVELOP
+    issn: "02712075"
+    eissn: 1099162X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.77"
+    oa_citable_pct: "36.47"
+    total_citations: "1309"
+  - name: PUBLIC ADMINISTRATION REVIEW
+    short: PUBLIC ADMIN REV
+    issn: "00333352"
+    eissn: "15406210"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "4.9"
+    jci: "2.05"
+    oa_citable_pct: "37.75"
+    total_citations: "13272"
+  - name: Public Management Review
+    short: PUBLIC MANAG REV
+    issn: "14719037"
+    eissn: "14719045"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.9"
+    jci: "1.44"
+    oa_citable_pct: "29.41"
+    total_citations: "8033"
+  - name: PUBLIC MONEY & MANAGEMENT
+    short: PUBLIC MONEY MANAGE
+    issn: "09540962"
+    eissn: "14679302"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.75"
+    oa_citable_pct: "30.04"
+    total_citations: "2399"
+  - name: Public Performance & Management Review
+    short: PUBLIC PERFORM MANAG
+    issn: "15309576"
+    eissn: "15579271"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.8"
+    jci: "1.15"
+    oa_citable_pct: "11.24"
+    total_citations: "1893"
+  - name: PUBLIC PERSONNEL MANAGEMENT
+    short: PUBLIC PERS MANAGE
+    issn: "00910260"
+    eissn: "19457421"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.6"
+    jci: "1.11"
+    oa_citable_pct: "21.62"
+    total_citations: "1276"
+  - name: Public Policy and Administration
+    short: PUBLIC POLICY ADMIN
+    issn: "09520767"
+    eissn: "17494192"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.2"
+    jci: "1.24"
+    oa_citable_pct: "41.86"
+    total_citations: "1124"
+  - name: Regulation & Governance
+    short: REGUL GOV
+    issn: "17485983"
+    eissn: "17485991"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.8"
+    jci: "2.55"
+    oa_citable_pct: "71.27"
+    total_citations: "2310"
+  - name: Review of Policy Research
+    short: REV POLICY RES
+    issn: 1541132X
+    eissn: "15411338"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.2"
+    jci: "1.35"
+    oa_citable_pct: "38.36"
+    total_citations: "1570"
+  - name: Review of Public Personnel Administration
+    short: REV PUBLIC PERS ADM
+    issn: 0734371X
+    eissn: 1552759X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.25"
+    oa_citable_pct: "21.57"
+    total_citations: "1817"
+  - name: Science and Public Policy
+    short: SCI PUBL POLICY
+    issn: "03023427"
+    eissn: "14715430"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.74"
+    oa_citable_pct: "39.26"
+    total_citations: "3140"
+  - name: SOCIAL POLICY & ADMINISTRATION
+    short: SOC POLICY ADMIN
+    issn: "01445596"
+    eissn: "14679515"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.2"
+    jci: "1.09"
+    oa_citable_pct: "66.12"
+    total_citations: "2616"
+  - name: Transylvanian Review of Administrative Sciences
+    short: TRANSYLV REV ADM SCI
+    issn: "18422845"
+    eissn: "22478310"
+    site: ""
+    notes: WOS/JCR; BABES-BOLYAI UNIV
+    quartile: Q4
+    jif: "0.8"
+    jci: "0.37"
+    oa_citable_pct: "100"
+    total_citations: "314"

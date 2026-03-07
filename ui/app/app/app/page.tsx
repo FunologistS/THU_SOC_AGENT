@@ -40,7 +40,7 @@ const DEFAULT_SOURCE = "outputs";
 
 const SIDEBAR_WIDTH_MIN = 320;
 const SIDEBAR_WIDTH_MAX = 560;
-const SIDEBAR_WIDTH_DEFAULT = 320;
+const SIDEBAR_WIDTH_DEFAULT = 380;
 
 /** 侧栏区块折叠状态 */
 type SidebarSections = { journalDb: boolean; journal: boolean; skills: boolean; manual: boolean; writingSamples: boolean; docs: boolean };
@@ -182,6 +182,10 @@ function HomeContent() {
   const [journalSearchDone, setJournalSearchDone] = useState(false);
   const [journalSearchExitCode, setJournalSearchExitCode] = useState<number | undefined>();
   const [journalSearchProgress, setJournalSearchProgress] = useState(0);
+  /** 重新检索开始时间（用于进度条与已用秒数）；仅在运行中有效 */
+  const [journalSearchRunStartTime, setJournalSearchRunStartTime] = useState<number | null>(null);
+  /** 已用秒数（每秒更新），用于技能工作台「重新检索」展示预估/已用/进度 */
+  const [journalSearchElapsedSec, setJournalSearchElapsedSec] = useState(0);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [pendingJumpToOutputs, setPendingJumpToOutputs] = useState(false);
   const [lastCompletedSkillId, setLastCompletedSkillId] = useState<JobType | null>(null);
@@ -196,6 +200,8 @@ function HomeContent() {
   /** 技能工作台是否有任务正在运行（用于返回启动页前确认） */
   const [skillRunning, setSkillRunning] = useState(false);
   const skillRunningPrevRef = useRef(false);
+  /** 重新检索开始时间（ref，用于 poll 完成时写入精确总用时） */
+  const journalSearchRunStartTimeRef = useRef<number | null>(null);
   /** 文档预览区域右上角导出菜单开关 */
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
 
@@ -204,14 +210,17 @@ function HomeContent() {
   const journalSearchDonePrevRef = useRef(false);
   useEffect(() => {
     if (journalSearchDonePrevRef.current === false && journalSearchDone) {
+      const success = journalSearchExitCode === 0;
       skillCompleteToast.notify({
         label: "重新检索",
-        success: journalSearchExitCode === 0,
-        onClick: () => {
-          setLastCompletedSkillId("journal_search");
-          setPendingJumpToOutputs(true);
-          setMetaRefreshKey((k) => k + 1);
-        },
+        success,
+        ...(success && {
+          onClick: () => {
+            setLastCompletedSkillId("journal_search");
+            setPendingJumpToOutputs(true);
+            setMetaRefreshKey((k) => k + 1);
+          },
+        }),
       });
     }
     journalSearchDonePrevRef.current = journalSearchDone;
@@ -513,11 +522,13 @@ function HomeContent() {
       skillCompleteToast.notify({
         label: jobDisplayLabel(skillId),
         success,
-        onClick: () => {
-          setLastCompletedSkillId(skillId);
-          setPendingJumpToOutputs(true);
-          setMetaRefreshKey((k) => k + 1);
-        },
+        ...(success && {
+          onClick: () => {
+            setLastCompletedSkillId(skillId);
+            setPendingJumpToOutputs(true);
+            setMetaRefreshKey((k) => k + 1);
+          },
+        }),
       });
     },
     [skillCompleteToast]
@@ -546,7 +557,8 @@ function HomeContent() {
       yearFrom?: number;
       yearTo?: number;
       searchMode?: "strict" | "relaxed";
-      instruction?: string;
+      searchTerms?: string[];
+      searchLogics?: ("and" | "or")[];
       abstractFallback?: boolean;
     }) => {
       setUrl({ topic: params.topicSlug, source: "outputs" });
@@ -555,6 +567,8 @@ function HomeContent() {
       setJournalSearchDone(false);
       setJournalSearchExitCode(undefined);
       setJournalSearchProgress(0);
+      setJournalSearchRunStartTime(null);
+      setJournalSearchElapsedSec(0);
       const body: Record<string, unknown> = {
         jobType: "journal_search",
         topic: params.topicSlug,
@@ -564,7 +578,8 @@ function HomeContent() {
       if (params.yearFrom != null) body.yearFrom = params.yearFrom;
       if (params.yearTo != null) body.yearTo = params.yearTo;
       if (params.searchMode) body.searchMode = params.searchMode;
-      if (params.instruction != null && String(params.instruction).trim() !== "") body.instruction = String(params.instruction).trim();
+      if (params.searchTerms?.length) body.searchTerms = params.searchTerms;
+      if (params.searchLogics?.length === (params.searchTerms?.length ?? 0) - 1) body.searchLogics = params.searchLogics;
       if (params.abstractFallback === true) body.abstractFallback = true;
       fetch("/api/run", {
         method: "POST",
@@ -577,8 +592,12 @@ function HomeContent() {
             setJournalSearchLog(data.error || "启动失败");
             return;
           }
-          setJournalSearchJobId(data.jobId);
           const startTime = Date.now();
+          journalSearchRunStartTimeRef.current = startTime;
+          setJournalSearchJobId(data.jobId);
+          setJournalSearchRunStartTime(startTime);
+          setJournalSearchElapsedSec(0);
+          setJournalSearchProgress(0);
           const poll = () => {
             fetch(`/api/logs?jobId=${data.jobId}`)
               .then((l) => l.json())
@@ -588,8 +607,9 @@ function HomeContent() {
                 setJournalSearchExitCode(ld.exitCode);
                 if (ld.done) {
                   setJournalSearchProgress(100);
+                  const start = journalSearchRunStartTimeRef.current;
+                  if (start != null) setJournalSearchElapsedSec(Math.floor((Date.now() - start) / 1000));
                 } else {
-                  setJournalSearchProgress(Math.min(95, ((Date.now() - startTime) / JOURNAL_SEARCH_ESTIMATED_SEC) * 100));
                   setTimeout(poll, 800);
                 }
               });
@@ -600,6 +620,28 @@ function HomeContent() {
     },
     [setUrl]
   );
+
+  /** 重新检索运行中：每秒更新已用秒数与进度条（基于时间而非轮询回调，避免一次跳到 95%） */
+  useEffect(() => {
+    if (!journalSearchJobId || journalSearchRunStartTime == null || journalSearchDone) return;
+    const tick = () => {
+      const elapsed = (Date.now() - journalSearchRunStartTime) / 1000;
+      setJournalSearchElapsedSec(Math.floor(elapsed));
+      setJournalSearchProgress(Math.min(95, (elapsed / JOURNAL_SEARCH_ESTIMATED_SEC) * 100));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [journalSearchJobId, journalSearchRunStartTime, journalSearchDone]);
+
+  /** job 被清空时重置开始时间与已用秒数 */
+  useEffect(() => {
+    if (!journalSearchJobId) {
+      journalSearchRunStartTimeRef.current = null;
+      setJournalSearchRunStartTime(null);
+      setJournalSearchElapsedSec(0);
+    }
+  }, [journalSearchJobId]);
 
   /** 重新检索运行中时滚动到运行日志区域 */
   useEffect(() => {
@@ -629,6 +671,8 @@ function HomeContent() {
       setJournalSearchDone(false);
       setJournalSearchExitCode(undefined);
       setJournalSearchProgress(0);
+      setJournalSearchRunStartTime(null);
+      setJournalSearchElapsedSec(0);
     });
   }, [journalSearchJobId]);
 
@@ -851,6 +895,8 @@ function HomeContent() {
                   journalSearchDone={journalSearchDone}
                   journalSearchExitCode={journalSearchExitCode}
                   journalSearchProgress={journalSearchProgress}
+                  journalSearchElapsedSec={journalSearchElapsedSec}
+                  journalSearchEstimatedSec={JOURNAL_SEARCH_ESTIMATED_SEC}
                   onAbortJournalSearch={openJournalSearchAbortConfirm}
                   onDismissJournalSearchLog={() => setJournalSearchJobId(null)}
                 />

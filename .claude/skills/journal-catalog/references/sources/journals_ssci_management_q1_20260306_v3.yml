@@ -1,0 +1,1405 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Management_260306_normalized.csv
+  generated_at: 2026-03-06T07:22:33.627Z
+  date_tag: "20260306"
+  version: 3
+  count_filtered_rows: 230
+  count_unique_journals: 230
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Academia-Revista Latinoamericana de Administracion
+    short: ACAD-REV LATINOAM AD
+    issn: "10128255"
+    eissn: "20565127"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Academy of Management Annals
+    short: ACAD MANAG ANN
+    issn: "19416520"
+    eissn: "19416067"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+  - name: Academy of Management Discoveries
+    short: ACAD MANAG DISCOV
+    issn: ""
+    eissn: "21681007"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+  - name: ACADEMY OF MANAGEMENT JOURNAL
+    short: ACAD MANAGE J
+    issn: "00014273"
+    eissn: "19480989"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+  - name: Academy of Management Learning & Education
+    short: ACAD MANAG LEARN EDU
+    issn: 1537260X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+  - name: Academy of Management Perspectives
+    short: ACAD MANAGE PERSPECT
+    issn: "15589080"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+  - name: ACADEMY OF MANAGEMENT REVIEW
+    short: ACAD MANAGE REV
+    issn: "03637425"
+    eissn: "19303807"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+  - name: Action Research
+    short: ACTION RES-LONDON
+    issn: "14767503"
+    eissn: "17412617"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ADMINISTRATIVE SCIENCE QUARTERLY
+    short: ADMIN SCI QUART
+    issn: "00018392"
+    eissn: "19303815"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Amfiteatru Economic
+    short: AMFITEATRU ECON
+    issn: "15829146"
+    eissn: "22479104"
+    site: ""
+    notes: WOS/JCR; EDITURA ASE
+  - name: Annual Review of Organizational Psychology and Organizational Behavior
+    short: ANNU REV ORGAN PSYCH
+    issn: "23270608"
+    eissn: "23270616"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Asia Pacific Business Review
+    short: ASIA PAC BUS REV
+    issn: "13602381"
+    eissn: 1743792X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Asia Pacific Journal of Human Resources
+    short: ASIA PAC J HUM RESOU
+    issn: "10384111"
+    eissn: "17447941"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Asia Pacific Journal of Management
+    short: ASIA PAC J MANAG
+    issn: "02174561"
+    eissn: "15729958"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Asian Business & Management
+    short: ASIAN BUS MANAG
+    issn: "14724782"
+    eissn: "14769328"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+  - name: AUSTRALIAN JOURNAL OF MANAGEMENT
+    short: AUST J MANAGE
+    issn: "03128962"
+    eissn: "13272020"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Baltic Journal of Management
+    short: BALT J MANAG
+    issn: "17465265"
+    eissn: "17465273"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: BETRIEBSWIRTSCHAFTLICHE FORSCHUNG UND PRAXIS
+    short: BETRIEB FORSCH PRAX
+    issn: "03405370"
+    eissn: "03405370"
+    site: ""
+    notes: WOS/JCR; VERLAG NEUE WIRTSCHAFTS-BRIEFE
+  - name: BRITISH JOURNAL OF MANAGEMENT
+    short: BRIT J MANAGE
+    issn: "10453172"
+    eissn: "14678551"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: BRQ-Business Research Quarterly
+    short: BRQ-BUS RES Q
+    issn: "23409444"
+    eissn: "23409444"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Business Process Management Journal
+    short: BUS PROCESS MANAG J
+    issn: "14637154"
+    eissn: "17584116"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Business Strategy and the Environment
+    short: BUS STRATEG ENVIRON
+    issn: "09644733"
+    eissn: "10990836"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: CALIFORNIA MANAGEMENT REVIEW
+    short: CALIF MANAGE REV
+    issn: "00081256"
+    eissn: "21628564"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: CANADIAN JOURNAL OF ADMINISTRATIVE SCIENCES-REVUE CANADIENNE DES SCIENCES
+      DE L ADMINISTRATION
+    short: CAN J ADM SCI
+    issn: "08250383"
+    eissn: "19364490"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Career Development International
+    short: CAREER DEV INT
+    issn: "13620436"
+    eissn: "17586003"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Chinese Management Studies
+    short: CHIN MANAG STUD
+    issn: 1750614X
+    eissn: "17506158"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Computational Economics
+    short: COMPUT ECON
+    issn: "09277099"
+    eissn: "15729974"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Cornell Hospitality Quarterly
+    short: CORNELL HOSP Q
+    issn: "19389655"
+    eissn: "19389663"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: CORPORATE GOVERNANCE-AN INTERNATIONAL REVIEW
+    short: CORP GOV-OXFORD
+    issn: "09648410"
+    eissn: "14678683"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Corporate Social Responsibility and Environmental Management
+    short: CORP SOC RESP ENV MA
+    issn: "15353958"
+    eissn: "15353966"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Creativity and Innovation Management
+    short: CREAT INNOV MANAG
+    issn: "09631690"
+    eissn: "14678691"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Cross Cultural & Strategic Management
+    short: CROSS CULT STRATEG M
+    issn: "20595794"
+    eissn: "20595794"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Culture and Organization
+    short: CULT ORGAN
+    issn: "14759551"
+    eissn: "14772760"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Decision Analysis
+    short: DECIS ANAL
+    issn: "15458490"
+    eissn: "15458504"
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: DECISION SCIENCES
+    short: DECISION SCI
+    issn: "00117315"
+    eissn: "15405915"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Disaster Prevention and Management
+    short: DISASTER PREV MANAG
+    issn: "09653562"
+    eissn: "17586100"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: E & M Ekonomie a Management
+    short: E M EKON MANAG
+    issn: "12123609"
+    eissn: "23365064"
+    site: ""
+    notes: WOS/JCR; TECHNICAL UNIV LIBEREC
+  - name: Electronic Commerce Research
+    short: ELECTRON COMMER RES
+    issn: "13895753"
+    eissn: "15729362"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Electronic Markets
+    short: ELECTRON MARK
+    issn: "10196781"
+    eissn: "14228890"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: EMPLOYEE RELATIONS
+    short: EMPL RELAT
+    issn: "01425455"
+    eissn: "17587069"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Engineering Construction and Architectural Management
+    short: ENG CONSTR ARCHIT MA
+    issn: "09699988"
+    eissn: 1365232X
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: ENGINEERING ECONOMIST
+    short: ENG ECON
+    issn: 0013791X
+    eissn: "15472701"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Engineering Management Journal
+    short: ENG MANAG J
+    issn: "10429247"
+    eissn: "23770643"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Eurasian Business Review
+    short: EURASIAN BUS REV
+    issn: "13094297"
+    eissn: "21474281"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: EUROPEAN JOURNAL OF INFORMATION SYSTEMS
+    short: EUR J INFORM SYST
+    issn: 0960085X
+    eissn: "14769344"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: European Journal of Innovation Management
+    short: EUR J INNOV MANAG
+    issn: "14601060"
+    eissn: "17587115"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: European Journal of International Management
+    short: EUR J INT MANAG
+    issn: "17516757"
+    eissn: "17516765"
+    site: ""
+    notes: WOS/JCR; INDERSCIENCE ENTERPRISES LTD
+  - name: European Journal of Work and Organizational Psychology
+    short: EUR J WORK ORGAN PSY
+    issn: 1359432X
+    eissn: "14640643"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: European Management Journal
+    short: EUR MANAG J
+    issn: "02632373"
+    eissn: "18735681"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: European Management Review
+    short: EUR MANAG REV
+    issn: "17404754"
+    eissn: "17404762"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+  - name: European Research on Management and Business Economics
+    short: EUR RES MANAG BUS EC
+    issn: "24448834"
+    eissn: "24448842"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: European Sport Management Quarterly
+    short: EUR SPORT MANAG Q
+    issn: "16184742"
+    eissn: 1746031X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Gender in Management
+    short: GEND MANAG
+    issn: "17542413"
+    eissn: "17542421"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: GENDER WORK AND ORGANIZATION
+    short: GENDER WORK ORGAN
+    issn: "09686673"
+    eissn: "14680432"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: German Journal of Human Resource Management-Zeitschrift fur
+      Personalforschung
+    short: GER J HUM RESOUR MAN
+    issn: "23970022"
+    eissn: "23970030"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Global Strategy Journal
+    short: GLOB STRATEG J
+    issn: "20425791"
+    eissn: "20425805"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: GROUP & ORGANIZATION MANAGEMENT
+    short: GROUP ORGAN MANAGE
+    issn: "10596011"
+    eissn: "15523993"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: GROUP DECISION AND NEGOTIATION
+    short: GROUP DECIS NEGOT
+    issn: "09262644"
+    eissn: "15729907"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: HARVARD BUSINESS REVIEW
+    short: HARVARD BUS REV
+    issn: "00178012"
+    eissn: "00178012"
+    site: ""
+    notes: WOS/JCR; HARVARD BUSINESS SCHOOL PUBLISHING CORPORATION
+  - name: HUMAN RELATIONS
+    short: HUM RELAT
+    issn: "00187267"
+    eissn: 1741282X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Human Resource Development Quarterly
+    short: HUM RESOUR DEV Q
+    issn: "10448004"
+    eissn: "15321096"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+  - name: Human Resource Development Review
+    short: HUM RESOUR DEV REV
+    issn: "15344843"
+    eissn: "15526712"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: HUMAN RESOURCE MANAGEMENT
+    short: HUM RESOUR MANAGE-US
+    issn: "00904848"
+    eissn: 1099050X
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+  - name: Human Resource Management Journal
+    short: HUM RESOUR MANAG J
+    issn: "09545395"
+    eissn: "17488583"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: HUMAN RESOURCE MANAGEMENT REVIEW
+    short: HUM RESOUR MANAGE R
+    issn: "10534822"
+    eissn: "18737889"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT
+    short: IEEE T ENG MANAGE
+    issn: "00189391"
+    eissn: "15580040"
+    site: ""
+    notes: WOS/JCR; IEEE-INST ELECTRICAL ELECTRONICS ENGINEERS INC
+  - name: IMA Journal of Management Mathematics
+    short: IMA J MANAG MATH
+    issn: 1471678X
+    eissn: "14716798"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: INDUSTRIAL AND CORPORATE CHANGE
+    short: IND CORP CHANGE
+    issn: "09606491"
+    eissn: "14643650"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: INDUSTRIAL MARKETING MANAGEMENT
+    short: IND MARKET MANAG
+    issn: "00198501"
+    eissn: "18732062"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Industry and Innovation
+    short: IND INNOV
+    issn: "13662716"
+    eissn: "14698390"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INFORMATION & MANAGEMENT
+    short: INFORM MANAGE-AMSTER
+    issn: "03787206"
+    eissn: "18727530"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Information and Organization
+    short: INFORM ORGAN-UK
+    issn: "14717727"
+    eissn: "18737919"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Information Systems and E-Business Management
+    short: INF SYST E-BUS MANAG
+    issn: "16179846"
+    eissn: "16179854"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: INFORMATION SYSTEMS RESEARCH
+    short: INFORM SYST RES
+    issn: "10477047"
+    eissn: "15265536"
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: Information Technology & Management
+    short: INFORM TECHNOL MANAG
+    issn: 1385951X
+    eissn: "15737667"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: INFORMS Journal on Applied Analytics
+    short: INFORMS J APPL ANAL
+    issn: "26440865"
+    eissn: "26440873"
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: Innovation-Organization & Management
+    short: INNOV-ORGAN MANAG
+    issn: "14479338"
+    eissn: "22040226"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: International Business Review
+    short: INT BUS REV
+    issn: "09695931"
+    eissn: "18736149"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: International Entrepreneurship and Management Journal
+    short: INT ENTREP MANAG J
+    issn: "15547191"
+    eissn: "15551938"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: International Journal of Accounting Information Systems
+    short: INT J ACCOUNT INF SY
+    issn: "14670895"
+    eissn: "18734723"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: International Journal of Arts Management
+    short: INT J ARTS MANAG
+    issn: "14808986"
+    eissn: "14808986"
+    site: ""
+    notes: WOS/JCR; ECOLE DES HAUTES ETUDES COMMERCIALES DE MONTREAL
+  - name: International Journal of Contemporary Hospitality Management
+    short: INT J CONTEMP HOSP M
+    issn: "09596119"
+    eissn: "17571049"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: International Journal of Emerging Markets
+    short: INT J EMERG MARK
+    issn: "17468809"
+    eissn: "17468817"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF ENTREPRENEURIAL BEHAVIOR & RESEARCH
+    short: INT J ENTREP BEHAV R
+    issn: "13552554"
+    eissn: "17586534"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF FORECASTING
+    short: INT J FORECASTING
+    issn: "01692070"
+    eissn: "18728200"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: INTERNATIONAL JOURNAL OF HUMAN RESOURCE MANAGEMENT
+    short: INT J HUM RESOUR MAN
+    issn: "09585192"
+    eissn: "14664399"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: International Journal of Islamic and Middle Eastern Finance and Management
+    short: INT J ISLAMIC MIDDLE
+    issn: "17538394"
+    eissn: "17538408"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: International Journal of Lean Six Sigma
+    short: INT J LEAN SIX SIG
+    issn: "20404166"
+    eissn: "20404174"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: International Journal of Logistics Management
+    short: INT J LOGIST MANAG
+    issn: "09574093"
+    eissn: "17586550"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: International Journal of Logistics-Research and Applications
+    short: INT J LOGIST-RES APP
+    issn: "13675567"
+    eissn: 1469848X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: International Journal of Management Education
+    short: INT J MANAG EDUC-OXF
+    issn: "14728117"
+    eissn: "23523565"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: INTERNATIONAL JOURNAL OF MANAGEMENT REVIEWS
+    short: INT J MANAG REV
+    issn: "14608545"
+    eissn: "14682370"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: International Journal of Managing Projects in Business
+    short: INT J MANAG PROJ BUS
+    issn: "17538378"
+    eissn: "17538386"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF MANPOWER
+    short: INT J MANPOWER
+    issn: "01437720"
+    eissn: "17586577"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF OPERATIONS & PRODUCTION MANAGEMENT
+    short: INT J OPER PROD MAN
+    issn: "01443577"
+    eissn: "17586593"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF PHYSICAL DISTRIBUTION & LOGISTICS MANAGEMENT
+    short: INT J PHYS DISTR LOG
+    issn: "09600035"
+    eissn: 1758664X
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF PROJECT MANAGEMENT
+    short: INT J PROJ MANAG
+    issn: "02637863"
+    eissn: "18734634"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: International Journal of Retail & Distribution Management
+    short: INT J RETAIL DISTRIB
+    issn: "09590552"
+    eissn: "17586690"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: INTERNATIONAL JOURNAL OF SELECTION AND ASSESSMENT
+    short: INT J SELECT ASSESS
+    issn: 0965075X
+    eissn: "14682389"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: International Journal of Shipping and Transport Logistics
+    short: INT J SHIP TRANS LOG
+    issn: "17566517"
+    eissn: "17566525"
+    site: ""
+    notes: WOS/JCR; INDERSCIENCE ENTERPRISES LTD
+  - name: International Journal of Strategic Property Management
+    short: INT J STRATEG PROP M
+    issn: 1648715X
+    eissn: "16489179"
+    site: ""
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+  - name: INTERNATIONAL JOURNAL OF TECHNOLOGY MANAGEMENT
+    short: INT J TECHNOL MANAGE
+    issn: "02675730"
+    eissn: "17415276"
+    site: ""
+    notes: WOS/JCR; INDERSCIENCE ENTERPRISES LTD
+  - name: International Small Business Journal-Researching Entrepreneurship
+    short: INT SMALL BUS J
+    issn: "02662426"
+    eissn: "17412870"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: International Transactions in Operational Research
+    short: INT T OPER RES
+    issn: "09696016"
+    eissn: "14753995"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF APPLIED BEHAVIORAL SCIENCE
+    short: J APPL BEHAV SCI
+    issn: "00218863"
+    eissn: "15526879"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF APPLIED PSYCHOLOGY
+    short: J APPL PSYCHOL
+    issn: "00219010"
+    eissn: "19391854"
+    site: ""
+    notes: WOS/JCR; AMER PSYCHOLOGICAL ASSOC
+  - name: Journal of Brand Management
+    short: J BRAND MANAG
+    issn: 1350231X
+    eissn: "14791803"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+  - name: Journal of Business Logistics
+    short: J BUS LOGIST
+    issn: "07353766"
+    eissn: "21581592"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Competitiveness
+    short: J COMPETITIVENESS
+    issn: 1804171X
+    eissn: "18041728"
+    site: ""
+    notes: WOS/JCR; UNIV TOMASE BATI & ZLINE, FAK MANAGEMENTU EKONOMIKY
+  - name: Journal of Contingencies and Crisis Management
+    short: J CONTING CRISIS MAN
+    issn: "09660879"
+    eissn: "14685973"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Destination Marketing & Management
+    short: J DESTIN MARK MANAGE
+    issn: 2212571X
+    eissn: "22125752"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of East European Management Studies
+    short: J E EUR MANAG STUD
+    issn: "09496181"
+    eissn: "18620019"
+    site: ""
+    notes: WOS/JCR; NOMOS VERLAGSGESELLSCHAFT MBH & CO KG
+  - name: JOURNAL OF ECONOMICS & MANAGEMENT STRATEGY
+    short: J ECON MANAGE STRAT
+    issn: "10586407"
+    eissn: "15309134"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF ENGINEERING AND TECHNOLOGY MANAGEMENT
+    short: J ENG TECHNOL MANAGE
+    issn: "09234748"
+    eissn: "18791719"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Enterprise Information Management
+    short: J ENTERP INF MANAG
+    issn: "17410398"
+    eissn: "17587409"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Journal of Family Business Strategy
+    short: J FAM BUS STRATEG
+    issn: "18778585"
+    eissn: "18778593"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Fashion Marketing and Management
+    short: J FASH MARK MANAG
+    issn: "13612026"
+    eissn: "17587433"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: JOURNAL OF FORECASTING
+    short: J FORECASTING
+    issn: "02776693"
+    eissn: 1099131X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Hospitality and Tourism Management
+    short: J HOSP TOUR MANAG
+    issn: "14476770"
+    eissn: "18395260"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Hospitality Marketing & Management
+    short: J HOSP MARKET MANAG
+    issn: "19368623"
+    eissn: "19368631"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF INFORMATION TECHNOLOGY
+    short: J INF TECHNOL-UK
+    issn: "02683962"
+    eissn: "14664437"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Journal of Innovation & Knowledge
+    short: J INNOV KNOWL
+    issn: "25307614"
+    eissn: 2444569X
+    site: ""
+    notes: WOS/JCR; ELSEVIER ESPANA
+  - name: Journal of Intellectual Capital
+    short: J INTELLECT CAP
+    issn: "14691930"
+    eissn: "17587468"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: JOURNAL OF INTERNATIONAL BUSINESS STUDIES
+    short: J INT BUS STUD
+    issn: "00472506"
+    eissn: "14786990"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+  - name: Journal of International Management
+    short: J INT MANAG
+    issn: "10754253"
+    eissn: "18730620"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Knowledge Management
+    short: J KNOWL MANAG
+    issn: "13673270"
+    eissn: "17587484"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Journal of Leadership & Organizational Studies
+    short: J LEADERSH ORG STUD
+    issn: "15480518"
+    eissn: "19397089"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF MANAGEMENT
+    short: J MANAGE
+    issn: "01492063"
+    eissn: "15571211"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Management & Organization
+    short: J MANAGE ORGAN
+    issn: "18333672"
+    eissn: "18393527"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Journal of Management Analytics
+    short: J MANAG ANAL
+    issn: "23270012"
+    eissn: "23270039"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF MANAGEMENT INFORMATION SYSTEMS
+    short: J MANAGE INFORM SYST
+    issn: "07421222"
+    eissn: 1557928X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF MANAGEMENT INQUIRY
+    short: J MANAGE INQUIRY
+    issn: "10564926"
+    eissn: "15526542"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF MANAGEMENT STUDIES
+    short: J MANAGE STUD
+    issn: "00222380"
+    eissn: "14676486"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Managerial Psychology
+    short: J MANAGE PSYCHOL
+    issn: "02683946"
+    eissn: "17587778"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Journal of Manufacturing Technology Management
+    short: J MANUF TECHNOL MANA
+    issn: 1741038X
+    eissn: "17587786"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Journal of Marketing Management
+    short: J MARKET MANAG-UK
+    issn: 0267257X
+    eissn: "14721376"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Nursing Management
+    short: J NURS MANAGE
+    issn: "09660429"
+    eissn: "13652834"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF OCCUPATIONAL AND ORGANIZATIONAL PSYCHOLOGY
+    short: J OCCUP ORGAN PSYCH
+    issn: "09631798"
+    eissn: "20448325"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF OPERATIONS MANAGEMENT
+    short: J OPER MANAG
+    issn: "02726963"
+    eissn: "18731317"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Organizational and End User Computing
+    short: J ORGAN END USER COM
+    issn: "15462234"
+    eissn: "15465012"
+    site: ""
+    notes: WOS/JCR; IGI GLOBAL
+  - name: JOURNAL OF ORGANIZATIONAL BEHAVIOR
+    short: J ORGAN BEHAV
+    issn: "08943796"
+    eissn: "10991379"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF ORGANIZATIONAL BEHAVIOR MANAGEMENT
+    short: J ORGAN BEHAV MANAGE
+    issn: "01608061"
+    eissn: "15408604"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF ORGANIZATIONAL CHANGE MANAGEMENT
+    short: J ORGAN CHANGE MANAG
+    issn: "09534814"
+    eissn: "17587816"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Journal of Product and Brand Management
+    short: J PROD BRAND MANAG
+    issn: "10610421"
+    eissn: "20541643"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: JOURNAL OF PRODUCT INNOVATION MANAGEMENT
+    short: J PROD INNOVAT MANAG
+    issn: "07376782"
+    eissn: "15405885"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Purchasing and Supply Management
+    short: J PURCH SUPPLY MANAG
+    issn: "14784092"
+    eissn: "18736505"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Journal of Responsible Innovation
+    short: J RESPONSIBLE INNOV
+    issn: "23299460"
+    eissn: "23299037"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Service Management
+    short: J SERV MANAGE
+    issn: "17575818"
+    eissn: "17575826"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Journal of Service Theory and Practice
+    short: J SERV THEOR PRACT
+    issn: "20556225"
+    eissn: "20556225"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: JOURNAL OF SMALL BUSINESS MANAGEMENT
+    short: J SMALL BUS MANAGE
+    issn: "00472778"
+    eissn: 1540627X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: JOURNAL OF SPORT MANAGEMENT
+    short: J SPORT MANAGE
+    issn: "08884773"
+    eissn: 1543270X
+    site: ""
+    notes: WOS/JCR; HUMAN KINETICS PUBL INC
+  - name: JOURNAL OF STRATEGIC INFORMATION SYSTEMS
+    short: J STRATEGIC INF SYST
+    issn: "09638687"
+    eissn: "18731198"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Journal of Supply Chain Management
+    short: J SUPPLY CHAIN MANAG
+    issn: "15232409"
+    eissn: 1745493X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF TECHNOLOGY TRANSFER
+    short: J TECHNOL TRANSFER
+    issn: "08929912"
+    eissn: "15737047"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF THE OPERATIONAL RESEARCH SOCIETY
+    short: J OPER RES SOC
+    issn: "01605682"
+    eissn: "14769360"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Knowledge Management Research & Practice
+    short: KNOWL MAN RES PRACT
+    issn: "14778238"
+    eissn: "14778246"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Leadership
+    short: LEADERSHIP-LONDON
+    issn: "17427150"
+    eissn: "17427169"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: LEADERSHIP & ORGANIZATION DEVELOPMENT JOURNAL
+    short: LEADERSHIP ORG DEV J
+    issn: "01437739"
+    eissn: "14725347"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: LEADERSHIP QUARTERLY
+    short: LEADERSHIP QUART
+    issn: "10489843"
+    eissn: "18733409"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: LONG RANGE PLANNING
+    short: LONG RANGE PLANN
+    issn: "00246301"
+    eissn: "18731872"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: M&SOM-Manufacturing & Service Operations Management
+    short: M&SOM-MANUF SERV OP
+    issn: "15234614"
+    eissn: "15265498"
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: Management & Organizational History
+    short: MANAG ORGAN HIST
+    issn: "17449359"
+    eissn: "17449367"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Management Accounting Research
+    short: MANAGE ACCOUNT RES
+    issn: "10445005"
+    eissn: "10961224"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Management and Organization Review
+    short: MANAGE ORGAN REV
+    issn: "17408776"
+    eissn: "17408784"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Management Communication Quarterly
+    short: MANAGE COMMUN Q
+    issn: "08933189"
+    eissn: "15526798"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: MANAGEMENT DECISION
+    short: MANAGE DECIS
+    issn: "00251747"
+    eissn: "17586070"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: MANAGEMENT INTERNATIONAL REVIEW
+    short: MANAGE INT REV
+    issn: "09388249"
+    eissn: "18618901"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: MANAGEMENT LEARNING
+    short: MANAGE LEARN
+    issn: "13505076"
+    eissn: "14617307"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: MANAGEMENT SCIENCE
+    short: MANAGE SCI
+    issn: "00251909"
+    eissn: "15265501"
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: MANAGERIAL AND DECISION ECONOMICS
+    short: MANAG DECIS ECON
+    issn: "01436570"
+    eissn: "10991468"
+    site: ""
+    notes: WOS/JCR; JOHN WILEY & SONS LTD
+  - name: Managerial Auditing Journal
+    short: MANAG AUDIT J
+    issn: "02686902"
+    eissn: "17587735"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: MIS QUARTERLY
+    short: MIS QUART
+    issn: "02767783"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SOC INFORM MANAGE-MIS RES CENT
+  - name: MIS Quarterly Executive
+    short: MIS Q EXEC
+    issn: "15401960"
+    eissn: "15401979"
+    site: ""
+    notes: WOS/JCR; INDIANA UNIV, OPER & DECISION TECHNOL DEPT
+  - name: MIT SLOAN MANAGEMENT REVIEW
+    short: MIT SLOAN MANAGE REV
+    issn: "15329194"
+    eissn: "15328937"
+    site: ""
+    notes: WOS/JCR; SLOAN MANAGEMENT REVIEW ASSOC, MIT SLOAN SCHOOL MANAGEMENT
+  - name: Negotiation and Conflict Management Research
+    short: NEGOT CONFL MANAG R
+    issn: "17504708"
+    eissn: "17504716"
+    site: ""
+    notes: WOS/JCR; IACM-NCMR-INT ASSOC CONFLICT MANAGEMENT
+  - name: NEGOTIATION JOURNAL
+    short: NEGOTIATION J
+    issn: "07484526"
+    eissn: "15719979"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+  - name: NEW TECHNOLOGY WORK AND EMPLOYMENT
+    short: NEW TECH WORK EMPLOY
+    issn: "02681072"
+    eissn: 1468005X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Nonprofit Management & Leadership
+    short: NONPROFIT MANAG LEAD
+    issn: "10486682"
+    eissn: "15427854"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+  - name: OMEGA-INTERNATIONAL JOURNAL OF MANAGEMENT SCIENCE
+    short: OMEGA-INT J MANAGE S
+    issn: "03050483"
+    eissn: "18735274"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: Operations Management Research
+    short: OPER MANAGE RES
+    issn: "19369735"
+    eissn: "19369743"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: OPERATIONS RESEARCH
+    short: OPER RES
+    issn: 0030364X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: ORGANIZATION
+    short: ORGANIZATION
+    issn: "13505084"
+    eissn: "14617323"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ORGANIZATION & ENVIRONMENT
+    short: ORGAN ENVIRON
+    issn: "10860266"
+    eissn: "15527417"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: ORGANIZATION SCIENCE
+    short: ORGAN SCI
+    issn: "10477039"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: ORGANIZATION STUDIES
+    short: ORGAN STUD
+    issn: "01708406"
+    eissn: "17413044"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ORGANIZATIONAL BEHAVIOR AND HUMAN DECISION PROCESSES
+    short: ORGAN BEHAV HUM DEC
+    issn: "07495978"
+    eissn: "10959920"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: ORGANIZATIONAL DYNAMICS
+    short: ORGAN DYN
+    issn: "00902616"
+    eissn: "18733530"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Organizational Psychology Review
+    short: ORGAN PSYCHOL REV
+    issn: "20413866"
+    eissn: "20413874"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: ORGANIZATIONAL RESEARCH METHODS
+    short: ORGAN RES METHODS
+    issn: "10944281"
+    eissn: "15527425"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: PERSONNEL PSYCHOLOGY
+    short: PERS PSYCHOL
+    issn: "00315826"
+    eissn: "17446570"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: PERSONNEL REVIEW
+    short: PERS REV
+    issn: "00483486"
+    eissn: "17586933"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Project Management Journal
+    short: PROJ MANAG J
+    issn: "87569728"
+    eissn: "19389507"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Public Management Review
+    short: PUBLIC MANAG REV
+    issn: "14719037"
+    eissn: "14719045"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Qualitative Research in Accounting and Management
+    short: QUAL RES ACCOUNT MAN
+    issn: "11766093"
+    eissn: "17587654"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: R & D MANAGEMENT
+    short: R&D MANAGE
+    issn: "00336807"
+    eissn: "14679310"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: RAE-Revista de Administracao de Empresas
+    short: RAE-REV ADMIN EMPRES
+    issn: "00347590"
+    eissn: 2178938X
+    site: ""
+    notes: WOS/JCR; FUNDACAO GETULIO VARGAS
+  - name: RBGN-Revista Brasileira de Gestao de Negocios
+    short: RBGN-REV BRAS GEST N
+    issn: "18064892"
+    eissn: "19830807"
+    site: ""
+    notes: WOS/JCR; FUND ESCOLA COMERCIO ALVARES PENTEADO-FECAP
+  - name: Research in Organizational Behavior
+    short: RES ORGAN BEHAV
+    issn: "01913085"
+    eissn: "01913085"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Research in Transportation Business and Management
+    short: RES TRANSP BUS MANAG
+    issn: "22105395"
+    eissn: "22105409"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: RESEARCH POLICY
+    short: RES POLICY
+    issn: "00487333"
+    eissn: "18737625"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: RESEARCH-TECHNOLOGY MANAGEMENT
+    short: RES TECHNOL MANAGE
+    issn: "08956308"
+    eissn: "19300166"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: REVIEW OF INDUSTRIAL ORGANIZATION
+    short: REV IND ORGAN
+    issn: 0889938X
+    eissn: "15737160"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Review of Managerial Science
+    short: REV MANAG SCI
+    issn: "18636683"
+    eissn: "18636691"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: Scandinavian Journal of Management
+    short: SCAND J MANAG
+    issn: "09565221"
+    eissn: "18733387"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Science and Public Policy
+    short: SCI PUBL POLICY
+    issn: "03023427"
+    eissn: "14715430"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Science Technology and Society
+    short: SCI TECHNOL SOC
+    issn: "09717218"
+    eissn: "09730796"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INDIA PVT LTD
+  - name: Service Business
+    short: SERV BUS
+    issn: "18628516"
+    eissn: "18628508"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: SERVICE INDUSTRIES JOURNAL
+    short: SERV IND J
+    issn: "02642069"
+    eissn: "17439507"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Service Science
+    short: SERV SCI
+    issn: "21643962"
+    eissn: "21643970"
+    site: ""
+    notes: WOS/JCR; INFORMS
+  - name: SMALL BUSINESS ECONOMICS
+    short: SMALL BUS ECON
+    issn: 0921898X
+    eissn: "15730913"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: SMALL GROUP RESEARCH
+    short: SMALL GR RES
+    issn: "10464964"
+    eissn: "15528278"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIO-ECONOMIC PLANNING SCIENCES
+    short: SOCIO-ECON PLAN SCI
+    issn: "00380121"
+    eissn: "18736041"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: South African Journal of Business Management
+    short: S AFR J BUS MANAG
+    issn: "20785585"
+    eissn: "20785976"
+    site: ""
+    notes: WOS/JCR; AOSIS
+  - name: South African Journal of Economic and Management Sciences
+    short: S AFR J ECON MANAG S
+    issn: "10158812"
+    eissn: "22223436"
+    site: ""
+    notes: WOS/JCR; AOSIS
+  - name: Sport Management Review
+    short: SPORT MANAG REV
+    issn: "14413523"
+    eissn: "18392083"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Strategic Entrepreneurship Journal
+    short: STRATEG ENTREP J
+    issn: "19324391"
+    eissn: 1932443X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: STRATEGIC MANAGEMENT JOURNAL
+    short: STRATEGIC MANAGE J
+    issn: "01432095"
+    eissn: "10970266"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Strategic Organization
+    short: STRATEG ORGAN
+    issn: "14761270"
+    eissn: 1741315X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: SUPPLY CHAIN MANAGEMENT-AN INTERNATIONAL JOURNAL
+    short: SUPPLY CHAIN MANAG
+    issn: "13598546"
+    eissn: "17586852"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Sustainability Accounting Management and Policy Journal
+    short: SUSTAIN ACCOUNT MANA
+    issn: "20408021"
+    eissn: 2040803X
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: SYSTEM DYNAMICS REVIEW
+    short: SYST DYNAM REV
+    issn: "08837066"
+    eissn: "10991727"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: SYSTEMIC PRACTICE AND ACTION RESEARCH
+    short: SYST PRACT ACT RES
+    issn: 1094429X
+    eissn: "15739295"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+  - name: SYSTEMS RESEARCH AND BEHAVIORAL SCIENCE
+    short: SYST RES BEHAV SCI
+    issn: "10927026"
+    eissn: "10991743"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: TECHNOLOGY ANALYSIS & STRATEGIC MANAGEMENT
+    short: TECHNOL ANAL STRATEG
+    issn: "09537325"
+    eissn: "14653990"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: TECHNOVATION
+    short: TECHNOVATION
+    issn: "01664972"
+    eissn: "18792383"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: TOTAL QUALITY MANAGEMENT & BUSINESS EXCELLENCE
+    short: TOTAL QUAL MANAG BUS
+    issn: "14783363"
+    eissn: "14783371"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Tourism Management
+    short: TOURISM MANAGE
+    issn: "02615177"
+    eissn: "18793193"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Tourism Management Perspectives
+    short: TOUR MANAG PERSPECT
+    issn: "22119736"
+    eissn: "22119744"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: TRANSPORTATION JOURNAL
+    short: TRANSPORT J
+    issn: "00411612"
+    eissn: 2157328X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Work Aging and Retirement
+    short: WORK AGING RETIRE
+    issn: "20544642"
+    eissn: "20544650"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS

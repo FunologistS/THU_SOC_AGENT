@@ -19,6 +19,7 @@
  *     --journals .claude/skills/journal-catalog/references/system/journals.yml
  *
  * Env:
+ *   OPENALEX_API_KEY      optional; use your API key (openalex.org/settings/api) to use your $1/day free budget instead of anonymous limit
  *   OPENALEX_EMAIL        optional (mailto=) for polite OpenAlex requests
  *   DEBUG_OPENALEX=1      verbose OpenAlex debug logs
  *   DEBUG_FIRECRAWL=1     verbose Firecrawl debug logs
@@ -580,18 +581,39 @@ function workKeywordsContain(w, query) {
 /**
  * 严格检索：摘要与关键词都包含检索词才通过。
  * 宽松检索：标题、摘要、关键词任一包含即可。
+ * 多词时：logics 为数组且长度 = terms.length - 1 则按链式从左到右求值（term0 logic[0] term1 logic[1] term2...）；
+ * 否则若为单 logic 则全词同一逻辑（且/或）。
  */
-function workMatchesTopic(w, query, strictMode) {
-  const title = w?.title ?? "";
-  const abs = workAbstractText(w);
-  const inTitle = textContains(title, query);
-  const inAbstract = textContains(abs, query);
-  const inKeywords = workKeywordsContain(w, query);
+function workMatchesTopic(w, queryOrTerms, strictMode, logicOrLogics = "or") {
+  const terms = Array.isArray(queryOrTerms)
+    ? queryOrTerms.filter((t) => String(t || "").trim())
+    : [String(queryOrTerms || "").trim()].filter(Boolean);
+  if (terms.length === 0) return true;
 
-  if (strictMode) {
-    return inAbstract && inKeywords;
+  const singleMatch = (q) => {
+    const title = w?.title ?? "";
+    const abs = workAbstractText(w);
+    const inTitle = textContains(title, q);
+    const inAbstract = textContains(abs, q);
+    const inKeywords = workKeywordsContain(w, q);
+    if (strictMode) return inAbstract && inKeywords;
+    return inTitle || inAbstract || inKeywords;
+  };
+
+  if (terms.length === 1) return singleMatch(terms[0]);
+
+  const logics = Array.isArray(logicOrLogics) ? logicOrLogics : [logicOrLogics];
+  if (logics.length === terms.length - 1) {
+    let acc = singleMatch(terms[0]);
+    for (let i = 1; i < terms.length; i++) {
+      const L = (logics[i - 1] || "or").toLowerCase();
+      acc = L === "and" ? acc && singleMatch(terms[i]) : acc || singleMatch(terms[i]);
+    }
+    return acc;
   }
-  return inTitle || inAbstract || inKeywords;
+  const single = (typeof logicOrLogics === "string" ? logicOrLogics : "or").toLowerCase();
+  if (single === "and") return terms.every((q) => singleMatch(q));
+  return terms.some((q) => singleMatch(q));
 }
 
 /* ===============================
@@ -605,11 +627,14 @@ function workMatchesTopic(w, query, strictMode) {
  */
 async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 200, strictMode = false, yearFrom, yearTo }) {
   const all = [];
+  const apiKey = process.env.OPENALEX_API_KEY;
   const email = process.env.OPENALEX_EMAIL;
 
   console.log("search query =", topic, "| strict =", strictMode, "| source count =", sourceIds.length, "| year =", yearFrom ?? "-", "~", yearTo ?? "-");
   console.log("sourceIds sample =", sourceIds.slice(0, 5));
   console.log("maxPerJournal =", maxPerJournal);
+  if (apiKey) console.log("OpenAlex: using API key (your daily budget).");
+  else console.log("OpenAlex: no API key (anonymous rate limit).");
 
   const yearFilters = [];
   if (yearFrom != null && Number.isFinite(Number(yearFrom))) yearFilters.push(`from_publication_date:${Number(yearFrom)}-01-01`);
@@ -637,6 +662,7 @@ async function fetchAllWorks({ topic, sourceIds, perPage = 200, maxPerJournal = 
       url.searchParams.set("per-page", String(perPage));
       url.searchParams.set("cursor", cursor);
       url.searchParams.set("sort", "publication_date:desc");
+      if (apiKey) url.searchParams.set("api_key", apiKey);
       if (email) url.searchParams.set("mailto", email);
 
       if (DEBUG) {
@@ -685,6 +711,19 @@ async function main() {
   const yearTo = yearToRaw && !Number.isNaN(Number(yearToRaw)) ? Number(yearToRaw) : undefined;
   const instruction = (getArg("--instruction", "") || "").trim() || undefined;
 
+  const termsRaw = (getArg("--terms", "") || "").trim();
+  const searchTerms = termsRaw
+    ? termsRaw.split(/[,，\n]+/).map((s) => s.trim().replace(/_/g, " ")).filter(Boolean)
+    : [];
+  const logicRaw = (getArg("--logic", "") || "").trim();
+  const searchLogics = logicRaw
+    ? logicRaw.split(",").map((s) => ((s || "").toLowerCase() === "and" ? "and" : "or"))
+    : [];
+  const terms = searchTerms.length > 0 ? searchTerms : [query];
+  const primaryQuery = terms[0];
+  const useChainedLogics = searchLogics.length === terms.length - 1;
+  const effectiveLogic = useChainedLogics ? null : (searchLogics[0] || "or");
+
   const projectRoot = process.cwd();
   const journalsPath = getArg(
     "--journals",
@@ -720,8 +759,24 @@ async function main() {
     process.exit(1);
   }
 
-  const works = await fetchAllWorks({ topic: query, sourceIds, maxPerJournal: 100, strictMode, yearFrom, yearTo });
-  console.log("[works fetched]", works.length);
+  const needMerge =
+    terms.length > 1 &&
+    (useChainedLogics ? searchLogics.some((l) => l === "or") : effectiveLogic === "or");
+  let works;
+  if (needMerge) {
+    const byId = new Map();
+    for (const term of terms) {
+      const batch = await fetchAllWorks({ topic: term, sourceIds, maxPerJournal: 100, strictMode, yearFrom, yearTo });
+      for (const w of batch) {
+        if (w?.id && !byId.has(w.id)) byId.set(w.id, w);
+      }
+    }
+    works = Array.from(byId.values());
+    console.log("[works fetched, merge]", works.length);
+  } else {
+    works = await fetchAllWorks({ topic: primaryQuery, sourceIds, maxPerJournal: 100, strictMode, yearFrom, yearTo });
+    console.log("[works fetched]", works.length);
+  }
 
   let skipped = 0;
   const skipReasons = new Map();
@@ -754,11 +809,14 @@ async function main() {
       continue;
     }
 
-    if (!workMatchesTopic(w, query, strictMode)) {
+    const logicArg = useChainedLogics ? searchLogics : effectiveLogic;
+    if (!workMatchesTopic(w, terms, strictMode, logicArg)) {
       markSkip(
-        strictMode
-          ? "strict: abstract and keywords must both contain query"
-          : "relaxed: title, abstract or keywords must contain query",
+        terms.length > 1
+          ? `strict=${strictMode} terms not matched`
+          : strictMode
+            ? "strict: abstract and keywords must both contain query"
+            : "relaxed: title, abstract or keywords must contain query",
         w
       );
       continue;
@@ -990,10 +1048,39 @@ async function main() {
   else if (yearFrom != null) yearRangeLabel = `自 ${yearFrom} 年起`;
   else if (yearTo != null) yearRangeLabel = `至 ${yearTo} 年止`;
 
-  let md = `# 文献检索结果 · 主题：${mdEscape(query)}\n\n`;
+  const queryDisplay =
+    terms.length > 1
+      ? useChainedLogics
+        ? terms.map((t, i) => (i === 0 ? t : (searchLogics[i - 1] === "and" ? " 且 " : " 或 ") + t)).join("")
+        : terms.join(effectiveLogic === "and" ? " 且 " : " 或 ")
+      : query;
+  let md = `# 文献检索结果 · 主题：${mdEscape(queryDisplay)}\n\n`;
   md += `---\n\n`;
   md += `### 📋 检索条件\n\n`;
-  md += `- 检索主题：${mdEscape(query)}\n`;
+  md += `- 检索主题：${mdEscape(queryDisplay)}\n`;
+  const extraTermsDisplay =
+    terms.length > 1 ? terms.slice(1).map((t) => mdEscape(t)).join("；") : "无";
+  md += `- 额外检索词：${extraTermsDisplay}\n`;
+  if (terms.length > 1) {
+    if (useChainedLogics) {
+      md += `- 词间逻辑：${searchLogics.map((l) => (l === "and" ? "且" : "或")).join("、")}\n`;
+    } else {
+      md += `- 多词逻辑：${effectiveLogic === "and" ? "且（全部包含）" : "或（任一包含）"}\n`;
+    }
+  }
+  const journalNames = journals
+    .map((j) => (j.openalex_source_id ? (j.short || j.name || "").trim() : ""))
+    .filter(Boolean);
+  const journalListDisplay =
+    journalNames.length === 0
+      ? "无"
+      : journalNames.length <= 30
+        ? journalNames.map((n) => mdEscape(n)).join("、")
+        : journalNames.slice(0, 25).map((n) => mdEscape(n)).join("、") + " 等共 " + journalNames.length + " 本";
+  md += `- 检索的期刊：${journalListDisplay}\n`;
+  const quartiles = [...new Set(journals.map((j) => j.quartile).filter(Boolean))].sort();
+  const partitionDisplay = quartiles.length > 0 ? quartiles.join("、") : "未标注";
+  md += `- 检索的分区：${partitionDisplay}\n`;
   md += `- 检索类型：${searchTypeLabel}\n`;
   if (yearRangeLabel) md += `- 年份范围：${yearRangeLabel}\n`;
   if (instruction) md += `- 提示词：${mdEscape(instruction)}\n`;

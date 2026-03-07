@@ -1,0 +1,588 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Communication_260306_normalized.csv
+  generated_at: 2026-03-07T02:28:59.062Z
+  date_tag: "20260307"
+  version: 1
+  count_filtered_rows: 94
+  count_unique_journals: 94
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: African Journalism Studies
+    short: AFR JOURNAL STUD
+    issn: "23743670"
+    eissn: "23743689"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Argumentation
+    short: ARGUMENTATION
+    issn: 0920427X
+    eissn: "15728374"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Asian Journal of Communication
+    short: ASIAN J COMMUN
+    issn: "01292986"
+    eissn: "17420911"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Chinese Journal of Communication
+    short: CHIN J COMMUN
+    issn: "17544750"
+    eissn: "17544769"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Communication & Sport
+    short: COMMUN SPORT
+    issn: "21674795"
+    eissn: "21674809"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Communication and Critical-Cultural Studies
+    short: COMMUN CRIT-CULT STU
+    issn: "14791420"
+    eissn: "14794233"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Communication Culture & Critique
+    short: COMMUN CULT CRIT
+    issn: "17539129"
+    eissn: "17539137"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: Communication Methods and Measures
+    short: COMMUN METHODS MEAS
+    issn: "19312458"
+    eissn: "19312466"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: COMMUNICATION MONOGRAPHS
+    short: COMMUN MONOGR
+    issn: "03637751"
+    eissn: "14795787"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: COMMUNICATION RESEARCH
+    short: COMMUN RES
+    issn: "00936502"
+    eissn: "15523810"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: COMMUNICATION THEORY
+    short: COMMUN THEOR
+    issn: "10503293"
+    eissn: "14682885"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: Communications-European Journal of Communication Research
+    short: COMMUNICATIONS-GER
+    issn: "03412059"
+    eissn: "16134087"
+    site: ""
+    notes: WOS/JCR; DE GRUYTER MOUTON
+  - name: Continuum-Journal of Media & Cultural Studies
+    short: CONTINUUM-J MEDIA CU
+    issn: "10304312"
+    eissn: "14693666"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Convergence-The International Journal of Research into New Media
+      Technologies
+    short: CONVERGENCE-US
+    issn: "13548565"
+    eissn: "17487382"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Critical Discourse Studies
+    short: CRIT DISCOURSE STUD
+    issn: "17405904"
+    eissn: "17405912"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: CRITICAL STUDIES IN MEDIA COMMUNICATION
+    short: CRIT STUD MEDIA COMM
+    issn: "15295036"
+    eissn: "14795809"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Cyberpsychology-Journal of Psychosocial Research on Cyberspace
+    short: CYBERPSYCHOLOGY
+    issn: "18027962"
+    eissn: "18027962"
+    site: ""
+    notes: WOS/JCR; MASARYKOVA UNIV, FAC SOCIAL STUDIES
+  - name: Digital Journalism
+    short: DIGIT JOURNAL
+    issn: "21670811"
+    eissn: 2167082X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Discourse & Communication
+    short: DISCOURSE COMMUN
+    issn: "17504813"
+    eissn: "17504821"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: DISCOURSE & SOCIETY
+    short: DISCOURSE SOC
+    issn: "09579265"
+    eissn: "14603624"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Discourse Context & Media
+    short: DISCOURSE CONTEXT ME
+    issn: "22116958"
+    eissn: "22116966"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: DISCOURSE STUDIES
+    short: DISCOURSE STUD
+    issn: "14614456"
+    eissn: "14617080"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Environmental Communication-A Journal of Nature and Culture
+    short: ENVIRON COMMUN
+    issn: "17524032"
+    eissn: "17524040"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: EUROPEAN JOURNAL OF COMMUNICATION
+    short: EUR J COMMUN
+    issn: "02673231"
+    eissn: "14603705"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Feminist Media Studies
+    short: FEM MEDIA STUD
+    issn: "14680777"
+    eissn: "14715902"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Games and Culture
+    short: GAMES CULT
+    issn: "15554120"
+    eissn: "15554139"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: HEALTH COMMUNICATION
+    short: HEALTH COMMUN
+    issn: "10410236"
+    eissn: "15327027"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: HUMAN COMMUNICATION RESEARCH
+    short: HUM COMMUN RES
+    issn: "03603989"
+    eissn: "14682958"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: IEEE TRANSACTIONS ON PROFESSIONAL COMMUNICATION
+    short: IEEE T PROF COMMUN
+    issn: "03611434"
+    eissn: "15581500"
+    site: ""
+    notes: WOS/JCR; IEEE-INST ELECTRICAL ELECTRONICS ENGINEERS INC
+  - name: Information Communication & Society
+    short: INFORM COMMUN SOC
+    issn: 1369118X
+    eissn: "14684462"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INFORMATION SOCIETY
+    short: INFORM SOC
+    issn: "01972243"
+    eissn: "10876537"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Interaction Studies
+    short: INTERACT STUD
+    issn: "15720373"
+    eissn: "15720381"
+    site: ""
+    notes: WOS/JCR; JOHN BENJAMINS PUBLISHING CO
+  - name: International Communication Gazette
+    short: INT COMMUN GAZ
+    issn: "17480485"
+    eissn: "17480493"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: International Journal of Advertising
+    short: INT J ADVERT
+    issn: "02650487"
+    eissn: "17593948"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: International Journal of Business Communication
+    short: INT J BUS COMMUN
+    issn: "23294884"
+    eissn: "23294892"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: International Journal of Communication
+    short: INT J COMMUN-US
+    issn: "19328036"
+    eissn: "19328036"
+    site: ""
+    notes: WOS/JCR; USC ANNENBERG PRESS
+  - name: INTERNATIONAL JOURNAL OF CONFLICT MANAGEMENT
+    short: INT J CONFL MANAGE
+    issn: "10444068"
+    eissn: "17588545"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: International Journal of Mobile Communications
+    short: INT J MOB COMMUN
+    issn: 1470949X
+    eissn: "17415217"
+    site: ""
+    notes: WOS/JCR; INDERSCIENCE ENTERPRISES LTD
+  - name: International Journal of Press-Politics
+    short: INT J PRESS/POLIT
+    issn: "19401612"
+    eissn: "19401620"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: INTERNATIONAL JOURNAL OF PUBLIC OPINION RESEARCH
+    short: INT J PUBLIC OPIN R
+    issn: "09542892"
+    eissn: "14716909"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: JAVNOST-THE PUBLIC
+    short: JAVNOST-PUBLIC
+    issn: "13183222"
+    eissn: "18548377"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF ADVERTISING
+    short: J ADVERTISING
+    issn: "00913367"
+    eissn: "15577805"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF ADVERTISING RESEARCH
+    short: J ADVERTISING RES
+    issn: "00218499"
+    eissn: "17401909"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Journal of African Media Studies
+    short: J AFR MEDIA STUD
+    issn: 2040199X
+    eissn: "17517974"
+    site: ""
+    notes: WOS/JCR; INTELLECT LTD
+  - name: JOURNAL OF APPLIED COMMUNICATION RESEARCH
+    short: J APPL COMMUN RES
+    issn: "00909882"
+    eissn: "14795752"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF BROADCASTING & ELECTRONIC MEDIA
+    short: J BROADCAST ELECTRON
+    issn: "08838151"
+    eissn: "15506878"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF BUSINESS AND TECHNICAL COMMUNICATION
+    short: J BUS TECH COMMUN
+    issn: "10506519"
+    eissn: "15524574"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Children and Media
+    short: J CHILD MEDIA
+    issn: "17482798"
+    eissn: "17482801"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF COMMUNICATION
+    short: J COMMUN
+    issn: "00219916"
+    eissn: "14602466"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: Journal of Computer-Mediated Communication
+    short: J COMPUT-MEDIAT COMM
+    issn: "10836101"
+    eissn: "10836101"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: JOURNAL OF HEALTH COMMUNICATION
+    short: J HEALTH COMMUN
+    issn: "10810730"
+    eissn: "10870415"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Journal of Information Technology & Politics
+    short: J INF TECHNOL POLITI
+    issn: "19331681"
+    eissn: 1933169X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF LANGUAGE AND SOCIAL PSYCHOLOGY
+    short: J LANG SOC PSYCHOL
+    issn: 0261927X
+    eissn: "15526526"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF MEDIA ECONOMICS
+    short: J MEDIA ECON
+    issn: "08997764"
+    eissn: "15327736"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Media Ethics
+    short: J MEDIA ETHICS
+    issn: "23736992"
+    eissn: 2373700X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Media Psychology-Theories Methods and Applications
+    short: J MEDIA PSYCHOL-GER
+    issn: "18641105"
+    eissn: "21512388"
+    site: ""
+    notes: WOS/JCR; HOGREFE PUBLISHING CORP
+  - name: Journal of Public Relations Research
+    short: J PUBLIC RELAT RES
+    issn: 1062726X
+    eissn: 1532754X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF SOCIAL AND PERSONAL RELATIONSHIPS
+    short: J SOC PERS RELAT
+    issn: "02654075"
+    eissn: "14603608"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Journalism
+    short: JOURNALISM
+    issn: "14648849"
+    eissn: "17413001"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNALISM & MASS COMMUNICATION QUARTERLY
+    short: J MASS COMMUN Q
+    issn: "10776990"
+    eissn: 2161430X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journalism Practice
+    short: JOURNAL PRACT
+    issn: "17512786"
+    eissn: "17512794"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journalism Studies
+    short: JOURNALISM STUD
+    issn: 1461670X
+    eissn: "14699699"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: LANGUAGE & COMMUNICATION
+    short: LANG COMMUN
+    issn: "02715309"
+    eissn: "18733395"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: Management Communication Quarterly
+    short: MANAGE COMMUN Q
+    issn: "08933189"
+    eissn: "15526798"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Mass Communication and Society
+    short: MASS COMMUN SOC
+    issn: "15205436"
+    eissn: "15327825"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Media and Communication
+    short: MEDIA COMMUN-LISBON
+    issn: "21832439"
+    eissn: "21832439"
+    site: ""
+    notes: WOS/JCR; COGITATIO PRESS
+  - name: MEDIA CULTURE & SOCIETY
+    short: MEDIA CULT SOC
+    issn: "01634437"
+    eissn: "14603675"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Media International Australia
+    short: MEDIA INT AUST
+    issn: 1329878X
+    eissn: 2200467X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: MEDIA PSYCHOLOGY
+    short: MEDIA PSYCHOL
+    issn: "15213269"
+    eissn: 1532785X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Mobile Media & Communication
+    short: MOB MEDIA COMMUN
+    issn: "20501579"
+    eissn: "20501587"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: NARRATIVE INQUIRY
+    short: NARRAT INQ
+    issn: "13876740"
+    eissn: "15699935"
+    site: ""
+    notes: WOS/JCR; JOHN BENJAMINS PUBLISHING CO
+  - name: NEW MEDIA & SOCIETY
+    short: NEW MEDIA SOC
+    issn: "14614448"
+    eissn: "14617315"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: PERSONAL RELATIONSHIPS
+    short: PERS RELATIONSHIP
+    issn: "13504126"
+    eissn: "14756811"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Policy and Internet
+    short: POLICY INTERNET
+    issn: "19442866"
+    eissn: "19442866"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: POLITICAL COMMUNICATION
+    short: POLIT COMMUN
+    issn: "10584609"
+    eissn: "10917675"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Psychology of Popular Media
+    short: PSYCHOL POP MEDIA
+    issn: "26896567"
+    eissn: "26896575"
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+  - name: PUBLIC OPINION QUARTERLY
+    short: PUBLIC OPIN QUART
+    issn: 0033362X
+    eissn: "15375331"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: PUBLIC RELATIONS REVIEW
+    short: PUBLIC RELAT REV
+    issn: "03638111"
+    eissn: "18734537"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: PUBLIC UNDERSTANDING OF SCIENCE
+    short: PUBLIC UNDERST SCI
+    issn: "09636625"
+    eissn: "13616609"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: QUARTERLY JOURNAL OF SPEECH
+    short: Q J SPEECH
+    issn: "00335630"
+    eissn: "14795779"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: RESEARCH ON LANGUAGE AND SOCIAL INTERACTION
+    short: RES LANG SOC INTERAC
+    issn: "08351813"
+    eissn: "15327973"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Rhetoric Society Quarterly
+    short: RHETOR SOC Q
+    issn: "02773945"
+    eissn: 1930322X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: SCIENCE COMMUNICATION
+    short: SCI COMMUN
+    issn: "10755470"
+    eissn: "15528545"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Signs and Society
+    short: SIGNS SOC
+    issn: "23264489"
+    eissn: "23264497"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Social Media + Society
+    short: SOC MEDIA SOC
+    issn: "20563051"
+    eissn: "20563051"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Social Semiotics
+    short: SOC SEMIOT
+    issn: "10350330"
+    eissn: "14701219"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: TECHNICAL COMMUNICATION
+    short: TECH COMMUN-STC
+    issn: "00493155"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SOC TECHNICAL COMMUNICATION
+  - name: TELECOMMUNICATIONS POLICY
+    short: TELECOMMUN POLICY
+    issn: "03085961"
+    eissn: "18793258"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Television & New Media
+    short: TELEV NEW MEDIA
+    issn: "15274764"
+    eissn: "15528316"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Text & Talk
+    short: TEXT TALK
+    issn: "18607330"
+    eissn: "18607349"
+    site: ""
+    notes: WOS/JCR; DE GRUYTER MOUTON
+  - name: Tijdschrift voor Communicatiewetenschap
+    short: TIJDSCHR COMMUNWET
+    issn: "13846930"
+    eissn: "18757286"
+    site: ""
+    notes: WOS/JCR; AMSTERDAM UNIV PRESS
+  - name: Translator
+    short: TRANSLATOR
+    issn: "13556509"
+    eissn: "17570409"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Visual Communication
+    short: VISUAL COMMUN-US
+    issn: "14703572"
+    eissn: "17413214"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: WRITTEN COMMUNICATION
+    short: WRIT COMMUN
+    issn: "07410883"
+    eissn: "15528472"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC

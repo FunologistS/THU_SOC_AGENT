@@ -1,0 +1,357 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Industrial_Relations_and_Labor_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.264Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 30
+  count_unique_journals: 30
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: Asia Pacific Journal of Human Resources
+    short: ASIA PAC J HUM RESOU
+    issn: "10384111"
+    eissn: "17447941"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "4.5"
+    jci: "1.25"
+    oa_citable_pct: "17.5"
+    total_citations: "1472"
+  - name: BRITISH JOURNAL OF INDUSTRIAL RELATIONS
+    short: BRIT J IND RELAT
+    issn: "00071080"
+    eissn: "14678543"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.81"
+    oa_citable_pct: "64.36"
+    total_citations: "1874"
+  - name: ECONOMIC AND INDUSTRIAL DEMOCRACY
+    short: ECON IND DEMOCRACY
+    issn: 0143831X
+    eissn: "14617099"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.82"
+    oa_citable_pct: "45.51"
+    total_citations: "1453"
+  - name: Economic and Labour Relations Review
+    short: ECON LABOUR RELAT RE
+    issn: "10353046"
+    eissn: "18382673"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.57"
+    oa_citable_pct: "47.2"
+    total_citations: "761"
+  - name: EMPLOYEE RELATIONS
+    short: EMPL RELAT
+    issn: "01425455"
+    eissn: "17587069"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "3.2"
+    jci: "1.05"
+    oa_citable_pct: "10.13"
+    total_citations: "3161"
+  - name: EUROPEAN JOURNAL OF INDUSTRIAL RELATIONS
+    short: EUR J IND RELAT
+    issn: "09596801"
+    eissn: "14617129"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "2"
+    jci: "1.01"
+    oa_citable_pct: "47.83"
+    total_citations: "838"
+  - name: Human Resource Development Quarterly
+    short: HUM RESOUR DEV Q
+    issn: "10448004"
+    eissn: "15321096"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    quartile: Q1
+    jif: "3.8"
+    jci: "1.27"
+    oa_citable_pct: "32.61"
+    total_citations: "2150"
+  - name: Human Resource Management Journal
+    short: HUM RESOUR MANAG J
+    issn: "09545395"
+    eissn: "17488583"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "6.2"
+    jci: "1.53"
+    oa_citable_pct: "60.71"
+    total_citations: "4354"
+  - name: Human Resources for Health
+    short: HUM RESOUR HEALTH
+    issn: ""
+    eissn: "14784491"
+    site: ""
+    notes: WOS/JCR; BMC
+    quartile: Q1
+    jif: "4.3"
+    jci: "1.32"
+    oa_citable_pct: "100"
+    total_citations: "5122"
+  - name: ILR Review
+    short: ILR REV
+    issn: "00197939"
+    eissn: 2162271X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.5"
+    oa_citable_pct: "26.25"
+    total_citations: "3703"
+  - name: INDUSTRIAL LAW JOURNAL
+    short: IND LAW J-UK
+    issn: "03059332"
+    eissn: "14643669"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "1.6"
+    jci: "1.21"
+    oa_citable_pct: "58.1"
+    total_citations: "535"
+  - name: INDUSTRIAL RELATIONS
+    short: IND RELAT
+    issn: "00198676"
+    eissn: 1468232X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.6"
+    jci: "0.88"
+    oa_citable_pct: "58.21"
+    total_citations: "1295"
+  - name: INTERNATIONAL JOURNAL OF MANPOWER
+    short: INT J MANPOWER
+    issn: "01437720"
+    eissn: "17586577"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "3.5"
+    jci: "1.33"
+    oa_citable_pct: "7.87"
+    total_citations: "3881"
+  - name: INTERNATIONAL LABOR AND WORKING-CLASS HISTORY
+    short: INT LABOR WORK-CLASS
+    issn: "01475479"
+    eissn: "14716445"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q4
+    jif: "0.5"
+    jci: "1.06"
+    oa_citable_pct: "65.59"
+    total_citations: "524"
+  - name: INTERNATIONAL LABOUR REVIEW
+    short: INT LABOUR REV
+    issn: "00207780"
+    eissn: 1564913X
+    site: ""
+    notes: WOS/JCR; OPEN LIBRARY HUMANITIES
+    quartile: Q2
+    jif: "2.6"
+    jci: "0.98"
+    oa_citable_pct: "20.45"
+    total_citations: "1220"
+  - name: JOURNAL OF HUMAN RESOURCES
+    short: J HUM RESOUR
+    issn: 0022166X
+    eissn: "15488004"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    quartile: Q1
+    jif: "6"
+    jci: "2.39"
+    oa_citable_pct: "27.72"
+    total_citations: "6561"
+  - name: Journal of Industrial Relations
+    short: J IND RELAT
+    issn: "00221856"
+    eissn: "14729296"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.6"
+    jci: "0.97"
+    oa_citable_pct: "38.46"
+    total_citations: "1051"
+  - name: JOURNAL OF LABOR ECONOMICS
+    short: J LABOR ECON
+    issn: 0734306X
+    eissn: "15375307"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "5"
+    jci: "1.51"
+    oa_citable_pct: "3.28"
+    total_citations: "6076"
+  - name: JOURNAL OF LABOR RESEARCH
+    short: J LABOR RES
+    issn: "01953613"
+    eissn: "19364768"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.4"
+    jci: "0.46"
+    oa_citable_pct: "23.68"
+    total_citations: "550"
+  - name: LABOR HISTORY
+    short: LABOR HIST-UK
+    issn: 0023656X
+    eissn: "14699702"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.7"
+    jci: "1.17"
+    oa_citable_pct: "18.24"
+    total_citations: "543"
+  - name: Labour History
+    short: LABOUR HIST-AUST
+    issn: "00236942"
+    eissn: "18393039"
+    site: ""
+    notes: WOS/JCR; LIVERPOOL UNIV PRESS
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.57"
+    oa_citable_pct: "0"
+    total_citations: "228"
+  - name: LABOUR-LE TRAVAIL
+    short: LABOUR-TRAVAIL
+    issn: "07003862"
+    eissn: "19114842"
+    site: ""
+    notes: WOS/JCR; CANADIAN COMMITTEE LABOUR HISTORY
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.64"
+    oa_citable_pct: "0"
+    total_citations: "270"
+  - name: MONTHLY LABOR REVIEW
+    short: MON LABOR REV
+    issn: "00981818"
+    eissn: "19374658"
+    site: ""
+    notes: WOS/JCR; LEGAL BOOKS DEPOT
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.36"
+    oa_citable_pct: "58.21"
+    total_citations: "923"
+  - name: PERSONNEL REVIEW
+    short: PERS REV
+    issn: "00483486"
+    eissn: "17586933"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "4.2"
+    jci: "1.2"
+    oa_citable_pct: "6.35"
+    total_citations: "5871"
+  - name: PUBLIC PERSONNEL MANAGEMENT
+    short: PUBLIC PERS MANAGE
+    issn: "00910260"
+    eissn: "19457421"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.6"
+    jci: "1.11"
+    oa_citable_pct: "21.62"
+    total_citations: "1276"
+  - name: RELATIONS INDUSTRIELLES-INDUSTRIAL RELATIONS
+    short: RELAT IND-IND RELAT
+    issn: 0034379X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; REVUE RELATIONS INDUSTRIELLES INDUSTRIAL RELATIONS
+    quartile: Q4
+    jif: "0.6"
+    jci: "0.15"
+    oa_citable_pct: "0"
+    total_citations: "392"
+  - name: Transfer-European Review of Labour and Research
+    short: TRANSFER-LONDON
+    issn: "10242589"
+    eissn: "19967284"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.55"
+    oa_citable_pct: "39.19"
+    total_citations: "943"
+  - name: Work Aging and Retirement
+    short: WORK AGING RETIRE
+    issn: "20544642"
+    eissn: "20544650"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.79"
+    oa_citable_pct: "26.53"
+    total_citations: "972"
+  - name: WORK AND OCCUPATIONS
+    short: WORK OCCUPATION
+    issn: "07308884"
+    eissn: "15528464"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.93"
+    oa_citable_pct: "33.82"
+    total_citations: "1794"
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.8"
+    jci: "1.22"
+    oa_citable_pct: "59.32"
+    total_citations: "4823"

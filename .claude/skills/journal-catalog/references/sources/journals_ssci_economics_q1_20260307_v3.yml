@@ -1,0 +1,4187 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260301_Economics_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.242Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 378
+  count_unique_journals: 378
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: ACTA OECONOMICA
+    short: ACTA OECON
+    issn: "00016373"
+    eissn: "15882659"
+    site: ""
+    notes: WOS/JCR; AKADEMIAI KIADO ZRT
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.2"
+    oa_citable_pct: "35.58"
+    total_citations: "299"
+  - name: Agribusiness
+    short: AGRIBUSINESS
+    issn: "07424477"
+    eissn: "15206297"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2"
+    jci: "0.66"
+    oa_citable_pct: "32.2"
+    total_citations: "1531"
+  - name: Agricultural and Food Economics
+    short: AGR FOOD ECON
+    issn: ""
+    eissn: "21937532"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    quartile: Q1
+    jif: "4.5"
+    jci: "1.55"
+    oa_citable_pct: "100"
+    total_citations: "1132"
+  - name: AGRICULTURAL ECONOMICS
+    short: AGR ECON-BLACKWELL
+    issn: "01695150"
+    eissn: "15740862"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "4"
+    jci: "1.05"
+    oa_citable_pct: "42.77"
+    total_citations: "5306"
+  - name: Agricultural Economics-Zemedelska Ekonomika
+    short: AGR ECON-CZECH
+    issn: 0139570X
+    eissn: "18059295"
+    site: ""
+    notes: WOS/JCR; CZECH ACADEMY AGRICULTURAL SCIENCES
+    quartile: Q2
+    jif: "1.8"
+    jci: "1.05"
+    oa_citable_pct: "100"
+    total_citations: "1058"
+  - name: American Economic Journal-Applied Economics
+    short: AM ECON J-APPL ECON
+    issn: "19457782"
+    eissn: "19457790"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q1
+    jif: "6.2"
+    jci: "1.94"
+    oa_citable_pct: "1.13"
+    total_citations: "6816"
+  - name: American Economic Journal-Economic Policy
+    short: AM ECON J-ECON POLIC
+    issn: "19457731"
+    eissn: 1945774X
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q1
+    jif: "5.3"
+    jci: "1.75"
+    oa_citable_pct: "1.04"
+    total_citations: "5588"
+  - name: American Economic Journal-Macroeconomics
+    short: AM ECON J-MACROECON
+    issn: "19457707"
+    eissn: "19457715"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q1
+    jif: "5.7"
+    jci: "2.21"
+    oa_citable_pct: "0.63"
+    total_citations: "4410"
+  - name: American Economic Journal-Microeconomics
+    short: AM ECON J-MICROECON
+    issn: "19457669"
+    eissn: "19457685"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.68"
+    oa_citable_pct: "1.04"
+    total_citations: "1767"
+  - name: AMERICAN ECONOMIC REVIEW
+    short: AM ECON REV
+    issn: "00028282"
+    eissn: "19447981"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q1
+    jif: "11.6"
+    jci: "3.28"
+    oa_citable_pct: "1.25"
+    total_citations: "74985"
+  - name: American Economic Review-Insights
+    short: AM ECON REV INSIGHTS
+    issn: 2640205X
+    eissn: "26402068"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q1
+    jif: "6.7"
+    jci: "2.18"
+    oa_citable_pct: "0"
+    total_citations: "1400"
+  - name: AMERICAN JOURNAL OF AGRICULTURAL ECONOMICS
+    short: AM J AGR ECON
+    issn: "00029092"
+    eissn: "14678276"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.48"
+    oa_citable_pct: "44.44"
+    total_citations: "8859"
+  - name: AMERICAN JOURNAL OF ECONOMICS AND SOCIOLOGY
+    short: AM J ECON SOCIOL
+    issn: "00029246"
+    eissn: "15367150"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1"
+    jci: "0.4"
+    oa_citable_pct: "15.6"
+    total_citations: "1193"
+  - name: American Journal of Health Economics
+    short: AM J HEALTH ECON
+    issn: "23323493"
+    eissn: "23323507"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q2
+    jif: "2"
+    jci: "1.08"
+    oa_citable_pct: "4.55"
+    total_citations: "451"
+  - name: American Law and Economics Review
+    short: AM LAW ECON REV
+    issn: "14657252"
+    eissn: "14657260"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.75"
+    oa_citable_pct: "6.45"
+    total_citations: "404"
+  - name: Amfiteatru Economic
+    short: AMFITEATRU ECON
+    issn: "15829146"
+    eissn: "22479104"
+    site: ""
+    notes: WOS/JCR; EDITURA ASE
+    quartile: Q2
+    jif: "2"
+    jci: "0.54"
+    oa_citable_pct: "91.4"
+    total_citations: "966"
+  - name: Annals of Economics and Finance
+    short: ANN ECON FINANC
+    issn: "15297373"
+    eissn: "15297373"
+    site: ""
+    notes: WOS/JCR; WUHAN UNIV JOURNALS PRESS
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.1"
+    oa_citable_pct: "0"
+    total_citations: "361"
+  - name: Annals of Public and Cooperative Economics
+    short: ANN PUBLIC COOP ECON
+    issn: "13704788"
+    eissn: "14678292"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.5"
+    jci: "0.8"
+    oa_citable_pct: "35.34"
+    total_citations: "1118"
+  - name: ANNALS OF REGIONAL SCIENCE
+    short: ANN REGIONAL SCI
+    issn: "05701864"
+    eissn: "14320592"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.6"
+    oa_citable_pct: "41.36"
+    total_citations: "2558"
+  - name: Annual Review of Economics
+    short: ANNU REV ECON
+    issn: "19411383"
+    eissn: "19411391"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "11.4"
+    jci: "2.26"
+    oa_citable_pct: "63.1"
+    total_citations: "4469"
+  - name: Annual Review of Financial Economics
+    short: ANNU REV FINANC ECON
+    issn: "19411367"
+    eissn: "19411375"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "5.2"
+    jci: "0.95"
+    oa_citable_pct: "56.58"
+    total_citations: "1746"
+  - name: Annual Review of Resource Economics
+    short: ANNU REV RESOUR ECON
+    issn: "19411340"
+    eissn: "19411359"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "8.4"
+    jci: "1.3"
+    oa_citable_pct: "56.16"
+    total_citations: "2316"
+  - name: Applied Economic Analysis
+    short: APPL ECON ANAL
+    issn: ""
+    eissn: "26327627"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "2.5"
+    jci: "0.78"
+    oa_citable_pct: "100"
+    total_citations: "172"
+  - name: Applied Economic Perspectives and Policy
+    short: APPL ECON PERSPECT P
+    issn: "20405790"
+    eissn: "20405804"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.39"
+    oa_citable_pct: "43.46"
+    total_citations: "2699"
+  - name: APPLIED ECONOMICS
+    short: APPL ECON
+    issn: "00036846"
+    eissn: "14664283"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.63"
+    oa_citable_pct: "7.09"
+    total_citations: "13675"
+  - name: APPLIED ECONOMICS LETTERS
+    short: APPL ECON LETT
+    issn: "13504851"
+    eissn: "14664291"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.37"
+    oa_citable_pct: "5.44"
+    total_citations: "6139"
+  - name: Applied Health Economics and Health Policy
+    short: APPL HEALTH ECON HEA
+    issn: "11755652"
+    eissn: "11791896"
+    site: ""
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+    quartile: Q1
+    jif: "3.3"
+    jci: "0.99"
+    oa_citable_pct: "49.03"
+    total_citations: "2326"
+  - name: Argumenta Oeconomica
+    short: ARGUM OECON
+    issn: "12335835"
+    eissn: "27205088"
+    site: ""
+    notes: WOS/JCR; WROCLAW UNIV ECONOMICS
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.18"
+    oa_citable_pct: "100"
+    total_citations: "127"
+  - name: Asia-Pacific Economic History Review
+    short: ASIA-PAC ECON HIST R
+    issn: 2832157X
+    eissn: 2832157X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.46"
+    oa_citable_pct: "57.14"
+    total_citations: "14"
+  - name: Asia-Pacific Journal of Accounting & Economics
+    short: ASIA-PAC J ACCOUNT E
+    issn: "16081625"
+    eissn: "21642257"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.37"
+    oa_citable_pct: "3.66"
+    total_citations: "901"
+  - name: Asian Economic Journal
+    short: ASIAN ECON J
+    issn: "13513958"
+    eissn: "14678381"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.28"
+    oa_citable_pct: "9.09"
+    total_citations: "378"
+  - name: Asian Economic Papers
+    short: ASIAN ECON PAP
+    issn: "15353516"
+    eissn: "15360083"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+    quartile: Q3
+    jif: "1.1"
+    jci: "1.76"
+    oa_citable_pct: "0"
+    total_citations: "451"
+  - name: Asian Economic Policy Review
+    short: ASIAN ECON POLICY R
+    issn: "18328105"
+    eissn: "17483131"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "7"
+    jci: "1.41"
+    oa_citable_pct: "25.71"
+    total_citations: "605"
+  - name: Asian Journal of Technology Innovation
+    short: ASIAN J TECHNOL INNO
+    issn: "19761597"
+    eissn: "21586721"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.42"
+    oa_citable_pct: "4.08"
+    total_citations: "723"
+  - name: Asian-Pacific Economic Literature
+    short: ASIAN-PAC ECON LIT
+    issn: "08189935"
+    eissn: "14678411"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.25"
+    oa_citable_pct: "10"
+    total_citations: "193"
+  - name: Astin Bulletin-The Journal of the International Actuarial Association
+    short: ASTIN BULL
+    issn: "05150361"
+    eissn: "17831350"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.75"
+    oa_citable_pct: "48.24"
+    total_citations: "1071"
+  - name: AUSTRALIAN ECONOMIC HISTORY REVIEW
+    short: AUST ECON HIST REV
+    issn: "00048992"
+    eissn: "14678446"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.6"
+    oa_citable_pct: "33.33"
+    total_citations: "196"
+  - name: AUSTRALIAN ECONOMIC PAPERS
+    short: AUST ECON PAP
+    issn: 0004900X
+    eissn: "14678454"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.48"
+    oa_citable_pct: "32.48"
+    total_citations: "594"
+  - name: Australian Economic Review
+    short: AUST ECON REV
+    issn: "00049018"
+    eissn: "14678462"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1"
+    jci: "0.33"
+    oa_citable_pct: "64.15"
+    total_citations: "538"
+  - name: AUSTRALIAN JOURNAL OF AGRICULTURAL AND RESOURCE ECONOMICS
+    short: AUST J AGR RESOUR EC
+    issn: ""
+    eissn: "14678489"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.81"
+    oa_citable_pct: "46.55"
+    total_citations: "1592"
+  - name: B E Journal of Economic Analysis & Policy
+    short: BE J ECON ANAL POLI
+    issn: "21946108"
+    eissn: "19351682"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.24"
+    oa_citable_pct: "21.5"
+    total_citations: "1127"
+  - name: B E Journal of Macroeconomics
+    short: BE J MACROECON
+    issn: "21946116"
+    eissn: "19351690"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.15"
+    oa_citable_pct: "3.57"
+    total_citations: "352"
+  - name: B E Journal of Theoretical Economics
+    short: BE J THEOR ECON
+    issn: "21946124"
+    eissn: "19351704"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.14"
+    oa_citable_pct: "9.68"
+    total_citations: "242"
+  - name: Baltic Journal of Economics
+    short: BALT J ECON
+    issn: 1406099X
+    eissn: "23344385"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.29"
+    oa_citable_pct: "100"
+    total_citations: "117"
+  - name: Borsa Istanbul Review
+    short: BORSA ISTANB REV
+    issn: "22148450"
+    eissn: "22148469"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "7.1"
+    jci: "2.15"
+    oa_citable_pct: "100"
+    total_citations: "2947"
+  - name: BROOKINGS PAPERS ON ECONOMIC ACTIVITY
+    short: BROOKINGS PAP ECO AC
+    issn: "00072303"
+    eissn: "15334465"
+    site: ""
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+    quartile: Q1
+    jif: "2.8"
+    jci: "0.59"
+    oa_citable_pct: "0"
+    total_citations: "3790"
+  - name: BULLETIN OF ECONOMIC RESEARCH
+    short: B ECON RES
+    issn: "03073378"
+    eissn: "14678586"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.32"
+    oa_citable_pct: "26.35"
+    total_citations: "708"
+  - name: BULLETIN OF INDONESIAN ECONOMIC STUDIES
+    short: B INDONES ECON STUD
+    issn: "00074918"
+    eissn: "14727234"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.3"
+    jci: "1.78"
+    oa_citable_pct: "12.82"
+    total_citations: "568"
+  - name: CAMBRIDGE JOURNAL OF ECONOMICS
+    short: CAMB J ECON
+    issn: 0309166X
+    eissn: "14643545"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.66"
+    oa_citable_pct: "23.53"
+    total_citations: "3713"
+  - name: Cambridge Journal of Regions Economy and Society
+    short: CAMB J REG ECON SOC
+    issn: "17521378"
+    eissn: "17521386"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "4.7"
+    jci: "1.35"
+    oa_citable_pct: "45.87"
+    total_citations: "2627"
+  - name: CANADIAN JOURNAL OF AGRICULTURAL ECONOMICS-REVUE CANADIENNE D AGROECONOMIE
+    short: CAN J AGR ECON
+    issn: "00083976"
+    eissn: "17447976"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.91"
+    oa_citable_pct: "34.85"
+    total_citations: "1110"
+  - name: CANADIAN JOURNAL OF ECONOMICS-REVUE CANADIENNE D ECONOMIQUE
+    short: CAN J ECON
+    issn: "00084085"
+    eissn: "15405982"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.36"
+    oa_citable_pct: "23.32"
+    total_citations: "2243"
+  - name: CANADIAN PUBLIC POLICY-ANALYSE DE POLITIQUES
+    short: CAN PUBLIC POL
+    issn: "03170861"
+    eissn: "19119917"
+    site: ""
+    notes: WOS/JCR; UNIV TORONTO PRESS INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.54"
+    oa_citable_pct: "3.19"
+    total_citations: "1008"
+  - name: Cepal Review
+    short: CEPAL REV
+    issn: "02512920"
+    eissn: "16840348"
+    site: ""
+    notes: WOS/JCR; COMISION ECONOMICA PARA AMERICA LATINA Y EL CARIBE
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.04"
+    oa_citable_pct: "0"
+    total_citations: "565"
+  - name: CESifo Economic Studies
+    short: CESIFO ECON STUD
+    issn: 1610241X
+    eissn: "16127501"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.31"
+    oa_citable_pct: "23.08"
+    total_citations: "496"
+  - name: China & World Economy
+    short: CHINA WORLD ECON
+    issn: "16712234"
+    eissn: 1749124X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.2"
+    oa_citable_pct: "9.52"
+    total_citations: "1499"
+  - name: China Agricultural Economic Review
+    short: CHINA AGR ECON REV
+    issn: 1756137X
+    eissn: "17561388"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "4.6"
+    jci: "1.67"
+    oa_citable_pct: "3.08"
+    total_citations: "1905"
+  - name: CHINA ECONOMIC REVIEW
+    short: CHINA ECON REV
+    issn: 1043951X
+    eissn: "18737781"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "5.5"
+    jci: "1.75"
+    oa_citable_pct: "4.3"
+    total_citations: "9158"
+  - name: Climate Change Economics
+    short: CLIM CHANG ECON
+    issn: "20100078"
+    eissn: "20100086"
+    site: ""
+    notes: WOS/JCR; WORLD SCIENTIFIC PUBL CO PTE LTD
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.89"
+    oa_citable_pct: "11.36"
+    total_citations: "606"
+  - name: Cliometrica
+    short: CLIOMETRICA
+    issn: "18632505"
+    eissn: "18632513"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q3
+    jif: "0.7"
+    jci: "1.73"
+    oa_citable_pct: "57.14"
+    total_citations: "313"
+  - name: Competition & Change
+    short: COMPET CHANG
+    issn: "10245294"
+    eissn: "14772221"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.4"
+    jci: "0.88"
+    oa_citable_pct: "58.18"
+    total_citations: "1209"
+  - name: Computational Economics
+    short: COMPUT ECON
+    issn: "09277099"
+    eissn: "15729974"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.64"
+    oa_citable_pct: "20.34"
+    total_citations: "2293"
+  - name: CONTEMPORARY ECONOMIC POLICY
+    short: CONTEMP ECON POLICY
+    issn: "10743529"
+    eissn: "14657287"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.56"
+    oa_citable_pct: "22.64"
+    total_citations: "1192"
+  - name: DEFENCE AND PEACE ECONOMICS
+    short: DEFENCE PEACE ECON
+    issn: "10242694"
+    eissn: "14768267"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.45"
+    oa_citable_pct: "10.27"
+    total_citations: "1468"
+  - name: DEVELOPING ECONOMIES
+    short: DEV ECON
+    issn: "00121533"
+    eissn: "17461049"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.53"
+    oa_citable_pct: "8.33"
+    total_citations: "474"
+  - name: E & M Ekonomie a Management
+    short: E M EKON MANAG
+    issn: "12123609"
+    eissn: "23365064"
+    site: ""
+    notes: WOS/JCR; TECHNICAL UNIV LIBEREC
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.38"
+    oa_citable_pct: "100"
+    total_citations: "506"
+  - name: EASTERN EUROPEAN ECONOMICS
+    short: EASTERN EUR ECON
+    issn: "00128775"
+    eissn: "15579298"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.4"
+    oa_citable_pct: "9.45"
+    total_citations: "498"
+  - name: ECOLOGICAL ECONOMICS
+    short: ECOL ECON
+    issn: "09218009"
+    eissn: "18736106"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "6.3"
+    jci: "1.57"
+    oa_citable_pct: "45.45"
+    total_citations: "35499"
+  - name: Econ Journal Watch
+    short: ECON J WATCH
+    issn: 1933527X
+    eissn: 1933527X
+    site: ""
+    notes: WOS/JCR; INST SPONTANEOUS ORDER ECONOMICS
+    quartile: Q4
+    jif: "0.6"
+    jci: "0.17"
+    oa_citable_pct: "0"
+    total_citations: "175"
+  - name: Econometric Reviews
+    short: ECONOMET REV
+    issn: "07474938"
+    eissn: "15324168"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "1"
+    jci: "0.39"
+    oa_citable_pct: "18.75"
+    total_citations: "2724"
+  - name: ECONOMETRIC THEORY
+    short: ECONOMET THEOR
+    issn: "02664666"
+    eissn: "14694360"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "1"
+    jci: "0.36"
+    oa_citable_pct: "35.65"
+    total_citations: "3089"
+  - name: ECONOMETRICA
+    short: ECONOMETRICA
+    issn: "00129682"
+    eissn: "14680262"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "7.1"
+    jci: "2.75"
+    oa_citable_pct: "12.5"
+    total_citations: "43246"
+  - name: Econometrics Journal
+    short: ECONOMET J
+    issn: "13684221"
+    eissn: 1368423X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "7"
+    jci: "1.44"
+    oa_citable_pct: "18.18"
+    total_citations: "2274"
+  - name: Economia Politica
+    short: ECON POLIT-ITALY
+    issn: "11202890"
+    eissn: 1973820X
+    site: ""
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+    quartile: Q2
+    jif: "2"
+    jci: "0.62"
+    oa_citable_pct: "58"
+    total_citations: "545"
+  - name: Economic Analysis and Policy
+    short: ECON ANAL POLICY
+    issn: "03135926"
+    eissn: "03135926"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "8.7"
+    jci: "2.96"
+    oa_citable_pct: "12.72"
+    total_citations: "8852"
+  - name: Economic and Labour Relations Review
+    short: ECON LABOUR RELAT RE
+    issn: "10353046"
+    eissn: "18382673"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.57"
+    oa_citable_pct: "47.2"
+    total_citations: "761"
+  - name: ECONOMIC AND SOCIAL REVIEW
+    short: ECON SOC REV
+    issn: "00129984"
+    eissn: "00129984"
+    site: ""
+    notes: WOS/JCR; ECONOMIC & SOCIAL STUDIES
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.18"
+    oa_citable_pct: "0"
+    total_citations: "308"
+  - name: Economic Change and Restructuring
+    short: ECON CHANG RESTRUCT
+    issn: "15739414"
+    eissn: "15740277"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "4.3"
+    jci: "1.48"
+    oa_citable_pct: "9.64"
+    total_citations: "1870"
+  - name: Economic Computation and Economic Cybernetics Studies and Research
+    short: ECON COMPUT ECON CYB
+    issn: 0424267X
+    eissn: "18423264"
+    site: ""
+    notes: WOS/JCR; EDITURA ASE
+    quartile: Q3
+    jif: "1"
+    jci: "0.34"
+    oa_citable_pct: "96.58"
+    total_citations: "617"
+  - name: ECONOMIC DEVELOPMENT AND CULTURAL CHANGE
+    short: ECON DEV CULT CHANGE
+    issn: "00130079"
+    eissn: "15392988"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q2
+    jif: "1.8"
+    jci: "1.28"
+    oa_citable_pct: "4.51"
+    total_citations: "2872"
+  - name: ECONOMIC DEVELOPMENT QUARTERLY
+    short: ECON DEV Q
+    issn: "08912424"
+    eissn: "15523543"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.41"
+    oa_citable_pct: "3.92"
+    total_citations: "888"
+  - name: ECONOMIC GEOGRAPHY
+    short: ECON GEOGR
+    issn: "00130095"
+    eissn: "19448287"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "8.9"
+    jci: "2.06"
+    oa_citable_pct: "39.62"
+    total_citations: "4944"
+  - name: ECONOMIC HISTORY REVIEW
+    short: ECON HIST REV
+    issn: "00130117"
+    eissn: "14680289"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.6"
+    jci: "2.56"
+    oa_citable_pct: "62.05"
+    total_citations: "2808"
+  - name: ECONOMIC INQUIRY
+    short: ECON INQ
+    issn: "00952583"
+    eissn: "14657295"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.46"
+    oa_citable_pct: "40.51"
+    total_citations: "3755"
+  - name: ECONOMIC JOURNAL
+    short: ECON J
+    issn: "00130133"
+    eissn: "14680297"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.11"
+    oa_citable_pct: "27.3"
+    total_citations: "16013"
+  - name: ECONOMIC MODELLING
+    short: ECON MODEL
+    issn: "02649993"
+    eissn: "18736122"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4.7"
+    jci: "1.54"
+    oa_citable_pct: "19.73"
+    total_citations: "15660"
+  - name: ECONOMIC POLICY
+    short: ECON POLICY
+    issn: "02664658"
+    eissn: "14680327"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "6.4"
+    jci: "1.68"
+    oa_citable_pct: "35.48"
+    total_citations: "2055"
+  - name: ECONOMIC RECORD
+    short: ECON REC
+    issn: "00130249"
+    eissn: "14754932"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.36"
+    oa_citable_pct: "55.26"
+    total_citations: "1029"
+  - name: Economic Systems
+    short: ECON SYST
+    issn: "09393625"
+    eissn: "18785433"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.08"
+    oa_citable_pct: "18.52"
+    total_citations: "1969"
+  - name: Economic Systems Research
+    short: ECON SYST RES
+    issn: "09535314"
+    eissn: "14695758"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.64"
+    oa_citable_pct: "17.74"
+    total_citations: "1398"
+  - name: ECONOMIC THEORY
+    short: ECON THEOR
+    issn: "09382259"
+    eissn: "14320479"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.43"
+    oa_citable_pct: "38.39"
+    total_citations: "2299"
+  - name: ECONOMICA
+    short: ECONOMICA
+    issn: "00130427"
+    eissn: "14680335"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.49"
+    oa_citable_pct: "51.05"
+    total_citations: "2867"
+  - name: Economics & Human Biology
+    short: ECON HUM BIOL
+    issn: 1570677X
+    eissn: "18736130"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.67"
+    oa_citable_pct: "40.29"
+    total_citations: "2224"
+  - name: Economics & Philosophy
+    short: ECON PHILOS
+    issn: "02662671"
+    eissn: "14740028"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.46"
+    oa_citable_pct: "67.95"
+    total_citations: "721"
+  - name: Economics & Politics
+    short: ECON POLIT-OXFORD
+    issn: "09541985"
+    eissn: "14680343"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.62"
+    oa_citable_pct: "30.17"
+    total_citations: "1072"
+  - name: ECONOMICS LETTERS
+    short: ECON LETT
+    issn: "01651765"
+    eissn: "18737374"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.63"
+    oa_citable_pct: "23.95"
+    total_citations: "14401"
+  - name: ECONOMICS OF EDUCATION REVIEW
+    short: ECON EDUC REV
+    issn: "02727757"
+    eissn: "18737382"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.8"
+    oa_citable_pct: "35.38"
+    total_citations: "5080"
+  - name: Economics of Energy & Environmental Policy
+    short: ECON ENERGY ENV POL
+    issn: "21605882"
+    eissn: "21605890"
+    site: ""
+    notes: WOS/JCR; INT ASSOC ENERGY ECONOMICS
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.35"
+    oa_citable_pct: "10.91"
+    total_citations: "407"
+  - name: Economics of Governance
+    short: ECON GOV
+    issn: "14356104"
+    eissn: "14358131"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.31"
+    oa_citable_pct: "23.53"
+    total_citations: "453"
+  - name: Economics of Innovation and New Technology
+    short: ECON INNOV NEW TECH
+    issn: "10438599"
+    eissn: "14768364"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.6"
+    jci: "0.8"
+    oa_citable_pct: "16.42"
+    total_citations: "2217"
+  - name: Economics of Transition and Institutional Change
+    short: ECON TRANSIT I CHANG
+    issn: "25776975"
+    eissn: "25776983"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.38"
+    oa_citable_pct: "14.16"
+    total_citations: "209"
+  - name: Economics of Transportation
+    short: ECON TRANSP
+    issn: "22120122"
+    eissn: "22120130"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.62"
+    oa_citable_pct: "30"
+    total_citations: "484"
+  - name: Economics-The Open Access Open-Assessment E-Journal
+    short: ECONOMICS-KIEL
+    issn: "18646042"
+    eissn: "18646042"
+    site: ""
+    notes: WOS/JCR; DE GRUYTER POLAND SP Z O O
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.3"
+    oa_citable_pct: "100"
+    total_citations: "580"
+  - name: ECONOMIST-NETHERLANDS
+    short: ECONOMIST-NETHERLAND
+    issn: 0013063X
+    eissn: "15729982"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.36"
+    oa_citable_pct: "61.7"
+    total_citations: "576"
+  - name: ECONOMY AND SOCIETY
+    short: ECON SOC
+    issn: "03085147"
+    eissn: "14695766"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.3"
+    jci: "1.36"
+    oa_citable_pct: "50.6"
+    total_citations: "3221"
+  - name: Education Finance and Policy
+    short: EDUC FINANC POLICY
+    issn: "15573060"
+    eissn: "15573079"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+    quartile: Q2
+    jif: "2"
+    jci: "0.91"
+    oa_citable_pct: "2.22"
+    total_citations: "818"
+  - name: EKONOMICKY CASOPIS
+    short: EKON CAS
+    issn: "00133035"
+    eissn: "00133035"
+    site: ""
+    notes: WOS/JCR; INST ECONOMICS RESEARCH SAS & INST FORECASTING CSPS SAS
+    quartile: Q4
+    jif: "0.6"
+    jci: "0.16"
+    oa_citable_pct: "100"
+    total_citations: "213"
+  - name: EMERGING MARKETS FINANCE AND TRADE
+    short: EMERG MARK FINANC TR
+    issn: 1540496X
+    eissn: "15580938"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.09"
+    oa_citable_pct: "3.16"
+    total_citations: "5871"
+  - name: Emerging Markets Review
+    short: EMERG MARK REV
+    issn: "15660141"
+    eissn: "18736173"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4.6"
+    jci: "1.67"
+    oa_citable_pct: "12.09"
+    total_citations: "3273"
+  - name: Empirica
+    short: EMPIRICA
+    issn: "03408744"
+    eissn: "15736911"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.59"
+    oa_citable_pct: "51.43"
+    total_citations: "629"
+  - name: Empirical Economics
+    short: EMPIR ECON
+    issn: "03777332"
+    eissn: "14358921"
+    site: ""
+    notes: WOS/JCR; PHYSICA-VERLAG GMBH & CO
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.66"
+    oa_citable_pct: "35.87"
+    total_citations: "5377"
+  - name: Energy Economics
+    short: ENERG ECON
+    issn: "01409883"
+    eissn: "18736181"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "14.2"
+    jci: "4.59"
+    oa_citable_pct: "22.01"
+    total_citations: "53243"
+  - name: ENERGY JOURNAL
+    short: ENERG J
+    issn: "01956574"
+    eissn: "19449089"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.66"
+    oa_citable_pct: "10.73"
+    total_citations: "3266"
+  - name: Energy Policy
+    short: ENERG POLICY
+    issn: "03014215"
+    eissn: "18736777"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "9.2"
+    jci: "2.09"
+    oa_citable_pct: "33.62"
+    total_citations: "68208"
+  - name: ENVIRONMENT AND DEVELOPMENT ECONOMICS
+    short: ENVIRON DEV ECON
+    issn: 1355770X
+    eissn: "14694395"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.55"
+    oa_citable_pct: "38.36"
+    total_citations: "1965"
+  - name: ENVIRONMENTAL & RESOURCE ECONOMICS
+    short: ENVIRON RESOUR ECON
+    issn: "09246460"
+    eissn: "15731502"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3.4"
+    jci: "0.91"
+    oa_citable_pct: "51.74"
+    total_citations: "6498"
+  - name: Estudios de Economia
+    short: ESTUD ECONOMIA
+    issn: "07185286"
+    eissn: "07185286"
+    site: ""
+    notes: WOS/JCR; UNIV CHILE DEPT ECONOMICS
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.1"
+    oa_citable_pct: "35.14"
+    total_citations: "135"
+  - name: Eurasian Business Review
+    short: EURASIAN BUS REV
+    issn: "13094297"
+    eissn: "21474281"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q1
+    jif: "3.5"
+    jci: "1.03"
+    oa_citable_pct: "42.53"
+    total_citations: "856"
+  - name: EUROPE-ASIA STUDIES
+    short: EUROPE-ASIA STUD
+    issn: "09668136"
+    eissn: "14653427"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.8"
+    oa_citable_pct: "24.74"
+    total_citations: "1952"
+  - name: EUROPEAN ECONOMIC REVIEW
+    short: EUR ECON REV
+    issn: "00142921"
+    eissn: 1873572X
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.78"
+    oa_citable_pct: "46.3"
+    total_citations: "10299"
+  - name: European Journal of Health Economics
+    short: EUR J HEALTH ECON
+    issn: "16187598"
+    eissn: "16187601"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3"
+    jci: "1.02"
+    oa_citable_pct: "66.78"
+    total_citations: "4070"
+  - name: European Journal of Law and Economics
+    short: EUR J LAW ECON
+    issn: "09291261"
+    eissn: "15729990"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.8"
+    oa_citable_pct: "46.15"
+    total_citations: "695"
+  - name: European Journal of Political Economy
+    short: EUR J POLIT ECON
+    issn: "01762680"
+    eissn: "18735703"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.98"
+    oa_citable_pct: "35.47"
+    total_citations: "4380"
+  - name: European Journal of the History of Economic Thought
+    short: EUR J HIST ECON THOU
+    issn: "09672567"
+    eissn: "14695936"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.65"
+    oa_citable_pct: "15.86"
+    total_citations: "460"
+  - name: European Research on Management and Business Economics
+    short: EUR RES MANAG BUS EC
+    issn: "24448834"
+    eissn: "24448842"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "6.4"
+    jci: "1.71"
+    oa_citable_pct: "98.81"
+    total_citations: "1212"
+  - name: EUROPEAN REVIEW OF AGRICULTURAL ECONOMICS
+    short: EUR REV AGRIC ECON
+    issn: "01651587"
+    eissn: "14643618"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "3.5"
+    jci: "1.27"
+    oa_citable_pct: "23.15"
+    total_citations: "2230"
+  - name: European Review of Economic History
+    short: EUR REV ECON HIST
+    issn: "13614916"
+    eissn: "14740044"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q3
+    jif: "1"
+    jci: "0.99"
+    oa_citable_pct: "25.64"
+    total_citations: "757"
+  - name: EXPERIMENTAL ECONOMICS
+    short: EXP ECON
+    issn: "13864157"
+    eissn: "15736938"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.57"
+    oa_citable_pct: "58.42"
+    total_citations: "2531"
+  - name: EXPLORATIONS IN ECONOMIC HISTORY
+    short: EXPLOR ECON HIST
+    issn: "00144983"
+    eissn: "10902457"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q2
+    jif: "1.7"
+    jci: "1.56"
+    oa_citable_pct: "40.71"
+    total_citations: "1488"
+  - name: FEDERAL RESERVE BANK OF ST LOUIS REVIEW
+    short: FED RESERVE BANK ST
+    issn: "00149187"
+    eissn: "21634505"
+    site: ""
+    notes: WOS/JCR; FEDERAL RESERVE BANK ST LOUIS
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.67"
+    oa_citable_pct: "82.35"
+    total_citations: "603"
+  - name: FEMINIST ECONOMICS
+    short: FEM ECON
+    issn: "13545701"
+    eissn: "14664372"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2"
+    jci: "1.32"
+    oa_citable_pct: "18.18"
+    total_citations: "2407"
+  - name: FinanzArchiv-European Journal of Public Finance
+    short: FINANZARCHIV
+    issn: "00152218"
+    eissn: "16140974"
+    site: ""
+    notes: WOS/JCR; MOHR SIEBECK
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.11"
+    oa_citable_pct: "2.5"
+    total_citations: "249"
+  - name: FISCAL STUDIES
+    short: FISC STUD
+    issn: "01435671"
+    eissn: "14755890"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.56"
+    oa_citable_pct: "67.53"
+    total_citations: "1065"
+  - name: FOOD POLICY
+    short: FOOD POLICY
+    issn: "03069192"
+    eissn: "18735657"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "6"
+    jci: "1.9"
+    oa_citable_pct: "46.67"
+    total_citations: "10970"
+  - name: Forest Policy and Economics
+    short: FOREST POLICY ECON
+    issn: "13899341"
+    eissn: "18727050"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "3.8"
+    jci: "1.17"
+    oa_citable_pct: "37.24"
+    total_citations: "7125"
+  - name: Futures
+    short: FUTURES
+    issn: "00163287"
+    eissn: "18736378"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "3.8"
+    jci: "0.84"
+    oa_citable_pct: "55.73"
+    total_citations: "6568"
+  - name: GAMES AND ECONOMIC BEHAVIOR
+    short: GAME ECON BEHAV
+    issn: "08998256"
+    eissn: "10902473"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q3
+    jif: "1"
+    jci: "0.33"
+    oa_citable_pct: "32.73"
+    total_citations: "5296"
+  - name: Geneva Risk and Insurance Review
+    short: GENEVA RISK INS REV
+    issn: 1554964X
+    eissn: "15549658"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+    quartile: Q3
+    jif: "1"
+    jci: "0.27"
+    oa_citable_pct: "33.33"
+    total_citations: "148"
+  - name: German Economic Review
+    short: GER ECON REV
+    issn: "14656485"
+    eissn: "14680475"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.38"
+    oa_citable_pct: "18.18"
+    total_citations: "497"
+  - name: Global Economic Review
+    short: GLOBAL ECON REV
+    issn: 1226508X
+    eissn: "17443873"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.6"
+    jci: "0.7"
+    oa_citable_pct: "0"
+    total_citations: "458"
+  - name: Hacienda Publica Espanola-Review of Public Economics
+    short: HACIENDA PUBLICA ESP
+    issn: "02101173"
+    eissn: "23864176"
+    site: ""
+    notes: WOS/JCR; INST ESTUDIOS FISCALES
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.17"
+    oa_citable_pct: "97.01"
+    total_citations: "219"
+  - name: HEALTH ECONOMICS
+    short: HEALTH ECON
+    issn: "10579230"
+    eissn: "10991050"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.78"
+    oa_citable_pct: "45.89"
+    total_citations: "7354"
+  - name: Health Economics Review
+    short: HEALTH ECON REV
+    issn: "21911991"
+    eissn: "21911991"
+    site: ""
+    notes: WOS/JCR; BMC
+    quartile: Q1
+    jif: "3.3"
+    jci: "0.89"
+    oa_citable_pct: "99.53"
+    total_citations: "1408"
+  - name: HISTORY OF POLITICAL ECONOMY
+    short: HIST POLIT ECON
+    issn: "00182702"
+    eissn: "15271919"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.64"
+    oa_citable_pct: "0"
+    total_citations: "1060"
+  - name: HITOTSUBASHI JOURNAL OF ECONOMICS
+    short: HITOTSUB J ECON
+    issn: 0018280X
+    eissn: 2436097X
+    site: ""
+    notes: WOS/JCR; HITOTSUBASHI UNIV
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.08"
+    oa_citable_pct: "0"
+    total_citations: "120"
+  - name: IMF Economic Review
+    short: IMF ECON REV
+    issn: "20414161"
+    eissn: 2041417X
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.8"
+    oa_citable_pct: "1.75"
+    total_citations: "1301"
+  - name: Independent Review
+    short: INDEP REV
+    issn: "10861653"
+    eissn: "21693420"
+    site: ""
+    notes: WOS/JCR; INDEPENDENT INST
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.08"
+    oa_citable_pct: "0"
+    total_citations: "281"
+  - name: INDUSTRIAL AND CORPORATE CHANGE
+    short: IND CORP CHANGE
+    issn: "09606491"
+    eissn: "14643650"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.64"
+    oa_citable_pct: "20.97"
+    total_citations: "4338"
+  - name: Industry and Innovation
+    short: IND INNOV
+    issn: "13662716"
+    eissn: "14698390"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.2"
+    jci: "1.03"
+    oa_citable_pct: "29.8"
+    total_citations: "2568"
+  - name: INFORMATION ECONOMICS AND POLICY
+    short: INF ECON POLICY
+    issn: "01676245"
+    eissn: "18735975"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "3.2"
+    jci: "1.11"
+    oa_citable_pct: "33.8"
+    total_citations: "1259"
+  - name: INSURANCE MATHEMATICS & ECONOMICS
+    short: INSUR MATH ECON
+    issn: "01676687"
+    eissn: "18735959"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.8"
+    oa_citable_pct: "25.51"
+    total_citations: "4713"
+  - name: INTERNATIONAL ECONOMIC REVIEW
+    short: INT ECON REV
+    issn: "00206598"
+    eissn: "14682354"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.39"
+    oa_citable_pct: "27.59"
+    total_citations: "5241"
+  - name: International Environmental Agreements-Politics Law and Economics
+    short: INT ENVIRON AGREEM-P
+    issn: "15679764"
+    eissn: "15731553"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.64"
+    oa_citable_pct: "65.91"
+    total_citations: "1323"
+  - name: International Finance
+    short: INT FINANC
+    issn: "13670271"
+    eissn: "14682362"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.39"
+    oa_citable_pct: "8.16"
+    total_citations: "453"
+  - name: International Journal of Economic Theory
+    short: INT J ECON THEORY
+    issn: "17427355"
+    eissn: "17427363"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.2"
+    oa_citable_pct: "15.07"
+    total_citations: "179"
+  - name: International Journal of Emerging Markets
+    short: INT J EMERG MARK
+    issn: "17468809"
+    eissn: "17468817"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "3"
+    jci: "0.76"
+    oa_citable_pct: "4.01"
+    total_citations: "3851"
+  - name: INTERNATIONAL JOURNAL OF FORECASTING
+    short: INT J FORECASTING
+    issn: "01692070"
+    eissn: "18728200"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "7.1"
+    jci: "2.18"
+    oa_citable_pct: "35.69"
+    total_citations: "9948"
+  - name: INTERNATIONAL JOURNAL OF GAME THEORY
+    short: INT J GAME THEORY
+    issn: "00207276"
+    eissn: "14321270"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.19"
+    oa_citable_pct: "38.1"
+    total_citations: "1305"
+  - name: International Journal of Health Economics and Management
+    short: INT J HEALTH ECON MA
+    issn: "21999023"
+    eissn: "21999031"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.49"
+    oa_citable_pct: "36.23"
+    total_citations: "333"
+  - name: INTERNATIONAL JOURNAL OF INDUSTRIAL ORGANIZATION
+    short: INT J IND ORGAN
+    issn: "01677187"
+    eissn: "18737986"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.44"
+    oa_citable_pct: "25"
+    total_citations: "2910"
+  - name: International Journal of Transport Economics
+    short: INT J TRANSP ECON
+    issn: "03918440"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; FABRIZIO SERRA EDITORE
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.12"
+    oa_citable_pct: "0"
+    total_citations: "175"
+  - name: INTERNATIONAL LABOUR REVIEW
+    short: INT LABOUR REV
+    issn: "00207780"
+    eissn: 1564913X
+    site: ""
+    notes: WOS/JCR; OPEN LIBRARY HUMANITIES
+    quartile: Q1
+    jif: "2.6"
+    jci: "0.98"
+    oa_citable_pct: "20.45"
+    total_citations: "1220"
+  - name: International Review of Economics & Finance
+    short: INT REV ECON FINANC
+    issn: "10590560"
+    eissn: "18738036"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "5.6"
+    jci: "1.72"
+    oa_citable_pct: "11.23"
+    total_citations: "10982"
+  - name: International Review of Economics Education
+    short: INT REV ECON EDUC
+    issn: "14773880"
+    eissn: "23524421"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.61"
+    oa_citable_pct: "26.32"
+    total_citations: "602"
+  - name: INTERNATIONAL REVIEW OF LAW AND ECONOMICS
+    short: INT REV LAW ECON
+    issn: "01448188"
+    eissn: "18736394"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q3
+    jif: "1"
+    jci: "0.74"
+    oa_citable_pct: "23"
+    total_citations: "955"
+  - name: INTERNATIONAL TAX AND PUBLIC FINANCE
+    short: INT TAX PUBLIC FINAN
+    issn: "09275940"
+    eissn: "15736970"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.37"
+    oa_citable_pct: "42.95"
+    total_citations: "1440"
+  - name: Investigacion Economica
+    short: INVEST ECON-MEX
+    issn: "01851667"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; UNIV NACIONAL AUTONOMA MEXICO, FAC ECONOMIA
+    quartile: Q4
+    jif: "0.6"
+    jci: "0.21"
+    oa_citable_pct: "98.67"
+    total_citations: "213"
+  - name: Inzinerine Ekonomika-Engineering Economics
+    short: INZ EKON
+    issn: "13922785"
+    eissn: "20295839"
+    site: ""
+    notes: WOS/JCR; KAUNAS UNIV TECHNOL
+    quartile: Q2
+    jif: "2"
+    jci: "0.82"
+    oa_citable_pct: "99.17"
+    total_citations: "938"
+  - name: JAHRBUCHER FUR NATIONALOKONOMIE UND STATISTIK
+    short: JAHRB NATL STAT
+    issn: "00214027"
+    eissn: 2366049X
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.41"
+    oa_citable_pct: "63.44"
+    total_citations: "552"
+  - name: JAPAN AND THE WORLD ECONOMY
+    short: JPN WORLD ECON
+    issn: "09221425"
+    eissn: "18792006"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.45"
+    oa_citable_pct: "20.51"
+    total_citations: "662"
+  - name: JAPANESE ECONOMIC REVIEW
+    short: JPN ECON REV
+    issn: "13524739"
+    eissn: "14685876"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.37"
+    oa_citable_pct: "28.81"
+    total_citations: "475"
+  - name: JCMS-Journal of Common Market Studies
+    short: JCMS-J COMMON MARK S
+    issn: "00219886"
+    eissn: "14685965"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.42"
+    oa_citable_pct: "72.89"
+    total_citations: "4815"
+  - name: JOURNAL OF ACCOUNTING & ECONOMICS
+    short: J ACCOUNT ECON
+    issn: "01654101"
+    eissn: "18791980"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "6.8"
+    jci: "1.87"
+    oa_citable_pct: "15.07"
+    total_citations: "16521"
+  - name: JOURNAL OF AFRICAN ECONOMIES
+    short: J AFR ECON
+    issn: "09638024"
+    eissn: "14643723"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.42"
+    oa_citable_pct: "46.73"
+    total_citations: "1315"
+  - name: Journal of Agrarian Change
+    short: J AGRAR CHANGE
+    issn: "14710358"
+    eissn: "14710366"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.82"
+    oa_citable_pct: "52.04"
+    total_citations: "1790"
+  - name: JOURNAL OF AGRICULTURAL AND RESOURCE ECONOMICS
+    short: J AGR RESOUR ECON
+    issn: "10685502"
+    eissn: "23278285"
+    site: ""
+    notes: WOS/JCR; WESTERN AGRICULTURAL ECONOMICS ASSOC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.45"
+    oa_citable_pct: "0"
+    total_citations: "1051"
+  - name: JOURNAL OF AGRICULTURAL ECONOMICS
+    short: J AGR ECON
+    issn: 0021857X
+    eissn: "14779552"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "4.2"
+    jci: "1.29"
+    oa_citable_pct: "57.89"
+    total_citations: "2985"
+  - name: JOURNAL OF APPLIED ECONOMETRICS
+    short: J APPL ECONOMET
+    issn: "08837252"
+    eissn: "10991255"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.1"
+    jci: "0.83"
+    oa_citable_pct: "33.33"
+    total_citations: "7995"
+  - name: Journal of Applied Economics
+    short: J APPL ECON
+    issn: "15140326"
+    eissn: "16676726"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2"
+    jci: "0.55"
+    oa_citable_pct: "100"
+    total_citations: "851"
+  - name: Journal of Asian Economics
+    short: J ASIAN ECON
+    issn: "10490078"
+    eissn: "18737927"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.04"
+    oa_citable_pct: "4.58"
+    total_citations: "2233"
+  - name: Journal of Australian Political Economy
+    short: J AUST POLIT ECON
+    issn: "01565826"
+    eissn: "18393675"
+    site: ""
+    notes: WOS/JCR; AUSTRALIAN POLITICAL ECONOMY MOVEMENT
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.23"
+    oa_citable_pct: "0"
+    total_citations: "227"
+  - name: JOURNAL OF BANKING & FINANCE
+    short: J BANK FINANC
+    issn: "03784266"
+    eissn: "18726372"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "3.8"
+    jci: "1.15"
+    oa_citable_pct: "22.91"
+    total_citations: "23919"
+  - name: Journal of Behavioral and Experimental Economics
+    short: J BEHAV EXP ECON
+    issn: "22148043"
+    eissn: "22148051"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.46"
+    oa_citable_pct: "39.78"
+    total_citations: "1743"
+  - name: Journal of Behavioral and Experimental Finance
+    short: J BEHAV EXP FINANC
+    issn: "22146350"
+    eissn: "22146369"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4.7"
+    jci: "1.22"
+    oa_citable_pct: "33.62"
+    total_citations: "3296"
+  - name: Journal of Behavioral Finance
+    short: J BEHAV FINANC
+    issn: "15427560"
+    eissn: "15427579"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.42"
+    oa_citable_pct: "12.63"
+    total_citations: "1096"
+  - name: Journal of Benefit-Cost Analysis
+    short: J BENEFIT-COST ANAL
+    issn: "21945888"
+    eissn: "21522812"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.68"
+    oa_citable_pct: "61.9"
+    total_citations: "522"
+  - name: JOURNAL OF BUSINESS & ECONOMIC STATISTICS
+    short: J BUS ECON STAT
+    issn: "07350015"
+    eissn: "15372707"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q1
+    jif: "2.5"
+    jci: "0.76"
+    oa_citable_pct: "16.47"
+    total_citations: "9056"
+  - name: Journal of Business Economics and Management
+    short: J BUS ECON MANAG
+    issn: "16111699"
+    eissn: "20294433"
+    site: ""
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+    quartile: Q1
+    jif: "2.7"
+    jci: "0.67"
+    oa_citable_pct: "99.47"
+    total_citations: "2033"
+  - name: Journal of Choice Modelling
+    short: J CHOICE MODEL
+    issn: "17555345"
+    eissn: "17555345"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.81"
+    oa_citable_pct: "44.04"
+    total_citations: "1297"
+  - name: Journal of Commodity Markets
+    short: J COMMOD MARK
+    issn: "24058513"
+    eissn: "24058505"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4.5"
+    jci: "1.35"
+    oa_citable_pct: "29.03"
+    total_citations: "943"
+  - name: JOURNAL OF COMPARATIVE ECONOMICS
+    short: J COMP ECON
+    issn: "01475967"
+    eissn: "10957227"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.02"
+    oa_citable_pct: "20.24"
+    total_citations: "4649"
+  - name: Journal of Competition Law & Economics
+    short: J COMPET LAW ECON
+    issn: "17446414"
+    eissn: "17446422"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.91"
+    oa_citable_pct: "26.42"
+    total_citations: "412"
+  - name: Journal of Competitiveness
+    short: J COMPETITIVENESS
+    issn: 1804171X
+    eissn: "18041728"
+    site: ""
+    notes: WOS/JCR; UNIV TOMASE BATI & ZLINE, FAK MANAGEMENTU EKONOMIKY
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.05"
+    oa_citable_pct: "78.03"
+    total_citations: "1055"
+  - name: JOURNAL OF CONSUMER AFFAIRS
+    short: J CONSUM AFF
+    issn: "00220078"
+    eissn: "17456606"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.2"
+    jci: "0.73"
+    oa_citable_pct: "27.52"
+    total_citations: "2755"
+  - name: Journal of Contemporary Accounting & Economics
+    short: J CONTEMP ACCOUNT EC
+    issn: "18155669"
+    eissn: "18155669"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.87"
+    oa_citable_pct: "13.41"
+    total_citations: "1130"
+  - name: Journal of Cultural Economics
+    short: J CULT ECON
+    issn: "08852545"
+    eissn: "15736997"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2"
+    jci: "0.96"
+    oa_citable_pct: "48.48"
+    total_citations: "1072"
+  - name: Journal of Cultural Economy
+    short: J CULT ECON-UK
+    issn: "17530350"
+    eissn: "17530369"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.96"
+    oa_citable_pct: "33.14"
+    total_citations: "1979"
+  - name: Journal of Demographic Economics
+    short: J DEMOGR ECON
+    issn: "20540892"
+    eissn: "20540906"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.46"
+    oa_citable_pct: "29.85"
+    total_citations: "278"
+  - name: JOURNAL OF DEVELOPMENT ECONOMICS
+    short: J DEV ECON
+    issn: "03043878"
+    eissn: "18726089"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4.6"
+    jci: "1.49"
+    oa_citable_pct: "32.95"
+    total_citations: "15605"
+  - name: JOURNAL OF DEVELOPMENT STUDIES
+    short: J DEV STUD
+    issn: "00220388"
+    eissn: "17439140"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.55"
+    oa_citable_pct: "31.17"
+    total_citations: "5852"
+  - name: Journal of Econometrics
+    short: J ECONOMETRICS
+    issn: "03044076"
+    eissn: "18726895"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    quartile: Q1
+    jif: "4"
+    jci: "2.5"
+    oa_citable_pct: "21.42"
+    total_citations: "30272"
+  - name: JOURNAL OF ECONOMIC BEHAVIOR & ORGANIZATION
+    short: J ECON BEHAV ORGAN
+    issn: "01672681"
+    eissn: "18791751"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.75"
+    oa_citable_pct: "34.71"
+    total_citations: "13912"
+  - name: JOURNAL OF ECONOMIC DYNAMICS & CONTROL
+    short: J ECON DYN CONTROL
+    issn: "01651889"
+    eissn: "18791743"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.66"
+    oa_citable_pct: "25.8"
+    total_citations: "5658"
+  - name: JOURNAL OF ECONOMIC EDUCATION
+    short: J ECON EDUC
+    issn: "00220485"
+    eissn: "21524068"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.42"
+    oa_citable_pct: "11.32"
+    total_citations: "1054"
+  - name: JOURNAL OF ECONOMIC GEOGRAPHY
+    short: J ECON GEOGR
+    issn: "14682702"
+    eissn: "14682710"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "2.9"
+    jci: "1.05"
+    oa_citable_pct: "37.1"
+    total_citations: "4794"
+  - name: JOURNAL OF ECONOMIC GROWTH
+    short: J ECON GROWTH
+    issn: "13814338"
+    eissn: "15737020"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.77"
+    oa_citable_pct: "61.7"
+    total_citations: "3192"
+  - name: JOURNAL OF ECONOMIC HISTORY
+    short: J ECON HIST
+    issn: "00220507"
+    eissn: "14716372"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "2.9"
+    jci: "5.09"
+    oa_citable_pct: "59.38"
+    total_citations: "3287"
+  - name: Journal of Economic Inequality
+    short: J ECON INEQUAL
+    issn: "15691721"
+    eissn: "15738701"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.92"
+    oa_citable_pct: "52.52"
+    total_citations: "1335"
+  - name: Journal of Economic Interaction and Coordination
+    short: J ECON INTERACT COOR
+    issn: 1860711X
+    eissn: "18607128"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q3
+    jif: "1"
+    jci: "0.35"
+    oa_citable_pct: "49.44"
+    total_citations: "362"
+  - name: JOURNAL OF ECONOMIC ISSUES
+    short: J ECON ISSUES
+    issn: "00213624"
+    eissn: 1946326X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.27"
+    oa_citable_pct: "13.18"
+    total_citations: "1844"
+  - name: JOURNAL OF ECONOMIC LITERATURE
+    short: J ECON LIT
+    issn: "00220515"
+    eissn: "23288175"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q1
+    jif: "10.6"
+    jci: "3.52"
+    oa_citable_pct: "0"
+    total_citations: "12794"
+  - name: Journal of Economic Methodology
+    short: J ECON METHODOL
+    issn: 1350178X
+    eissn: "14699427"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.51"
+    oa_citable_pct: "40.38"
+    total_citations: "614"
+  - name: JOURNAL OF ECONOMIC PERSPECTIVES
+    short: J ECON PERSPECT
+    issn: "08953309"
+    eissn: "19447965"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    quartile: Q1
+    jif: "8.8"
+    jci: "2.48"
+    oa_citable_pct: "87.2"
+    total_citations: "20002"
+  - name: Journal of Economic Policy Reform
+    short: J ECON POLICY REFORM
+    issn: "17487870"
+    eissn: "17487889"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.2"
+    jci: "0.91"
+    oa_citable_pct: "25.93"
+    total_citations: "588"
+  - name: JOURNAL OF ECONOMIC PSYCHOLOGY
+    short: J ECON PSYCHOL
+    issn: "01674870"
+    eissn: "18727719"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.87"
+    oa_citable_pct: "40.7"
+    total_citations: "5733"
+  - name: JOURNAL OF ECONOMIC SURVEYS
+    short: J ECON SURV
+    issn: "09500804"
+    eissn: "14676419"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "5"
+    jci: "1.67"
+    oa_citable_pct: "44.15"
+    total_citations: "5920"
+  - name: JOURNAL OF ECONOMIC THEORY
+    short: J ECON THEORY
+    issn: "00220531"
+    eissn: "10957235"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.41"
+    oa_citable_pct: "25.39"
+    total_citations: "7947"
+  - name: Journal of Economics
+    short: J ECON
+    issn: "09318658"
+    eissn: "16177134"
+    site: ""
+    notes: WOS/JCR; SPRINGER WIEN
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.27"
+    oa_citable_pct: "28.13"
+    total_citations: "1206"
+  - name: JOURNAL OF ECONOMICS & MANAGEMENT STRATEGY
+    short: J ECON MANAGE STRAT
+    issn: "10586407"
+    eissn: "15309134"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.37"
+    oa_citable_pct: "32.28"
+    total_citations: "2403"
+  - name: Journal of Empirical Finance
+    short: J EMPIR FINANC
+    issn: "09275398"
+    eissn: "18791727"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.76"
+    oa_citable_pct: "20.8"
+    total_citations: "3931"
+  - name: JOURNAL OF ENVIRONMENTAL ECONOMICS AND MANAGEMENT
+    short: J ENVIRON ECON MANAG
+    issn: "00950696"
+    eissn: "10960449"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "5.9"
+    jci: "1.45"
+    oa_citable_pct: "38.79"
+    total_citations: "12038"
+  - name: JOURNAL OF EVOLUTIONARY ECONOMICS
+    short: J EVOL ECON
+    issn: "09369937"
+    eissn: "14321386"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.47"
+    oa_citable_pct: "51.38"
+    total_citations: "1868"
+  - name: Journal of Family and Economic Issues
+    short: J FAM ECON ISS
+    issn: "10580476"
+    eissn: "15733475"
+    site: ""
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.96"
+    oa_citable_pct: "28.06"
+    total_citations: "2241"
+  - name: JOURNAL OF FINANCE
+    short: J FINANC
+    issn: "00221082"
+    eissn: "15406261"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "9.5"
+    jci: "2.72"
+    oa_citable_pct: "17.23"
+    total_citations: "50071"
+  - name: JOURNAL OF FINANCIAL AND QUANTITATIVE ANALYSIS
+    short: J FINANC QUANT ANAL
+    issn: "00221090"
+    eissn: "17566916"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "2.8"
+    jci: "0.94"
+    oa_citable_pct: "47.89"
+    total_citations: "10492"
+  - name: Journal of Financial Econometrics
+    short: J FINANC ECONOMET
+    issn: "14798409"
+    eissn: "14798417"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.6"
+    oa_citable_pct: "27.64"
+    total_citations: "1922"
+  - name: JOURNAL OF FINANCIAL ECONOMICS
+    short: J FINANC ECON
+    issn: 0304405X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    quartile: Q1
+    jif: "12"
+    jci: "3.18"
+    oa_citable_pct: "20.45"
+    total_citations: "54554"
+  - name: Journal of Financial Stability
+    short: J FINANC STABIL
+    issn: "15723089"
+    eissn: "18780962"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "4.2"
+    jci: "1.59"
+    oa_citable_pct: "17.95"
+    total_citations: "4488"
+  - name: JOURNAL OF FORECASTING
+    short: J FORECASTING
+    issn: "02776693"
+    eissn: 1099131X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.7"
+    jci: "0.81"
+    oa_citable_pct: "19.69"
+    total_citations: "3044"
+  - name: Journal of Forest Economics
+    short: J FOREST ECON
+    issn: "11046899"
+    eissn: "16181530"
+    site: ""
+    notes: WOS/JCR; NOW PUBLISHERS INC
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.36"
+    oa_citable_pct: "2.44"
+    total_citations: "632"
+  - name: JOURNAL OF HEALTH ECONOMICS
+    short: J HEALTH ECON
+    issn: "01676296"
+    eissn: "18791646"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.27"
+    oa_citable_pct: "36.84"
+    total_citations: "8558"
+  - name: JOURNAL OF HOUSING ECONOMICS
+    short: J HOUS ECON
+    issn: "10511377"
+    eissn: "10960791"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.7"
+    oa_citable_pct: "25.49"
+    total_citations: "1536"
+  - name: Journal of Human Capital
+    short: J HUM CAPITAL
+    issn: "19328575"
+    eissn: "19328664"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.36"
+    oa_citable_pct: "1.96"
+    total_citations: "523"
+  - name: JOURNAL OF HUMAN RESOURCES
+    short: J HUM RESOUR
+    issn: 0022166X
+    eissn: "15488004"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    quartile: Q1
+    jif: "6"
+    jci: "2.39"
+    oa_citable_pct: "27.72"
+    total_citations: "6561"
+  - name: JOURNAL OF INDUSTRIAL ECONOMICS
+    short: J IND ECON
+    issn: "00221821"
+    eissn: "14676451"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1"
+    jci: "0.35"
+    oa_citable_pct: "34.48"
+    total_citations: "1965"
+  - name: JOURNAL OF INSTITUTIONAL AND THEORETICAL ECONOMICS-ZEITSCHRIFT FUR DIE
+      GESAMTE STAATSWISSENSCHAFT
+    short: J INST THEOR ECON
+    issn: "09324569"
+    eissn: "16140559"
+    site: ""
+    notes: WOS/JCR; J C B MOHR
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.18"
+    oa_citable_pct: "1.25"
+    total_citations: "632"
+  - name: Journal of Institutional Economics
+    short: J I ECON
+    issn: "17441374"
+    eissn: "17441382"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "2.5"
+    jci: "0.75"
+    oa_citable_pct: "53.33"
+    total_citations: "1438"
+  - name: JOURNAL OF INTERNATIONAL ECONOMICS
+    short: J INT ECON
+    issn: "00221996"
+    eissn: "18730353"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4"
+    jci: "1.18"
+    oa_citable_pct: "22.61"
+    total_citations: "11240"
+  - name: Journal of International Financial Markets Institutions & Money
+    short: J INT FINANC MARK I
+    issn: "10424431"
+    eissn: "18730612"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "6.1"
+    jci: "1.7"
+    oa_citable_pct: "28.81"
+    total_citations: "5789"
+  - name: Journal of International Trade & Economic Development
+    short: J INT TRADE ECON DEV
+    issn: "09638199"
+    eissn: "14699559"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.67"
+    oa_citable_pct: "2.54"
+    total_citations: "1526"
+  - name: Journal of Korea Trade
+    short: J KOREA TRADE
+    issn: ""
+    eissn: 1229828X
+    site: ""
+    notes: WOS/JCR; KOREA TRADE RESEARCH ASSOC
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.27"
+    oa_citable_pct: "0"
+    total_citations: "285"
+  - name: JOURNAL OF LABOR ECONOMICS
+    short: J LABOR ECON
+    issn: 0734306X
+    eissn: "15375307"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "5"
+    jci: "1.51"
+    oa_citable_pct: "3.28"
+    total_citations: "6076"
+  - name: JOURNAL OF LAW & ECONOMICS
+    short: J LAW ECON
+    issn: "00222186"
+    eissn: "15375285"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q2
+    jif: "1.5"
+    jci: "1.28"
+    oa_citable_pct: "1.96"
+    total_citations: "4829"
+  - name: JOURNAL OF LAW ECONOMICS & ORGANIZATION
+    short: J LAW ECON ORGAN
+    issn: "87566222"
+    eissn: "14657341"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q3
+    jif: "1.3"
+    jci: "1.02"
+    oa_citable_pct: "14.12"
+    total_citations: "2148"
+  - name: JOURNAL OF MACROECONOMICS
+    short: J MACROECON
+    issn: "01640704"
+    eissn: 1873152X
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.48"
+    oa_citable_pct: "18.13"
+    total_citations: "2191"
+  - name: JOURNAL OF MATHEMATICAL ECONOMICS
+    short: J MATH ECON
+    issn: "03044068"
+    eissn: "18731538"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.3"
+    oa_citable_pct: "31.48"
+    total_citations: "1779"
+  - name: JOURNAL OF MEDIA ECONOMICS
+    short: J MEDIA ECON
+    issn: "08997764"
+    eissn: "15327736"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.41"
+    oa_citable_pct: "4.35"
+    total_citations: "242"
+  - name: JOURNAL OF MONETARY ECONOMICS
+    short: J MONETARY ECON
+    issn: "03043932"
+    eissn: "18731295"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4.1"
+    jci: "1.25"
+    oa_citable_pct: "25.54"
+    total_citations: "11043"
+  - name: JOURNAL OF MONEY CREDIT AND BANKING
+    short: J MONEY CREDIT BANK
+    issn: "00222879"
+    eissn: "15384616"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.41"
+    oa_citable_pct: "25.18"
+    total_citations: "5856"
+  - name: Journal of Neuroscience Psychology and Economics
+    short: J NEUROSCI PSYCHOL E
+    issn: 1937321X
+    eissn: 2151318X
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.37"
+    oa_citable_pct: "7.32"
+    total_citations: "345"
+  - name: Journal of Pension Economics & Finance
+    short: J PENSION ECON FINAN
+    issn: "14747472"
+    eissn: "14753022"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.37"
+    oa_citable_pct: "52.78"
+    total_citations: "796"
+  - name: JOURNAL OF POLICY ANALYSIS AND MANAGEMENT
+    short: J POLICY ANAL MANAG
+    issn: ""
+    eissn: "15206688"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.6"
+    jci: "0.98"
+    oa_citable_pct: "27.45"
+    total_citations: "3075"
+  - name: JOURNAL OF POLICY MODELING
+    short: J POLICY MODEL
+    issn: "01618938"
+    eissn: "18738060"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.04"
+    oa_citable_pct: "20.69"
+    total_citations: "3043"
+  - name: JOURNAL OF POLITICAL ECONOMY
+    short: J POLIT ECON
+    issn: "00223808"
+    eissn: 1537534X
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "6.3"
+    jci: "2.08"
+    oa_citable_pct: "4.08"
+    total_citations: "32443"
+  - name: JOURNAL OF POPULATION ECONOMICS
+    short: J POPUL ECON
+    issn: "09331433"
+    eissn: "14321475"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3"
+    jci: "1.44"
+    oa_citable_pct: "47.37"
+    total_citations: "3324"
+  - name: JOURNAL OF POST KEYNESIAN ECONOMICS
+    short: J POST KEYNESIAN EC
+    issn: "01603477"
+    eissn: "15577821"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1"
+    jci: "0.29"
+    oa_citable_pct: "10.23"
+    total_citations: "1034"
+  - name: JOURNAL OF PRODUCTIVITY ANALYSIS
+    short: J PROD ANAL
+    issn: 0895562X
+    eissn: "15730441"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.55"
+    oa_citable_pct: "40.17"
+    total_citations: "2692"
+  - name: Journal of Public Economic Theory
+    short: J PUBLIC ECON THEORY
+    issn: "10973923"
+    eissn: "14679779"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.34"
+    oa_citable_pct: "23.88"
+    total_citations: "733"
+  - name: JOURNAL OF PUBLIC ECONOMICS
+    short: J PUBLIC ECON
+    issn: "00472727"
+    eissn: "00472727"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.4"
+    oa_citable_pct: "36.75"
+    total_citations: "16489"
+  - name: JOURNAL OF REAL ESTATE FINANCE AND ECONOMICS
+    short: J REAL ESTATE FINANC
+    issn: "08955638"
+    eissn: 1573045X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.54"
+    oa_citable_pct: "29.75"
+    total_citations: "2108"
+  - name: Journal of Real Estate Research
+    short: J REAL ESTATE RES
+    issn: "08965803"
+    eissn: "26911175"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.3"
+    oa_citable_pct: "11.59"
+    total_citations: "805"
+  - name: JOURNAL OF REGIONAL SCIENCE
+    short: J REGIONAL SCI
+    issn: "00224146"
+    eissn: "14679787"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.7"
+    jci: "0.7"
+    oa_citable_pct: "37.91"
+    total_citations: "3212"
+  - name: JOURNAL OF REGULATORY ECONOMICS
+    short: J REGUL ECON
+    issn: 0922680X
+    eissn: "15730468"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.45"
+    oa_citable_pct: "27.91"
+    total_citations: "781"
+  - name: JOURNAL OF RISK AND INSURANCE
+    short: J RISK INSUR
+    issn: "00224367"
+    eissn: "15396975"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.63"
+    oa_citable_pct: "32.61"
+    total_citations: "2058"
+  - name: JOURNAL OF RISK AND UNCERTAINTY
+    short: J RISK UNCERTAINTY
+    issn: "08955646"
+    eissn: "15730476"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.55"
+    oa_citable_pct: "56.58"
+    total_citations: "2882"
+  - name: Journal of Sports Economics
+    short: J SPORT ECON
+    issn: "15270025"
+    eissn: "15527794"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.47"
+    oa_citable_pct: "15.04"
+    total_citations: "1321"
+  - name: Journal of the Asia Pacific Economy
+    short: J ASIA PAC ECON
+    issn: "13547860"
+    eissn: "14699648"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.46"
+    oa_citable_pct: "2.17"
+    total_citations: "1161"
+  - name: Journal of the Association of Environmental and Resource Economists
+    short: J ASSOC ENVIRON RESO
+    issn: "23335955"
+    eissn: "23335963"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "3.2"
+    jci: "0.95"
+    oa_citable_pct: "0.73"
+    total_citations: "1867"
+  - name: Journal of the Economics of Ageing
+    short: J ECON AGEING
+    issn: 2212828X
+    eissn: "22128298"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2"
+    jci: "0.74"
+    oa_citable_pct: "36.73"
+    total_citations: "707"
+  - name: Journal of the European Economic Association
+    short: J EUR ECON ASSOC
+    issn: "15424766"
+    eissn: "15424774"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "3.3"
+    jci: "1.15"
+    oa_citable_pct: "27.7"
+    total_citations: "6568"
+  - name: JOURNAL OF THE JAPANESE AND INTERNATIONAL ECONOMIES
+    short: J JPN INT ECON
+    issn: "08891583"
+    eissn: "10958681"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.39"
+    oa_citable_pct: "22.08"
+    total_citations: "1072"
+  - name: JOURNAL OF TRANSPORT ECONOMICS AND POLICY
+    short: J TRANSP ECON POLICY
+    issn: "00225258"
+    eissn: "17545951"
+    site: ""
+    notes: WOS/JCR; UNIV BATH
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.24"
+    oa_citable_pct: "0"
+    total_citations: "852"
+  - name: Journal of Transport Geography
+    short: J TRANSP GEOGR
+    issn: "09666923"
+    eissn: "18731236"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "6.3"
+    jci: "1.88"
+    oa_citable_pct: "31.87"
+    total_citations: "16756"
+  - name: JOURNAL OF URBAN ECONOMICS
+    short: J URBAN ECON
+    issn: "00941190"
+    eissn: "10959068"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "4.8"
+    jci: "1.79"
+    oa_citable_pct: "30.06"
+    total_citations: "7274"
+  - name: Journal of Wine Economics
+    short: J WINE ECON
+    issn: "19314361"
+    eissn: 1931437X
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.49"
+    oa_citable_pct: "87.72"
+    total_citations: "596"
+  - name: JOURNAL OF WORLD TRADE
+    short: J WORLD TRADE
+    issn: "10116702"
+    eissn: "22102795"
+    site: ""
+    notes: WOS/JCR; KLUWER LAW INT
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.75"
+    oa_citable_pct: "0"
+    total_citations: "582"
+  - name: Korean Economic Review
+    short: KOREAN ECON REV
+    issn: "02543737"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; KOREAN ECONOMIC ASSOCIATION
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.11"
+    oa_citable_pct: "0"
+    total_citations: "76"
+  - name: KYKLOS
+    short: KYKLOS
+    issn: "00235962"
+    eissn: "14676435"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.48"
+    oa_citable_pct: "44.36"
+    total_citations: "1625"
+  - name: LABOUR ECONOMICS
+    short: LABOUR ECON
+    issn: "09275371"
+    eissn: "18791034"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "2.6"
+    jci: "0.75"
+    oa_citable_pct: "43.32"
+    total_citations: "4750"
+  - name: LAND ECONOMICS
+    short: LAND ECON
+    issn: "00237639"
+    eissn: "15438325"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.42"
+    oa_citable_pct: "14.02"
+    total_citations: "2728"
+  - name: Latin American Economic Review
+    short: LAT AM ECON REV
+    issn: "21983526"
+    eissn: 2196436X
+    site: ""
+    notes: WOS/JCR; CENTRO INVESTIGACION & DOCENCIA ECONOMICAS-CIDE
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.14"
+    oa_citable_pct: "8.33"
+    total_citations: "199"
+  - name: MACROECONOMIC DYNAMICS
+    short: MACROECON DYN
+    issn: "13651005"
+    eissn: "14698056"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.28"
+    oa_citable_pct: "35.29"
+    total_citations: "1260"
+  - name: MANAGERIAL AND DECISION ECONOMICS
+    short: MANAG DECIS ECON
+    issn: "01436570"
+    eissn: "10991468"
+    site: ""
+    notes: WOS/JCR; JOHN WILEY & SONS LTD
+    quartile: Q1
+    jif: "2.7"
+    jci: "0.75"
+    oa_citable_pct: "8.02"
+    total_citations: "4177"
+  - name: MANCHESTER SCHOOL
+    short: MANCH SCH
+    issn: "14636786"
+    eissn: "14679957"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.28"
+    oa_citable_pct: "33.67"
+    total_citations: "1240"
+  - name: Marine Resource Economics
+    short: MAR RESOUR ECON
+    issn: "07381360"
+    eissn: "23345985"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.57"
+    oa_citable_pct: "3.45"
+    total_citations: "821"
+  - name: MATHEMATICAL FINANCE
+    short: MATH FINANC
+    issn: "09601627"
+    eissn: "14679965"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.74"
+    oa_citable_pct: "35.05"
+    total_citations: "2414"
+  - name: MATHEMATICAL SOCIAL SCIENCES
+    short: MATH SOC SCI
+    issn: "01654896"
+    eissn: "18793118"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.24"
+    oa_citable_pct: "30.86"
+    total_citations: "1000"
+  - name: Mathematics and Financial Economics
+    short: MATH FINANC ECON
+    issn: "18629679"
+    eissn: "18629660"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q3
+    jif: "1"
+    jci: "0.34"
+    oa_citable_pct: "40"
+    total_citations: "398"
+  - name: Metroeconomica
+    short: METROECONOMICA
+    issn: "00261386"
+    eissn: 1467999X
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.29"
+    oa_citable_pct: "20.59"
+    total_citations: "730"
+  - name: NATIONAL TAX JOURNAL
+    short: NATL TAX J
+    issn: "00280283"
+    eissn: "19447477"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.42"
+    oa_citable_pct: "1.05"
+    total_citations: "1645"
+  - name: NBER Macroeconomics Annual
+    short: NBER MACROECON ANNU
+    issn: "08893365"
+    eissn: "15372642"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "10.7"
+    jci: "2.54"
+    oa_citable_pct: "0"
+    total_citations: "876"
+  - name: NEW POLITICAL ECONOMY
+    short: NEW POLIT ECON
+    issn: "13563467"
+    eissn: "14699923"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.6"
+    jci: "1.72"
+    oa_citable_pct: "56.49"
+    total_citations: "3257"
+  - name: North American Journal of Economics and Finance
+    short: N AM J ECON FINANC
+    issn: "10629408"
+    eissn: "18790860"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "3.9"
+    jci: "1.22"
+    oa_citable_pct: "10.26"
+    total_citations: "4765"
+  - name: Oeconomia Copernicana
+    short: OECON COPERNIC
+    issn: "20831277"
+    eissn: "23531827"
+    site: ""
+    notes: WOS/JCR; INST BADAN GOSPODARCZYCH
+    quartile: Q1
+    jif: "10.8"
+    jci: "2.98"
+    oa_citable_pct: "99.09"
+    total_citations: "1237"
+  - name: OPEN ECONOMIES REVIEW
+    short: OPEN ECON REV
+    issn: "09237992"
+    eissn: 1573708X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1"
+    jci: "0.39"
+    oa_citable_pct: "35.29"
+    total_citations: "819"
+  - name: OXFORD BULLETIN OF ECONOMICS AND STATISTICS
+    short: OXFORD B ECON STAT
+    issn: "03059049"
+    eissn: "14680084"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.56"
+    oa_citable_pct: "41.18"
+    total_citations: "4733"
+  - name: OXFORD ECONOMIC PAPERS-NEW SERIES
+    short: OXFORD ECON PAP
+    issn: "00307653"
+    eissn: "14643812"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.33"
+    oa_citable_pct: "26.09"
+    total_citations: "2806"
+  - name: OXFORD REVIEW OF ECONOMIC POLICY
+    short: OXFORD REV ECON POL
+    issn: 0266903X
+    eissn: "14602121"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.73"
+    oa_citable_pct: "35.26"
+    total_citations: "3157"
+  - name: Pacific Economic Review
+    short: PAC ECON REV
+    issn: 1361374X
+    eissn: "14680106"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.3"
+    oa_citable_pct: "12.07"
+    total_citations: "523"
+  - name: Panoeconomicus
+    short: PANOECONOMICUS
+    issn: 1452595X
+    eissn: "22172386"
+    site: ""
+    notes: WOS/JCR; SAVEZ EKONOMISTA VOJVODINE
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.3"
+    oa_citable_pct: "100"
+    total_citations: "299"
+  - name: PAPERS IN REGIONAL SCIENCE
+    short: PAP REG SCI
+    issn: "10568190"
+    eissn: "14355957"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.64"
+    oa_citable_pct: "70.77"
+    total_citations: "2881"
+  - name: PHARMACOECONOMICS
+    short: PHARMACOECONOMICS
+    issn: "11707690"
+    eissn: "11792027"
+    site: ""
+    notes: WOS/JCR; ADIS INT LTD
+    quartile: Q1
+    jif: "4.6"
+    jci: "1.32"
+    oa_citable_pct: "63.92"
+    total_citations: "7336"
+  - name: POLITICKA EKONOMIE
+    short: POLIT EKON
+    issn: "00323233"
+    eissn: "23368225"
+    site: ""
+    notes: WOS/JCR; Prague Univ Economics and Business
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.18"
+    oa_citable_pct: "97.94"
+    total_citations: "139"
+  - name: Portuguese Economic Journal
+    short: PORT ECON J
+    issn: 1617982X
+    eissn: "16179838"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.63"
+    oa_citable_pct: "22.64"
+    total_citations: "339"
+  - name: POST-COMMUNIST ECONOMIES
+    short: POST-COMMUNIST ECON
+    issn: "14631377"
+    eissn: "14653958"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.7"
+    oa_citable_pct: "14"
+    total_citations: "818"
+  - name: POST-SOVIET AFFAIRS
+    short: POST-SOV AFF
+    issn: 1060586X
+    eissn: "19382855"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3"
+    jci: "1.79"
+    oa_citable_pct: "28.41"
+    total_citations: "1005"
+  - name: Prague Economic Papers
+    short: PRAGUE ECON PAP
+    issn: "12100455"
+    eissn: 2336730X
+    site: ""
+    notes: WOS/JCR; Prague Univ Economics and Business
+    quartile: Q3
+    jif: "1"
+    jci: "0.25"
+    oa_citable_pct: "98.77"
+    total_citations: "305"
+  - name: PUBLIC CHOICE
+    short: PUBLIC CHOICE
+    issn: "00485829"
+    eissn: "15737101"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.94"
+    oa_citable_pct: "30.71"
+    total_citations: "4988"
+  - name: QME-Quantitative Marketing and Economics
+    short: QME-QUANT MARK ECON
+    issn: "15707156"
+    eissn: 1573711X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.51"
+    oa_citable_pct: "41.86"
+    total_citations: "503"
+  - name: Quantitative Economics
+    short: QUANT ECON
+    issn: "17597323"
+    eissn: "17597331"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.83"
+    oa_citable_pct: "100"
+    total_citations: "1093"
+  - name: QUANTITATIVE FINANCE
+    short: QUANT FINANC
+    issn: "14697688"
+    eissn: "14697696"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.45"
+    oa_citable_pct: "19.03"
+    total_citations: "3747"
+  - name: QUARTERLY JOURNAL OF ECONOMICS
+    short: Q J ECON
+    issn: "00335533"
+    eissn: "15314650"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "12.7"
+    jci: "4.5"
+    oa_citable_pct: "19.86"
+    total_citations: "40723"
+  - name: QUARTERLY REVIEW OF ECONOMICS AND FINANCE
+    short: Q REV ECON FINANC
+    issn: "10629769"
+    eissn: "18784259"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.26"
+    oa_citable_pct: "12.37"
+    total_citations: "3785"
+  - name: RAND JOURNAL OF ECONOMICS
+    short: RAND J ECON
+    issn: "07416261"
+    eissn: "17562171"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.8"
+    jci: "0.89"
+    oa_citable_pct: "34.62"
+    total_citations: "5381"
+  - name: REAL ESTATE ECONOMICS
+    short: REAL ESTATE ECON
+    issn: "10808620"
+    eissn: "15406229"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2"
+    jci: "0.59"
+    oa_citable_pct: "32.84"
+    total_citations: "1479"
+  - name: REGIONAL SCIENCE AND URBAN ECONOMICS
+    short: REG SCI URBAN ECON
+    issn: "01660462"
+    eissn: "18792308"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.96"
+    oa_citable_pct: "22.93"
+    total_citations: "4813"
+  - name: REGIONAL STUDIES
+    short: REG STUD
+    issn: "00343404"
+    eissn: "13600591"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.2"
+    jci: "1.12"
+    oa_citable_pct: "29.37"
+    total_citations: "11305"
+  - name: Research in Transportation Economics
+    short: RES TRANSP ECON
+    issn: "07398859"
+    eissn: "18757979"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.17"
+    oa_citable_pct: "30.99"
+    total_citations: "3088"
+  - name: RESOURCE AND ENERGY ECONOMICS
+    short: RESOUR ENERGY ECON
+    issn: "09287655"
+    eissn: "18730221"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "3.1"
+    jci: "0.66"
+    oa_citable_pct: "40.4"
+    total_citations: "2512"
+  - name: Review of Derivatives Research
+    short: REV DERIV RES
+    issn: "13806645"
+    eissn: "15737144"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.27"
+    oa_citable_pct: "57.14"
+    total_citations: "217"
+  - name: Review of Development Economics
+    short: REV DEV ECON
+    issn: "13636669"
+    eissn: "14679361"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.66"
+    oa_citable_pct: "25.24"
+    total_citations: "2380"
+  - name: Review of Economic Design
+    short: REV ECON DES
+    issn: "14344742"
+    eissn: "14344750"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.17"
+    oa_citable_pct: "27.66"
+    total_citations: "188"
+  - name: REVIEW OF ECONOMIC DYNAMICS
+    short: REV ECON DYNAM
+    issn: "10942025"
+    eissn: "10966099"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.73"
+    oa_citable_pct: "12.57"
+    total_citations: "2668"
+  - name: REVIEW OF ECONOMIC STUDIES
+    short: REV ECON STUD
+    issn: "00346527"
+    eissn: 1467937X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "6.4"
+    jci: "1.93"
+    oa_citable_pct: "20.57"
+    total_citations: "20521"
+  - name: REVIEW OF ECONOMICS AND STATISTICS
+    short: REV ECON STAT
+    issn: "00346535"
+    eissn: "15309142"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+    quartile: Q1
+    jif: "6.8"
+    jci: "2.42"
+    oa_citable_pct: "11.29"
+    total_citations: "21497"
+  - name: Review of Economics of the Household
+    short: REV ECON HOUSEHOLD
+    issn: "15695239"
+    eissn: "15737152"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2.2"
+    jci: "1.09"
+    oa_citable_pct: "39.22"
+    total_citations: "1649"
+  - name: Review of Environmental Economics and Policy
+    short: REV ENV ECON POLICY
+    issn: "17506816"
+    eissn: "17506824"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "6.6"
+    jci: "1.89"
+    oa_citable_pct: "3.51"
+    total_citations: "2428"
+  - name: Review of Finance
+    short: REV FINANC
+    issn: "15723097"
+    eissn: 1573692X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "8.4"
+    jci: "2.04"
+    oa_citable_pct: "22.15"
+    total_citations: "4778"
+  - name: REVIEW OF FINANCIAL STUDIES
+    short: REV FINANC STUD
+    issn: "08939454"
+    eissn: "14657368"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    quartile: Q1
+    jif: "5.4"
+    jci: "2.05"
+    oa_citable_pct: "16.37"
+    total_citations: "29654"
+  - name: REVIEW OF INCOME AND WEALTH
+    short: REV INCOME WEALTH
+    issn: "00346586"
+    eissn: "14754991"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.59"
+    oa_citable_pct: "51.15"
+    total_citations: "2213"
+  - name: REVIEW OF INDUSTRIAL ORGANIZATION
+    short: REV IND ORGAN
+    issn: 0889938X
+    eissn: "15737160"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.24"
+    oa_citable_pct: "36.3"
+    total_citations: "1198"
+  - name: Review of International Economics
+    short: REV INT ECON
+    issn: "09657576"
+    eissn: "14679396"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.39"
+    oa_citable_pct: "23.86"
+    total_citations: "1737"
+  - name: Review of International Organizations
+    short: REV INT ORGAN
+    issn: "15597431"
+    eissn: 1559744X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "4"
+    jci: "1.62"
+    oa_citable_pct: "67.68"
+    total_citations: "2053"
+  - name: REVIEW OF INTERNATIONAL POLITICAL ECONOMY
+    short: REV INT POLIT ECON
+    issn: "09692290"
+    eissn: "14664526"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.5"
+    jci: "1.66"
+    oa_citable_pct: "50.28"
+    total_citations: "4393"
+  - name: Review of Keynesian Economics
+    short: REV KEYNES ECON
+    issn: "20495323"
+    eissn: "20495331"
+    site: ""
+    notes: WOS/JCR; EDWARD ELGAR PUBLISHING LTD
+    quartile: Q1
+    jif: "2.7"
+    jci: "0.79"
+    oa_citable_pct: "0"
+    total_citations: "517"
+  - name: Review of Network Economics
+    short: REV NETW ECON
+    issn: "21945993"
+    eissn: "14469022"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.19"
+    oa_citable_pct: "13.79"
+    total_citations: "277"
+  - name: REVIEW OF RADICAL POLITICAL ECONOMICS
+    short: REV RADICAL POL ECON
+    issn: "04866134"
+    eissn: "15528502"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.3"
+    oa_citable_pct: "9.68"
+    total_citations: "911"
+  - name: REVIEW OF WORLD ECONOMICS
+    short: REV WORLD ECON
+    issn: "16102878"
+    eissn: "16102886"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.57"
+    oa_citable_pct: "35.48"
+    total_citations: "1151"
+  - name: Revista de Economia Mundial
+    short: REV ECON MUND
+    issn: "15760162"
+    eissn: "23404264"
+    site: ""
+    notes: WOS/JCR; UNIV HUELVA, SERV PUBLICACIONES
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.08"
+    oa_citable_pct: "68"
+    total_citations: "132"
+  - name: Revista de Historia Economica-Journal of Iberian and Latin American
+      Economic History
+    short: REV HIST ECON
+    issn: "02126109"
+    eissn: "20413335"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q4
+    jif: "0.5"
+    jci: "1.18"
+    oa_citable_pct: "31.71"
+    total_citations: "270"
+  - name: Revista de Historia Industrial
+    short: REV HIST INDUST
+    issn: "11327200"
+    eissn: "23853247"
+    site: ""
+    notes: WOS/JCR; UNIV BARCELONA, DEPT HISTORIA, INST ECONOMIQUES
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.53"
+    oa_citable_pct: "95.35"
+    total_citations: "201"
+  - name: REVUE D ECONOMIE POLITIQUE
+    short: REV ECON POLIT
+    issn: "03732630"
+    eissn: "21052883"
+    site: ""
+    notes: WOS/JCR; EDITIONS DALLOZ
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.21"
+    oa_citable_pct: "0"
+    total_citations: "261"
+  - name: Romanian Journal of Economic Forecasting
+    short: ROM J ECON FORECAST
+    issn: "15826163"
+    eissn: "25376071"
+    site: ""
+    notes: WOS/JCR; INST ECONOMIC FORECASTING
+    quartile: Q3
+    jif: "1"
+    jci: "0.29"
+    oa_citable_pct: "0"
+    total_citations: "333"
+  - name: SCANDINAVIAN JOURNAL OF ECONOMICS
+    short: SCAND J ECON
+    issn: "03470520"
+    eissn: "14679442"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.55"
+    oa_citable_pct: "52.78"
+    total_citations: "2118"
+  - name: SCOTTISH JOURNAL OF POLITICAL ECONOMY
+    short: SCOT J POLIT ECON
+    issn: "00369292"
+    eissn: "14679485"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.39"
+    oa_citable_pct: "44.16"
+    total_citations: "764"
+  - name: Series-Journal of the Spanish Economic Association
+    short: SERIES-J SPAN ECON
+    issn: "18694187"
+    eissn: "18694195"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.27"
+    oa_citable_pct: "100"
+    total_citations: "301"
+  - name: SINGAPORE ECONOMIC REVIEW
+    short: SINGAP ECON REV
+    issn: "02175908"
+    eissn: "17936837"
+    site: ""
+    notes: WOS/JCR; WORLD SCIENTIFIC PUBL CO PTE LTD
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.59"
+    oa_citable_pct: "1"
+    total_citations: "1261"
+  - name: SMALL BUSINESS ECONOMICS
+    short: SMALL BUS ECON
+    issn: 0921898X
+    eissn: "15730913"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "4.8"
+    jci: "1.37"
+    oa_citable_pct: "58.16"
+    total_citations: "14548"
+  - name: SOCIAL CHOICE AND WELFARE
+    short: SOC CHOICE WELFARE
+    issn: "01761714"
+    eissn: 1432217X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.26"
+    oa_citable_pct: "43.48"
+    total_citations: "1555"
+  - name: SOCIO-ECONOMIC PLANNING SCIENCES
+    short: SOCIO-ECON PLAN SCI
+    issn: "00380121"
+    eissn: "18736041"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "5.4"
+    jci: "1.69"
+    oa_citable_pct: "24.24"
+    total_citations: "6421"
+  - name: Socio-Economic Review
+    short: SOCIO-ECON REV
+    issn: "14751461"
+    eissn: 1475147X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.36"
+    oa_citable_pct: "41.13"
+    total_citations: "3055"
+  - name: South African Journal of Economic and Management Sciences
+    short: S AFR J ECON MANAG S
+    issn: "10158812"
+    eissn: "22223436"
+    site: ""
+    notes: WOS/JCR; AOSIS
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.35"
+    oa_citable_pct: "100"
+    total_citations: "702"
+  - name: SOUTH AFRICAN JOURNAL OF ECONOMICS
+    short: S AFR J ECON
+    issn: "00382280"
+    eissn: "18136982"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.4"
+    oa_citable_pct: "49.25"
+    total_citations: "626"
+  - name: SOUTHERN ECONOMIC JOURNAL
+    short: SOUTH ECON J
+    issn: "00384038"
+    eissn: "23258012"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.53"
+    oa_citable_pct: "25.47"
+    total_citations: "2244"
+  - name: Spatial Economic Analysis
+    short: SPAT ECON ANAL
+    issn: "17421772"
+    eissn: "17421780"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.2"
+    jci: "0.72"
+    oa_citable_pct: "17.98"
+    total_citations: "953"
+  - name: Structural Change and Economic Dynamics
+    short: STRUCT CHANGE ECON D
+    issn: 0954349X
+    eissn: "18736017"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "5.5"
+    jci: "1.78"
+    oa_citable_pct: "23.2"
+    total_citations: "5278"
+  - name: STUDIES IN NONLINEAR DYNAMICS AND ECONOMETRICS
+    short: STUD NONLINEAR DYN E
+    issn: "10811826"
+    eissn: "15583708"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.26"
+    oa_citable_pct: "16.67"
+    total_citations: "554"
+  - name: Technological and Economic Development of Economy
+    short: TECHNOL ECON DEV ECO
+    issn: "20294913"
+    eissn: "20294921"
+    site: ""
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+    quartile: Q1
+    jif: "3.9"
+    jci: "1.49"
+    oa_citable_pct: "100"
+    total_citations: "2453"
+  - name: Theoretical Economics
+    short: THEOR ECON
+    issn: "19336837"
+    eissn: "15557561"
+    site: ""
+    notes: WOS/JCR; ECONOMETRIC SOCIETY
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.42"
+    oa_citable_pct: "100"
+    total_citations: "967"
+  - name: THEORY AND DECISION
+    short: THEOR DECIS
+    issn: "00405833"
+    eissn: "15737187"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q4
+    jif: "0.6"
+    jci: "0.26"
+    oa_citable_pct: "41.56"
+    total_citations: "1296"
+  - name: TIJDSCHRIFT VOOR ECONOMISCHE EN SOCIALE GEOGRAFIE
+    short: TIJDSCHR ECON SOC GE
+    issn: 0040747X
+    eissn: "14679663"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.69"
+    oa_citable_pct: "62.83"
+    total_citations: "1789"
+  - name: Tourism Economics
+    short: TOURISM ECON
+    issn: "13548166"
+    eissn: "20440375"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.2"
+    jci: "0.96"
+    oa_citable_pct: "12.65"
+    total_citations: "4226"
+  - name: Transformations in Business & Economics
+    short: TRANSFORM BUS ECON
+    issn: "16484460"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; VILNIUS UNIV PRESS
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.38"
+    oa_citable_pct: "0"
+    total_citations: "771"
+  - name: Transport Policy
+    short: TRANSPORT POLICY
+    issn: 0967070X
+    eissn: 1879310X
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "5.3"
+    jci: "1.71"
+    oa_citable_pct: "27.57"
+    total_citations: "13783"
+  - name: TRANSPORTATION RESEARCH PART A-POLICY AND PRACTICE
+    short: TRANSPORT RES A-POL
+    issn: "09658564"
+    eissn: "18792375"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "6.8"
+    jci: "1.69"
+    oa_citable_pct: "35.37"
+    total_citations: "24017"
+  - name: TRANSPORTATION RESEARCH PART B-METHODOLOGICAL
+    short: TRANSPORT RES B-METH
+    issn: "01912615"
+    eissn: "18792367"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "6.3"
+    jci: "1.44"
+    oa_citable_pct: "21.93"
+    total_citations: "19133"
+  - name: TRANSPORTATION RESEARCH PART E-LOGISTICS AND TRANSPORTATION REVIEW
+    short: TRANSPORT RES E-LOG
+    issn: "13665545"
+    eissn: "18785794"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "8.8"
+    jci: "2.03"
+    oa_citable_pct: "12.9"
+    total_citations: "20266"
+  - name: TRIMESTRE ECONOMICO
+    short: TRIMEST ECON
+    issn: "00413011"
+    eissn: "00413011"
+    site: ""
+    notes: WOS/JCR; FONDO CULTURA ECONOMICA
+    quartile: Q4
+    jif: "0.5"
+    jci: "0.09"
+    oa_citable_pct: "95.92"
+    total_citations: "272"
+  - name: VALUE IN HEALTH
+    short: VALUE HEALTH
+    issn: "10983015"
+    eissn: "15244733"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "6"
+    jci: "1.5"
+    oa_citable_pct: "37.59"
+    total_citations: "14950"
+  - name: Water Economics and Policy
+    short: WATER ECON POLICY
+    issn: 2382624X
+    eissn: "23826258"
+    site: ""
+    notes: WOS/JCR; WORLD SCIENTIFIC PUBL CO PTE LTD
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.32"
+    oa_citable_pct: "3.75"
+    total_citations: "250"
+  - name: Water Resources and Economics
+    short: WATER RESOUR ECON
+    issn: "22124284"
+    eissn: "22124284"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.54"
+    oa_citable_pct: "31.67"
+    total_citations: "463"
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.8"
+    jci: "1.22"
+    oa_citable_pct: "59.32"
+    total_citations: "4823"
+  - name: WORLD BANK ECONOMIC REVIEW
+    short: WORLD BANK ECON REV
+    issn: "02586770"
+    eissn: 1564698X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.68"
+    oa_citable_pct: "24.81"
+    total_citations: "3177"
+  - name: WORLD BANK RESEARCH OBSERVER
+    short: WORLD BANK RES OBSER
+    issn: "02573032"
+    eissn: "15646971"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "3.3"
+    jci: "2.12"
+    oa_citable_pct: "14.71"
+    total_citations: "1867"
+  - name: WORLD DEVELOPMENT
+    short: WORLD DEV
+    issn: 0305750X
+    eissn: "18735991"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "4.8"
+    jci: "1.74"
+    oa_citable_pct: "44.37"
+    total_citations: "31381"
+  - name: WORLD ECONOMY
+    short: WORLD ECON
+    issn: "03785920"
+    eissn: "14679701"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.8"
+    oa_citable_pct: "28.27"
+    total_citations: "4848"
+  - name: World Trade Review
+    short: WORLD TRADE REV
+    issn: "14747456"
+    eissn: "14753138"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "2.3"
+    jci: "1.34"
+    oa_citable_pct: "49.55"
+    total_citations: "763"
+  - name: ZFW-Advances in Economic Geography
+    short: ZFW-ADV ECON GEOGR
+    issn: "27481956"
+    eissn: "27481964"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q2
+    jif: "2"
+    jci: "0.8"
+    oa_citable_pct: "90.7"
+    total_citations: "88"

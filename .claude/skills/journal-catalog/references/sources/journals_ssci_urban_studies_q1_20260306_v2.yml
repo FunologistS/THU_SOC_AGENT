@@ -1,0 +1,24 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Sociology
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+    category: SOCIOLOGY
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Urban_Studies_260306_normalized.csv
+  generated_at: 2026-03-06T07:21:29.811Z
+  date_tag: "20260306"
+  version: 2
+  count_filtered_rows: 0
+  count_unique_journals: 0
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals: []

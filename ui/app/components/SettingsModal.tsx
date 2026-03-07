@@ -3,7 +3,59 @@
 import { useState, useEffect, useCallback } from "react";
 import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
 
-type EnvVar = { key: string; label: string; hint?: string; set: boolean; masked: string };
+const ENV_KEYS = [
+  "OPENAI_API_KEY",
+  "OPENAI_BASE_URL",
+  "OPENAI_MODEL",
+  "OPENAI_MODELS",
+  "ZHIPU_API_KEY",
+  "ZHIPU_BASE_URL",
+  "ZHIPU_MODEL",
+  "ZHIPU_MODELS",
+  "FIRECRAWL_API_KEY",
+  "OPENALEX_API_KEY",
+  "OPENALEX_EMAIL",
+] as const;
+
+type EnvState = Record<(typeof ENV_KEYS)[number], string>;
+
+const BASIC_KEYS = ["OPENAI_API_KEY", "ZHIPU_API_KEY"] as const;
+const ADVANCED_KEYS = ["OPENAI_BASE_URL", "OPENAI_MODEL", "OPENAI_MODELS", "ZHIPU_BASE_URL", "ZHIPU_MODEL", "ZHIPU_MODELS", "FIRECRAWL_API_KEY", "OPENALEX_API_KEY", "OPENALEX_EMAIL"] as const;
+
+const LABELS: Record<string, string> = {
+  OPENAI_API_KEY: "OpenAI API Key",
+  OPENAI_BASE_URL: "OpenAI Base URL",
+  OPENAI_MODEL: "OpenAI Model（默认）",
+  OPENAI_MODELS: "OpenAI 可选模型列表",
+  ZHIPU_API_KEY: "智谱 API Key",
+  ZHIPU_BASE_URL: "智谱 Base URL",
+  ZHIPU_MODEL: "智谱 Model（默认）",
+  ZHIPU_MODELS: "智谱可选模型列表",
+  FIRECRAWL_API_KEY: "Firecrawl API Key",
+  OPENALEX_API_KEY: "OpenAlex API Key",
+  OPENALEX_EMAIL: "OpenAlex Email",
+};
+
+const HINTS: Record<string, string> = {
+  OPENAI_API_KEY: "用于 GPT 模型调用。",
+  OPENAI_BASE_URL: "可选，用于代理服务",
+  OPENAI_MODEL: "可选，脚本默认模型，例如 gpt-5.2",
+  OPENAI_MODELS: "可选，逗号分隔追加模型；默认 gpt-5.2 始终保留。仅填已支持的 id，否则运行时报错。",
+  ZHIPU_API_KEY: "用于 GLM 模型调用",
+  ZHIPU_BASE_URL: "可选",
+  ZHIPU_MODEL: "可选，脚本默认模型，例如 glm-4.7-flash",
+  ZHIPU_MODELS: "可选，逗号分隔追加模型；默认 glm-4.7-flash、glm-5 始终保留。仅填智谱已支持的 id，否则运行时报错。",
+  FIRECRAWL_API_KEY: "可选，用于网页抓取",
+  OPENALEX_API_KEY: "可选，批量检索用账号 $1/天 额度，否则易 429",
+  OPENALEX_EMAIL: "可选，填写邮箱可获更宽松的请求限额",
+};
+
+function mask(value: string): string {
+  const s = String(value ?? "").trim();
+  if (!s) return "未设置";
+  if (s.length <= 8) return "••••••••";
+  return s.slice(0, 3) + "···" + s.slice(-4);
+}
 
 export function SettingsModal({
   open,
@@ -14,8 +66,10 @@ export function SettingsModal({
   onClose: () => void;
   onGitSaveSuccess?: () => void;
 }) {
-  const [vars, setVars] = useState<EnvVar[]>([]);
+  const [env, setEnv] = useState<EnvState>(() => Object.fromEntries(ENV_KEYS.map((k) => [k, ""])) as EnvState);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const [verified, setVerified] = useState(false);
   const [verifyPrompt, setVerifyPrompt] = useState(false);
   const [pin, setPin] = useState("");
@@ -42,10 +96,13 @@ export function SettingsModal({
     fetch("/api/settings/env")
       .then((r) => r.json())
       .then((d) => {
-        setVars(d.vars ?? []);
+        if (d.env && typeof d.env === "object") {
+          const next = Object.fromEntries(ENV_KEYS.map((k) => [k, d.env[k] != null ? String(d.env[k]) : ""])) as EnvState;
+          setEnv(next);
+        }
         setGitSavePinRequired(Boolean(d.gitSavePinRequired));
       })
-      .catch(() => setVars([]))
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, [open]);
 
@@ -54,7 +111,7 @@ export function SettingsModal({
   }, [fetchEnv]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !open) return;
     setStoredPinHash(localStorage.getItem("settings_reveal_pin_hash"));
   }, [open]);
 
@@ -65,7 +122,7 @@ export function SettingsModal({
       setPin("");
       return;
     }
-    const p = window.prompt("设置查看密码（用于今后验证后查看完整 Key 说明）：");
+    const p = window.prompt("设置查看密码（验证后可编辑并保存 .env，至少 4 位）：");
     if (p == null) return;
     if (p.length < 4) {
       thuAlert("密码至少 4 位");
@@ -76,15 +133,6 @@ export function SettingsModal({
       setStoredPinHash(h);
       setVerified(true);
     });
-  };
-
-  const hashPin = (p: string): Promise<string> => {
-    if (typeof crypto !== "undefined" && crypto.subtle) {
-      return crypto.subtle
-        .digest("SHA-256", new TextEncoder().encode(p))
-        .then((b) => Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, "0")).join(""));
-    }
-    return Promise.resolve("hash_" + p.length);
   };
 
   const checkPin = () => {
@@ -102,6 +150,40 @@ export function SettingsModal({
         setPinError("密码错误");
       }
     });
+  };
+
+  const setEnvKey = (key: (typeof ENV_KEYS)[number], value: string) => {
+    setEnv((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSaveEnv = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/settings/env", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ env }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        await thuAlert(data?.error || "保存失败");
+        return;
+      }
+      await thuAlert("已保存到 .env");
+    } catch (e) {
+      await thuAlert(e instanceof Error ? e.message : "保存请求失败");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const hashPin = (p: string): Promise<string> => {
+    if (typeof crypto !== "undefined" && crypto.subtle) {
+      return crypto.subtle
+        .digest("SHA-256", new TextEncoder().encode(p))
+        .then((b) => Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, "0")).join(""));
+    }
+    return Promise.resolve("hash_" + p.length);
   };
 
   const runGitSave = async (pinValue?: string) => {
@@ -264,13 +346,9 @@ export function SettingsModal({
           </button>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-5 py-4">
-        <p className="text-xs text-[var(--text-muted)] mb-4">
-          以下为各 skill 会用到的环境变量，仅展示是否已配置及脱敏值；完整 Key 不在此展示。
-        </p>
-
         {verifyPrompt && (
           <div className="mb-4 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-3">
-            <p className="text-xs text-[var(--text-muted)] mb-2">输入查看密码以确认身份</p>
+            <p className="text-xs text-[var(--text-muted)] mb-2">输入查看密码以解锁编辑</p>
             <input
               type="password"
               value={pin}
@@ -292,44 +370,86 @@ export function SettingsModal({
           </div>
         )}
 
-        {verified && (
-          <p className="mb-3 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-3 py-2 text-xs text-[var(--text)]">
-            已通过验证。为安全考虑，完整 Key 仅存于本机环境变量或 .env，此处不展示明文；可在此确认各变量是否已配置。
-          </p>
-        )}
-
         {loading ? (
           <p className="text-sm text-[var(--text-muted)]">加载中…</p>
         ) : (
-          <ul className="space-y-2 max-h-64 overflow-y-auto">
-            {vars.map((v) => (
-              <li key={v.key} className="rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-sm font-medium text-[var(--text)]">{v.label}</span>
-                  <span className={`text-xs font-mono ${v.set ? "text-[var(--text-muted)]" : "text-[var(--accent)]"}`}>
-                    {v.set ? v.masked : "未设置"}
-                  </span>
-                </div>
-                {v.hint && <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">{v.hint}</p>}
-              </li>
-            ))}
-          </ul>
-        )}
+          <>
+            {!verified && !verifyPrompt && (
+              <div className="mb-4 flex items-center justify-between gap-2 rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-3 py-2">
+                <p className="text-xs text-[var(--text)]">当前为只读，点击下方按钮验证后可编辑并保存到 .env</p>
+                <button
+                  type="button"
+                  onClick={handleVerify}
+                  className="shrink-0 rounded-lg border border-[var(--thu-purple)] bg-[var(--bg-page)] px-3 py-1.5 text-xs font-medium text-[var(--text)] hover:opacity-90"
+                >
+                  {storedPinHash ? "验证后编辑" : "设置查看密码"}
+                </button>
+              </div>
+            )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          {!verified && !verifyPrompt && (
-            <button
-              type="button"
-              onClick={handleVerify}
-              className="rounded-lg border border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)] px-3 py-2 text-xs font-medium text-[var(--text)] hover:opacity-90"
-            >
-              {storedPinHash ? "验证后查看说明" : "设置查看密码"}
-            </button>
-          )}
-          <button type="button" onClick={fetchEnv} className="rounded-lg px-3 py-2 text-xs text-[var(--text-muted)] hover:bg-[var(--bg-sidebar)]">
-            刷新
-          </button>
-        </div>
+            <p className="text-xs font-medium text-[var(--text-muted)] mb-3">基础配置</p>
+            <div className="space-y-4">
+              {BASIC_KEYS.map((key) => (
+                <div key={key} className="rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2">
+                  <label className="block text-sm font-medium text-[var(--text)]">{LABELS[key]}</label>
+                  <p className="text-[11px] text-[var(--text-muted)] mt-0.5">{HINTS[key]}</p>
+                  <input
+                    type={verified ? (key.includes("KEY") ? "password" : "text") : "text"}
+                    value={verified ? env[key] : mask(env[key])}
+                    onChange={(e) => setEnvKey(key, e.target.value)}
+                    placeholder={key.includes("KEY") ? "sk-…" : ""}
+                    disabled={!verified}
+                    readOnly={!verified}
+                    className="thu-input mt-1.5 w-full rounded-lg px-3 py-2 text-sm font-mono disabled:opacity-80 disabled:cursor-not-allowed"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={() => setAdvancedOpen((o) => !o)}
+                className="flex w-full items-center justify-between rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text)] hover:bg-[var(--bg-sidebar)]"
+              >
+                <span>Advanced Settings</span>
+                <span className="text-[var(--text-muted)]">{advancedOpen ? "▲" : "▼"}</span>
+              </button>
+              {advancedOpen && (
+                <div className="mt-2 space-y-4 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-3">
+                  {ADVANCED_KEYS.map((key) => (
+                    <div key={key}>
+                      <label className="block text-sm font-medium text-[var(--text)]">{LABELS[key]}</label>
+                      <p className="text-[11px] text-[var(--text-muted)]">{HINTS[key]}</p>
+                      <input
+                        type="text"
+                        value={verified ? env[key] : mask(env[key])}
+                        onChange={(e) => setEnvKey(key, e.target.value)}
+                        disabled={!verified}
+                        readOnly={!verified}
+                        className="thu-input mt-1 w-full rounded-lg px-3 py-2 text-sm font-mono disabled:opacity-80 disabled:cursor-not-allowed"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={handleSaveEnv}
+                disabled={saving || !verified}
+                className="thu-btn-primary rounded-lg px-3 py-2 text-sm disabled:opacity-60"
+              >
+                {saving ? "保存中…" : "保存"}
+              </button>
+              <button type="button" onClick={fetchEnv} className="rounded-lg px-3 py-2 text-xs text-[var(--text-muted)] hover:bg-[var(--bg-sidebar)]">
+                刷新
+              </button>
+            </div>
+          </>
+        )}
 
         {/* 开发者：一键 Git 保存 */}
         <div className="mt-6 border-t border-[var(--border-soft)] pt-4">

@@ -1,37 +1,150 @@
 import { NextResponse } from "next/server";
+import path from "node:path";
+import fs from "node:fs";
 
-/** 各 skill 用到的环境变量（与 ui/app/.env.example 保持一致，仅用于展示是否已配置，不返回明文） */
-const ENV_SPEC: { key: string; label: string; hint?: string }[] = [
-  { key: "OPENAI_API_KEY", label: "OpenAI API Key", hint: "荟萃分析(GPT)、一键综述(GPT)、RAG 索引" },
-  { key: "OPENAI_BASE_URL", label: "OpenAI Base URL", hint: "可选，默认代理" },
-  { key: "OPENAI_MODEL", label: "OpenAI 模型", hint: "可选，如 gpt-5.2" },
-  { key: "ZHIPU_API_KEY", label: "智谱 API Key", hint: "荟萃分析(GLM)、一键综述(GLM)" },
-  { key: "ZHIPU_BASE_URL", label: "智谱 Base URL", hint: "可选" },
-  { key: "ZHIPU_MODEL", label: "智谱模型", hint: "可选，如 glm-4.7-flash" },
-  { key: "FIRECRAWL_API_KEY", label: "Firecrawl API Key", hint: "缺摘要时兜底抓取，可选" },
-  { key: "OPENALEX_EMAIL", label: "OpenAlex 联系邮箱", hint: "批量检索时建议填写，可选" },
-];
+/** 各 skill 用到的环境变量（与 ui/app/.env.example 保持一致） */
+const ENV_KEYS = [
+  "OPENAI_API_KEY",
+  "OPENAI_BASE_URL",
+  "OPENAI_MODEL",
+  "OPENAI_MODELS",
+  "ZHIPU_API_KEY",
+  "ZHIPU_BASE_URL",
+  "ZHIPU_MODEL",
+  "ZHIPU_MODELS",
+  "FIRECRAWL_API_KEY",
+  "OPENALEX_API_KEY",
+  "OPENALEX_EMAIL",
+] as const;
 
-function mask(value: string): string {
-  const s = String(value ?? "").trim();
-  if (!s) return "—";
-  if (s.length <= 8) return "***";
-  return s.slice(0, 3) + "···" + s.slice(-4);
+/** 项目根目录 .env / .env.local 路径（Next 运行目录 = ui/app） */
+function getEnvPath(): string {
+  return path.join(process.cwd(), ".env");
 }
 
-/** GET /api/settings/env — 返回各 key 是否已配置及脱敏展示，不返回明文；gitSavePinRequired 表示一键 Git 保存是否需输入 6 位密码 */
+function getEnvLocalPath(): string {
+  return path.join(process.cwd(), ".env.local");
+}
+
+function getEnvExamplePath(): string {
+  return path.join(process.cwd(), ".env.example");
+}
+
+/** 解析 .env 内容为 key-value，只保留 ENV_KEYS */
+function parseEnvContent(content: string): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const line of content.split(/\r?\n/)) {
+    const m = line.match(/^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/);
+    if (!m) continue;
+    const key = m[1];
+    if (!ENV_KEYS.includes(key)) continue;
+    let val = m[2].trim();
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))
+      val = val.slice(1, -1);
+    out[key] = val;
+  }
+  return out;
+}
+
+/** 读取 .env.local / .env / .env.example，返回 ENV_KEYS 的键值对 */
+function readEnvFromFile(): Record<string, string> {
+  const envPath = getEnvPath();
+  const envLocalPath = getEnvLocalPath();
+  const examplePath = getEnvExamplePath();
+  const pathToRead = fs.existsSync(envLocalPath)
+    ? envLocalPath
+    : fs.existsSync(envPath)
+    ? envPath
+    : examplePath;
+  if (!fs.existsSync(pathToRead)) {
+    return Object.fromEntries(ENV_KEYS.map((k) => [k, ""]));
+  }
+  const content = fs.readFileSync(pathToRead, "utf-8");
+  const parsed = parseEnvContent(content);
+  const result: Record<string, string> = {};
+  for (const k of ENV_KEYS) result[k] = parsed[k] ?? "";
+  return result;
+}
+
+/** 将 ENV_KEYS 的更新写回 .env.local（若存在）或 .env，保留其它行与格式 */
+function writeEnvToFile(updates: Record<string, string>): void {
+  const envPath = getEnvPath();
+  const envLocalPath = getEnvLocalPath();
+  const examplePath = getEnvExamplePath();
+  let content: string;
+  let targetPath: string;
+
+  if (fs.existsSync(envLocalPath)) {
+    targetPath = envLocalPath;
+    content = fs.readFileSync(envLocalPath, "utf-8");
+  } else if (fs.existsSync(envPath)) {
+    targetPath = envPath;
+    content = fs.readFileSync(envPath, "utf-8");
+  } else if (fs.existsSync(examplePath)) {
+    // 从示例初始化，优先写入 .env.local，避免误提交到 Git
+    targetPath = envLocalPath;
+    content = fs.readFileSync(examplePath, "utf-8");
+  } else {
+    targetPath = envLocalPath;
+    content = "";
+  }
+
+  const lines = content.split(/\r?\n/);
+  const updatedKeys = new Set<string>();
+  const newLines: string[] = [];
+
+  for (const line of lines) {
+    const m = line.match(/^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/);
+    if (m && ENV_KEYS.includes(m[1])) {
+      const key = m[1];
+      const val = String(updates[key] ?? "").trim();
+      newLines.push(`${key}=${val}`);
+      updatedKeys.add(key);
+    } else {
+      newLines.push(line);
+    }
+  }
+
+  for (const key of ENV_KEYS) {
+    if (updatedKeys.has(key)) continue;
+    const val = String(updates[key] ?? "").trim();
+    newLines.push(`${key}=${val}`);
+  }
+  fs.writeFileSync(targetPath, newLines.join("\n") + (newLines.length && !content.endsWith("\n") ? "\n" : ""), "utf-8");
+}
+
+/** GET /api/settings/env — 从 .env（或 .env.example）读取键值供 UI 填充；并返回 gitSavePinRequired */
 export async function GET() {
-  const vars = ENV_SPEC.map(({ key, label, hint }) => {
-    const raw = process.env[key];
-    const set = Boolean(raw && String(raw).trim());
-    return {
-      key,
-      label,
-      hint,
-      set,
-      masked: set ? mask(String(process.env[key])) : "未设置",
-    };
-  });
-  const gitSavePinRequired = Boolean(process.env.GIT_SAVE_PIN?.trim());
-  return NextResponse.json({ vars, gitSavePinRequired });
+  try {
+    const env = readEnvFromFile();
+    const gitSavePinRequired = Boolean(process.env.GIT_SAVE_PIN?.trim());
+    return NextResponse.json({ env, gitSavePinRequired });
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : "读取 .env 失败" },
+      { status: 500 }
+    );
+  }
+}
+
+/** POST /api/settings/env — 将 UI 提交的键值写回 .env */
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const env = body?.env;
+    if (!env || typeof env !== "object") {
+      return NextResponse.json({ error: "缺少 env 对象" }, { status: 400 });
+    }
+    const updates: Record<string, string> = {};
+    for (const key of ENV_KEYS) {
+      updates[key] = env[key] != null ? String(env[key]).trim() : "";
+    }
+    writeEnvToFile(updates);
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : "写入 .env 失败" },
+      { status: 500 }
+    );
+  }
 }

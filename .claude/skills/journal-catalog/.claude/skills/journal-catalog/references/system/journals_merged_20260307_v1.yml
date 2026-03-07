@@ -1,0 +1,13 @@
+meta:
+  generated_at: 2026-03-07T09:35:42.500Z
+  date_tag: "20260307"
+  version: 1
+  counts:
+    sources_rows: 0
+    manual_rows: 0
+    merged_unique: 0
+    multi_category_journals: 0
+  inputs: []
+  notes: "Merge precedence: sources < manual. Manual overrides when present.
+    source_categories lists WOS categories when a journal appears in multiple."
+journals: []

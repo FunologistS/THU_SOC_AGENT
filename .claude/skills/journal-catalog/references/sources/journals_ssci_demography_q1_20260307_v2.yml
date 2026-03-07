@@ -1,0 +1,197 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Demography_260306_normalized.csv
+  generated_at: 2026-03-07T04:29:56.413Z
+  date_tag: "20260307"
+  version: 2
+  count_filtered_rows: 29
+  count_unique_journals: 29
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Asian and Pacific Migration Journal
+    short: ASIAN PAC MIGR J
+    issn: "01171968"
+    eissn: 2057049X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Asian Population Studies
+    short: ASIAN POPUL STUD
+    issn: "17441730"
+    eissn: "17441749"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Biodemography and Social Biology
+    short: BIODEMOGR SOC BIOL
+    issn: "19485565"
+    eissn: "19485573"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Canadian Studies in Population
+    short: CAN STUD POPUL
+    issn: "03801489"
+    eissn: 1927629X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Comparative Migration Studies
+    short: COMP MIGR STUD
+    issn: ""
+    eissn: 2214594X
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+  - name: Demographic Research
+    short: DEMOGR RES
+    issn: "14359871"
+    eissn: "23637064"
+    site: ""
+    notes: WOS/JCR; MAX PLANCK INST DEMOGRAPHIC RESEARCH
+  - name: DEMOGRAPHY
+    short: DEMOGRAPHY
+    issn: "00703370"
+    eissn: "15337790"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+  - name: EUROPEAN JOURNAL OF MIGRATION AND LAW
+    short: EUR J MIGR LAW
+    issn: 1388364X
+    eissn: "15718166"
+    site: ""
+    notes: WOS/JCR; BRILL
+  - name: European Journal of Population-Revue Europeenne de Demographie
+    short: EUR J POPUL
+    issn: "01686577"
+    eissn: "15729885"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: INTERNATIONAL MIGRATION
+    short: INT MIGR
+    issn: "00207985"
+    eissn: "14682435"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: INTERNATIONAL MIGRATION REVIEW
+    short: INT MIGR REV
+    issn: "01979183"
+    eissn: "17477379"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF BIOSOCIAL SCIENCE
+    short: J BIOSOC SCI
+    issn: "00219320"
+    eissn: "14697599"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Journal of Demographic Economics
+    short: J DEMOGR ECON
+    issn: "20540892"
+    eissn: "20540906"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF ETHNIC AND MIGRATION STUDIES
+    short: J ETHN MIGR STUD
+    issn: 1369183X
+    eissn: "14699451"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Immigrant & Refugee Studies
+    short: J IMMIGR REFUG STUD
+    issn: "15562948"
+    eissn: "15562956"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF POPULATION ECONOMICS
+    short: J POPUL ECON
+    issn: "09331433"
+    eissn: "14321475"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Journal of Refugee Studies
+    short: J REFUG STUD
+    issn: "09516328"
+    eissn: "14716925"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Journal of the Economics of Ageing
+    short: J ECON AGEING
+    issn: 2212828X
+    eissn: "22128298"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Mathematical Population Studies
+    short: MATH POPUL STUD
+    issn: "08898480"
+    eissn: 1547724X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Migration Studies
+    short: MIGR STUD
+    issn: "20495838"
+    eissn: "20495846"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Papeles de Poblacion
+    short: PAPELES POBLAC
+    issn: "14057425"
+    eissn: "14057425"
+    site: ""
+    notes: WOS/JCR; UNIV AUTONOMA ESTADO MEXICO
+  - name: PERSPECTIVES ON SEXUAL AND REPRODUCTIVE HEALTH
+    short: PERSPECT SEX REPRO H
+    issn: "15386341"
+    eissn: "19312393"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: POPULATION
+    short: POPULATION-PARIS
+    issn: "00324663"
+    eissn: "19577966"
+    site: ""
+    notes: WOS/JCR; INST NATL D ETUDES DEMOGRAPHIQUES
+  - name: POPULATION AND DEVELOPMENT REVIEW
+    short: POPUL DEV REV
+    issn: "00987921"
+    eissn: "17284457"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: POPULATION AND ENVIRONMENT
+    short: POPUL ENVIRON
+    issn: "01990039"
+    eissn: "15737810"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: POPULATION RESEARCH AND POLICY REVIEW
+    short: POPUL RES POLICY REV
+    issn: "01675923"
+    eissn: "15737829"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Population Space and Place
+    short: POPUL SPACE PLACE
+    issn: "15448444"
+    eissn: "15448452"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: POPULATION STUDIES-A JOURNAL OF DEMOGRAPHY
+    short: POP STUD-J DEMOG
+    issn: "00324728"
+    eissn: "14774747"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: STUDIES IN FAMILY PLANNING
+    short: STUD FAMILY PLANN
+    issn: "00393665"
+    eissn: "17284465"
+    site: ""
+    notes: WOS/JCR; WILEY

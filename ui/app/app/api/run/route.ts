@@ -95,6 +95,28 @@ function normalizeIssn(issn: string): string {
   return String(issn ?? "").replace(/\D/g, "");
 }
 
+/** 8 位 ISSN 格式化为 XXXX-XXXX 供 OpenAlex filter 使用 */
+function issnToHyphenForm(issn: string): string {
+  const n = normalizeIssn(issn);
+  if (n.length !== 8) return n;
+  return `${n.slice(0, 4)}-${n.slice(4)}`;
+}
+
+/** 用 OpenAlex API 按 ISSN 解析 source，返回 id 与 display_name；失败返回 null */
+async function resolveOpenAlexSourceByIssn(issnHyphen: string): Promise<{ id: string; display_name: string } | null> {
+  try {
+    const url = `https://api.openalex.org/sources?filter=issn:${encodeURIComponent(issnHyphen)}&per-page=1`;
+    const res = await fetch(url, { next: { revalidate: 0 } });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { results?: Array<{ id?: string; display_name?: string }> };
+    const first = data?.results?.[0];
+    if (!first?.id) return null;
+    return { id: String(first.id), display_name: String(first.display_name ?? "") };
+  } catch {
+    return null;
+  }
+}
+
 /**
  * 一键综述「使用默认写作样例」时的风格文件列表：
  * - 学术型(zh/en)：references/academic 下的默认样例 + references/submit/academic 下全部 .md
@@ -142,14 +164,16 @@ export async function POST(request: Request) {
     args?: string[];
     journalSourceIds?: string[];
     journalIssns?: string[];
-    conceptSynthesizeModel?: "gpt" | "glm" | "glm-4.7-flash" | "glm-5";
-    writingModel?: "gpt" | "glm" | "glm-4.7-flash" | "glm-5";
+    conceptSynthesizeModel?: string;
+    writingModel?: string;
     qualityOnly?: boolean;
     searchMode?: "strict" | "relaxed";
     yearFrom?: number;
     yearTo?: number;
-    /** 检索提示词（可选），写入 01_raw 文档标注 */
-    instruction?: string;
+    /** 多检索词（可选），第一项为基准词；逻辑由 searchLogics 指定，searchLogics[i] 连接 terms[i] 与 terms[i+1] */
+    searchTerms?: string[];
+    /** 词间逻辑数组，长度 = searchTerms.length - 1 */
+    searchLogics?: ("and" | "or")[];
     /** 是否开启摘要补全（缺摘要时抓取出版商页 / Firecrawl） */
     abstractFallback?: boolean;
     synthesizeK?: string;
@@ -182,7 +206,8 @@ export async function POST(request: Request) {
     searchMode,
     yearFrom,
     yearTo,
-    instruction,
+    searchTerms,
+    searchLogics,
     abstractFallback,
     synthesizeK,
     writingStyle,
@@ -205,8 +230,13 @@ export async function POST(request: Request) {
     if (yearTo != null && Number.isFinite(Number(yearTo))) {
       extraArgs = [...extraArgs, "--year-to", String(yearTo)];
     }
-    if (instruction != null && String(instruction).trim() !== "") {
-      extraArgs = [...extraArgs, "--instruction", String(instruction).trim()];
+    const terms = Array.isArray(searchTerms) ? searchTerms.map((t) => String(t).trim()).filter(Boolean) : [];
+    if (terms.length > 0) {
+      extraArgs = [...extraArgs, "--terms", terms.join(",")];
+      const logics = Array.isArray(searchLogics) && searchLogics.length === terms.length - 1
+        ? searchLogics.map((l) => (l === "and" ? "and" : "or"))
+        : [];
+      if (logics.length > 0) extraArgs = [...extraArgs, "--logic", logics.join(",")];
     }
     if (abstractFallback === true) {
       extraArgs = [...extraArgs, "--with-abstract"];
@@ -222,7 +252,7 @@ export async function POST(request: Request) {
   if (jobType === "concept_synthesize" && qualityOnly === true) {
     extraArgs = [...(extraArgs ?? []), "--exclude-out-of-scope"];
   }
-  if (jobType === "concept_synthesize" && (conceptSynthesizeModel === "glm-4.7-flash" || conceptSynthesizeModel === "glm-5")) {
+  if (jobType === "concept_synthesize" && conceptSynthesizeModel && conceptSynthesizeModel !== "gpt") {
     extraArgs = [...(extraArgs ?? []), "--model", conceptSynthesizeModel];
   }
   const safeFileName = (s: string) => typeof s === "string" && /^[a-z0-9_.\-]+\.md$/i.test(s.trim());
@@ -348,6 +378,31 @@ export async function POST(request: Request) {
         const ne = normalizeIssn(String(j.eissn ?? ""));
         return issnSet.has(ni) || issnSet.has(ne);
       });
+      // 请求的 ISSN 中未在 journals.yml 里匹配到的，用 OpenAlex 按 ISSN 解析 source，补进临时期刊表，使检索本数与界面一致（如 WOS Anthropology 93 本）
+      const covered = new Set<string>();
+      for (const j of filtered as { issn?: string; eissn?: string }[]) {
+        const ni = normalizeIssn(String(j.issn ?? ""));
+        const ne = normalizeIssn(String(j.eissn ?? ""));
+        if (ni.length >= 8) covered.add(ni);
+        if (ne.length >= 8) covered.add(ne);
+      }
+      const missing = [...issnSet].filter((s) => !covered.has(s));
+      for (const issn of missing) {
+        const hyphen = issnToHyphenForm(issn);
+        const source = await resolveOpenAlexSourceByIssn(hyphen);
+        if (source?.id) {
+          (filtered as { openalex_source_id?: string; name?: string; short?: string; issn?: string }[]).push({
+            openalex_source_id: source.id,
+            name: source.display_name || "",
+            short: "",
+            issn: hyphen,
+            eissn: "",
+            site: "",
+            notes: "",
+          });
+        }
+        await new Promise((r) => setTimeout(r, 180));
+      }
     } else {
       filtered = all;
     }

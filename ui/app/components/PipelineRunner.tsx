@@ -25,6 +25,23 @@ const JOB_ESTIMATED_SEC: Record<JobType, number> = {
   writing_under_style: 600,
 };
 
+/** 稳定默认：始终保留；顺序为新模型在前，用户追加的排最前 */
+const DEFAULT_ZHIPU = ["glm-5", "glm-4.7-flash"];
+const DEFAULT_OPENAI = ["gpt-5.2"];
+function parseModelList(raw: string | undefined, defaults: string[]): string[] {
+  const fromEnv = !raw || !String(raw).trim() ? [] : String(raw).split(",").map((s) => s.trim()).filter(Boolean);
+  const defaultSet = new Set(defaults);
+  const extra = fromEnv.filter((id) => !defaultSet.has(id));
+  return [...extra, ...defaults];
+}
+function modelDisplayName(id: string, kind: "openai" | "zhipu"): string {
+  const known: Record<string, string> = kind === "openai"
+    ? { "gpt-5.2": "OpenAI GPT-5.2", gpt: "OpenAI GPT" }
+    : { "glm-4.7-flash": "智谱 GLM-4.7-Flash", "glm-5": "智谱 GLM-5" };
+  if (known[id]) return known[id];
+  return kind === "openai" ? `OpenAI ${id}` : `智谱 ${id.replace(/^glm/, "GLM")}`;
+}
+
 export function PipelineRunner({
   topic,
   onJumpToOutputs,
@@ -33,7 +50,9 @@ export function PipelineRunner({
   onJumpToOutputs?: () => void;
 }) {
   const [jobType, setJobType] = useState<JobType>("concept_synthesize");
-  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<"gpt" | "glm-4.7-flash" | "glm-5">("glm-4.7-flash");
+  const [conceptSynthesizeModel, setConceptSynthesizeModel] = useState<string>("glm-5");
+  const [zhipuModelsList, setZhipuModelsList] = useState<string[]>(["glm-5", "glm-4.7-flash"]);
+  const [openaiModelsList, setOpenaiModelsList] = useState<string[]>(["gpt-5.2"]);
   const [jobId, setJobId] = useState<string | null>(null);
   const [log, setLog] = useState("");
   const [done, setDone] = useState(false);
@@ -45,6 +64,18 @@ export function PipelineRunner({
   const [elapsedSec, setElapsedSec] = useState(0);
   const [abortConfirmOpen, setAbortConfirmOpen] = useState(false);
   const latestJobIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/settings/env")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.env && typeof d.env === "object") {
+          setZhipuModelsList(parseModelList(d.env.ZHIPU_MODELS, DEFAULT_ZHIPU));
+          setOpenaiModelsList(parseModelList(d.env.OPENAI_MODELS, DEFAULT_OPENAI));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const run = async () => {
     setError(null);
@@ -58,7 +89,7 @@ export function PipelineRunner({
     setElapsedSec(0);
     setRunning(true);
     try {
-      const body: { jobType: string; topic: string; conceptSynthesizeModel?: "gpt" | "glm-4.7-flash" | "glm-5" } = {
+      const body: { jobType: string; topic: string; conceptSynthesizeModel?: string } = {
         jobType,
         topic,
       };
@@ -146,40 +177,27 @@ export function PipelineRunner({
                 alt=""
                 className="h-4 w-4 object-contain llm-logo llm-logo--openai"
               />
-              <span>OpenAI GPT-5.2</span>
+              <span>{modelDisplayName(openaiModelsList[0] ?? "gpt-5.2", "openai")}</span>
             </button>
-            <button
-              type="button"
-              onClick={() => setConceptSynthesizeModel("glm-4.7-flash")}
-              className={`flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-all ${
-                conceptSynthesizeModel === "glm-4.7-flash"
-                  ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)]"
-                  : "border-[var(--border)] bg-white"
-              }`}
-            >
-              <img
-                src="/llm/zhipu_z_icon.svg"
-                alt=""
-                className="h-4 w-4 object-contain llm-logo llm-logo--zhipu"
-              />
-              <span>智谱 GLM-4.7-Flash</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setConceptSynthesizeModel("glm-5")}
-              className={`flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-all ${
-                conceptSynthesizeModel === "glm-5"
-                  ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)]"
-                  : "border-[var(--border)] bg-white"
-              }`}
-            >
-              <img
-                src="/llm/zhipu_z_icon.svg"
-                alt=""
-                className="h-4 w-4 object-contain llm-logo llm-logo--zhipu"
-              />
-              <span>智谱 GLM-5</span>
-            </button>
+            {zhipuModelsList.map((mid) => (
+              <button
+                key={mid}
+                type="button"
+                onClick={() => setConceptSynthesizeModel(mid)}
+                className={`flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-all ${
+                  conceptSynthesizeModel === mid
+                    ? "border-[var(--thu-purple)] bg-[var(--thu-purple-subtle)]"
+                    : "border-[var(--border)] bg-white"
+                }`}
+              >
+                <img
+                  src="/llm/zhipu_z_icon.svg"
+                  alt=""
+                  className="h-4 w-4 object-contain llm-logo llm-logo--zhipu"
+                />
+                <span>{modelDisplayName(mid, "zhipu")}</span>
+              </button>
+            ))}
           </div>
         )}
         <span className="text-sm text-[var(--text-muted)]">topic: {topic}</span>

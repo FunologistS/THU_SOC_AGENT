@@ -1,0 +1,312 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Public_Administration_260306_normalized.csv
+  generated_at: 2026-03-07T04:29:56.445Z
+  date_tag: "20260307"
+  version: 2
+  count_filtered_rows: 48
+  count_unique_journals: 48
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: ADMINISTRATION & SOCIETY
+    short: ADMIN SOC
+    issn: "00953997"
+    eissn: "15523039"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: AMERICAN REVIEW OF PUBLIC ADMINISTRATION
+    short: AM REV PUBLIC ADM
+    issn: "02750740"
+    eissn: "15523357"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Amme Idaresi Dergisi
+    short: AMME IDARESI DERG
+    issn: "13001795"
+    eissn: "13001795"
+    site: ""
+    notes: WOS/JCR; ANKARA HACI BAYRAM VELI UNIV
+  - name: AUSTRALIAN JOURNAL OF PUBLIC ADMINISTRATION
+    short: AUST J PUBL ADMIN
+    issn: "03136647"
+    eissn: "14678500"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: CANADIAN PUBLIC ADMINISTRATION-ADMINISTRATION PUBLIQUE DU CANADA
+    short: CAN PUBLIC ADMIN
+    issn: "00084840"
+    eissn: "17547121"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: CANADIAN PUBLIC POLICY-ANALYSE DE POLITIQUES
+    short: CAN PUBLIC POL
+    issn: "03170861"
+    eissn: "19119917"
+    site: ""
+    notes: WOS/JCR; UNIV TORONTO PRESS INC
+  - name: Civil Szemle
+    short: CIV SZLE
+    issn: "17863341"
+    eissn: "17863341"
+    site: ""
+    notes: WOS/JCR; UJ MANDATUM KONYVKIADO
+  - name: CLIMATE POLICY
+    short: CLIM POLICY
+    issn: "14693062"
+    eissn: "17527457"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: CONTEMPORARY ECONOMIC POLICY
+    short: CONTEMP ECON POLICY
+    issn: "10743529"
+    eissn: "14657287"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Critical Policy Studies
+    short: CRIT POLICY STUD
+    issn: "19460171"
+    eissn: 1946018X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Environment and Planning C-Politics and Space
+    short: ENVIRON PLAN C-POLIT
+    issn: "23996544"
+    eissn: "23996552"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Gestion y Politica Publica
+    short: GEST POLIT PUBLICA
+    issn: "14051079"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; CENTRO DE INVESTIGACION Y DOCENCIA ECONOMICAS
+  - name: GOVERNANCE-AN INTERNATIONAL JOURNAL OF POLICY ADMINISTRATION AND
+      INSTITUTIONS
+    short: GOVERNANCE
+    issn: "09521895"
+    eissn: "14680491"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Human Service Organizations Management Leadership & Governance
+    short: HUM SERV ORG MANAGE
+    issn: "23303131"
+    eissn: 2330314X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: International Public Management Journal
+    short: INT PUBLIC MANAG J
+    issn: "10967494"
+    eissn: "15593169"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INTERNATIONAL REVIEW OF ADMINISTRATIVE SCIENCES
+    short: INT REV ADM SCI
+    issn: "00208523"
+    eissn: "14617226"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: JOURNAL OF ACCOUNTING AND PUBLIC POLICY
+    short: J ACCOUNT PUBLIC POL
+    issn: "02784254"
+    eissn: "18732070"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Journal of Chinese Governance
+    short: J CHIN GOV
+    issn: "23812346"
+    eissn: "23812354"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Journal of Comparative Policy Analysis
+    short: J COMP POLICY ANAL
+    issn: "13876988"
+    eissn: "15725448"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF EUROPEAN PUBLIC POLICY
+    short: J EUR PUBLIC POLICY
+    issn: "13501763"
+    eissn: "14664429"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF EUROPEAN SOCIAL POLICY
+    short: J EUR SOC POLICY
+    issn: "09589287"
+    eissn: "14617269"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Journal of Homeland Security and Emergency Management
+    short: J HOMEL SECUR EMERG
+    issn: "21946361"
+    eissn: "15477355"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+  - name: JOURNAL OF POLICY ANALYSIS AND MANAGEMENT
+    short: J POLICY ANAL MANAG
+    issn: ""
+    eissn: "15206688"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF PUBLIC ADMINISTRATION RESEARCH AND THEORY
+    short: J PUBL ADM RES THEOR
+    issn: "10531858"
+    eissn: "14779803"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Journal of Public Policy
+    short: J PUBLIC POLICY
+    issn: 0143814X
+    eissn: "14697815"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: JOURNAL OF SOCIAL POLICY
+    short: J SOC POLICY
+    issn: "00472794"
+    eissn: "14697823"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Lex Localis-Journal of Local Self-Government
+    short: LEX LOCALIS
+    issn: "15815374"
+    eissn: 1855363X
+    site: ""
+    notes: WOS/JCR; UK Zhende Publishing Ltd
+  - name: LOCAL GOVERNMENT STUDIES
+    short: LOCAL GOV STUD
+    issn: "03003930"
+    eissn: "17439388"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Nonprofit Management & Leadership
+    short: NONPROFIT MANAG LEAD
+    issn: "10486682"
+    eissn: "15427854"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+  - name: POLICY AND POLITICS
+    short: POLICY POLIT
+    issn: "03055736"
+    eissn: "14708442"
+    site: ""
+    notes: WOS/JCR; POLICY PRESS
+  - name: Policy and Society
+    short: POLICY SOC
+    issn: "14494035"
+    eissn: "18393373"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: POLICY SCIENCES
+    short: POLICY SCI
+    issn: "00322687"
+    eissn: "15730891"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Policy Studies
+    short: POLICY STUD-UK
+    issn: "01442872"
+    eissn: "14701006"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: POLICY STUDIES JOURNAL
+    short: POLICY STUD J
+    issn: 0190292X
+    eissn: "15410072"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: PUBLIC ADMINISTRATION
+    short: PUBLIC ADMIN
+    issn: "00333298"
+    eissn: "14679299"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: PUBLIC ADMINISTRATION AND DEVELOPMENT
+    short: PUBLIC ADMIN DEVELOP
+    issn: "02712075"
+    eissn: 1099162X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: PUBLIC ADMINISTRATION REVIEW
+    short: PUBLIC ADMIN REV
+    issn: "00333352"
+    eissn: "15406210"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Public Management Review
+    short: PUBLIC MANAG REV
+    issn: "14719037"
+    eissn: "14719045"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: PUBLIC MONEY & MANAGEMENT
+    short: PUBLIC MONEY MANAGE
+    issn: "09540962"
+    eissn: "14679302"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Public Performance & Management Review
+    short: PUBLIC PERFORM MANAG
+    issn: "15309576"
+    eissn: "15579271"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: PUBLIC PERSONNEL MANAGEMENT
+    short: PUBLIC PERS MANAGE
+    issn: "00910260"
+    eissn: "19457421"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Public Policy and Administration
+    short: PUBLIC POLICY ADMIN
+    issn: "09520767"
+    eissn: "17494192"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Regulation & Governance
+    short: REGUL GOV
+    issn: "17485983"
+    eissn: "17485991"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Review of Policy Research
+    short: REV POLICY RES
+    issn: 1541132X
+    eissn: "15411338"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Review of Public Personnel Administration
+    short: REV PUBLIC PERS ADM
+    issn: 0734371X
+    eissn: 1552759X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Science and Public Policy
+    short: SCI PUBL POLICY
+    issn: "03023427"
+    eissn: "14715430"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: SOCIAL POLICY & ADMINISTRATION
+    short: SOC POLICY ADMIN
+    issn: "01445596"
+    eissn: "14679515"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Transylvanian Review of Administrative Sciences
+    short: TRANSYLV REV ADM SCI
+    issn: "18422845"
+    eissn: "22478310"
+    site: ""
+    notes: WOS/JCR; BABES-BOLYAI UNIV

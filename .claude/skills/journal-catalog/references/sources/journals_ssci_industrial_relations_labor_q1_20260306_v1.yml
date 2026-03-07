@@ -1,0 +1,102 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Industrial relations & labor
+  filter:
+    edition: SSCI
+    quartile: Q1
+    category: INDUSTRIAL RELATIONS & LABOR
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Industrial_Relations_and_Labor_260306_normalized.csv
+  generated_at: 2026-03-06T05:07:06.035Z
+  date_tag: "20260306"
+  version: 1
+  count_filtered_rows: 13
+  count_unique_journals: 13
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Asia Pacific Journal of Human Resources
+    short: ASIA PAC J HUM RESOU
+    issn: "10384111"
+    eissn: "17447941"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: EMPLOYEE RELATIONS
+    short: EMPL RELAT
+    issn: "01425455"
+    eissn: "17587069"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Human Resource Development Quarterly
+    short: HUM RESOUR DEV Q
+    issn: "10448004"
+    eissn: "15321096"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+  - name: Human Resource Management Journal
+    short: HUM RESOUR MANAG J
+    issn: "09545395"
+    eissn: "17488583"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Human Resources for Health
+    short: HUM RESOUR HEALTH
+    issn: ""
+    eissn: "14784491"
+    site: ""
+    notes: WOS/JCR; BMC
+  - name: ILR Review
+    short: ILR REV
+    issn: "00197939"
+    eissn: 2162271X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: INTERNATIONAL JOURNAL OF MANPOWER
+    short: INT J MANPOWER
+    issn: "01437720"
+    eissn: "17586577"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: JOURNAL OF HUMAN RESOURCES
+    short: J HUM RESOUR
+    issn: 0022166X
+    eissn: "15488004"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+  - name: JOURNAL OF LABOR ECONOMICS
+    short: J LABOR ECON
+    issn: 0734306X
+    eissn: "15375307"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: PERSONNEL REVIEW
+    short: PERS REV
+    issn: "00483486"
+    eissn: "17586933"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Transfer-European Review of Labour and Research
+    short: TRANSFER-LONDON
+    issn: "10242589"
+    eissn: "19967284"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: WORK AND OCCUPATIONS
+    short: WORK OCCUPATION
+    issn: "07308884"
+    eissn: "15528464"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD

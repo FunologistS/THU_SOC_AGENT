@@ -49,6 +49,7 @@ export async function GET(request: Request) {
     notes: j.notes,
     publisher: derivePublisher((j.notes as string) || ""),
     has_jcr: hasJcr((j.notes as string) || ""),
+    categories: Array.isArray(j.source_categories) ? j.source_categories : undefined,
   }));
 
   if (jcrOnly) list = list.filter((j: { has_jcr: boolean }) => j.has_jcr);

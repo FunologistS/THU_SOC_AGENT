@@ -1,0 +1,1030 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260301_Anthropology_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.208Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 91
+  count_unique_journals: 91
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: AFRICA
+    short: AFRICA
+    issn: "00019720"
+    eissn: "17500184"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.1"
+    jci: "0.92"
+    oa_citable_pct: "38.04"
+    total_citations: "1511"
+  - name: African Archaeological Review
+    short: AFR ARCHAEOL REV
+    issn: "02630338"
+    eissn: "15729842"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.1"
+    jci: "1.07"
+    oa_citable_pct: "53.66"
+    total_citations: "677"
+  - name: AIBR-Revista de Antropologia Iberoamericana
+    short: AIBR-REV ANTROPOL IB
+    issn: "16959752"
+    eissn: "15789705"
+    site: ""
+    notes: WOS/JCR; ASOC ANTROPOLOGOS IBEROAMERICANOS EN RED
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.14"
+    oa_citable_pct: "77.78"
+    total_citations: "209"
+  - name: AMERICAN ANTHROPOLOGIST
+    short: AM ANTHROPOL
+    issn: "00027294"
+    eissn: "15481433"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "1.7"
+    jci: "1.38"
+    oa_citable_pct: "37.93"
+    total_citations: "5595"
+  - name: AMERICAN ANTIQUITY
+    short: AM ANTIQUITY
+    issn: "00027316"
+    eissn: "23255064"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.9"
+    jci: "1.85"
+    oa_citable_pct: "49.41"
+    total_citations: "3533"
+  - name: AMERICAN ETHNOLOGIST
+    short: AM ETHNOL
+    issn: "00940496"
+    eissn: "15481425"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2"
+    jci: "1.5"
+    oa_citable_pct: "53.13"
+    total_citations: "3724"
+  - name: American Journal of Biological Anthropology
+    short: AM J BIOL ANTHROPOL
+    issn: "26927691"
+    eissn: "26927691"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2"
+    jci: "0.96"
+    oa_citable_pct: "40"
+    total_citations: "749"
+  - name: AMERICAN JOURNAL OF HUMAN BIOLOGY
+    short: AM J HUM BIOL
+    issn: "10420533"
+    eissn: "15206300"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "1.7"
+    jci: "0.82"
+    oa_citable_pct: "28.32"
+    total_citations: "4113"
+  - name: ANNALS OF HUMAN BIOLOGY
+    short: ANN HUM BIOL
+    issn: "03014460"
+    eissn: "14645033"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.3"
+    jci: "0.52"
+    oa_citable_pct: "63.95"
+    total_citations: "2224"
+  - name: Annual Review of Anthropology
+    short: ANNU REV ANTHROPOL
+    issn: "00846570"
+    eissn: "15454290"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.41"
+    oa_citable_pct: "54.22"
+    total_citations: "6062"
+  - name: Anthropological Forum
+    short: ANTHROPOL FORUM
+    issn: "00664677"
+    eissn: "14692902"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.66"
+    oa_citable_pct: "45.76"
+    total_citations: "365"
+  - name: Anthropological Notebooks
+    short: ANTHROPOL NOTEB
+    issn: 1408032X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SLOVENE ANTHROPOLOGICAL SOC
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.27"
+    oa_citable_pct: "0"
+    total_citations: "148"
+  - name: ANTHROPOLOGICAL QUARTERLY
+    short: ANTHROPOL QUART
+    issn: "00035491"
+    eissn: "15341518"
+    site: ""
+    notes: WOS/JCR; GEORGE WASHINGTON UNIV INST ETHNOGRAPHIC RESEARCH
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.39"
+    oa_citable_pct: "0"
+    total_citations: "1312"
+  - name: Anthropological Theory
+    short: ANTHROPOL THEOR
+    issn: "14634996"
+    eissn: "17412641"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.94"
+    oa_citable_pct: "43.55"
+    total_citations: "1188"
+  - name: ANTHROPOLOGIE
+    short: ANTHROPOLOGIE
+    issn: "00035521"
+    eissn: "18735827"
+    site: ""
+    notes: WOS/JCR; ELSEVIER FRANCE-EDITIONS SCIENTIFIQUES MEDICALES ELSEVIER
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.46"
+    oa_citable_pct: "0.57"
+    total_citations: "711"
+  - name: ANTHROPOLOGISCHER ANZEIGER
+    short: ANTHROPOL ANZ
+    issn: "00035548"
+    eissn: "00035548"
+    site: ""
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.4"
+    oa_citable_pct: "0.74"
+    total_citations: "398"
+  - name: ANTHROPOLOGY & EDUCATION QUARTERLY
+    short: ANTHROPOL EDUC QUART
+    issn: "01617761"
+    eissn: "15481492"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.3"
+    jci: "0.72"
+    oa_citable_pct: "19.72"
+    total_citations: "1028"
+  - name: Anthropology & Medicine
+    short: ANTHROPOL MED
+    issn: "13648470"
+    eissn: "14692910"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.1"
+    jci: "0.56"
+    oa_citable_pct: "47.37"
+    total_citations: "634"
+  - name: Anthropology Southern Africa
+    short: ANTHROPOL SOUTH AFR
+    issn: "23323256"
+    eissn: "23323264"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.45"
+    oa_citable_pct: "17.31"
+    total_citations: "217"
+  - name: ANTHROPOS
+    short: ANTHROPOS
+    issn: "02579774"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; NOMOS VERLAGSGESELLSCHAFT MBH & CO KG
+    quartile: Q4
+    jif: "0.1"
+    jci: "0.08"
+    oa_citable_pct: "0"
+    total_citations: "474"
+  - name: ANTHROPOZOOLOGICA
+    short: ANTHROPOZOOLOGICA
+    issn: "07613032"
+    eissn: "21070881"
+    site: ""
+    notes: WOS/JCR; PUBLICATIONS SCIENTIFIQUES DU MUSEUM, PARIS
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.61"
+    oa_citable_pct: "0"
+    total_citations: "303"
+  - name: ANTIQUITY
+    short: ANTIQUITY
+    issn: 0003598X
+    eissn: "17451744"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "1.7"
+    jci: "1.48"
+    oa_citable_pct: "63.49"
+    total_citations: "4257"
+  - name: Archaeological and Anthropological Sciences
+    short: ARCHAEOL ANTHROP SCI
+    issn: "18669557"
+    eissn: "18669565"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q1
+    jif: "2"
+    jci: "1.31"
+    oa_citable_pct: "49.59"
+    total_citations: "3793"
+  - name: ARCHAEOLOGY IN OCEANIA
+    short: ARCHAEOL OCEAN
+    issn: "07284896"
+    eissn: "18344453"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.94"
+    oa_citable_pct: "75"
+    total_citations: "498"
+  - name: ARCTIC ANTHROPOLOGY
+    short: ARCTIC ANTHROPOL
+    issn: "00666939"
+    eissn: "19338139"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.49"
+    oa_citable_pct: "14.29"
+    total_citations: "326"
+  - name: Asia Pacific Journal of Anthropology
+    short: ASIA PAC J ANTHROPOL
+    issn: "14442213"
+    eissn: "17409314"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.47"
+    oa_citable_pct: "31.88"
+    total_citations: "355"
+  - name: AUSTRALIAN ARCHAEOLOGY
+    short: AUST ARCHAEOL
+    issn: "03122417"
+    eissn: "24700363"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.2"
+    jci: "0.88"
+    oa_citable_pct: "73.75"
+    total_citations: "456"
+  - name: Australian Journal of Anthropology
+    short: AUST J ANTHROPOL
+    issn: "10358811"
+    eissn: "17576547"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.38"
+    oa_citable_pct: "56.92"
+    total_citations: "362"
+  - name: BIJDRAGEN TOT DE TAAL- LAND- EN VOLKENKUNDE
+    short: BIJDR TAAL-LAND-V
+    issn: "00062294"
+    eissn: "22134379"
+    site: ""
+    notes: WOS/JCR; BRILL
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.56"
+    oa_citable_pct: "68.57"
+    total_citations: "346"
+  - name: Chungara-Revista de Antropologia Chilena
+    short: CHUNGARA
+    issn: "07177356"
+    eissn: "07177356"
+    site: ""
+    notes: WOS/JCR; UNIV TARAPACA
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.23"
+    oa_citable_pct: "85.58"
+    total_citations: "686"
+  - name: COMPARATIVE STUDIES IN SOCIETY AND HISTORY
+    short: COMP STUD SOC HIST
+    issn: "00104175"
+    eissn: "14752999"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.1"
+    jci: "1.59"
+    oa_citable_pct: "72.81"
+    total_citations: "2748"
+  - name: CRITIQUE OF ANTHROPOLOGY
+    short: CRIT ANTHROPOL
+    issn: 0308275X
+    eissn: "14603721"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "1.6"
+    jci: "0.99"
+    oa_citable_pct: "45"
+    total_citations: "833"
+  - name: CULTURAL ANTHROPOLOGY
+    short: CULT ANTHROPOL
+    issn: "08867356"
+    eissn: "15481360"
+    site: ""
+    notes: WOS/JCR; SOC CULTURAL ANTHROPOLOGY
+    quartile: Q1
+    jif: "1.9"
+    jci: "1.46"
+    oa_citable_pct: "100"
+    total_citations: "3545"
+  - name: CULTURAL STUDIES
+    short: CULT STUD
+    issn: "09502386"
+    eissn: "14664348"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.2"
+    jci: "1.12"
+    oa_citable_pct: "24.07"
+    total_citations: "2954"
+  - name: CULTURE MEDICINE AND PSYCHIATRY
+    short: CULT MED PSYCHIAT
+    issn: 0165005X
+    eissn: 1573076X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "1.8"
+    jci: "0.74"
+    oa_citable_pct: "34.78"
+    total_citations: "1563"
+  - name: CURRENT ANTHROPOLOGY
+    short: CURR ANTHROPOL
+    issn: "00113204"
+    eissn: "15375382"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "1.8"
+    jci: "1.45"
+    oa_citable_pct: "3.08"
+    total_citations: "6641"
+  - name: Economic Anthropology
+    short: ECON ANTHROPOL
+    issn: "23304847"
+    eissn: "23304847"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1"
+    jci: "0.69"
+    oa_citable_pct: "44.29"
+    total_citations: "317"
+  - name: Estudios Atacamenos
+    short: ESTUD ATACAMENOS
+    issn: "07181043"
+    eissn: "07181043"
+    site: ""
+    notes: WOS/JCR; UNIV CATOLICA NORTE, Inst Invest Arqueologicas y Museo RP
+      Gustavo Le Paige
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.37"
+    oa_citable_pct: "91.76"
+    total_citations: "457"
+  - name: Ethnography
+    short: ETHNOGRAPHY
+    issn: "14661381"
+    eissn: "17412714"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.1"
+    jci: "0.55"
+    oa_citable_pct: "23.14"
+    total_citations: "1638"
+  - name: ETHNOHISTORY
+    short: ETHNOHISTORY
+    issn: "00141801"
+    eissn: "15275477"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.68"
+    oa_citable_pct: "0"
+    total_citations: "563"
+  - name: ETHNOS
+    short: ETHNOS
+    issn: "00141844"
+    eissn: 1469588X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.7"
+    jci: "0.68"
+    oa_citable_pct: "41.38"
+    total_citations: "1385"
+  - name: ETHOS
+    short: ETHOS
+    issn: "00912131"
+    eissn: "15481352"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.3"
+    jci: "0.64"
+    oa_citable_pct: "39.78"
+    total_citations: "1327"
+  - name: EVOLUTIONARY ANTHROPOLOGY
+    short: EVOL ANTHROPOL
+    issn: "10601538"
+    eissn: "15206505"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.49"
+    oa_citable_pct: "23.73"
+    total_citations: "2070"
+  - name: Field Methods
+    short: FIELD METHOD
+    issn: 1525822X
+    eissn: "15523969"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.81"
+    oa_citable_pct: "30.77"
+    total_citations: "3630"
+  - name: Focaal-Journal of Global and Historical Anthropology
+    short: FOCAAL
+    issn: "09201297"
+    eissn: "15585263"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    quartile: Q1
+    jif: "1.7"
+    jci: "1.03"
+    oa_citable_pct: "85.51"
+    total_citations: "504"
+  - name: GLOBAL NETWORKS-A JOURNAL OF TRANSNATIONAL AFFAIRS
+    short: GLOBAL NETW
+    issn: "14702266"
+    eissn: "14710374"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.2"
+    jci: "1.3"
+    oa_citable_pct: "55.63"
+    total_citations: "2105"
+  - name: HAU-Journal of Ethnographic Theory
+    short: HAU-J ETHNOGR THEORY
+    issn: "25751433"
+    eissn: "20491115"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.35"
+    oa_citable_pct: "0"
+    total_citations: "1331"
+  - name: History and Anthropology
+    short: HIST ANTHROPOL
+    issn: "02757206"
+    eissn: "14772612"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q4
+    jif: "0.4"
+    jci: "1.09"
+    oa_citable_pct: "37.5"
+    total_citations: "725"
+  - name: HOMO-JOURNAL OF COMPARATIVE HUMAN BIOLOGY
+    short: HOMO
+    issn: 0018442X
+    eissn: "16181301"
+    site: ""
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+    quartile: Q2
+    jif: "0.9"
+    jci: "0.44"
+    oa_citable_pct: "56.25"
+    total_citations: "547"
+  - name: HUMAN ECOLOGY
+    short: HUM ECOL
+    issn: "03007839"
+    eissn: "15729915"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+    quartile: Q1
+    jif: "1.7"
+    jci: "0.82"
+    oa_citable_pct: "34.86"
+    total_citations: "3213"
+  - name: HUMAN NATURE-AN INTERDISCIPLINARY BIOSOCIAL PERSPECTIVE
+    short: HUM NATURE-INT BIOS
+    issn: "10456767"
+    eissn: "19364776"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "2.2"
+    jci: "1.1"
+    oa_citable_pct: "52.38"
+    total_citations: "1824"
+  - name: HUMAN ORGANIZATION
+    short: HUM ORGAN
+    issn: "00187259"
+    eissn: "19383525"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.56"
+    oa_citable_pct: "8.28"
+    total_citations: "1411"
+  - name: Inter-Asia Cultural Studies
+    short: INTER-ASIA CULT STUD
+    issn: "14649373"
+    eissn: "14698447"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.56"
+    oa_citable_pct: "7.47"
+    total_citations: "602"
+  - name: INTERNATIONAL JOURNAL OF OSTEOARCHAEOLOGY
+    short: INT J OSTEOARCHAEOL
+    issn: 1047482X
+    eissn: "10991212"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1"
+    jci: "0.89"
+    oa_citable_pct: "37.22"
+    total_citations: "2454"
+  - name: Intersecciones en Antropologia
+    short: INTERSECCIONES ANTRO
+    issn: 1850373X
+    eissn: 1850373X
+    site: ""
+    notes: WOS/JCR; UNIV NACL CENTRO PROVINCIA BUENOS AIRES (UNICEN), FAC CIENCIAS
+      SOCIALES
+    quartile: Q2
+    jif: "1"
+    jci: "0.45"
+    oa_citable_pct: "100"
+    total_citations: "415"
+  - name: JOURNAL OF ANTHROPOLOGICAL ARCHAEOLOGY
+    short: J ANTHROPOL ARCHAEOL
+    issn: "02784165"
+    eissn: "10902686"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "2.2"
+    jci: "1.63"
+    oa_citable_pct: "30.43"
+    total_citations: "2624"
+  - name: JOURNAL OF ANTHROPOLOGICAL RESEARCH
+    short: J ANTHROPOL RES
+    issn: "00917710"
+    eissn: "21533806"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q2
+    jif: "1"
+    jci: "0.77"
+    oa_citable_pct: "0"
+    total_citations: "1004"
+  - name: Journal of Anthropological Sciences
+    short: J ANTHROPOL SCI
+    issn: "18274765"
+    eissn: "20370644"
+    site: ""
+    notes: WOS/JCR; IST ITALIANO ANTROPOLOGIA
+    quartile: Q1
+    jif: "2.3"
+    jci: "1.1"
+    oa_citable_pct: "0"
+    total_citations: "334"
+  - name: JOURNAL OF ARCHAEOLOGICAL METHOD AND THEORY
+    short: J ARCHAEOL METHOD TH
+    issn: "10725369"
+    eissn: "15737764"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "2.8"
+    jci: "2.15"
+    oa_citable_pct: "53.85"
+    total_citations: "2023"
+  - name: JOURNAL OF ARCHAEOLOGICAL RESEARCH
+    short: J ARCHAEOL RES
+    issn: "10590161"
+    eissn: "15737756"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "4.1"
+    jci: "3.25"
+    oa_citable_pct: "42.42"
+    total_citations: "1020"
+  - name: JOURNAL OF ARCHAEOLOGICAL SCIENCE
+    short: J ARCHAEOL SCI
+    issn: "03054403"
+    eissn: "10959238"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "2.5"
+    jci: "1.67"
+    oa_citable_pct: "42.35"
+    total_citations: "14383"
+  - name: JOURNAL OF ETHNOBIOLOGY
+    short: J ETHNOBIOL
+    issn: "02780771"
+    eissn: "21624496"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.3"
+    jci: "1.08"
+    oa_citable_pct: "16.48"
+    total_citations: "1067"
+  - name: JOURNAL OF FAMILY HISTORY
+    short: J FAM HIST
+    issn: "03631990"
+    eissn: "15525473"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.55"
+    oa_citable_pct: "25"
+    total_citations: "432"
+  - name: JOURNAL OF HISTORICAL SOCIOLOGY
+    short: J HIST SOCIOL
+    issn: "09521909"
+    eissn: "14676443"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.6"
+    jci: "1.12"
+    oa_citable_pct: "20"
+    total_citations: "732"
+  - name: JOURNAL OF HUMAN EVOLUTION
+    short: J HUM EVOL
+    issn: "00472484"
+    eissn: "10958606"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.59"
+    oa_citable_pct: "21.4"
+    total_citations: "7834"
+  - name: Journal of Latin American and Caribbean Anthropology
+    short: J LAT AM CARIBB ANTH
+    issn: "19354932"
+    eissn: "19354940"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.41"
+    oa_citable_pct: "22.02"
+    total_citations: "434"
+  - name: Journal of Linguistic Anthropology
+    short: J LINGUIST ANTHROPOL
+    issn: "10551360"
+    eissn: "15481395"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.4"
+    jci: "1.05"
+    oa_citable_pct: "33.9"
+    total_citations: "932"
+  - name: JOURNAL OF MATERIAL CULTURE
+    short: J MAT CULT
+    issn: "13591835"
+    eissn: "14603586"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "0.9"
+    jci: "0.68"
+    oa_citable_pct: "37.88"
+    total_citations: "840"
+  - name: JOURNAL OF PEASANT STUDIES
+    short: J PEASANT STUD
+    issn: "03066150"
+    eissn: "17439361"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "5"
+    jci: "2.23"
+    oa_citable_pct: "31.75"
+    total_citations: "5731"
+  - name: JOURNAL OF SOCIAL ARCHAEOLOGY
+    short: J SOC ARCHAEOL
+    issn: "14696053"
+    eissn: "17412951"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.3"
+    jci: "1.2"
+    oa_citable_pct: "35.56"
+    total_citations: "522"
+  - name: JOURNAL OF THE POLYNESIAN SOCIETY
+    short: J POLYNESIAN SOC
+    issn: "00324000"
+    eissn: "22305955"
+    site: ""
+    notes: WOS/JCR; POLYNESIAN SOC INC
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.57"
+    oa_citable_pct: "0"
+    total_citations: "457"
+  - name: JOURNAL OF THE ROYAL ANTHROPOLOGICAL INSTITUTE
+    short: J ROY ANTHROPOL INST
+    issn: "13590987"
+    eissn: "14679655"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.1"
+    jci: "0.85"
+    oa_citable_pct: "55.2"
+    total_citations: "2687"
+  - name: JOURNAL OF WORLD PREHISTORY
+    short: J WORLD PREHIST
+    issn: "08927537"
+    eissn: "15737802"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3.1"
+    jci: "2.64"
+    oa_citable_pct: "73.91"
+    total_citations: "833"
+  - name: LATIN AMERICAN ANTIQUITY
+    short: LAT AM ANTIQ
+    issn: "10456635"
+    eissn: "23255080"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.1"
+    jci: "0.85"
+    oa_citable_pct: "28.48"
+    total_citations: "1264"
+  - name: Lithic Technology
+    short: LITHIC TECHNOL
+    issn: "01977261"
+    eissn: "20516185"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.2"
+    jci: "1.16"
+    oa_citable_pct: "12.79"
+    total_citations: "494"
+  - name: Magallania
+    short: MAGALLANIA
+    issn: "07182244"
+    eissn: "07182244"
+    site: ""
+    notes: WOS/JCR; UNIV MAGALLANES
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.31"
+    oa_citable_pct: "73.81"
+    total_citations: "404"
+  - name: Medical Anthropology
+    short: MED ANTHROPOL
+    issn: "01459740"
+    eissn: "15455882"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.2"
+    jci: "0.67"
+    oa_citable_pct: "43.59"
+    total_citations: "1424"
+  - name: MEDICAL ANTHROPOLOGY QUARTERLY
+    short: MED ANTHROPOL Q
+    issn: "07455194"
+    eissn: "15481387"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "1.9"
+    jci: "0.92"
+    oa_citable_pct: "46.99"
+    total_citations: "1490"
+  - name: OCEANIA
+    short: OCEANIA
+    issn: "00298077"
+    eissn: "18344461"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.43"
+    oa_citable_pct: "49.02"
+    total_citations: "459"
+  - name: Polar-Political and Legal Anthropology Review
+    short: POLAR-POLIT LEG ANTH
+    issn: "10816976"
+    eissn: "15552934"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    quartile: Q2
+    jif: "1.3"
+    jci: "0.69"
+    oa_citable_pct: "45.83"
+    total_citations: "663"
+  - name: Praehistorische Zeitschrift
+    short: PRAEHIST Z
+    issn: "00794848"
+    eissn: "16130804"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q3
+    jif: "0.6"
+    jci: "0.89"
+    oa_citable_pct: "13.28"
+    total_citations: "237"
+  - name: PUBLIC CULTURE
+    short: PUBLIC CULTURE
+    issn: "08992363"
+    eissn: "15278018"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    quartile: Q2
+    jif: "0.9"
+    jci: "0.94"
+    oa_citable_pct: "2.13"
+    total_citations: "2917"
+  - name: RACE & CLASS
+    short: RACE CLASS
+    issn: "03063968"
+    eissn: "17413125"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.8"
+    jci: "1.22"
+    oa_citable_pct: "38.1"
+    total_citations: "1158"
+  - name: Romani Studies
+    short: ROMANI STUD
+    issn: "15280748"
+    eissn: "17572274"
+    site: ""
+    notes: WOS/JCR; LIVERPOOL UNIV PRESS
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.74"
+    oa_citable_pct: "56.25"
+    total_citations: "95"
+  - name: Signs and Society
+    short: SIGNS SOC
+    issn: "23264489"
+    eissn: "23264497"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.2"
+    jci: "0.93"
+    oa_citable_pct: "87.23"
+    total_citations: "238"
+  - name: Social Analysis
+    short: SOC ANAL
+    issn: 0155977X
+    eissn: "15585727"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    quartile: Q3
+    jif: "0.7"
+    jci: "0.61"
+    oa_citable_pct: "91.67"
+    total_citations: "732"
+  - name: Social Anthropology
+    short: SOC ANTHROPOL
+    issn: "09640282"
+    eissn: "14698676"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.87"
+    oa_citable_pct: "94.68"
+    total_citations: "1129"
+  - name: SOCIAL NETWORKS
+    short: SOC NETWORKS
+    issn: "03788733"
+    eissn: "18792111"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.74"
+    oa_citable_pct: "41.62"
+    total_citations: "6786"
+  - name: Trabajos de Prehistoria
+    short: TRABAJOS PREHIST
+    issn: "00825638"
+    eissn: "19883218"
+    site: ""
+    notes: WOS/JCR; CONSEJO SUPERIOR INVESTIGACIONES CIENTIFICAS-CSIC
+    quartile: Q2
+    jif: "1.3"
+    jci: "1.39"
+    oa_citable_pct: "100"
+    total_citations: "476"
+  - name: Transcultural Psychiatry
+    short: TRANSCULT PSYCHIATRY
+    issn: "13634615"
+    eissn: "14617471"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "2.7"
+    jci: "1"
+    oa_citable_pct: "27.33"
+    total_citations: "2548"
+  - name: ZEITSCHRIFT FUR ETHNOLOGIE - Journal of Social and Cultural Anthropology
+    short: Z ETHNOL
+    issn: "00442666"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; DIETRICH REIMER VERLAG
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.24"
+    oa_citable_pct: "0"
+    total_citations: "164"

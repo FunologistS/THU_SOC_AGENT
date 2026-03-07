@@ -1,0 +1,571 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260301_Anthropology_260306_normalized.csv
+  generated_at: 2026-03-07T02:28:59.043Z
+  date_tag: "20260307"
+  version: 1
+  count_filtered_rows: 91
+  count_unique_journals: 91
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: AFRICA
+    short: AFRICA
+    issn: "00019720"
+    eissn: "17500184"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: African Archaeological Review
+    short: AFR ARCHAEOL REV
+    issn: "02630338"
+    eissn: "15729842"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: AIBR-Revista de Antropologia Iberoamericana
+    short: AIBR-REV ANTROPOL IB
+    issn: "16959752"
+    eissn: "15789705"
+    site: ""
+    notes: WOS/JCR; ASOC ANTROPOLOGOS IBEROAMERICANOS EN RED
+  - name: AMERICAN ANTHROPOLOGIST
+    short: AM ANTHROPOL
+    issn: "00027294"
+    eissn: "15481433"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: AMERICAN ANTIQUITY
+    short: AM ANTIQUITY
+    issn: "00027316"
+    eissn: "23255064"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: AMERICAN ETHNOLOGIST
+    short: AM ETHNOL
+    issn: "00940496"
+    eissn: "15481425"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: American Journal of Biological Anthropology
+    short: AM J BIOL ANTHROPOL
+    issn: "26927691"
+    eissn: "26927691"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: AMERICAN JOURNAL OF HUMAN BIOLOGY
+    short: AM J HUM BIOL
+    issn: "10420533"
+    eissn: "15206300"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: ANNALS OF HUMAN BIOLOGY
+    short: ANN HUM BIOL
+    issn: "03014460"
+    eissn: "14645033"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Annual Review of Anthropology
+    short: ANNU REV ANTHROPOL
+    issn: "00846570"
+    eissn: "15454290"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Anthropological Forum
+    short: ANTHROPOL FORUM
+    issn: "00664677"
+    eissn: "14692902"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Anthropological Notebooks
+    short: ANTHROPOL NOTEB
+    issn: 1408032X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SLOVENE ANTHROPOLOGICAL SOC
+  - name: ANTHROPOLOGICAL QUARTERLY
+    short: ANTHROPOL QUART
+    issn: "00035491"
+    eissn: "15341518"
+    site: ""
+    notes: WOS/JCR; GEORGE WASHINGTON UNIV INST ETHNOGRAPHIC RESEARCH
+  - name: Anthropological Theory
+    short: ANTHROPOL THEOR
+    issn: "14634996"
+    eissn: "17412641"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ANTHROPOLOGIE
+    short: ANTHROPOLOGIE
+    issn: "00035521"
+    eissn: "18735827"
+    site: ""
+    notes: WOS/JCR; ELSEVIER FRANCE-EDITIONS SCIENTIFIQUES MEDICALES ELSEVIER
+  - name: ANTHROPOLOGISCHER ANZEIGER
+    short: ANTHROPOL ANZ
+    issn: "00035548"
+    eissn: "00035548"
+    site: ""
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+  - name: ANTHROPOLOGY & EDUCATION QUARTERLY
+    short: ANTHROPOL EDUC QUART
+    issn: "01617761"
+    eissn: "15481492"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Anthropology & Medicine
+    short: ANTHROPOL MED
+    issn: "13648470"
+    eissn: "14692910"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Anthropology Southern Africa
+    short: ANTHROPOL SOUTH AFR
+    issn: "23323256"
+    eissn: "23323264"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: ANTHROPOS
+    short: ANTHROPOS
+    issn: "02579774"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; NOMOS VERLAGSGESELLSCHAFT MBH & CO KG
+  - name: ANTHROPOZOOLOGICA
+    short: ANTHROPOZOOLOGICA
+    issn: "07613032"
+    eissn: "21070881"
+    site: ""
+    notes: WOS/JCR; PUBLICATIONS SCIENTIFIQUES DU MUSEUM, PARIS
+  - name: ANTIQUITY
+    short: ANTIQUITY
+    issn: 0003598X
+    eissn: "17451744"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Archaeological and Anthropological Sciences
+    short: ARCHAEOL ANTHROP SCI
+    issn: "18669557"
+    eissn: "18669565"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+  - name: ARCHAEOLOGY IN OCEANIA
+    short: ARCHAEOL OCEAN
+    issn: "07284896"
+    eissn: "18344453"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: ARCTIC ANTHROPOLOGY
+    short: ARCTIC ANTHROPOL
+    issn: "00666939"
+    eissn: "19338139"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+  - name: Asia Pacific Journal of Anthropology
+    short: ASIA PAC J ANTHROPOL
+    issn: "14442213"
+    eissn: "17409314"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: AUSTRALIAN ARCHAEOLOGY
+    short: AUST ARCHAEOL
+    issn: "03122417"
+    eissn: "24700363"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Australian Journal of Anthropology
+    short: AUST J ANTHROPOL
+    issn: "10358811"
+    eissn: "17576547"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: BIJDRAGEN TOT DE TAAL- LAND- EN VOLKENKUNDE
+    short: BIJDR TAAL-LAND-V
+    issn: "00062294"
+    eissn: "22134379"
+    site: ""
+    notes: WOS/JCR; BRILL
+  - name: Chungara-Revista de Antropologia Chilena
+    short: CHUNGARA
+    issn: "07177356"
+    eissn: "07177356"
+    site: ""
+    notes: WOS/JCR; UNIV TARAPACA
+  - name: COMPARATIVE STUDIES IN SOCIETY AND HISTORY
+    short: COMP STUD SOC HIST
+    issn: "00104175"
+    eissn: "14752999"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: CRITIQUE OF ANTHROPOLOGY
+    short: CRIT ANTHROPOL
+    issn: 0308275X
+    eissn: "14603721"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: CULTURAL ANTHROPOLOGY
+    short: CULT ANTHROPOL
+    issn: "08867356"
+    eissn: "15481360"
+    site: ""
+    notes: WOS/JCR; SOC CULTURAL ANTHROPOLOGY
+  - name: CULTURAL STUDIES
+    short: CULT STUD
+    issn: "09502386"
+    eissn: "14664348"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: CULTURE MEDICINE AND PSYCHIATRY
+    short: CULT MED PSYCHIAT
+    issn: 0165005X
+    eissn: 1573076X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: CURRENT ANTHROPOLOGY
+    short: CURR ANTHROPOL
+    issn: "00113204"
+    eissn: "15375382"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: Economic Anthropology
+    short: ECON ANTHROPOL
+    issn: "23304847"
+    eissn: "23304847"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Estudios Atacamenos
+    short: ESTUD ATACAMENOS
+    issn: "07181043"
+    eissn: "07181043"
+    site: ""
+    notes: WOS/JCR; UNIV CATOLICA NORTE, Inst Invest Arqueologicas y Museo RP
+      Gustavo Le Paige
+  - name: Ethnography
+    short: ETHNOGRAPHY
+    issn: "14661381"
+    eissn: "17412714"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ETHNOHISTORY
+    short: ETHNOHISTORY
+    issn: "00141801"
+    eissn: "15275477"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+  - name: ETHNOS
+    short: ETHNOS
+    issn: "00141844"
+    eissn: 1469588X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: ETHOS
+    short: ETHOS
+    issn: "00912131"
+    eissn: "15481352"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: EVOLUTIONARY ANTHROPOLOGY
+    short: EVOL ANTHROPOL
+    issn: "10601538"
+    eissn: "15206505"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Field Methods
+    short: FIELD METHOD
+    issn: 1525822X
+    eissn: "15523969"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Focaal-Journal of Global and Historical Anthropology
+    short: FOCAAL
+    issn: "09201297"
+    eissn: "15585263"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+  - name: GLOBAL NETWORKS-A JOURNAL OF TRANSNATIONAL AFFAIRS
+    short: GLOBAL NETW
+    issn: "14702266"
+    eissn: "14710374"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: HAU-Journal of Ethnographic Theory
+    short: HAU-J ETHNOGR THEORY
+    issn: "25751433"
+    eissn: "20491115"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: History and Anthropology
+    short: HIST ANTHROPOL
+    issn: "02757206"
+    eissn: "14772612"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: HOMO-JOURNAL OF COMPARATIVE HUMAN BIOLOGY
+    short: HOMO
+    issn: 0018442X
+    eissn: "16181301"
+    site: ""
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+  - name: HUMAN ECOLOGY
+    short: HUM ECOL
+    issn: "03007839"
+    eissn: "15729915"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+  - name: HUMAN NATURE-AN INTERDISCIPLINARY BIOSOCIAL PERSPECTIVE
+    short: HUM NATURE-INT BIOS
+    issn: "10456767"
+    eissn: "19364776"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: HUMAN ORGANIZATION
+    short: HUM ORGAN
+    issn: "00187259"
+    eissn: "19383525"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Inter-Asia Cultural Studies
+    short: INTER-ASIA CULT STUD
+    issn: "14649373"
+    eissn: "14698447"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INTERNATIONAL JOURNAL OF OSTEOARCHAEOLOGY
+    short: INT J OSTEOARCHAEOL
+    issn: 1047482X
+    eissn: "10991212"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Intersecciones en Antropologia
+    short: INTERSECCIONES ANTRO
+    issn: 1850373X
+    eissn: 1850373X
+    site: ""
+    notes: WOS/JCR; UNIV NACL CENTRO PROVINCIA BUENOS AIRES (UNICEN), FAC CIENCIAS
+      SOCIALES
+  - name: JOURNAL OF ANTHROPOLOGICAL ARCHAEOLOGY
+    short: J ANTHROPOL ARCHAEOL
+    issn: "02784165"
+    eissn: "10902686"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: JOURNAL OF ANTHROPOLOGICAL RESEARCH
+    short: J ANTHROPOL RES
+    issn: "00917710"
+    eissn: "21533806"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: Journal of Anthropological Sciences
+    short: J ANTHROPOL SCI
+    issn: "18274765"
+    eissn: "20370644"
+    site: ""
+    notes: WOS/JCR; IST ITALIANO ANTROPOLOGIA
+  - name: JOURNAL OF ARCHAEOLOGICAL METHOD AND THEORY
+    short: J ARCHAEOL METHOD TH
+    issn: "10725369"
+    eissn: "15737764"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF ARCHAEOLOGICAL RESEARCH
+    short: J ARCHAEOL RES
+    issn: "10590161"
+    eissn: "15737756"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF ARCHAEOLOGICAL SCIENCE
+    short: J ARCHAEOL SCI
+    issn: "03054403"
+    eissn: "10959238"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+  - name: JOURNAL OF ETHNOBIOLOGY
+    short: J ETHNOBIOL
+    issn: "02780771"
+    eissn: "21624496"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF FAMILY HISTORY
+    short: J FAM HIST
+    issn: "03631990"
+    eissn: "15525473"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF HISTORICAL SOCIOLOGY
+    short: J HIST SOCIOL
+    issn: "09521909"
+    eissn: "14676443"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF HUMAN EVOLUTION
+    short: J HUM EVOL
+    issn: "00472484"
+    eissn: "10958606"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+  - name: Journal of Latin American and Caribbean Anthropology
+    short: J LAT AM CARIBB ANTH
+    issn: "19354932"
+    eissn: "19354940"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Linguistic Anthropology
+    short: J LINGUIST ANTHROPOL
+    issn: "10551360"
+    eissn: "15481395"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF MATERIAL CULTURE
+    short: J MAT CULT
+    issn: "13591835"
+    eissn: "14603586"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: JOURNAL OF PEASANT STUDIES
+    short: J PEASANT STUD
+    issn: "03066150"
+    eissn: "17439361"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF SOCIAL ARCHAEOLOGY
+    short: J SOC ARCHAEOL
+    issn: "14696053"
+    eissn: "17412951"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: JOURNAL OF THE POLYNESIAN SOCIETY
+    short: J POLYNESIAN SOC
+    issn: "00324000"
+    eissn: "22305955"
+    site: ""
+    notes: WOS/JCR; POLYNESIAN SOC INC
+  - name: JOURNAL OF THE ROYAL ANTHROPOLOGICAL INSTITUTE
+    short: J ROY ANTHROPOL INST
+    issn: "13590987"
+    eissn: "14679655"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF WORLD PREHISTORY
+    short: J WORLD PREHIST
+    issn: "08927537"
+    eissn: "15737802"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: LATIN AMERICAN ANTIQUITY
+    short: LAT AM ANTIQ
+    issn: "10456635"
+    eissn: "23255080"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Lithic Technology
+    short: LITHIC TECHNOL
+    issn: "01977261"
+    eissn: "20516185"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Magallania
+    short: MAGALLANIA
+    issn: "07182244"
+    eissn: "07182244"
+    site: ""
+    notes: WOS/JCR; UNIV MAGALLANES
+  - name: Medical Anthropology
+    short: MED ANTHROPOL
+    issn: "01459740"
+    eissn: "15455882"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: MEDICAL ANTHROPOLOGY QUARTERLY
+    short: MED ANTHROPOL Q
+    issn: "07455194"
+    eissn: "15481387"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: OCEANIA
+    short: OCEANIA
+    issn: "00298077"
+    eissn: "18344461"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Polar-Political and Legal Anthropology Review
+    short: POLAR-POLIT LEG ANTH
+    issn: "10816976"
+    eissn: "15552934"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+  - name: Praehistorische Zeitschrift
+    short: PRAEHIST Z
+    issn: "00794848"
+    eissn: "16130804"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+  - name: PUBLIC CULTURE
+    short: PUBLIC CULTURE
+    issn: "08992363"
+    eissn: "15278018"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+  - name: RACE & CLASS
+    short: RACE CLASS
+    issn: "03063968"
+    eissn: "17413125"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Romani Studies
+    short: ROMANI STUD
+    issn: "15280748"
+    eissn: "17572274"
+    site: ""
+    notes: WOS/JCR; LIVERPOOL UNIV PRESS
+  - name: Signs and Society
+    short: SIGNS SOC
+    issn: "23264489"
+    eissn: "23264497"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: Social Analysis
+    short: SOC ANAL
+    issn: 0155977X
+    eissn: "15585727"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+  - name: Social Anthropology
+    short: SOC ANTHROPOL
+    issn: "09640282"
+    eissn: "14698676"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+  - name: SOCIAL NETWORKS
+    short: SOC NETWORKS
+    issn: "03788733"
+    eissn: "18792111"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Trabajos de Prehistoria
+    short: TRABAJOS PREHIST
+    issn: "00825638"
+    eissn: "19883218"
+    site: ""
+    notes: WOS/JCR; CONSEJO SUPERIOR INVESTIGACIONES CIENTIFICAS-CSIC
+  - name: Transcultural Psychiatry
+    short: TRANSCULT PSYCHIATRY
+    issn: "13634615"
+    eissn: "14617471"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ZEITSCHRIFT FUR ETHNOLOGIE - Journal of Social and Cultural Anthropology
+    short: Z ETHNOL
+    issn: "00442666"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; DIETRICH REIMER VERLAG

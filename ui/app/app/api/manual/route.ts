@@ -41,11 +41,11 @@ export async function GET() {
   const overviewRows = [
     {
       area: "期刊数据库",
-      description: "查看与搜索Social Sciences Citation Index (SSCI) 收录的期刊，可按学科、分区（暂仅支持 Sociology / Anthropology / Economics）和出版社筛选。",
+      description: "查看与搜索 Social Sciences Citation Index (SSCI) 收录的期刊，可按学科、分区（Q1–Q4）和出版社筛选。支持多学科（含 Sociology、Economics、Anthropology、Communication、Urban Studies、Management 等）。现有解析学科见本栏可展开列表。",
     },
     {
       area: "新增检索",
-      description: "新增检索的数据来源为 OpenAlex 解析的期刊（暂仅包含 Sociology / Anthropology / Economics），选择学科、主题与年份后检索，结果写入「我的产出」对应主题下。",
+      description: "数据来源为 OpenAlex 解析的期刊，支持多学科与分区（Q1–Q4）选择。选择学科、分区（可选）、主题与年份后检索，结果写入「我的产出」对应主题下。现有解析学科与期刊数据库一致，见上方期刊数据库说明中的可展开列表。",
     },
     {
       area: "技能工作台",

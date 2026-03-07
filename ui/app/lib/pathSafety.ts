@@ -23,10 +23,21 @@ export function resolveUnder(baseDir: string, relativePath: string): string | nu
   return resolved;
 }
 
+/** 向上查找含 .claude 的目录作为 repo 根，保证从 repo 根或 ui/app 启动时都能找到 raw 等资源 */
 export function getRepoRoot(): string {
-  // ui/app -> ui -> repo root
-  const appDir = path.resolve(process.cwd());
-  const uiDir = path.dirname(appDir);
+  let dir = path.resolve(process.cwd());
+  for (let i = 0; i < 10; i++) {
+    try {
+      if (fs.existsSync(path.join(dir, ".claude"))) return dir;
+    } catch {
+      /* ignore */
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+  const cwd = path.resolve(process.cwd());
+  const uiDir = path.dirname(cwd);
   return path.dirname(uiDir);
 }
 

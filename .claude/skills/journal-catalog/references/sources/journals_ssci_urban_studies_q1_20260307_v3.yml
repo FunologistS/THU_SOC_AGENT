@@ -1,0 +1,512 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Urban_Studies_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.295Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 44
+  count_unique_journals: 44
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: CITIES
+    short: CITIES
+    issn: "02642751"
+    eissn: "18736084"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "6.6"
+    jci: "1.96"
+    oa_citable_pct: "31.46"
+    total_citations: "24866"
+  - name: City & Community
+    short: CITY COMMUNITY
+    issn: "15356841"
+    eissn: "15406040"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3"
+    jci: "1.03"
+    oa_citable_pct: "14.58"
+    total_citations: "1596"
+  - name: ECONOMIC DEVELOPMENT QUARTERLY
+    short: ECON DEV Q
+    issn: "08912424"
+    eissn: "15523543"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "1.6"
+    jci: "0.41"
+    oa_citable_pct: "3.92"
+    total_citations: "888"
+  - name: EDUCATION AND URBAN SOCIETY
+    short: EDUC URBAN SOC
+    issn: "00131245"
+    eissn: "15523535"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.38"
+    oa_citable_pct: "5.62"
+    total_citations: "1113"
+  - name: Environment and Planning B-Urban Analytics and City Science
+    short: ENVIRON PLAN B-URBAN
+    issn: "23998083"
+    eissn: "23998091"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3.1"
+    jci: "0.76"
+    oa_citable_pct: "28.54"
+    total_citations: "6639"
+  - name: ENVIRONMENT AND URBANIZATION
+    short: ENVIRON URBAN
+    issn: "09562478"
+    eissn: "17460301"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.58"
+    oa_citable_pct: "44.3"
+    total_citations: "2678"
+  - name: EURE-REVISTA LATINOAMERICANA DE ESTUDIOS URBANO REGIONALES
+    short: EURE
+    issn: "02507161"
+    eissn: "07176236"
+    site: ""
+    notes: WOS/JCR; PONTIFICIA UNIV CATOLICA CHILE, INST ESTUDIOS URBANOS
+      TERRITORIALES
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.24"
+    oa_citable_pct: "86.84"
+    total_citations: "866"
+  - name: EUROPEAN PLANNING STUDIES
+    short: EUR PLAN STUD
+    issn: "09654313"
+    eissn: "14695944"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.2"
+    jci: "0.75"
+    oa_citable_pct: "37.92"
+    total_citations: "5819"
+  - name: EUROPEAN URBAN AND REGIONAL STUDIES
+    short: EUR URBAN REG STUD
+    issn: "09697764"
+    eissn: "14617145"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "2.6"
+    jci: "0.77"
+    oa_citable_pct: "40.26"
+    total_citations: "1655"
+  - name: HABITAT INTERNATIONAL
+    short: HABITAT INT
+    issn: "01973975"
+    eissn: "18735428"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "7"
+    jci: "1.71"
+    oa_citable_pct: "20.13"
+    total_citations: "12035"
+  - name: HOUSING POLICY DEBATE
+    short: HOUS POLICY DEBATE
+    issn: "10511482"
+    eissn: 2152050X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.78"
+    oa_citable_pct: "11.27"
+    total_citations: "2503"
+  - name: HOUSING STUDIES
+    short: HOUSING STUD
+    issn: "02673037"
+    eissn: "14661810"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.59"
+    oa_citable_pct: "37.17"
+    total_citations: "4544"
+  - name: Housing Theory & Society
+    short: HOUS THEORY SOC
+    issn: "14036096"
+    eissn: "16512278"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2"
+    jci: "0.56"
+    oa_citable_pct: "46.46"
+    total_citations: "1431"
+  - name: International Journal of Housing Policy
+    short: INT J HOUS POLICY
+    issn: "19491247"
+    eissn: "19491255"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.6"
+    jci: "0.53"
+    oa_citable_pct: "32.73"
+    total_citations: "999"
+  - name: INTERNATIONAL JOURNAL OF URBAN AND REGIONAL RESEARCH
+    short: INT J URBAN REGIONAL
+    issn: "03091317"
+    eissn: "14682427"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.7"
+    oa_citable_pct: "54.91"
+    total_citations: "6116"
+  - name: INTERNATIONAL JOURNAL OF URBAN SCIENCES
+    short: INT J URBAN SCI
+    issn: "12265934"
+    eissn: "21616779"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3"
+    jci: "0.74"
+    oa_citable_pct: "8.2"
+    total_citations: "1104"
+  - name: INTERNATIONAL REGIONAL SCIENCE REVIEW
+    short: INT REGIONAL SCI REV
+    issn: "01600176"
+    eissn: "15526925"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.48"
+    oa_citable_pct: "15.71"
+    total_citations: "1385"
+  - name: JOURNAL OF CONTEMPORARY ETHNOGRAPHY
+    short: J CONTEMP ETHNOGR
+    issn: "08912416"
+    eissn: "15525414"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "0.8"
+    jci: "0.49"
+    oa_citable_pct: "42.05"
+    total_citations: "1571"
+  - name: Journal of Housing and the Built Environment
+    short: J HOUS BUILT ENVIRON
+    issn: "15664910"
+    eissn: "15737772"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.51"
+    oa_citable_pct: "38.66"
+    total_citations: "2197"
+  - name: JOURNAL OF HOUSING ECONOMICS
+    short: J HOUS ECON
+    issn: "10511377"
+    eissn: "10960791"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q2
+    jif: "2.4"
+    jci: "0.7"
+    oa_citable_pct: "25.49"
+    total_citations: "1536"
+  - name: JOURNAL OF PLANNING EDUCATION AND RESEARCH
+    short: J PLAN EDUC RES
+    issn: 0739456X
+    eissn: "15526577"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.5"
+    jci: "0.7"
+    oa_citable_pct: "14.29"
+    total_citations: "3340"
+  - name: JOURNAL OF PLANNING LITERATURE
+    short: J PLAN LIT
+    issn: "08854122"
+    eissn: "15526593"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "5.2"
+    jci: "0.93"
+    oa_citable_pct: "31.75"
+    total_citations: "1849"
+  - name: JOURNAL OF REAL ESTATE FINANCE AND ECONOMICS
+    short: J REAL ESTATE FINANC
+    issn: "08955638"
+    eissn: 1573045X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.8"
+    jci: "0.54"
+    oa_citable_pct: "29.75"
+    total_citations: "2108"
+  - name: JOURNAL OF THE AMERICAN PLANNING ASSOCIATION
+    short: J AM PLANN ASSOC
+    issn: "01944363"
+    eissn: "19390130"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.4"
+    jci: "0.78"
+    oa_citable_pct: "31.78"
+    total_citations: "5535"
+  - name: JOURNAL OF URBAN AFFAIRS
+    short: J URBAN AFF
+    issn: "07352166"
+    eissn: "14679906"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.59"
+    oa_citable_pct: "18.3"
+    total_citations: "2944"
+  - name: JOURNAL OF URBAN ECONOMICS
+    short: J URBAN ECON
+    issn: "00941190"
+    eissn: "10959068"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "4.8"
+    jci: "1.79"
+    oa_citable_pct: "30.06"
+    total_citations: "7274"
+  - name: JOURNAL OF URBAN HISTORY
+    short: J URBAN HIST
+    issn: "00961442"
+    eissn: "15526771"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.58"
+    oa_citable_pct: "15.73"
+    total_citations: "970"
+  - name: JOURNAL OF URBAN PLANNING AND DEVELOPMENT
+    short: J URBAN PLAN DEV
+    issn: "07339488"
+    eissn: "19435444"
+    site: ""
+    notes: WOS/JCR; ASCE-AMER SOC CIVIL ENGINEERS
+    quartile: Q2
+    jif: "1.9"
+    jci: "0.47"
+    oa_citable_pct: "3.6"
+    total_citations: "2603"
+  - name: JOURNAL OF URBAN TECHNOLOGY
+    short: J URBAN TECHNOL
+    issn: "10630732"
+    eissn: "14661853"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "4.4"
+    jci: "0.91"
+    oa_citable_pct: "24.29"
+    total_citations: "1780"
+  - name: LANDSCAPE AND URBAN PLANNING
+    short: LANDSCAPE URBAN PLAN
+    issn: "01692046"
+    eissn: "18726062"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "9.2"
+    jci: "2.4"
+    oa_citable_pct: "40.92"
+    total_citations: "32710"
+  - name: Local Environment
+    short: LOCAL ENVIRON
+    issn: "13549839"
+    eissn: "14696711"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.8"
+    jci: "0.63"
+    oa_citable_pct: "27.24"
+    total_citations: "3645"
+  - name: npj Urban Sustainability
+    short: NPJ URBAN SUSTAIN
+    issn: ""
+    eissn: "26618001"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    quartile: Q1
+    jif: "8.8"
+    jci: "2.29"
+    oa_citable_pct: "100"
+    total_citations: "1371"
+  - name: Open House International-Sustainable & Smart Architecture and Urban Studies
+    short: OPEN HOUSE INT
+    issn: "01682601"
+    eissn: "26339838"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q3
+    jif: "1.6"
+    jci: "1"
+    oa_citable_pct: "2.19"
+    total_citations: "607"
+  - name: Planning Theory & Practice
+    short: PLAN THEORY PRACT
+    issn: "14649357"
+    eissn: 1470000X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.2"
+    jci: "0.55"
+    oa_citable_pct: "40.28"
+    total_citations: "1677"
+  - name: REAL ESTATE ECONOMICS
+    short: REAL ESTATE ECON
+    issn: "10808620"
+    eissn: "15406229"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2"
+    jci: "0.59"
+    oa_citable_pct: "32.84"
+    total_citations: "1479"
+  - name: REGIONAL SCIENCE AND URBAN ECONOMICS
+    short: REG SCI URBAN ECON
+    issn: "01660462"
+    eissn: "18792308"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "2.9"
+    jci: "0.96"
+    oa_citable_pct: "22.93"
+    total_citations: "4813"
+  - name: URBAN AFFAIRS REVIEW
+    short: URBAN AFF REV
+    issn: "10780874"
+    eissn: "15528332"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "2.3"
+    jci: "0.67"
+    oa_citable_pct: "23.03"
+    total_citations: "3036"
+  - name: Urban Design International
+    short: URBAN DES INT
+    issn: "13575317"
+    eissn: "14684519"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+    quartile: Q2
+    jif: "2.1"
+    jci: "1.35"
+    oa_citable_pct: "29.51"
+    total_citations: "965"
+  - name: URBAN EDUCATION
+    short: URBAN EDUC
+    issn: "00420859"
+    eissn: "15528340"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "1.7"
+    jci: "0.87"
+    oa_citable_pct: "8.09"
+    total_citations: "3124"
+  - name: URBAN FORESTRY & URBAN GREENING
+    short: URBAN FOR URBAN GREE
+    issn: "16188667"
+    eissn: "16108167"
+    site: ""
+    notes: WOS/JCR; ELSEVIER GMBH
+    quartile: Q1
+    jif: "6.7"
+    jci: "1.88"
+    oa_citable_pct: "31.16"
+    total_citations: "20098"
+  - name: URBAN GEOGRAPHY
+    short: URBAN GEOGR
+    issn: "02723638"
+    eissn: "19382847"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.6"
+    jci: "0.93"
+    oa_citable_pct: "30.51"
+    total_citations: "4801"
+  - name: Urban Policy and Research
+    short: URBAN POLICY RES
+    issn: "08111146"
+    eissn: "14767244"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.7"
+    jci: "0.44"
+    oa_citable_pct: "32.53"
+    total_citations: "869"
+  - name: Urban Research & Practice
+    short: URBAN RES PRACT
+    issn: "17535069"
+    eissn: "17535077"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.8"
+    jci: "0.56"
+    oa_citable_pct: "23.23"
+    total_citations: "766"
+  - name: URBAN STUDIES
+    short: URBAN STUD
+    issn: "00420980"
+    eissn: 1360063X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "4.1"
+    jci: "1.05"
+    oa_citable_pct: "42.4"
+    total_citations: "16324"

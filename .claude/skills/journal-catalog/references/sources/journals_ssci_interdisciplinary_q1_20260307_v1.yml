@@ -1,0 +1,23 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Interdisciplinary_260306_normalized.csv
+  generated_at: 2026-03-07T02:28:59.088Z
+  date_tag: "20260307"
+  version: 1
+  count_filtered_rows: 0
+  count_unique_journals: 0
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals: []

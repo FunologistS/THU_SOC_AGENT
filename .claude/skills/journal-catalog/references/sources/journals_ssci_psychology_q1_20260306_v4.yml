@@ -1,0 +1,401 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Psychology_260306_normalized.csv
+  generated_at: 2026-03-06T07:22:33.691Z
+  date_tag: "20260306"
+  version: 4
+  count_filtered_rows: 63
+  count_unique_journals: 63
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Analyses of Social Issues and Public Policy
+    short: ANAL SOC ISS PUB POL
+    issn: "15297489"
+    eissn: "15302415"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: ASIAN JOURNAL OF SOCIAL PSYCHOLOGY
+    short: ASIAN J SOC PSYCHOL
+    issn: "13672223"
+    eissn: 1467839X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: BASIC AND APPLIED SOCIAL PSYCHOLOGY
+    short: BASIC APPL SOC PSYCH
+    issn: "01973533"
+    eissn: "15324834"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: BRITISH JOURNAL OF SOCIAL PSYCHOLOGY
+    short: BRIT J SOC PSYCHOL
+    issn: "01446665"
+    eissn: "20448309"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: CHILD ABUSE & NEGLECT
+    short: CHILD ABUSE NEGLECT
+    issn: "01452134"
+    eissn: "18737757"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: Cultural Diversity & Ethnic Minority Psychology
+    short: CULT DIVERS ETHN MIN
+    issn: "10999809"
+    eissn: "19390106"
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+  - name: Cyberpsychology Behavior and Social Networking
+    short: CYBERPSYCH BEH SOC N
+    issn: "21522715"
+    eissn: "21522723"
+    site: ""
+    notes: WOS/JCR; MARY ANN LIEBERT, INC
+  - name: DEVIANT BEHAVIOR
+    short: DEVIANT BEHAV
+    issn: "01639625"
+    eissn: "15210456"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Emerging Adulthood
+    short: EMERG ADULTHOOD
+    issn: "21676968"
+    eissn: "21676984"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: EUROPEAN JOURNAL OF PERSONALITY
+    short: EUR J PERSONALITY
+    issn: "08902070"
+    eissn: "10990984"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: EUROPEAN JOURNAL OF SOCIAL PSYCHOLOGY
+    short: EUR J SOC PSYCHOL
+    issn: "00462772"
+    eissn: "10990992"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: European Review of Social Psychology
+    short: EUR REV SOC PSYCHOL
+    issn: "10463283"
+    eissn: 1479277X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Gedrag & Organisatie
+    short: GEDRAG ORGAN
+    issn: "09215077"
+    eissn: "18757235"
+    site: ""
+    notes: WOS/JCR; UITGEVERIJ LEMMA B V
+  - name: GROUP DYNAMICS-THEORY RESEARCH AND PRACTICE
+    short: GROUP DYN-THEOR RES
+    issn: "10892699"
+    eissn: "19307802"
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+  - name: GROUP PROCESSES & INTERGROUP RELATIONS
+    short: GROUP PROCESS INTERG
+    issn: "13684302"
+    eissn: "14617188"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: International Journal of Intercultural Relations
+    short: INT J INTERCULT REL
+    issn: "01471767"
+    eissn: "18737552"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: International Journal of Social Psychology
+    short: INT J SOC PSYCHOL
+    issn: "02134748"
+    eissn: "15793680"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: International Review of Social Psychology
+    short: INT REV SOC PSYCHOL
+    issn: "23978570"
+    eissn: "23978570"
+    site: ""
+    notes: WOS/JCR; UBIQUITY PRESS LTD
+  - name: JOURNAL FOR THE THEORY OF SOCIAL BEHAVIOUR
+    short: J THEOR SOC BEHAV
+    issn: "00218308"
+    eissn: "14685914"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF APPLIED SOCIAL PSYCHOLOGY
+    short: J APPL SOC PSYCHOL
+    issn: "00219029"
+    eissn: "15591816"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF COMMUNITY & APPLIED SOCIAL PSYCHOLOGY
+    short: J COMMUNITY APPL SOC
+    issn: "10529284"
+    eissn: "10991298"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF CROSS-CULTURAL PSYCHOLOGY
+    short: J CROSS CULT PSYCHOL
+    issn: "00220221"
+    eissn: "15525422"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Diversity in Higher Education
+    short: J DIVERS HIGH EDUC
+    issn: "19388926"
+    eissn: "19388934"
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+  - name: JOURNAL OF EXPERIMENTAL SOCIAL PSYCHOLOGY
+    short: J EXP SOC PSYCHOL
+    issn: "00221031"
+    eissn: "10960465"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: JOURNAL OF HEALTH AND SOCIAL BEHAVIOR
+    short: J HEALTH SOC BEHAV
+    issn: "00221465"
+    eissn: "21506000"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Individual Differences
+    short: J INDIVID DIFFER
+    issn: "16140001"
+    eissn: "21512299"
+    site: ""
+    notes: WOS/JCR; HOGREFE PUBLISHING CORP
+  - name: JOURNAL OF LANGUAGE AND SOCIAL PSYCHOLOGY
+    short: J LANG SOC PSYCHOL
+    issn: 0261927X
+    eissn: "15526526"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Latinx Psychology
+    short: J LATINX PSYCHOL
+    issn: "25788086"
+    eissn: "25788094"
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+  - name: JOURNAL OF LOSS & TRAUMA
+    short: J LOSS TRAUMA
+    issn: "15325024"
+    eissn: "15325032"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: JOURNAL OF NONVERBAL BEHAVIOR
+    short: J NONVERBAL BEHAV
+    issn: "01915886"
+    eissn: "15733653"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF PERSONALITY
+    short: J PERS
+    issn: "00223506"
+    eissn: "14676494"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF PERSONALITY AND SOCIAL PSYCHOLOGY
+    short: J PERS SOC PSYCHOL
+    issn: "00223514"
+    eissn: "19391315"
+    site: ""
+    notes: WOS/JCR; AMER PSYCHOLOGICAL ASSOC
+  - name: JOURNAL OF PERSONALITY ASSESSMENT
+    short: J PERS ASSESS
+    issn: "00223891"
+    eissn: "15327752"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF PSYCHOSOCIAL ONCOLOGY
+    short: J PSYCHOSOC ONCOL
+    issn: "07347332"
+    eissn: "15407586"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF RESEARCH IN PERSONALITY
+    short: J RES PERS
+    issn: "00926566"
+    eissn: "10957251"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: JOURNAL OF SOCIAL AND CLINICAL PSYCHOLOGY
+    short: J SOC CLIN PSYCHOL
+    issn: "07367236"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; GUILFORD PUBLICATIONS INC
+  - name: JOURNAL OF SOCIAL AND PERSONAL RELATIONSHIPS
+    short: J SOC PERS RELAT
+    issn: "02654075"
+    eissn: "14603608"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: JOURNAL OF SOCIAL ISSUES
+    short: J SOC ISSUES
+    issn: "00224537"
+    eissn: "15404560"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF SOCIAL PSYCHOLOGY
+    short: J SOC PSYCHOL
+    issn: "00224545"
+    eissn: "19401183"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: KOLNER ZEITSCHRIFT FUR SOZIOLOGIE UND SOZIALPSYCHOLOGIE
+    short: KOLNER Z SOZIOL SOZ
+    issn: "00232653"
+    eissn: 1861891X
+    site: ""
+    notes: WOS/JCR; SPRINGER VIEWEG-SPRINGER FACHMEDIEN WIESBADEN GMBH
+  - name: LAW AND HUMAN BEHAVIOR
+    short: LAW HUMAN BEHAV
+    issn: "01477307"
+    eissn: 1573661X
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+  - name: MOTIVATION AND EMOTION
+    short: MOTIV EMOTION
+    issn: "01467239"
+    eissn: "15736644"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+  - name: ORGANIZATIONAL BEHAVIOR AND HUMAN DECISION PROCESSES
+    short: ORGAN BEHAV HUM DEC
+    issn: "07495978"
+    eissn: "10959920"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: PERSONAL RELATIONSHIPS
+    short: PERS RELATIONSHIP
+    issn: "13504126"
+    eissn: "14756811"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: PERSONALITY AND INDIVIDUAL DIFFERENCES
+    short: PERS INDIV DIFFER
+    issn: "01918869"
+    eissn: "18733549"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: Personality and Mental Health
+    short: PERSONAL MENT HEALTH
+    issn: "19328621"
+    eissn: 1932863X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: PERSONALITY AND SOCIAL PSYCHOLOGY BULLETIN
+    short: PERS SOC PSYCHOL B
+    issn: "01461672"
+    eissn: "15527433"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: PERSONALITY AND SOCIAL PSYCHOLOGY REVIEW
+    short: PERS SOC PSYCHOL REV
+    issn: "10888683"
+    eissn: "15327957"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: POLITICAL PSYCHOLOGY
+    short: POLIT PSYCHOL
+    issn: 0162895X
+    eissn: "14679221"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Psychology of Men & Masculinities
+    short: PSYCHOL MEN MASCULIN
+    issn: "15249220"
+    eissn: 1939151X
+    site: ""
+    notes: WOS/JCR; EDUCATIONAL PUBLISHING FOUNDATION-AMERICAN PSYCHOLOGICAL ASSOC
+  - name: RESEARCH ON LANGUAGE AND SOCIAL INTERACTION
+    short: RES LANG SOC INTERAC
+    issn: "08351813"
+    eissn: "15327973"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Self and Identity
+    short: SELF IDENTITY
+    issn: "15298868"
+    eissn: "15298876"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: SEX ROLES
+    short: SEX ROLES
+    issn: "03600025"
+    eissn: "15732762"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+  - name: SMALL GROUP RESEARCH
+    short: SMALL GR RES
+    issn: "10464964"
+    eissn: "15528278"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Social and Personality Psychology Compass
+    short: SOC PERSONAL PSYCHOL
+    issn: ""
+    eissn: "17519004"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: SOCIAL BEHAVIOR AND PERSONALITY
+    short: SOC BEHAV PERSONAL
+    issn: "03012212"
+    eissn: "11796391"
+    site: ""
+    notes: WOS/JCR; SOC PERSONALITY RES INC
+  - name: SOCIAL COGNITION
+    short: SOC COGNITION
+    issn: 0278016X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; GUILFORD PUBLICATIONS INC
+  - name: Social Influence
+    short: SOC INFLUENCE
+    issn: "15534510"
+    eissn: "15534529"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Social Issues and Policy Review
+    short: SOC ISS POLICY REV
+    issn: "17512395"
+    eissn: "17512409"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Social Justice Research
+    short: SOC JUSTICE RES
+    issn: "08857466"
+    eissn: "15736725"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Social Psychological and Personality Science
+    short: SOC PSYCHOL PERS SCI
+    issn: "19485506"
+    eissn: "19485514"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Social Psychology
+    short: SOC PSYCHOL-GERMANY
+    issn: "18649335"
+    eissn: "21512590"
+    site: ""
+    notes: WOS/JCR; HOGREFE PUBLISHING CORP
+  - name: SOCIAL PSYCHOLOGY QUARTERLY
+    short: SOC PSYCHOL QUART
+    issn: "01902725"
+    eissn: "19398999"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC

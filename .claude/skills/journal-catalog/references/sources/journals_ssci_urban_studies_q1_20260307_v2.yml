@@ -1,0 +1,288 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Urban_Studies_260306_normalized.csv
+  generated_at: 2026-03-07T04:29:56.452Z
+  date_tag: "20260307"
+  version: 2
+  count_filtered_rows: 44
+  count_unique_journals: 44
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: CITIES
+    short: CITIES
+    issn: "02642751"
+    eissn: "18736084"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: City & Community
+    short: CITY COMMUNITY
+    issn: "15356841"
+    eissn: "15406040"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: ECONOMIC DEVELOPMENT QUARTERLY
+    short: ECON DEV Q
+    issn: "08912424"
+    eissn: "15523543"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: EDUCATION AND URBAN SOCIETY
+    short: EDUC URBAN SOC
+    issn: "00131245"
+    eissn: "15523535"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Environment and Planning B-Urban Analytics and City Science
+    short: ENVIRON PLAN B-URBAN
+    issn: "23998083"
+    eissn: "23998091"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: ENVIRONMENT AND URBANIZATION
+    short: ENVIRON URBAN
+    issn: "09562478"
+    eissn: "17460301"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: EURE-REVISTA LATINOAMERICANA DE ESTUDIOS URBANO REGIONALES
+    short: EURE
+    issn: "02507161"
+    eissn: "07176236"
+    site: ""
+    notes: WOS/JCR; PONTIFICIA UNIV CATOLICA CHILE, INST ESTUDIOS URBANOS
+      TERRITORIALES
+  - name: EUROPEAN PLANNING STUDIES
+    short: EUR PLAN STUD
+    issn: "09654313"
+    eissn: "14695944"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: EUROPEAN URBAN AND REGIONAL STUDIES
+    short: EUR URBAN REG STUD
+    issn: "09697764"
+    eissn: "14617145"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: HABITAT INTERNATIONAL
+    short: HABITAT INT
+    issn: "01973975"
+    eissn: "18735428"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: HOUSING POLICY DEBATE
+    short: HOUS POLICY DEBATE
+    issn: "10511482"
+    eissn: 2152050X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: HOUSING STUDIES
+    short: HOUSING STUD
+    issn: "02673037"
+    eissn: "14661810"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Housing Theory & Society
+    short: HOUS THEORY SOC
+    issn: "14036096"
+    eissn: "16512278"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: International Journal of Housing Policy
+    short: INT J HOUS POLICY
+    issn: "19491247"
+    eissn: "19491255"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INTERNATIONAL JOURNAL OF URBAN AND REGIONAL RESEARCH
+    short: INT J URBAN REGIONAL
+    issn: "03091317"
+    eissn: "14682427"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: INTERNATIONAL JOURNAL OF URBAN SCIENCES
+    short: INT J URBAN SCI
+    issn: "12265934"
+    eissn: "21616779"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INTERNATIONAL REGIONAL SCIENCE REVIEW
+    short: INT REGIONAL SCI REV
+    issn: "01600176"
+    eissn: "15526925"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF CONTEMPORARY ETHNOGRAPHY
+    short: J CONTEMP ETHNOGR
+    issn: "08912416"
+    eissn: "15525414"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Housing and the Built Environment
+    short: J HOUS BUILT ENVIRON
+    issn: "15664910"
+    eissn: "15737772"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF HOUSING ECONOMICS
+    short: J HOUS ECON
+    issn: "10511377"
+    eissn: "10960791"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: JOURNAL OF PLANNING EDUCATION AND RESEARCH
+    short: J PLAN EDUC RES
+    issn: 0739456X
+    eissn: "15526577"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF PLANNING LITERATURE
+    short: J PLAN LIT
+    issn: "08854122"
+    eissn: "15526593"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF REAL ESTATE FINANCE AND ECONOMICS
+    short: J REAL ESTATE FINANC
+    issn: "08955638"
+    eissn: 1573045X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: JOURNAL OF THE AMERICAN PLANNING ASSOCIATION
+    short: J AM PLANN ASSOC
+    issn: "01944363"
+    eissn: "19390130"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF URBAN AFFAIRS
+    short: J URBAN AFF
+    issn: "07352166"
+    eissn: "14679906"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF URBAN ECONOMICS
+    short: J URBAN ECON
+    issn: "00941190"
+    eissn: "10959068"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: JOURNAL OF URBAN HISTORY
+    short: J URBAN HIST
+    issn: "00961442"
+    eissn: "15526771"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF URBAN PLANNING AND DEVELOPMENT
+    short: J URBAN PLAN DEV
+    issn: "07339488"
+    eissn: "19435444"
+    site: ""
+    notes: WOS/JCR; ASCE-AMER SOC CIVIL ENGINEERS
+  - name: JOURNAL OF URBAN TECHNOLOGY
+    short: J URBAN TECHNOL
+    issn: "10630732"
+    eissn: "14661853"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: LANDSCAPE AND URBAN PLANNING
+    short: LANDSCAPE URBAN PLAN
+    issn: "01692046"
+    eissn: "18726062"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Local Environment
+    short: LOCAL ENVIRON
+    issn: "13549839"
+    eissn: "14696711"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: npj Urban Sustainability
+    short: NPJ URBAN SUSTAIN
+    issn: ""
+    eissn: "26618001"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+  - name: Open House International-Sustainable & Smart Architecture and Urban Studies
+    short: OPEN HOUSE INT
+    issn: "01682601"
+    eissn: "26339838"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Planning Theory & Practice
+    short: PLAN THEORY PRACT
+    issn: "14649357"
+    eissn: 1470000X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: REAL ESTATE ECONOMICS
+    short: REAL ESTATE ECON
+    issn: "10808620"
+    eissn: "15406229"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: REGIONAL SCIENCE AND URBAN ECONOMICS
+    short: REG SCI URBAN ECON
+    issn: "01660462"
+    eissn: "18792308"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: URBAN AFFAIRS REVIEW
+    short: URBAN AFF REV
+    issn: "10780874"
+    eissn: "15528332"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Urban Design International
+    short: URBAN DES INT
+    issn: "13575317"
+    eissn: "14684519"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+  - name: URBAN EDUCATION
+    short: URBAN EDUC
+    issn: "00420859"
+    eissn: "15528340"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: URBAN FORESTRY & URBAN GREENING
+    short: URBAN FOR URBAN GREE
+    issn: "16188667"
+    eissn: "16108167"
+    site: ""
+    notes: WOS/JCR; ELSEVIER GMBH
+  - name: URBAN GEOGRAPHY
+    short: URBAN GEOGR
+    issn: "02723638"
+    eissn: "19382847"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Urban Policy and Research
+    short: URBAN POLICY RES
+    issn: "08111146"
+    eissn: "14767244"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Urban Research & Practice
+    short: URBAN RES PRACT
+    issn: "17535069"
+    eissn: "17535077"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: URBAN STUDIES
+    short: URBAN STUD
+    issn: "00420980"
+    eissn: 1360063X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD

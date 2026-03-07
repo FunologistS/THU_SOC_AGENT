@@ -1,0 +1,246 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Environmental studies
+  filter:
+    edition: SSCI
+    quartile: Q1
+    category: ENVIRONMENTAL STUDIES
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Environmental_Studies_260306_normalized.csv
+  generated_at: 2026-03-06T05:07:05.975Z
+  date_tag: "20260306"
+  version: 1
+  count_filtered_rows: 37
+  count_unique_journals: 37
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Annual Review of Environment and Resources
+    short: ANNU REV ENV RESOUR
+    issn: "15435938"
+    eissn: "15452050"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Annual Review of Resource Economics
+    short: ANNU REV RESOUR ECON
+    issn: "19411340"
+    eissn: "19411359"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Business Strategy and the Environment
+    short: BUS STRATEG ENVIRON
+    issn: "09644733"
+    eissn: "10990836"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: CLIMATE POLICY
+    short: CLIM POLICY
+    issn: "14693062"
+    eissn: "17527457"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+  - name: Climate Risk Management
+    short: CLIM RISK MANAG
+    issn: "22120963"
+    eissn: "22120963"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Climate Services
+    short: CLIM SERV
+    issn: "24058807"
+    eissn: "24058807"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: COMPUTERS ENVIRONMENT AND URBAN SYSTEMS
+    short: COMPUT ENVIRON URBAN
+    issn: "01989715"
+    eissn: "18737587"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Corporate Social Responsibility and Environmental Management
+    short: CORP SOC RESP ENV MA
+    issn: "15353958"
+    eissn: "15353966"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: ECOLOGICAL ECONOMICS
+    short: ECOL ECON
+    issn: "09218009"
+    eissn: "18736106"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Ecosystem Services
+    short: ECOSYST SERV
+    issn: "22120416"
+    eissn: "22120416"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Energy & Environment
+    short: ENERG ENVIRON-UK
+    issn: 0958305X
+    eissn: "20484070"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Energy Policy
+    short: ENERG POLICY
+    issn: "03014215"
+    eissn: "18736777"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Energy Research & Social Science
+    short: ENERGY RES SOC SCI
+    issn: "22146296"
+    eissn: "22146326"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: ENVIRONMENT AND BEHAVIOR
+    short: ENVIRON BEHAV
+    issn: "00139165"
+    eissn: 1552390X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Environmental Impact Assessment Review
+    short: ENVIRON IMPACT ASSES
+    issn: "01959255"
+    eissn: "18736432"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: Environmental Innovation and Societal Transitions
+    short: ENVIRON INNOV SOC TR
+    issn: "22104224"
+    eissn: "22104232"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: ENVIRONMENTAL POLITICS
+    short: ENVIRON POLIT
+    issn: "09644016"
+    eissn: "17438934"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: GLOBAL ENVIRONMENTAL CHANGE-HUMAN AND POLICY DIMENSIONS
+    short: GLOBAL ENVIRON CHANG
+    issn: "09593780"
+    eissn: "18729495"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: HABITAT INTERNATIONAL
+    short: HABITAT INT
+    issn: "01973975"
+    eissn: "18735428"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: JOURNAL OF ENVIRONMENTAL ECONOMICS AND MANAGEMENT
+    short: J ENVIRON ECON MANAG
+    issn: "00950696"
+    eissn: "10960449"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: JOURNAL OF ENVIRONMENTAL PSYCHOLOGY
+    short: J ENVIRON PSYCHOL
+    issn: "02724944"
+    eissn: "15229610"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+  - name: LAND USE POLICY
+    short: LAND USE POLICY
+    issn: "02648377"
+    eissn: "18735754"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: LANDSCAPE AND URBAN PLANNING
+    short: LANDSCAPE URBAN PLAN
+    issn: "01692046"
+    eissn: "18726062"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Nature Climate Change
+    short: NAT CLIM CHANGE
+    issn: 1758678X
+    eissn: "17586798"
+    site: ""
+    notes: WOS/JCR; NATURE PORTFOLIO
+  - name: Nature Sustainability
+    short: NAT SUSTAIN
+    issn: "23989629"
+    eissn: "23989629"
+    site: ""
+    notes: WOS/JCR; NATURE PORTFOLIO
+  - name: npj Urban Sustainability
+    short: NPJ URBAN SUSTAIN
+    issn: ""
+    eissn: "26618001"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+  - name: One Earth
+    short: ONE EARTH
+    issn: "25903330"
+    eissn: "25903322"
+    site: ""
+    notes: WOS/JCR; CELL PRESS
+  - name: ORGANIZATION & ENVIRONMENT
+    short: ORGAN ENVIRON
+    issn: "10860266"
+    eissn: "15527417"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: PROGRESS IN PLANNING
+    short: PROG PLANN
+    issn: "03059006"
+    eissn: "18734510"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: Review of Environmental Economics and Policy
+    short: REV ENV ECON POLICY
+    issn: "17506816"
+    eissn: "17506824"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: Sustainability Accounting Management and Policy Journal
+    short: SUSTAIN ACCOUNT MANA
+    issn: "20408021"
+    eissn: 2040803X
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: Sustainable Production and Consumption
+    short: SUSTAIN PROD CONSUMP
+    issn: "23525509"
+    eissn: "23525509"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Tourism Management
+    short: TOURISM MANAGE
+    issn: "02615177"
+    eissn: "18793193"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: TRANSPORTATION RESEARCH PART D-TRANSPORT AND ENVIRONMENT
+    short: TRANSPORT RES D-TR E
+    issn: "13619209"
+    eissn: "18792340"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: URBAN FORESTRY & URBAN GREENING
+    short: URBAN FOR URBAN GREE
+    issn: "16188667"
+    eissn: "16108167"
+    site: ""
+    notes: WOS/JCR; ELSEVIER GMBH
+  - name: Utilities Policy
+    short: UTIL POLICY
+    issn: "09571787"
+    eissn: "18784356"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: Wiley Interdisciplinary Reviews-Climate Change
+    short: WIRES CLIM CHANGE
+    issn: "17577780"
+    eissn: "17577799"
+    site: ""
+    notes: WOS/JCR; WILEY

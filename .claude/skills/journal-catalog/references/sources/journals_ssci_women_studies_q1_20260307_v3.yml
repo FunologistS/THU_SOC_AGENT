@@ -1,0 +1,532 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Women_Studies_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.297Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 46
+  count_unique_journals: 46
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: Affilia-Feminist Inquiry in Social Work
+    short: AFFILIA
+    issn: "08861099"
+    eissn: "15523020"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.8"
+    jci: "1.25"
+    oa_citable_pct: "25.89"
+    total_citations: "1276"
+  - name: ASIAN JOURNAL OF WOMENS STUDIES
+    short: ASIAN J WOMEN STUD
+    issn: "12259276"
+    eissn: 2377004X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.57"
+    oa_citable_pct: "6.35"
+    total_citations: "399"
+  - name: Asian Women
+    short: ASIAN WOMEN
+    issn: 1225925X
+    eissn: "25865714"
+    site: ""
+    notes: WOS/JCR; SOOKMYUNG WOMENS UNIV
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.23"
+    oa_citable_pct: "1.67"
+    total_citations: "186"
+  - name: AUSTRALIAN FEMINIST STUDIES
+    short: AUST FEMINIST STUD
+    issn: "08164649"
+    eissn: "14653303"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.84"
+    oa_citable_pct: "64.62"
+    total_citations: "747"
+  - name: Differences-A Journal of Feminist Cultural Studies
+    short: DIFFERENCES
+    issn: "10407391"
+    eissn: "15271986"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.27"
+    oa_citable_pct: "0"
+    total_citations: "717"
+  - name: EUROPEAN JOURNAL OF WOMENS STUDIES
+    short: EUR J WOMENS STUD
+    issn: "13505068"
+    eissn: "14617420"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.92"
+    oa_citable_pct: "31.11"
+    total_citations: "1261"
+  - name: FEMINISM & PSYCHOLOGY
+    short: FEM PSYCHOL
+    issn: "09593535"
+    eissn: "14617161"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "1.9"
+    jci: "1.05"
+    oa_citable_pct: "40.86"
+    total_citations: "1750"
+  - name: FEMINIST ECONOMICS
+    short: FEM ECON
+    issn: "13545701"
+    eissn: "14664372"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "2"
+    jci: "1.32"
+    oa_citable_pct: "18.18"
+    total_citations: "2407"
+  - name: Feminist Legal Studies
+    short: FEM LEGAL STUD
+    issn: "09663622"
+    eissn: "15728455"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.5"
+    jci: "1.96"
+    oa_citable_pct: "63.04"
+    total_citations: "535"
+  - name: Feminist Media Studies
+    short: FEM MEDIA STUD
+    issn: "14680777"
+    eissn: "14715902"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.87"
+    oa_citable_pct: "23.6"
+    total_citations: "3405"
+  - name: FEMINIST REVIEW
+    short: FEMINIST REV
+    issn: "01417789"
+    eissn: "14664380"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "1.7"
+    jci: "0.83"
+    oa_citable_pct: "36.21"
+    total_citations: "1479"
+  - name: FEMINIST STUDIES
+    short: FEMINIST STUD
+    issn: "00463663"
+    eissn: "21533873"
+    site: ""
+    notes: WOS/JCR; FEMINIST STUD INC
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.17"
+    oa_citable_pct: "0"
+    total_citations: "2304"
+  - name: Feminist Theory
+    short: FEM THEOR
+    issn: "14647001"
+    eissn: "17412773"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.94"
+    oa_citable_pct: "47.22"
+    total_citations: "1445"
+  - name: Feministische Studien
+    short: FEMINISTISCHE STUD
+    issn: "07235186"
+    eissn: "23659920"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    quartile: Q4
+    jci: "0.17"
+    oa_citable_pct: "6.25"
+    total_citations: "58"
+  - name: FRONTIERS-A JOURNAL OF WOMEN STUDIES
+    short: FRONTIERS
+    issn: "01609009"
+    eissn: "15360334"
+    site: ""
+    notes: WOS/JCR; UNIV NEBRASKA PRESS
+    quartile: Q1
+    jif: "2.1"
+    jci: "0.15"
+    oa_citable_pct: "0"
+    total_citations: "749"
+  - name: GENDER & SOCIETY
+    short: GENDER SOC
+    issn: "08912432"
+    eissn: "15523977"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "3.4"
+    jci: "3.07"
+    oa_citable_pct: "31.18"
+    total_citations: "7172"
+  - name: Gender and History
+    short: GEND HIST
+    issn: "09535233"
+    eissn: "14680424"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.82"
+    oa_citable_pct: "49.18"
+    total_citations: "726"
+  - name: Gender and Language
+    short: GENDER LANG
+    issn: "17476321"
+    eissn: 1747633X
+    site: ""
+    notes: WOS/JCR; UNIV TORONTO PRESS INC
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.93"
+    oa_citable_pct: "7.27"
+    total_citations: "325"
+  - name: Gender in Management
+    short: GEND MANAG
+    issn: "17542413"
+    eissn: "17542421"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "2.6"
+    jci: "0.86"
+    oa_citable_pct: "9.66"
+    total_citations: "2244"
+  - name: Gender Place and Culture
+    short: GENDER PLACE CULT
+    issn: 0966369X
+    eissn: "13600524"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.59"
+    oa_citable_pct: "31.8"
+    total_citations: "3231"
+  - name: GENDER WORK AND ORGANIZATION
+    short: GENDER WORK ORGAN
+    issn: "09686673"
+    eissn: "14680432"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3"
+    jci: "1.39"
+    oa_citable_pct: "62.26"
+    total_citations: "5544"
+  - name: Health Care for Women International
+    short: HEALTH CARE WOMEN IN
+    issn: "07399332"
+    eissn: "10964665"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "0.9"
+    jci: "0.47"
+    oa_citable_pct: "8.5"
+    total_citations: "2264"
+  - name: Hypatia-A Journal of Feminist Philosophy
+    short: HYPATIA
+    issn: "08875367"
+    eissn: "15272001"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "1.6"
+    jci: "1.5"
+    oa_citable_pct: "52.73"
+    total_citations: "3533"
+  - name: Indian Journal of Gender Studies
+    short: INDIAN J GEND STUD
+    issn: "09715215"
+    eissn: "09730672"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INDIA PVT LTD
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.23"
+    oa_citable_pct: "8.16"
+    total_citations: "335"
+  - name: International Feminist Journal of Politics
+    short: INT FEM J POLIT
+    issn: "14616742"
+    eissn: "14684470"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.9"
+    jci: "0.96"
+    oa_citable_pct: "40.22"
+    total_citations: "1459"
+  - name: International Journal of Feminist Approaches To Bioethics
+    short: INT J FEM APPROACHES
+    issn: "19374585"
+    eissn: "19374577"
+    site: ""
+    notes: WOS/JCR; UNIV TORONTO PRESS INC
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.2"
+    oa_citable_pct: "0"
+    total_citations: "235"
+  - name: JOURNAL OF GENDER STUDIES
+    short: J GENDER STUD
+    issn: "09589236"
+    eissn: "14653869"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.82"
+    oa_citable_pct: "28.3"
+    total_citations: "1808"
+  - name: Journal of Middle East Womens Studies
+    short: J MIDDLE E WOMENS ST
+    issn: "15525864"
+    eissn: "15589579"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.25"
+    oa_citable_pct: "0"
+    total_citations: "308"
+  - name: JOURNAL OF WOMEN & AGING
+    short: J WOMEN AGING
+    issn: "08952841"
+    eissn: "15407322"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.69"
+    oa_citable_pct: "11.54"
+    total_citations: "941"
+  - name: Journal of Women Politics & Policy
+    short: J WOMEN POLIT POLICY
+    issn: 1554477X
+    eissn: "15544788"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.85"
+    oa_citable_pct: "12.36"
+    total_citations: "693"
+  - name: JOURNAL OF WOMENS HEALTH
+    short: J WOMENS HEALTH
+    issn: "15409996"
+    eissn: 1931843X
+    site: ""
+    notes: WOS/JCR; MARY ANN LIEBERT, INC
+    quartile: Q1
+    jif: "1.9"
+    jci: "0.99"
+    oa_citable_pct: "4.19"
+    total_citations: "8216"
+  - name: JOURNAL OF WOMENS HISTORY
+    short: J WOMENS HIST
+    issn: "10427961"
+    eissn: "15272036"
+    site: ""
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.77"
+    oa_citable_pct: "0"
+    total_citations: "615"
+  - name: LGBTQ Family-An Interdisciplinary Journal
+    short: LGBTQ FAM
+    issn: "27703371"
+    eissn: 2770338X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "1.9"
+    jci: "1.13"
+    oa_citable_pct: "19.42"
+    total_citations: "145"
+  - name: Politics & Gender
+    short: POLIT GENDER
+    issn: 1743923X
+    eissn: "17439248"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q1
+    jif: "3.5"
+    jci: "1.53"
+    oa_citable_pct: "54.17"
+    total_citations: "2194"
+  - name: PSYCHOLOGY OF WOMEN QUARTERLY
+    short: PSYCHOL WOMEN QUART
+    issn: "03616843"
+    eissn: "14716402"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "3"
+    jci: "1.49"
+    oa_citable_pct: "16.49"
+    total_citations: "5165"
+  - name: RADICAL PHILOSOPHY
+    short: RADICAL PHILOS
+    issn: 0300211X
+    eissn: 0030211X
+    site: ""
+    notes: WOS/JCR; RADICAL PHILOSOPHY
+    quartile: Q3
+    jif: "1"
+    jci: "0.41"
+    oa_citable_pct: "0"
+    total_citations: "591"
+  - name: SEX ROLES
+    short: SEX ROLES
+    issn: "03600025"
+    eissn: "15732762"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+    quartile: Q1
+    jif: "3.4"
+    jci: "1.44"
+    oa_citable_pct: "33.58"
+    total_citations: "10949"
+  - name: SIGNS
+    short: SIGNS
+    issn: "00979740"
+    eissn: "15456943"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "1.9"
+    jci: "1.07"
+    oa_citable_pct: "0.96"
+    total_citations: "5527"
+  - name: SOCIAL POLITICS
+    short: SOC POLIT
+    issn: "10724745"
+    eissn: "14682893"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "1.8"
+    jci: "0.88"
+    oa_citable_pct: "35"
+    total_citations: "1570"
+  - name: Travail Genre et Societes
+    short: TRAV GENRE SOC
+    issn: "12946303"
+    eissn: "12946303"
+    site: ""
+    notes: WOS/JCR; EDITIONS LA DECOUVERTE
+    quartile: Q3
+    jif: "0.5"
+    jci: "0.07"
+    oa_citable_pct: "2.22"
+    total_citations: "126"
+  - name: VIOLENCE AGAINST WOMEN
+    short: VIOLENCE AGAINST WOM
+    issn: "10778012"
+    eissn: "15528448"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "1.7"
+    jci: "1.05"
+    oa_citable_pct: "28.86"
+    total_citations: "6487"
+  - name: Women & Criminal Justice
+    short: WOMEN CRIM JUSTICE
+    issn: "08974454"
+    eissn: "15410323"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.64"
+    oa_citable_pct: "11.39"
+    total_citations: "757"
+  - name: WOMEN & HEALTH
+    short: WOMEN HEALTH
+    issn: "03630242"
+    eissn: "15410331"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.56"
+    oa_citable_pct: "4.68"
+    total_citations: "2261"
+  - name: WOMEN & THERAPY
+    short: WOMEN THER
+    issn: "02703149"
+    eissn: "15410315"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.4"
+    jci: "0.69"
+    oa_citable_pct: "3.45"
+    total_citations: "692"
+  - name: WOMENS HEALTH ISSUES
+    short: WOMEN HEALTH ISS
+    issn: "10493867"
+    eissn: "18784321"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "2.5"
+    jci: "1.18"
+    oa_citable_pct: "11.22"
+    total_citations: "3221"
+  - name: WOMENS STUDIES INTERNATIONAL FORUM
+    short: WOMEN STUD INT FORUM
+    issn: "02775395"
+    eissn: 1879243X
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "1.9"
+    jci: "1.27"
+    oa_citable_pct: "33.04"
+    total_citations: "3010"

@@ -1,0 +1,4900 @@
+meta:
+  generated_at: 2026-03-06T05:08:02.383Z
+  date_tag: "20260306"
+  version: 1
+  counts:
+    base_rows: 7
+    sources_rows: 645
+    manual_rows: 0
+    merged_unique: 604
+  inputs:
+    - label: base
+      file: .claude/skills/journal-catalog/references/base/journals_manual.yml
+      count: 7
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_anthropology_q1_20260301_v2.yml
+      count: 142
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_area_asian_studies_q1_20260306_v1.yml
+      count: 0
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_area_studies_q1_20260306_v1.yml
+      count: 43
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_communication_q1_20260306_v1.yml
+      count: 49
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_demography_q1_20260306_v1.yml
+      count: 12
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_economics_q1_20260301_v1.yml
+      count: 142
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_environmental_studies_q1_20260306_v1.yml
+      count: 37
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_industrial_relations_labor_q1_20260306_v1.yml
+      count: 13
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_interdisciplinary_q1_20260306_v2.yml
+      count: 0
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_management_q1_20260306_v1.yml
+      count: 98
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_psychology_q1_20260306_v2.yml
+      count: 0
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_public_administration_q1_20260306_v1.yml
+      count: 18
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_sociology_q1_20260219_v2.yml
+      count: 58
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_urban_studies_q1_20260306_v1.yml
+      count: 18
+    - label: sources(latest-per-prefix)
+      file: .claude/skills/journal-catalog/references/sources/journals_ssci_women_studies_q1_20260306_v1.yml
+      count: 15
+  notes: "Merge precedence: base < sources < manual. Non-empty fields override."
+journals:
+  - name: Academy of Management Annals
+    short: ACAD MANAG ANN
+    issn: "19416520"
+    eissn: "19416067"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Academy of Management Discoveries
+    short: ACAD MANAG DISCOV
+    issn: ""
+    eissn: "21681007"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ACADEMY OF MANAGEMENT JOURNAL
+    short: ACAD MANAGE J
+    issn: "00014273"
+    eissn: "19480989"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Academy of Management Learning & Education
+    short: ACAD MANAG LEARN EDU
+    issn: 1537260X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Academy of Management Perspectives
+    short: ACAD MANAGE PERSPECT
+    issn: "15589080"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ACADEMY OF MANAGEMENT REVIEW
+    short: ACAD MANAGE REV
+    issn: "03637425"
+    eissn: "19303807"
+    site: ""
+    notes: WOS/JCR; ACAD MANAGEMENT
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ADMINISTRATIVE SCIENCE QUARTERLY
+    short: ADMIN SCI QUART
+    issn: "00018392"
+    eissn: "19303815"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AFRICA
+    short: AFRICA
+    issn: "00019720"
+    eissn: "17500184"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Africa Spectrum
+    short: AFR SPECTR
+    issn: "00020397"
+    eissn: "18686869"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AFRICAN AFFAIRS
+    short: AFR AFFAIRS
+    issn: "00019909"
+    eissn: "14682621"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: African Archaeological Review
+    short: AFR ARCHAEOL REV
+    issn: "02630338"
+    eissn: "15729842"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Agricultural and Food Economics
+    short: AGR FOOD ECON
+    issn: ""
+    eissn: "21937532"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AGRICULTURAL ECONOMICS
+    short: AGR ECON-BLACKWELL
+    issn: "01695150"
+    eissn: "15740862"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AGRICULTURE AND HUMAN VALUES
+    short: AGR HUM VALUES
+    issn: 0889048X
+    eissn: "15728366"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AIBR-Revista de Antropologia Iberoamericana
+    short: AIBR-REV ANTROPOL IB
+    issn: "16959752"
+    eissn: "15789705"
+    site: ""
+    notes: WOS/JCR; ASOC ANTROPOLOGOS IBEROAMERICANOS EN RED
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AMERICAN ANTHROPOLOGIST
+    short: AM ANTHROPOL
+    issn: "00027294"
+    eissn: "15481433"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AMERICAN ANTIQUITY
+    short: AM ANTIQUITY
+    issn: "00027316"
+    eissn: "23255064"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: American Economic Journal-Applied Economics
+    short: AM ECON J-APPL ECON
+    issn: "19457782"
+    eissn: "19457790"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: American Economic Journal-Economic Policy
+    short: AM ECON J-ECON POLIC
+    issn: "19457731"
+    eissn: 1945774X
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: American Economic Journal-Macroeconomics
+    short: AM ECON J-MACROECON
+    issn: "19457707"
+    eissn: "19457715"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AMERICAN ECONOMIC REVIEW
+    short: AM ECON REV
+    issn: "00028282"
+    eissn: "19447981"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: American Economic Review-Insights
+    short: AM ECON REV INSIGHTS
+    issn: 2640205X
+    eissn: "26402068"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AMERICAN ETHNOLOGIST
+    short: AM ETHNOL
+    issn: "00940496"
+    eissn: "15481425"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AMERICAN JOURNAL OF AGRICULTURAL ECONOMICS
+    short: AM J AGR ECON
+    issn: "00029092"
+    eissn: "14678276"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: American Journal of Biological Anthropology
+    short: AM J BIOL ANTHROPOL
+    issn: "26927691"
+    eissn: "26927691"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AMERICAN JOURNAL OF HUMAN BIOLOGY
+    short: AM J HUM BIOL
+    issn: "10420533"
+    eissn: "15206300"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AMERICAN JOURNAL OF SOCIOLOGY
+    short: AM J SOCIOL
+    issn: "00029602"
+    eissn: "15375390"
+    site: https://www.journals.uchicago.edu/toc/ajs/current
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: https://openalex.org/S122471516
+    openalex_source_display_name: American Journal of Sociology
+  - name: AMERICAN SOCIOLOGICAL REVIEW
+    short: AM SOCIOL REV
+    issn: "00031224"
+    eissn: "19398271"
+    site: https://journals.sagepub.com/home/asr
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: https://openalex.org/S157620343
+    openalex_source_display_name: American Sociological Review
+  - name: Annals of Anthropological Practice
+    short: ANN ANTHROPL PRACT
+    issn: 2153957X
+    eissn: "21539588"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANNALS OF HUMAN BIOLOGY
+    short: ANN HUM BIOL
+    issn: "03014460"
+    eissn: "14645033"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annals of Public and Cooperative Economics
+    short: ANN PUBLIC COOP ECON
+    issn: "13704788"
+    eissn: "14678292"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANNALS OF TOURISM RESEARCH
+    short: ANN TOURISM RES
+    issn: "01607383"
+    eissn: "18737722"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Anthropology
+    short: ANNU REV ANTHROPOL
+    issn: "00846570"
+    eissn: "15454290"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Economics
+    short: ANNU REV ECON
+    issn: "19411383"
+    eissn: "19411391"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Environment and Resources
+    short: ANNU REV ENV RESOUR
+    issn: "15435938"
+    eissn: "15452050"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Financial Economics
+    short: ANNU REV FINANC ECON
+    issn: "19411367"
+    eissn: "19411375"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Law and Social Science
+    short: ANNU REV LAW SOC SCI
+    issn: "15503585"
+    eissn: "15503631"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Organizational Psychology and Organizational Behavior
+    short: ANNU REV ORGAN PSYCH
+    issn: "23270608"
+    eissn: "23270616"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Resource Economics
+    short: ANNU REV RESOUR ECON
+    issn: "19411340"
+    eissn: "19411359"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Annual Review of Sociology
+    short: ANNU REV SOCIOL
+    issn: "03600572"
+    eissn: "15452115"
+    site: https://www.annualreviews.org/content/journals/soc
+    notes: WOS/JCR; ANNUAL REVIEWS
+    openalex_source_id: https://openalex.org/S61274580
+    openalex_source_display_name: Annual Review of Sociology
+  - name: Anthropological Forum
+    short: ANTHROPOL FORUM
+    issn: "00664677"
+    eissn: "14692902"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropological Journal of European Cultures
+    short: ANTHROPOL J EUR CULT
+    issn: "17552923"
+    eissn: "17552931"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropological Notebooks
+    short: ANTHROPOL NOTEB
+    issn: 1408032X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SLOVENE ANTHROPOLOGICAL SOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOLOGICAL QUARTERLY
+    short: ANTHROPOL QUART
+    issn: "00035491"
+    eissn: "15341518"
+    site: ""
+    notes: WOS/JCR; GEORGE WASHINGTON UNIV INST ETHNOGRAPHIC RESEARCH
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropological Theory
+    short: ANTHROPOL THEOR
+    issn: "14634996"
+    eissn: "17412641"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOLOGIE
+    short: ANTHROPOLOGIE
+    issn: "00035521"
+    eissn: "18735827"
+    site: ""
+    notes: WOS/JCR; ELSEVIER FRANCE-EDITIONS SCIENTIFIQUES MEDICALES ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropologie et Sante-Revue Internationale Francophone d Anthropologie de
+      la Sante
+    short: ANTHROPOL SANTE
+    issn: "21115028"
+    eissn: "21115028"
+    site: ""
+    notes: WOS/JCR; ASSOC AMADES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOLOGIE-INTERNATIONAL JOURNAL OF HUMAN DIVERSITY AND EVOLUTION
+    short: ANTHROPOL-INT J HUM
+    issn: "03231119"
+    eissn: "03231119"
+    site: ""
+    notes: WOS/JCR; MORAVIAN MUSEUM
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOLOGISCHER ANZEIGER
+    short: ANTHROPOL ANZ
+    issn: "00035548"
+    eissn: "00035548"
+    site: ""
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOLOGY & EDUCATION QUARTERLY
+    short: ANTHROPOL EDUC QUART
+    issn: "01617761"
+    eissn: "15481492"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropology & Medicine
+    short: ANTHROPOL MED
+    issn: "13648470"
+    eissn: "14692910"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropology in Action-Journal for Applied Anthropology in Policy and
+      Practice
+    short: ANTHROPOL ACTION
+    issn: 0967201X
+    eissn: "17522285"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOLOGY OF CONSCIOUSNESS
+    short: ANTHROPOL CONSCIOUS
+    issn: "10534202"
+    eissn: "15563537"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropology of Work Review
+    short: ANTHROPOL WORK REV
+    issn: 0883024X
+    eissn: "15481417"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropology Southern Africa
+    short: ANTHROPOL SOUTH AFR
+    issn: "23323256"
+    eissn: "23323264"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Anthropology Today
+    short: ANTHROPOL TODAY
+    issn: 0268540X
+    eissn: "14678322"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOS
+    short: ANTHROPOS
+    issn: "02579774"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; NOMOS VERLAGSGESELLSCHAFT MBH & CO KG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROPOZOOLOGICA
+    short: ANTHROPOZOOLOGICA
+    issn: "07613032"
+    eissn: "21070881"
+    site: ""
+    notes: WOS/JCR; PUBLICATIONS SCIENTIFIQUES DU MUSEUM, PARIS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTHROZOOS
+    short: ANTHROZOOS
+    issn: "08927936"
+    eissn: "17530377"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ANTIQUITY
+    short: ANTIQUITY
+    issn: 0003598X
+    eissn: "17451744"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Antropologia Portuguesa
+    short: ANTROPOL PORT
+    issn: "08700990"
+    eissn: "21827982"
+    site: ""
+    notes: WOS/JCR; COIMBRA UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Applied Economic Analysis
+    short: APPL ECON ANAL
+    issn: ""
+    eissn: "26327627"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Applied Economic Perspectives and Policy
+    short: APPL ECON PERSPECT P
+    issn: "20405790"
+    eissn: "20405804"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Applied Health Economics and Health Policy
+    short: APPL HEALTH ECON HEA
+    issn: "11755652"
+    eissn: "11791896"
+    site: ""
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Archaeological and Anthropological Sciences
+    short: ARCHAEOL ANTHROP SCI
+    issn: "18669557"
+    eissn: "18669565"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Archaeology Ethnology and Anthropology of Eurasia
+    short: ARCHAEOL ETHNOL ANTH
+    issn: "15630110"
+    eissn: 1531832X
+    site: ""
+    notes: WOS/JCR; PLEIADES PUBLISHING INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ARCHAEOLOGY IN OCEANIA
+    short: ARCHAEOL OCEAN
+    issn: "07284896"
+    eissn: "18344453"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ARCTIC ANTHROPOLOGY
+    short: ARCTIC ANTHROPOL
+    issn: "00666939"
+    eissn: "19338139"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Asia Pacific Journal of Anthropology
+    short: ASIA PAC J ANTHROPOL
+    issn: "14442213"
+    eissn: "17409314"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Asia Pacific Journal of Human Resources
+    short: ASIA PAC J HUM RESOU
+    issn: "10384111"
+    eissn: "17447941"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Asia Pacific Journal of Management
+    short: ASIA PAC J MANAG
+    issn: "02174561"
+    eissn: "15729958"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Asia Pacific Viewpoint
+    short: ASIA PAC VIEWP
+    issn: "13607456"
+    eissn: "14678373"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Asian Economic Policy Review
+    short: ASIAN ECON POLICY R
+    issn: "18328105"
+    eissn: "17483131"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Asian Journal of Social Science
+    short: ASIAN J SOC SCI
+    issn: "15684849"
+    eissn: "15685314"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Asian Studies Review
+    short: ASIAN STUD REV
+    issn: "10357823"
+    eissn: "14678403"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ASIAN SURVEY
+    short: ASIAN SURV
+    issn: "00044687"
+    eissn: 1533838X
+    site: ""
+    notes: WOS/JCR; UNIV CALIFORNIA PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: AUSTRALIAN ARCHAEOLOGY
+    short: AUST ARCHAEOL
+    issn: "03122417"
+    eissn: "24700363"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Australian Journal of Anthropology
+    short: AUST J ANTHROPOL
+    issn: "10358811"
+    eissn: "17576547"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: BIJDRAGEN TOT DE TAAL- LAND- EN VOLKENKUNDE
+    short: BIJDR TAAL-LAND-V
+    issn: "00062294"
+    eissn: "22134379"
+    site: ""
+    notes: WOS/JCR; BRILL
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Bioarchaeology International
+    short: BIOARCHAEOLOGY INT
+    issn: "24728349"
+    eissn: "24728357"
+    site: ""
+    notes: WOS/JCR; UNIV FLORIDA PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Boletin Antropologico
+    short: BOL ANTROPOL
+    issn: 0257750X
+    eissn: 0257750X
+    site: ""
+    notes: WOS/JCR; UNIV LOS ANDES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Borsa Istanbul Review
+    short: BORSA ISTANB REV
+    issn: "22148450"
+    eissn: "22148469"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: BRITISH JOURNAL OF MANAGEMENT
+    short: BRIT J MANAGE
+    issn: "10453172"
+    eissn: "14678551"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: BRITISH JOURNAL OF SOCIOLOGY
+    short: BRIT J SOCIOL
+    issn: "00071315"
+    eissn: "14684446"
+    site: https://onlinelibrary.wiley.com/journal/14684446
+    notes: WOS/JCR; WILEY
+    openalex_source_id: https://openalex.org/S173252385
+    openalex_source_display_name: British Journal of Sociology
+  - name: BRITISH JOURNAL OF SOCIOLOGY OF EDUCATION
+    short: BRIT J SOCIOL EDUC
+    issn: "01425692"
+    eissn: "14653346"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: BROOKINGS PAPERS ON ECONOMIC ACTIVITY
+    short: BROOKINGS PAP ECO AC
+    issn: "00072303"
+    eissn: "15334465"
+    site: ""
+    notes: WOS/JCR; JOHNS HOPKINS UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: BULLETIN OF INDONESIAN ECONOMIC STUDIES
+    short: B INDONES ECON STUD
+    issn: "00074918"
+    eissn: "14727234"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Business Process Management Journal
+    short: BUS PROCESS MANAG J
+    issn: "14637154"
+    eissn: "17584116"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Business Strategy and the Environment
+    short: BUS STRATEG ENVIRON
+    issn: "09644733"
+    eissn: "10990836"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CAHIERS D ETUDES AFRICAINES
+    short: CAH ETUD AFR
+    issn: "00080055"
+    eissn: "17775353"
+    site: ""
+    notes: WOS/JCR; EDITIONS ECOLE HAUTESETUDES & SCIENCES SOCIALES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CALIFORNIA MANAGEMENT REVIEW
+    short: CALIF MANAGE REV
+    issn: "00081256"
+    eissn: "21628564"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Cambridge Journal of Anthropology
+    short: CAMB J ANTHROPOL
+    issn: "03057674"
+    eissn: "20477716"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Cambridge Journal of Regions Economy and Society
+    short: CAMB J REG ECON SOC
+    issn: "17521378"
+    eissn: "17521386"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Central Asian Survey
+    short: CENT ASIAN SURV
+    issn: "02634937"
+    eissn: "14653354"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Childhood in the Past
+    short: CHILD PAST
+    issn: "17585716"
+    eissn: "20408528"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: China & World Economy
+    short: CHINA WORLD ECON
+    issn: "16712234"
+    eissn: 1749124X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: China Agricultural Economic Review
+    short: CHINA AGR ECON REV
+    issn: 1756137X
+    eissn: "17561388"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CHINA ECONOMIC REVIEW
+    short: CHINA ECON REV
+    issn: 1043951X
+    eissn: "18737781"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: China Information
+    short: CHINA INFORM
+    issn: 0920203X
+    eissn: 1741590X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CHINA JOURNAL
+    short: CHINA J
+    issn: "13249347"
+    eissn: "18358535"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CHINA QUARTERLY
+    short: CHINA QUART
+    issn: "03057410"
+    eissn: "14682648"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: China Review-An Interdisciplinary Journal on Greater China
+    short: CHINA REV
+    issn: "16802012"
+    eissn: "16802012"
+    site: ""
+    notes: WOS/JCR; CHINESE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Chinese Sociological Review
+    short: CSR
+    issn: "21620555"
+    eissn: "21620563"
+    site: https://www.tandfonline.com/journals/mcsa20
+    notes: Taylor & Francis
+    openalex_source_id: https://openalex.org/S2764722375
+    openalex_source_display_name: Chinese Sociological Review
+  - name: Chungara-Revista de Antropologia Chilena
+    short: CHUNGARA
+    issn: "07177356"
+    eissn: "07177356"
+    site: ""
+    notes: WOS/JCR; UNIV TARAPACA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CITIES
+    short: CITIES
+    issn: "02642751"
+    eissn: "18736084"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: City & Community
+    short: CITY COMMUNITY
+    issn: "15356841"
+    eissn: "15406040"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: City & Society
+    short: CITY SOC
+    issn: "08930465"
+    eissn: 1548744X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CLIMATE POLICY
+    short: CLIM POLICY
+    issn: "14693062"
+    eissn: "17527457"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Climate Risk Management
+    short: CLIM RISK MANAG
+    issn: "22120963"
+    eissn: "22120963"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Climate Services
+    short: CLIM SERV
+    issn: "24058807"
+    eissn: "24058807"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Communication & Sport
+    short: COMMUN SPORT
+    issn: "21674795"
+    eissn: "21674809"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Communication Methods and Measures
+    short: COMMUN METHODS MEAS
+    issn: "19312458"
+    eissn: "19312466"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: COMMUNICATION RESEARCH
+    short: COMMUN RES
+    issn: "00936502"
+    eissn: "15523810"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: COMMUNICATION THEORY
+    short: COMMUN THEOR
+    issn: "10503293"
+    eissn: "14682885"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Communications-European Journal of Communication Research
+    short: COMMUNICATIONS-GER
+    issn: "03412059"
+    eissn: "16134087"
+    site: ""
+    notes: WOS/JCR; DE GRUYTER MOUTON
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Comparative Migration Studies
+    short: COMP MIGR STUD
+    issn: ""
+    eissn: 2214594X
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: COMPARATIVE STUDIES IN SOCIETY AND HISTORY
+    short: COMP STUD SOC HIST
+    issn: "00104175"
+    eissn: "14752999"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Competition & Change
+    short: COMPET CHANG
+    issn: "10245294"
+    eissn: "14772221"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: COMPUTERS ENVIRONMENT AND URBAN SYSTEMS
+    short: COMPUT ENVIRON URBAN
+    issn: "01989715"
+    eissn: "18737587"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Convergence-The International Journal of Research into New Media
+      Technologies
+    short: CONVERGENCE-US
+    issn: "13548565"
+    eissn: "17487382"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Cornell Hospitality Quarterly
+    short: CORNELL HOSP Q
+    issn: "19389655"
+    eissn: "19389663"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CORPORATE GOVERNANCE-AN INTERNATIONAL REVIEW
+    short: CORP GOV-OXFORD
+    issn: "09648410"
+    eissn: "14678683"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Corporate Social Responsibility and Environmental Management
+    short: CORP SOC RESP ENV MA
+    issn: "15353958"
+    eissn: "15353966"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Critical African Studies
+    short: CRIT AFR STUD
+    issn: "21681392"
+    eissn: "20407211"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CRITICAL ASIAN STUDIES
+    short: CRIT ASIAN STUD
+    issn: "14672715"
+    eissn: "14726033"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CRITIQUE OF ANTHROPOLOGY
+    short: CRIT ANTHROPOL
+    issn: 0308275X
+    eissn: "14603721"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Cuadernos de Antropologia
+    short: CUAD ANTROPOL
+    issn: "14093138"
+    eissn: 2215356X
+    site: ""
+    notes: WOS/JCR; UNIV COSTA RICA, FAC CIENCIAS SOCIALES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CULTURAL ANTHROPOLOGY
+    short: CULT ANTHROPOL
+    issn: "08867356"
+    eissn: "15481360"
+    site: ""
+    notes: WOS/JCR; SOC CULTURAL ANTHROPOLOGY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CULTURAL STUDIES
+    short: CULT STUD
+    issn: "09502386"
+    eissn: "14664348"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CULTURE MEDICINE AND PSYCHIATRY
+    short: CULT MED PSYCHIAT
+    issn: 0165005X
+    eissn: 1573076X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: CURRENT ANTHROPOLOGY
+    short: CURR ANTHROPOL
+    issn: "00113204"
+    eissn: "15375382"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Cyberpsychology-Journal of Psychosocial Research on Cyberspace
+    short: CYBERPSYCHOLOGY
+    issn: "18027962"
+    eissn: "18027962"
+    site: ""
+    notes: WOS/JCR; MASARYKOVA UNIV, FAC SOCIAL STUDIES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: DEMOGRAPHY
+    short: DEMOGRAPHY
+    issn: "00703370"
+    eissn: "15337790"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: DIALECTICAL ANTHROPOLOGY
+    short: DIALECT ANTHROPOL
+    issn: "03044092"
+    eissn: "15730786"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Digital Journalism
+    short: DIGIT JOURNAL
+    issn: "21670811"
+    eissn: 2167082X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: DISCOURSE & SOCIETY
+    short: DISCOURSE SOC
+    issn: "09579265"
+    eissn: "14603624"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Discourse Context & Media
+    short: DISCOURSE CONTEXT ME
+    issn: "22116958"
+    eissn: "22116966"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: East European Politics
+    short: EAST EUR POLITICS
+    issn: "21599165"
+    eissn: "21599173"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECOLOGICAL ECONOMICS
+    short: ECOL ECON
+    issn: "09218009"
+    eissn: "18736106"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECONOMETRICA
+    short: ECONOMETRICA
+    issn: "00129682"
+    eissn: "14680262"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Econometrics Journal
+    short: ECONOMET J
+    issn: "13684221"
+    eissn: 1368423X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Economic Analysis and Policy
+    short: ECON ANAL POLICY
+    issn: "03135926"
+    eissn: "03135926"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Economic Anthropology
+    short: ECON ANTHROPOL
+    issn: "23304847"
+    eissn: "23304847"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Economic Change and Restructuring
+    short: ECON CHANG RESTRUCT
+    issn: "15739414"
+    eissn: "15740277"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECONOMIC DEVELOPMENT AND CULTURAL CHANGE
+    short: ECON DEV CULT CHANGE
+    issn: "00130079"
+    eissn: "15392988"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECONOMIC GEOGRAPHY
+    short: ECON GEOGR
+    issn: "00130095"
+    eissn: "19448287"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECONOMIC JOURNAL
+    short: ECON J
+    issn: "00130133"
+    eissn: "14680297"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECONOMIC MODELLING
+    short: ECON MODEL
+    issn: "02649993"
+    eissn: "18736122"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECONOMIC POLICY
+    short: ECON POLICY
+    issn: "02664658"
+    eissn: "14680327"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Economic Systems
+    short: ECON SYST
+    issn: "09393625"
+    eissn: "18785433"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Economics of Innovation and New Technology
+    short: ECON INNOV NEW TECH
+    issn: "10438599"
+    eissn: "14768364"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ECONOMY AND SOCIETY
+    short: ECON SOC
+    issn: "03085147"
+    eissn: "14695766"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Ecosystem Services
+    short: ECOSYST SERV
+    issn: "22120416"
+    eissn: "22120416"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Electronic Markets
+    short: ELECTRON MARK
+    issn: "10196781"
+    eissn: "14228890"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EMERGING MARKETS FINANCE AND TRADE
+    short: EMERG MARK FINANC TR
+    issn: 1540496X
+    eissn: "15580938"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Emerging Markets Review
+    short: EMERG MARK REV
+    issn: "15660141"
+    eissn: "18736173"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EMPLOYEE RELATIONS
+    short: EMPL RELAT
+    issn: "01425455"
+    eissn: "17587069"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Energy & Environment
+    short: ENERG ENVIRON-UK
+    issn: 0958305X
+    eissn: "20484070"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Energy Economics
+    short: ENERG ECON
+    issn: "01409883"
+    eissn: "18736181"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Energy Policy
+    short: ENERG POLICY
+    issn: "03014215"
+    eissn: "18736777"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Energy Research & Social Science
+    short: ENERGY RES SOC SCI
+    issn: "22146296"
+    eissn: "22146326"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ENVIRONMENT AND BEHAVIOR
+    short: ENVIRON BEHAV
+    issn: "00139165"
+    eissn: 1552390X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Environment and Planning B-Urban Analytics and City Science
+    short: ENVIRON PLAN B-URBAN
+    issn: "23998083"
+    eissn: "23998091"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ENVIRONMENTAL & RESOURCE ECONOMICS
+    short: ENVIRON RESOUR ECON
+    issn: "09246460"
+    eissn: "15731502"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Environmental Communication-A Journal of Nature and Culture
+    short: ENVIRON COMMUN
+    issn: "17524032"
+    eissn: "17524040"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Environmental Impact Assessment Review
+    short: ENVIRON IMPACT ASSES
+    issn: "01959255"
+    eissn: "18736432"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Environmental Innovation and Societal Transitions
+    short: ENVIRON INNOV SOC TR
+    issn: "22104224"
+    eissn: "22104232"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ENVIRONMENTAL POLITICS
+    short: ENVIRON POLIT
+    issn: "09644016"
+    eissn: "17438934"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Estudios Atacamenos
+    short: ESTUD ATACAMENOS
+    issn: "07181043"
+    eissn: "07181043"
+    site: ""
+    notes: WOS/JCR; UNIV CATOLICA NORTE, Inst Invest Arqueologicas y Museo RP
+      Gustavo Le Paige
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Estudios de Cultura Maya
+    short: ESTUD CULT MAYA
+    issn: "01852574"
+    eissn: "24485179"
+    site: ""
+    notes: WOS/JCR; UNIV NAC AUTONOMA MEXICO, INST INVESTIGACIONES FILOLOGICAS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Ethnobiology Letters
+    short: ETHNOBIOL LETT
+    issn: "21598126"
+    eissn: "21598126"
+    site: ""
+    notes: WOS/JCR; SOC ETHNOBIOLOGY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Ethnography
+    short: ETHNOGRAPHY
+    issn: "14661381"
+    eissn: "17412714"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ETHNOHISTORY
+    short: ETHNOHISTORY
+    issn: "00141801"
+    eissn: "15275477"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Ethnologies
+    short: ETHNOLOGIES
+    issn: "14815974"
+    eissn: "17080401"
+    site: ""
+    notes: WOS/JCR; FOLKLORE STUDIES ASSOC CANADA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ETHNOS
+    short: ETHNOS
+    issn: "00141844"
+    eissn: 1469588X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ETHOS
+    short: ETHOS
+    issn: "00912131"
+    eissn: "15481352"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Etnoantropoloski Problemi-Issues in Ethnology and Anthropology
+    short: ETNOANTROPOLOSKI PRO
+    issn: "03531589"
+    eissn: "23348801"
+    site: ""
+    notes: WOS/JCR; UNIV BELGRADE, FAC PHILOSOPHY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Etnoloska Tribina
+    short: ETHNOLOSKA TRIB
+    issn: "03511944"
+    eissn: "18489540"
+    site: ""
+    notes: WOS/JCR; CROATIAN ETHNOLOGICAL SOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Etudes Inuit Studies
+    short: ETUDES INUIT STUD
+    issn: "07011008"
+    eissn: "07011008"
+    site: ""
+    notes: WOS/JCR; UNIV LAVAL, FAC SCIENCES SOCIALES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Eurasian Business Review
+    short: EURASIAN BUS REV
+    issn: "13094297"
+    eissn: "21474281"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EURASIAN GEOGRAPHY AND ECONOMICS
+    short: EURASIAN GEOGR ECON
+    issn: "15387216"
+    eissn: "19382863"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EUROPE-ASIA STUDIES
+    short: EUROPE-ASIA STUD
+    issn: "09668136"
+    eissn: "14653427"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EUROPEAN JOURNAL OF COMMUNICATION
+    short: EUR J COMMUN
+    issn: "02673231"
+    eissn: "14603705"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: European Journal of Health Economics
+    short: EUR J HEALTH ECON
+    issn: "16187598"
+    eissn: "16187601"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EUROPEAN JOURNAL OF INFORMATION SYSTEMS
+    short: EUR J INFORM SYST
+    issn: 0960085X
+    eissn: "14769344"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: European Journal of Innovation Management
+    short: EUR J INNOV MANAG
+    issn: "14601060"
+    eissn: "17587115"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: European Journal of Population-Revue Europeenne de Demographie
+    short: EUR J POPUL
+    issn: "01686577"
+    eissn: "15729885"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: European Management Journal
+    short: EUR MANAG J
+    issn: "02632373"
+    eissn: "18735681"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EUROPEAN PLANNING STUDIES
+    short: EUR PLAN STUD
+    issn: "09654313"
+    eissn: "14695944"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: European Research on Management and Business Economics
+    short: EUR RES MANAG BUS EC
+    issn: "24448834"
+    eissn: "24448842"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EUROPEAN REVIEW OF AGRICULTURAL ECONOMICS
+    short: EUR REV AGRIC ECON
+    issn: "01651587"
+    eissn: "14643618"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: European Security
+    short: EUR SECUR
+    issn: "09662839"
+    eissn: "17461545"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EUROPEAN SOCIETIES
+    short: EUR SOC
+    issn: "14616696"
+    eissn: "14698307"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EUROPEAN SOCIOLOGICAL REVIEW
+    short: EUR SOCIOL REV
+    issn: "02667215"
+    eissn: "14682672"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: EVOLUTIONARY ANTHROPOLOGY
+    short: EVOL ANTHROPOL
+    issn: "10601538"
+    eissn: "15206505"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Evolutionary Human Sciences
+    short: EVOL HUM SCI
+    issn: ""
+    eissn: 2513843X
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: FEMINISM & PSYCHOLOGY
+    short: FEM PSYCHOL
+    issn: "09593535"
+    eissn: "14617161"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Feminist Anthropology
+    short: FEM ANTHROPOL
+    issn: "26437961"
+    eissn: "26437961"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: FEMINIST ECONOMICS
+    short: FEM ECON
+    issn: "13545701"
+    eissn: "14664372"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Field Methods
+    short: FIELD METHOD
+    issn: 1525822X
+    eissn: "15523969"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Focaal-Journal of Global and Historical Anthropology
+    short: FOCAAL
+    issn: "09201297"
+    eissn: "15585263"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Food and Foodways
+    short: FOOD FOODWAYS
+    issn: "07409710"
+    eissn: "15423484"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: FOOD POLICY
+    short: FOOD POLICY
+    issn: "03069192"
+    eissn: "18735657"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Forest Policy and Economics
+    short: FOREST POLICY ECON
+    issn: "13899341"
+    eissn: "18727050"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: FRONTIERS-A JOURNAL OF WOMEN STUDIES
+    short: FRONTIERS
+    issn: "01609009"
+    eissn: "15360334"
+    site: ""
+    notes: WOS/JCR; UNIV NEBRASKA PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Futures
+    short: FUTURES
+    issn: "00163287"
+    eissn: "18736378"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Gazeta de Antropologia
+    short: GAZ ANTROPOL
+    issn: "23402792"
+    eissn: "23402792"
+    site: ""
+    notes: WOS/JCR; ASOC GRANADINA ANTROPOLOGIA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: GENDER & SOCIETY
+    short: GENDER SOC
+    issn: "08912432"
+    eissn: "15523977"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Gender in Management
+    short: GEND MANAG
+    issn: "17542413"
+    eissn: "17542421"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: GENDER WORK AND ORGANIZATION
+    short: GENDER WORK ORGAN
+    issn: "09686673"
+    eissn: "14680432"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Global Economic Review
+    short: GLOBAL ECON REV
+    issn: 1226508X
+    eissn: "17443873"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: GLOBAL ENVIRONMENTAL CHANGE-HUMAN AND POLICY DIMENSIONS
+    short: GLOBAL ENVIRON CHANG
+    issn: "09593780"
+    eissn: "18729495"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: GLOBAL NETWORKS-A JOURNAL OF TRANSNATIONAL AFFAIRS
+    short: GLOBAL NETW
+    issn: "14702266"
+    eissn: "14710374"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: GOVERNANCE-AN INTERNATIONAL JOURNAL OF POLICY ADMINISTRATION AND
+      INSTITUTIONS
+    short: GOVERNANCE
+    issn: "09521895"
+    eissn: "14680491"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HABITAT INTERNATIONAL
+    short: HABITAT INT
+    issn: "01973975"
+    eissn: "18735428"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HARVARD BUSINESS REVIEW
+    short: HARVARD BUS REV
+    issn: "00178012"
+    eissn: "00178012"
+    site: ""
+    notes: WOS/JCR; HARVARD BUSINESS SCHOOL PUBLISHING CORPORATION
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HAU-Journal of Ethnographic Theory
+    short: HAU-J ETHNOGR THEORY
+    issn: "25751433"
+    eissn: "20491115"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HEALTH COMMUNICATION
+    short: HEALTH COMMUN
+    issn: "10410236"
+    eissn: "15327027"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Health Economics Review
+    short: HEALTH ECON REV
+    issn: "21911991"
+    eissn: "21911991"
+    site: ""
+    notes: WOS/JCR; BMC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Health Sociology Review
+    short: HEALTH SOCIOL REV
+    issn: "14461242"
+    eissn: "18393551"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: History and Anthropology
+    short: HIST ANTHROPOL
+    issn: "02757206"
+    eissn: "14772612"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HOMO-JOURNAL OF COMPARATIVE HUMAN BIOLOGY
+    short: HOMO
+    issn: 0018442X
+    eissn: "16181301"
+    site: ""
+    notes: WOS/JCR; E SCHWEIZERBARTSCHE VERLAGSBUCHHANDLUNG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HOUSING POLICY DEBATE
+    short: HOUS POLICY DEBATE
+    issn: "10511482"
+    eissn: 2152050X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HOUSING STUDIES
+    short: HOUSING STUD
+    issn: "02673037"
+    eissn: "14661810"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HUMAN COMMUNICATION RESEARCH
+    short: HUM COMMUN RES
+    issn: "03603989"
+    eissn: "14682958"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HUMAN ECOLOGY
+    short: HUM ECOL
+    issn: "03007839"
+    eissn: "15729915"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HUMAN NATURE-AN INTERDISCIPLINARY BIOSOCIAL PERSPECTIVE
+    short: HUM NATURE-INT BIOS
+    issn: "10456767"
+    eissn: "19364776"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HUMAN ORGANIZATION
+    short: HUM ORGAN
+    issn: "00187259"
+    eissn: "19383525"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HUMAN RELATIONS
+    short: HUM RELAT
+    issn: "00187267"
+    eissn: 1741282X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Human Resource Development Quarterly
+    short: HUM RESOUR DEV Q
+    issn: "10448004"
+    eissn: "15321096"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HUMAN RESOURCE MANAGEMENT
+    short: HUM RESOUR MANAGE-US
+    issn: "00904848"
+    eissn: 1099050X
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Human Resource Management Journal
+    short: HUM RESOUR MANAG J
+    issn: "09545395"
+    eissn: "17488583"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: HUMAN RESOURCE MANAGEMENT REVIEW
+    short: HUM RESOUR MANAGE R
+    issn: "10534822"
+    eissn: "18737889"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Human Resources for Health
+    short: HUM RESOUR HEALTH
+    issn: ""
+    eissn: "14784491"
+    site: ""
+    notes: WOS/JCR; BMC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: IEEE TRANSACTIONS ON ENGINEERING MANAGEMENT
+    short: IEEE T ENG MANAGE
+    issn: "00189391"
+    eissn: "15580040"
+    site: ""
+    notes: WOS/JCR; IEEE-INST ELECTRICAL ELECTRONICS ENGINEERS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ILR Review
+    short: ILR REV
+    issn: "00197939"
+    eissn: 2162271X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INDUSTRIAL MARKETING MANAGEMENT
+    short: IND MARKET MANAG
+    issn: "00198501"
+    eissn: "18732062"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Industry and Innovation
+    short: IND INNOV
+    issn: "13662716"
+    eissn: "14698390"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INFORMATION & MANAGEMENT
+    short: INFORM MANAGE-AMSTER
+    issn: "03787206"
+    eissn: "18727530"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Information Communication & Society
+    short: INFORM COMMUN SOC
+    issn: 1369118X
+    eissn: "14684462"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INFORMATION ECONOMICS AND POLICY
+    short: INF ECON POLICY
+    issn: "01676245"
+    eissn: "18735975"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INFORMATION SOCIETY
+    short: INFORM SOC
+    issn: "01972243"
+    eissn: "10876537"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INFORMATION SYSTEMS RESEARCH
+    short: INFORM SYST RES
+    issn: "10477047"
+    eissn: "15265536"
+    site: ""
+    notes: WOS/JCR; INFORMS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Inter-Asia Cultural Studies
+    short: INTER-ASIA CULT STUD
+    issn: "14649373"
+    eissn: "14698447"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Interdisciplinaria Archaeologica-Natural Sciences in Archaeology
+    short: INTERDISCIP ARCHAEOL
+    issn: 1804848X
+    eissn: "23361220"
+    site: ""
+    notes: WOS/JCR; UNIV HRADEC KRALOVE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Business Review
+    short: INT BUS REV
+    issn: "09695931"
+    eissn: "18736149"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Environmental Agreements-Politics Law and Economics
+    short: INT ENVIRON AGREEM-P
+    issn: "15679764"
+    eissn: "15731553"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Feminist Journal of Politics
+    short: INT FEM J POLIT
+    issn: "14616742"
+    eissn: "14684470"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Indigenous Policy Journal
+    short: INT INDIG POLICY J
+    issn: "19165781"
+    eissn: "19165781"
+    site: ""
+    notes: WOS/JCR; UNIV WESTERN ONTARIO
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Accounting Information Systems
+    short: INT J ACCOUNT INF SY
+    issn: "14670895"
+    eissn: "18734723"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Advertising
+    short: INT J ADVERT
+    issn: "02650487"
+    eissn: "17593948"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Business Communication
+    short: INT J BUS COMMUN
+    issn: "23294884"
+    eissn: "23294892"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF CONFLICT MANAGEMENT
+    short: INT J CONFL MANAGE
+    issn: "10444068"
+    eissn: "17588545"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Contemporary Hospitality Management
+    short: INT J CONTEMP HOSP M
+    issn: "09596119"
+    eissn: "17571049"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Emerging Markets
+    short: INT J EMERG MARK
+    issn: "17468809"
+    eissn: "17468817"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF FORECASTING
+    short: INT J FORECASTING
+    issn: "01692070"
+    eissn: "18728200"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF HUMAN RESOURCE MANAGEMENT
+    short: INT J HUM RESOUR MAN
+    issn: "09585192"
+    eissn: "14664399"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Intercultural Relations
+    short: INT J INTERCULT REL
+    issn: "01471767"
+    eissn: "18737552"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Logistics Management
+    short: INT J LOGIST MANAG
+    issn: "09574093"
+    eissn: "17586550"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Logistics-Research and Applications
+    short: INT J LOGIST-RES APP
+    issn: "13675567"
+    eissn: 1469848X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Management Education
+    short: INT J MANAG EDUC-OXF
+    issn: "14728117"
+    eissn: "23523565"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF MANAGEMENT REVIEWS
+    short: INT J MANAG REV
+    issn: "14608545"
+    eissn: "14682370"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF MANPOWER
+    short: INT J MANPOWER
+    issn: "01437720"
+    eissn: "17586577"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF MIDDLE EAST STUDIES
+    short: INT J MIDDLE E STUD
+    issn: "00207438"
+    eissn: "14716380"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF OPERATIONS & PRODUCTION MANAGEMENT
+    short: INT J OPER PROD MAN
+    issn: "01443577"
+    eissn: "17586593"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF OSTEOARCHAEOLOGY
+    short: INT J OSTEOARCHAEOL
+    issn: 1047482X
+    eissn: "10991212"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF PHYSICAL DISTRIBUTION & LOGISTICS MANAGEMENT
+    short: INT J PHYS DISTR LOG
+    issn: "09600035"
+    eissn: 1758664X
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Press-Politics
+    short: INT J PRESS/POLIT
+    issn: "19401612"
+    eissn: "19401620"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF PROJECT MANAGEMENT
+    short: INT J PROJ MANAG
+    issn: "02637863"
+    eissn: "18734634"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Journal of Retail & Distribution Management
+    short: INT J RETAIL DISTRIB
+    issn: "09590552"
+    eissn: "17586690"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL JOURNAL OF URBAN SCIENCES
+    short: INT J URBAN SCI
+    issn: "12265934"
+    eissn: "21616779"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL LABOUR REVIEW
+    short: INT LABOUR REV
+    issn: "00207780"
+    eissn: 1564913X
+    site: ""
+    notes: WOS/JCR; OPEN LIBRARY HUMANITIES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: INTERNATIONAL MIGRATION REVIEW
+    short: INT MIGR REV
+    issn: "01979183"
+    eissn: "17477379"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Political Sociology
+    short: INT POLIT SOCIOL
+    issn: "17495679"
+    eissn: "17495687"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Public Management Journal
+    short: INT PUBLIC MANAG J
+    issn: "10967494"
+    eissn: "15593169"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Review for the Sociology of Sport
+    short: INT REV SOCIOL SPORT
+    issn: "10126902"
+    eissn: "14617218"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: International Review of Economics & Finance
+    short: INT REV ECON FINANC
+    issn: "10590560"
+    eissn: "18738036"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Intersecciones en Antropologia
+    short: INTERSECCIONES ANTRO
+    issn: 1850373X
+    eissn: 1850373X
+    site: ""
+    notes: WOS/JCR; UNIV NACL CENTRO PROVINCIA BUENOS AIRES (UNICEN), FAC CIENCIAS
+      SOCIALES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JCMS-Journal of Common Market Studies
+    short: JCMS-J COMMON MARK S
+    issn: "00219886"
+    eissn: "14685965"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal de la Societe des Americanistes
+    short: J SOC AMERICANISTES
+    issn: "00379174"
+    eissn: "19577842"
+    site: ""
+    notes: WOS/JCR; UNIV PARIS X PARIS-NANTERRE, ARCHEOLOGIE & ETHNOLOGIE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ACCOUNTING & ECONOMICS
+    short: J ACCOUNT ECON
+    issn: "01654101"
+    eissn: "18791980"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ADVERTISING
+    short: J ADVERTISING
+    issn: "00913367"
+    eissn: "15577805"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ADVERTISING RESEARCH
+    short: J ADVERTISING RES
+    issn: "00218499"
+    eissn: "17401909"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Agrarian Change
+    short: J AGRAR CHANGE
+    issn: "14710358"
+    eissn: "14710366"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF AGRICULTURAL ECONOMICS
+    short: J AGR ECON
+    issn: 0021857X
+    eissn: "14779552"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ANTHROPOLOGICAL ARCHAEOLOGY
+    short: J ANTHROPOL ARCHAEOL
+    issn: "02784165"
+    eissn: "10902686"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ANTHROPOLOGICAL RESEARCH
+    short: J ANTHROPOL RES
+    issn: "00917710"
+    eissn: "21533806"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Anthropological Sciences
+    short: J ANTHROPOL SCI
+    issn: "18274765"
+    eissn: "20370644"
+    site: ""
+    notes: WOS/JCR; IST ITALIANO ANTROPOLOGIA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF APPLIED ECONOMETRICS
+    short: J APPL ECONOMET
+    issn: "08837252"
+    eissn: "10991255"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF APPLIED PSYCHOLOGY
+    short: J APPL PSYCHOL
+    issn: "00219010"
+    eissn: "19391854"
+    site: ""
+    notes: WOS/JCR; AMER PSYCHOLOGICAL ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ARCHAEOLOGICAL METHOD AND THEORY
+    short: J ARCHAEOL METHOD TH
+    issn: "10725369"
+    eissn: "15737764"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ARCHAEOLOGICAL RESEARCH
+    short: J ARCHAEOL RES
+    issn: "10590161"
+    eissn: "15737756"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ARCHAEOLOGICAL SCIENCE
+    short: J ARCHAEOL SCI
+    issn: "03054403"
+    eissn: "10959238"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Asian Economics
+    short: J ASIAN ECON
+    issn: "10490078"
+    eissn: "18737927"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Asian Public Policy
+    short: J ASIAN PUBLIC POLIC
+    issn: "17516234"
+    eissn: "17516242"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Balkan and Near Eastern Studies
+    short: J BALKAN NEAR E STUD
+    issn: "19448953"
+    eissn: "19448961"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF BANKING & FINANCE
+    short: J BANK FINANC
+    issn: "03784266"
+    eissn: "18726372"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Behavioral and Experimental Finance
+    short: J BEHAV EXP FINANC
+    issn: "22146350"
+    eissn: "22146369"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF BUSINESS & ECONOMIC STATISTICS
+    short: J BUS ECON STAT
+    issn: "07350015"
+    eissn: "15372707"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Business Economics and Management
+    short: J BUS ECON MANAG
+    issn: "16111699"
+    eissn: "20294433"
+    site: ""
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Business Logistics
+    short: J BUS LOGIST
+    issn: "07353766"
+    eissn: "21581592"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Chinese Governance
+    short: J CHIN GOV
+    issn: "23812346"
+    eissn: "23812354"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Chinese Political Science
+    short: J CHIN POLIT SCI
+    issn: "10806954"
+    eissn: "18746357"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Commodity Markets
+    short: J COMMOD MARK
+    issn: "24058513"
+    eissn: "24058505"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF COMMUNICATION
+    short: J COMMUN
+    issn: "00219916"
+    eissn: "14602466"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF COMPARATIVE ECONOMICS
+    short: J COMP ECON
+    issn: "01475967"
+    eissn: "10957227"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Competitiveness
+    short: J COMPETITIVENESS
+    issn: 1804171X
+    eissn: "18041728"
+    site: ""
+    notes: WOS/JCR; UNIV TOMASE BATI & ZLINE, FAK MANAGEMENTU EKONOMIKY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Computer-Mediated Communication
+    short: J COMPUT-MEDIAT COMM
+    issn: "10836101"
+    eissn: "10836101"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF CONSUMER AFFAIRS
+    short: J CONSUM AFF
+    issn: "00220078"
+    eissn: "17456606"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Consumer Culture
+    short: J CONSUM CULT
+    issn: "14695405"
+    eissn: "17412900"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Contemporary Accounting & Economics
+    short: J CONTEMP ACCOUNT EC
+    issn: "18155669"
+    eissn: "18155669"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF CONTEMPORARY ASIA
+    short: J CONTEMP ASIA
+    issn: "00472336"
+    eissn: "17527554"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Contemporary China
+    short: J CONTEMP CHINA
+    issn: "10670564"
+    eissn: "14699400"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Contemporary European Studies
+    short: J CONTEMP EUR STUD
+    issn: "14782804"
+    eissn: "14782790"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Current Southeast Asian Affairs
+    short: J CURR SE ASIAN AFF
+    issn: "18681034"
+    eissn: "18684882"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Destination Marketing & Management
+    short: J DESTIN MARK MANAGE
+    issn: 2212571X
+    eissn: "22125752"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF DEVELOPMENT ECONOMICS
+    short: J DEV ECON
+    issn: "03043878"
+    eissn: "18726089"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of East Asian Studies
+    short: J EAST ASIAN STUD
+    issn: "15982408"
+    eissn: "22346643"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Econometrics
+    short: J ECONOMETRICS
+    issn: "03044076"
+    eissn: "18726895"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ECONOMIC GEOGRAPHY
+    short: J ECON GEOGR
+    issn: "14682702"
+    eissn: "14682710"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ECONOMIC GROWTH
+    short: J ECON GROWTH
+    issn: "13814338"
+    eissn: "15737020"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ECONOMIC HISTORY
+    short: J ECON HIST
+    issn: "00220507"
+    eissn: "14716372"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ECONOMIC LITERATURE
+    short: J ECON LIT
+    issn: "00220515"
+    eissn: "23288175"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ECONOMIC PERSPECTIVES
+    short: J ECON PERSPECT
+    issn: "08953309"
+    eissn: "19447965"
+    site: ""
+    notes: WOS/JCR; AMER ECONOMIC ASSOC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Economic Policy Reform
+    short: J ECON POLICY REFORM
+    issn: "17487870"
+    eissn: "17487889"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ECONOMIC SURVEYS
+    short: J ECON SURV
+    issn: "09500804"
+    eissn: "14676419"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Enterprise Information Management
+    short: J ENTERP INF MANAG
+    issn: "17410398"
+    eissn: "17587409"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ENVIRONMENTAL ECONOMICS AND MANAGEMENT
+    short: J ENVIRON ECON MANAG
+    issn: "00950696"
+    eissn: "10960449"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ENVIRONMENTAL PSYCHOLOGY
+    short: J ENVIRON PSYCHOL
+    issn: "02724944"
+    eissn: "15229610"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ETHNIC AND MIGRATION STUDIES
+    short: J ETHN MIGR STUD
+    issn: 1369183X
+    eissn: "14699451"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ETHNOBIOLOGY
+    short: J ETHNOBIOL
+    issn: "02780771"
+    eissn: "21624496"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF EUROPEAN PUBLIC POLICY
+    short: J EUR PUBLIC POLICY
+    issn: "13501763"
+    eissn: "14664429"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF EUROPEAN SOCIAL POLICY
+    short: J EUR SOC POLICY
+    issn: "09589287"
+    eissn: "14617269"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Family and Economic Issues
+    short: J FAM ECON ISS
+    issn: "10580476"
+    eissn: "15733475"
+    site: ""
+    notes: WOS/JCR; SPRINGER INT PUBL AG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Family Business Strategy
+    short: J FAM BUS STRATEG
+    issn: "18778585"
+    eissn: "18778593"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF FAMILY HISTORY
+    short: J FAM HIST
+    issn: "03631990"
+    eissn: "15525473"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF FINANCE
+    short: J FINANC
+    issn: "00221082"
+    eissn: "15406261"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF FINANCIAL AND QUANTITATIVE ANALYSIS
+    short: J FINANC QUANT ANAL
+    issn: "00221090"
+    eissn: "17566916"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF FINANCIAL ECONOMICS
+    short: J FINANC ECON
+    issn: 0304405X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Financial Stability
+    short: J FINANC STABIL
+    issn: "15723089"
+    eissn: "18780962"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF FORECASTING
+    short: J FORECASTING
+    issn: "02776693"
+    eissn: 1099131X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF HEALTH AND SOCIAL BEHAVIOR
+    short: J HEALTH SOC BEHAV
+    issn: "00221465"
+    eissn: "21506000"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF HEALTH COMMUNICATION
+    short: J HEALTH COMMUN
+    issn: "10810730"
+    eissn: "10870415"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF HEALTH ECONOMICS
+    short: J HEALTH ECON
+    issn: "01676296"
+    eissn: "18791646"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF HISTORICAL SOCIOLOGY
+    short: J HIST SOCIOL
+    issn: "09521909"
+    eissn: "14676443"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Hospitality and Tourism Management
+    short: J HOSP TOUR MANAG
+    issn: "14476770"
+    eissn: "18395260"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Hospitality Marketing & Management
+    short: J HOSP MARKET MANAG
+    issn: "19368623"
+    eissn: "19368631"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF HUMAN EVOLUTION
+    short: J HUM EVOL
+    issn: "00472484"
+    eissn: "10958606"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF HUMAN RESOURCES
+    short: J HUM RESOUR
+    issn: 0022166X
+    eissn: "15488004"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF INFORMATION TECHNOLOGY
+    short: J INF TECHNOL-UK
+    issn: "02683962"
+    eissn: "14664437"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Information Technology & Politics
+    short: J INF TECHNOL POLITI
+    issn: "19331681"
+    eissn: 1933169X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Innovation & Knowledge
+    short: J INNOV KNOWL
+    issn: "25307614"
+    eissn: 2444569X
+    site: ""
+    notes: WOS/JCR; ELSEVIER ESPANA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Institutional Economics
+    short: J I ECON
+    issn: "17441374"
+    eissn: "17441382"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Intellectual Capital
+    short: J INTELLECT CAP
+    issn: "14691930"
+    eissn: "17587468"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF INTERNATIONAL BUSINESS STUDIES
+    short: J INT BUS STUD
+    issn: "00472506"
+    eissn: "14786990"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF INTERNATIONAL ECONOMICS
+    short: J INT ECON
+    issn: "00221996"
+    eissn: "18730353"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of International Financial Markets Institutions & Money
+    short: J INT FINANC MARK I
+    issn: "10424431"
+    eissn: "18730612"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of International Management
+    short: J INT MANAG
+    issn: "10754253"
+    eissn: "18730620"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Knowledge Management
+    short: J KNOWL MANAG
+    issn: "13673270"
+    eissn: "17587484"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF LABOR ECONOMICS
+    short: J LABOR ECON
+    issn: 0734306X
+    eissn: "15375307"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF LANGUAGE AND SOCIAL PSYCHOLOGY
+    short: J LANG SOC PSYCHOL
+    issn: 0261927X
+    eissn: "15526526"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Latin American and Caribbean Anthropology
+    short: J LAT AM CARIBB ANTH
+    issn: "19354932"
+    eissn: "19354940"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Leadership & Organizational Studies
+    short: J LEADERSH ORG STUD
+    issn: "15480518"
+    eissn: "19397089"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Linguistic Anthropology
+    short: J LINGUIST ANTHROPOL
+    issn: "10551360"
+    eissn: "15481395"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF MANAGEMENT
+    short: J MANAGE
+    issn: "01492063"
+    eissn: "15571211"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF MANAGEMENT INFORMATION SYSTEMS
+    short: J MANAGE INFORM SYST
+    issn: "07421222"
+    eissn: 1557928X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF MANAGEMENT STUDIES
+    short: J MANAGE STUD
+    issn: "00222380"
+    eissn: "14676486"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Manufacturing Technology Management
+    short: J MANUF TECHNOL MANA
+    issn: 1741038X
+    eissn: "17587786"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF MARRIAGE AND FAMILY
+    short: J MARRIAGE FAM
+    issn: "00222445"
+    eissn: "17413737"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF MATERIAL CULTURE
+    short: J MAT CULT
+    issn: "13591835"
+    eissn: "14603586"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Media Psychology-Theories Methods and Applications
+    short: J MEDIA PSYCHOL-GER
+    issn: "18641105"
+    eissn: "21512388"
+    site: ""
+    notes: WOS/JCR; HOGREFE PUBLISHING CORP
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF MODERN AFRICAN STUDIES
+    short: J MOD AFR STUD
+    issn: 0022278X
+    eissn: "14697777"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF MONETARY ECONOMICS
+    short: J MONETARY ECON
+    issn: "03043932"
+    eissn: "18731295"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF OPERATIONS MANAGEMENT
+    short: J OPER MANAG
+    issn: "02726963"
+    eissn: "18731317"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF ORGANIZATIONAL BEHAVIOR
+    short: J ORGAN BEHAV
+    issn: "08943796"
+    eissn: "10991379"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Paleolithic Archaeology
+    short: J PALEOLITH ARCHAEOL
+    issn: ""
+    eissn: "25208217"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF PALESTINE STUDIES
+    short: J PALESTINE STUD
+    issn: 0377919X
+    eissn: "15338614"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF PEASANT STUDIES
+    short: J PEASANT STUD
+    issn: "03066150"
+    eissn: "17439361"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF PLANNING LITERATURE
+    short: J PLAN LIT
+    issn: "08854122"
+    eissn: "15526593"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF POLICY ANALYSIS AND MANAGEMENT
+    short: J POLICY ANAL MANAG
+    issn: ""
+    eissn: "15206688"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF POLICY MODELING
+    short: J POLICY MODEL
+    issn: "01618938"
+    eissn: "18738060"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF POLITICAL ECONOMY
+    short: J POLIT ECON
+    issn: "00223808"
+    eissn: 1537534X
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF POPULATION ECONOMICS
+    short: J POPUL ECON
+    issn: "09331433"
+    eissn: "14321475"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Product and Brand Management
+    short: J PROD BRAND MANAG
+    issn: "10610421"
+    eissn: "20541643"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF PRODUCT INNOVATION MANAGEMENT
+    short: J PROD INNOVAT MANAG
+    issn: "07376782"
+    eissn: "15405885"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF PUBLIC ADMINISTRATION RESEARCH AND THEORY
+    short: J PUBL ADM RES THEOR
+    issn: "10531858"
+    eissn: "14779803"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF PUBLIC ECONOMICS
+    short: J PUBLIC ECON
+    issn: "00472727"
+    eissn: "00472727"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE SA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Public Relations Research
+    short: J PUBLIC RELAT RES
+    issn: 1062726X
+    eissn: 1532754X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Purchasing and Supply Management
+    short: J PURCH SUPPLY MANAG
+    issn: "14784092"
+    eissn: "18736505"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF REGIONAL SCIENCE
+    short: J REGIONAL SCI
+    issn: "00224146"
+    eissn: "14679787"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Service Management
+    short: J SERV MANAGE
+    issn: "17575818"
+    eissn: "17575826"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF SMALL BUSINESS MANAGEMENT
+    short: J SMALL BUS MANAGE
+    issn: "00472778"
+    eissn: 1540627X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF SOCIAL AND PERSONAL RELATIONSHIPS
+    short: J SOC PERS RELAT
+    issn: "02654075"
+    eissn: "14603608"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF SOCIAL ARCHAEOLOGY
+    short: J SOC ARCHAEOL
+    issn: "14696053"
+    eissn: "17412951"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF STRATEGIC INFORMATION SYSTEMS
+    short: J STRATEGIC INF SYST
+    issn: "09638687"
+    eissn: "18731198"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Supply Chain Management
+    short: J SUPPLY CHAIN MANAG
+    issn: "15232409"
+    eissn: 1745493X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF THE AMERICAN PLANNING ASSOCIATION
+    short: J AM PLANN ASSOC
+    issn: "01944363"
+    eissn: "19390130"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of the Association of Environmental and Resource Economists
+    short: J ASSOC ENVIRON RESO
+    issn: "23335955"
+    eissn: "23335963"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of the European Economic Association
+    short: J EUR ECON ASSOC
+    issn: "15424766"
+    eissn: "15424774"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF THE JAPANESE AND INTERNATIONAL ECONOMIES
+    short: J JPN INT ECON
+    issn: "08891583"
+    eissn: "10958681"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF THE POLYNESIAN SOCIETY
+    short: J POLYNESIAN SOC
+    issn: "00324000"
+    eissn: "22305955"
+    site: ""
+    notes: WOS/JCR; POLYNESIAN SOC INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF THE ROYAL ANTHROPOLOGICAL INSTITUTE
+    short: J ROY ANTHROPOL INST
+    issn: "13590987"
+    eissn: "14679655"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Transport Geography
+    short: J TRANSP GEOGR
+    issn: "09666923"
+    eissn: "18731236"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF URBAN ECONOMICS
+    short: J URBAN ECON
+    issn: "00941190"
+    eissn: "10959068"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journal of Urban Ethnology
+    short: J URBAN ETHNOL
+    issn: "14290618"
+    eissn: "14290618"
+    site: ""
+    notes: WOS/JCR; POLISH ACAD SCIENCES, INST ARCHAEOLOGY & ETHNOLOGY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF URBAN TECHNOLOGY
+    short: J URBAN TECHNOL
+    issn: "10630732"
+    eissn: "14661853"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF WOMENS HEALTH
+    short: J WOMENS HEALTH
+    issn: "15409996"
+    eissn: 1931843X
+    site: ""
+    notes: WOS/JCR; MARY ANN LIEBERT, INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNAL OF WORLD PREHISTORY
+    short: J WORLD PREHIST
+    issn: "08927537"
+    eissn: "15737802"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journalism
+    short: JOURNALISM
+    issn: "14648849"
+    eissn: "17413001"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: JOURNALISM & MASS COMMUNICATION QUARTERLY
+    short: J MASS COMMUN Q
+    issn: "10776990"
+    eissn: 2161430X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Journalism Studies
+    short: JOURNALISM STUD
+    issn: 1461670X
+    eissn: "14699699"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LABOUR ECONOMICS
+    short: LABOUR ECON
+    issn: "09275371"
+    eissn: "18791034"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LAND USE POLICY
+    short: LAND USE POLICY
+    issn: "02648377"
+    eissn: "18735754"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LANDSCAPE AND URBAN PLANNING
+    short: LANDSCAPE URBAN PLAN
+    issn: "01692046"
+    eissn: "18726062"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LANGUAGE IN SOCIETY
+    short: LANG SOC
+    issn: "00474045"
+    eissn: "14698013"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LATIN AMERICAN ANTIQUITY
+    short: LAT AM ANTIQ
+    issn: "10456635"
+    eissn: "23255080"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LATIN AMERICAN POLITICS AND SOCIETY
+    short: LAT AM POLIT SOC
+    issn: 1531426X
+    eissn: "15482456"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LAW & SOCIETY REVIEW
+    short: LAW SOC REV
+    issn: "00239216"
+    eissn: "15405893"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LEADERSHIP QUARTERLY
+    short: LEADERSHIP QUART
+    issn: "10489843"
+    eissn: "18733409"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LGBTQ Family-An Interdisciplinary Journal
+    short: LGBTQ FAM
+    issn: "27703371"
+    eissn: 2770338X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Lithic Technology
+    short: LITHIC TECHNOL
+    issn: "01977261"
+    eissn: "20516185"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: LONG RANGE PLANNING
+    short: LONG RANGE PLANN
+    issn: "00246301"
+    eissn: "18731872"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Magallania
+    short: MAGALLANIA
+    issn: "07182244"
+    eissn: "07182244"
+    site: ""
+    notes: WOS/JCR; UNIV MAGALLANES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Management Communication Quarterly
+    short: MANAGE COMMUN Q
+    issn: "08933189"
+    eissn: "15526798"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MANAGEMENT DECISION
+    short: MANAGE DECIS
+    issn: "00251747"
+    eissn: "17586070"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MANAGEMENT SCIENCE
+    short: MANAGE SCI
+    issn: "00251909"
+    eissn: "15265501"
+    site: ""
+    notes: WOS/JCR; INFORMS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MANAGERIAL AND DECISION ECONOMICS
+    short: MANAG DECIS ECON
+    issn: "01436570"
+    eissn: "10991468"
+    site: ""
+    notes: WOS/JCR; JOHN WILEY & SONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Mass Communication and Society
+    short: MASS COMMUN SOC
+    issn: "15205436"
+    eissn: "15327825"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Media and Communication
+    short: MEDIA COMMUN-LISBON
+    issn: "21832439"
+    eissn: "21832439"
+    site: ""
+    notes: WOS/JCR; COGITATIO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MEDIA CULTURE & SOCIETY
+    short: MEDIA CULT SOC
+    issn: "01634437"
+    eissn: "14603675"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Media International Australia
+    short: MEDIA INT AUST
+    issn: 1329878X
+    eissn: 2200467X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MEDIA PSYCHOLOGY
+    short: MEDIA PSYCHOL
+    issn: "15213269"
+    eissn: 1532785X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Medical Anthropology
+    short: MED ANTHROPOL
+    issn: "01459740"
+    eissn: "15455882"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MEDICAL ANTHROPOLOGY QUARTERLY
+    short: MED ANTHROPOL Q
+    issn: "07455194"
+    eissn: "15481387"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Mediterranean Politics
+    short: MEDITERR POLIT
+    issn: "13629395"
+    eissn: "17439418"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Middle East Critique
+    short: MIDDLE EAST CRIT
+    issn: "19436149"
+    eissn: "19436157"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MIDDLE EAST JOURNAL
+    short: MIDDLE EAST J
+    issn: "00263141"
+    eissn: "19403461"
+    site: ""
+    notes: WOS/JCR; MIDDLE EAST INST
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MIDDLE EAST POLICY
+    short: MIDDLE EAST POLICY
+    issn: "10611924"
+    eissn: "14754967"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Migration Studies
+    short: MIGR STUD
+    issn: "20495838"
+    eissn: "20495846"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: MIS QUARTERLY
+    short: MIS QUART
+    issn: "02767783"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SOC INFORM MANAGE-MIS RES CENT
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Museum Anthropology
+    short: MUS ANTHROPOL
+    issn: "08928339"
+    eissn: "15481379"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Nationalities Papers-The Journal of Nationalism and Ethnicity
+    short: NATL PAP
+    issn: "00905992"
+    eissn: "14653923"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Nature Climate Change
+    short: NAT CLIM CHANGE
+    issn: 1758678X
+    eissn: "17586798"
+    site: ""
+    notes: WOS/JCR; NATURE PORTFOLIO
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Nature Sustainability
+    short: NAT SUSTAIN
+    issn: "23989629"
+    eissn: "23989629"
+    site: ""
+    notes: WOS/JCR; NATURE PORTFOLIO
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Nawpa Pacha
+    short: NAWPA PACHA
+    issn: "00776297"
+    eissn: "20516207"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: NBER Macroeconomics Annual
+    short: NBER MACROECON ANNU
+    issn: "08893365"
+    eissn: "15372642"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: New Directions for Child and Adolescent Development
+    short: NEW DIR CHILD ADOLES
+    issn: "15203247"
+    eissn: "15348687"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: NEW MEDIA & SOCIETY
+    short: NEW MEDIA SOC
+    issn: "14614448"
+    eissn: "14617315"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: New Perspectives on Turkey
+    short: NEW PERSPECT TURK
+    issn: "08966346"
+    eissn: "13053299"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: NEW POLITICAL ECONOMY
+    short: NEW POLIT ECON
+    issn: "13563467"
+    eissn: "14699923"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: NEW TECHNOLOGY WORK AND EMPLOYMENT
+    short: NEW TECH WORK EMPLOY
+    issn: "02681072"
+    eissn: 1468005X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: NOMADIC PEOPLES
+    short: NOMAD PEOPLES
+    issn: "08227942"
+    eissn: "17522366"
+    site: ""
+    notes: WOS/JCR; WHITE HORSE PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: North American Journal of Economics and Finance
+    short: N AM J ECON FINANC
+    issn: "10629408"
+    eissn: "18790860"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: npj Urban Sustainability
+    short: NPJ URBAN SUSTAIN
+    issn: ""
+    eissn: "26618001"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: OCEANIA
+    short: OCEANIA
+    issn: "00298077"
+    eissn: "18344461"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Oeconomia Copernicana
+    short: OECON COPERNIC
+    issn: "20831277"
+    eissn: "23531827"
+    site: ""
+    notes: WOS/JCR; INST BADAN GOSPODARCZYCH
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: OMEGA-INTERNATIONAL JOURNAL OF MANAGEMENT SCIENCE
+    short: OMEGA-INT J MANAGE S
+    issn: "03050483"
+    eissn: "18735274"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: One Earth
+    short: ONE EARTH
+    issn: "25903330"
+    eissn: "25903322"
+    site: ""
+    notes: WOS/JCR; CELL PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Operations Management Research
+    short: OPER MANAGE RES
+    issn: "19369735"
+    eissn: "19369743"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ORGANIZATION & ENVIRONMENT
+    short: ORGAN ENVIRON
+    issn: "10860266"
+    eissn: "15527417"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ORGANIZATION SCIENCE
+    short: ORGAN SCI
+    issn: "10477039"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; INFORMS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ORGANIZATION STUDIES
+    short: ORGAN STUD
+    issn: "01708406"
+    eissn: "17413044"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Organizational Psychology Review
+    short: ORGAN PSYCHOL REV
+    issn: "20413866"
+    eissn: "20413874"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ORGANIZATIONAL RESEARCH METHODS
+    short: ORGAN RES METHODS
+    issn: "10944281"
+    eissn: "15527425"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PACIFIC AFFAIRS
+    short: PAC AFF
+    issn: 0030851X
+    eissn: "17153379"
+    site: ""
+    notes: WOS/JCR; PACIFIC AFFAIRS UNIV BRITISH COLUMBIA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PACIFIC REVIEW
+    short: PAC REV
+    issn: "09512748"
+    eissn: "14701332"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PaleoAmerica
+    short: PALEOAMERICA
+    issn: "20555563"
+    eissn: "20555571"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PERSONNEL PSYCHOLOGY
+    short: PERS PSYCHOL
+    issn: "00315826"
+    eissn: "17446570"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PERSONNEL REVIEW
+    short: PERS REV
+    issn: "00483486"
+    eissn: "17586933"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PERSPECTIVES ON SEXUAL AND REPRODUCTIVE HEALTH
+    short: PERSPECT SEX REPRO H
+    issn: "15386341"
+    eissn: "19312393"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PHARMACOECONOMICS
+    short: PHARMACOECONOMICS
+    issn: "11707690"
+    eissn: "11792027"
+    site: ""
+    notes: WOS/JCR; ADIS INT LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Planning Theory & Practice
+    short: PLAN THEORY PRACT
+    issn: "14649357"
+    eissn: 1470000X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Polar-Political and Legal Anthropology Review
+    short: POLAR-POLIT LEG ANTH
+    issn: "10816976"
+    eissn: "15552934"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Policy and Internet
+    short: POLICY INTERNET
+    issn: "19442866"
+    eissn: "19442866"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POLICY AND POLITICS
+    short: POLICY POLIT
+    issn: "03055736"
+    eissn: "14708442"
+    site: ""
+    notes: WOS/JCR; POLICY PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Policy and Society
+    short: POLICY SOC
+    issn: "14494035"
+    eissn: "18393373"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POLICY SCIENCES
+    short: POLICY SCI
+    issn: "00322687"
+    eissn: "15730891"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POLICY STUDIES JOURNAL
+    short: POLICY STUD J
+    issn: 0190292X
+    eissn: "15410072"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POLITICAL COMMUNICATION
+    short: POLIT COMMUN
+    issn: "10584609"
+    eissn: "10917675"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Politics & Gender
+    short: POLIT GENDER
+    issn: 1743923X
+    eissn: "17439248"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POLITICS & SOCIETY
+    short: POLIT SOC
+    issn: "00323292"
+    eissn: "15527514"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POPULATION AND DEVELOPMENT REVIEW
+    short: POPUL DEV REV
+    issn: "00987921"
+    eissn: "17284457"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POPULATION AND ENVIRONMENT
+    short: POPUL ENVIRON
+    issn: "01990039"
+    eissn: "15737810"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Population Space and Place
+    short: POPUL SPACE PLACE
+    issn: "15448444"
+    eissn: "15448452"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: POST-SOVIET AFFAIRS
+    short: POST-SOV AFF
+    issn: 1060586X
+    eissn: "19382855"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Praehistorische Zeitschrift
+    short: PRAEHIST Z
+    issn: "00794848"
+    eissn: "16130804"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PROGRESS IN PLANNING
+    short: PROG PLANN
+    issn: "03059006"
+    eissn: "18734510"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PSYCHOLOGY OF WOMEN QUARTERLY
+    short: PSYCHOL WOMEN QUART
+    issn: "03616843"
+    eissn: "14716402"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PUBLIC ADMINISTRATION
+    short: PUBLIC ADMIN
+    issn: "00333298"
+    eissn: "14679299"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PUBLIC ADMINISTRATION REVIEW
+    short: PUBLIC ADMIN REV
+    issn: "00333352"
+    eissn: "15406210"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PUBLIC CULTURE
+    short: PUBLIC CULTURE
+    issn: "08992363"
+    eissn: "15278018"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Public Management Review
+    short: PUBLIC MANAG REV
+    issn: "14719037"
+    eissn: "14719045"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PUBLIC OPINION QUARTERLY
+    short: PUBLIC OPIN QUART
+    issn: 0033362X
+    eissn: "15375331"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Public Policy and Administration
+    short: PUBLIC POLICY ADMIN
+    issn: "09520767"
+    eissn: "17494192"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PUBLIC RELATIONS REVIEW
+    short: PUBLIC RELAT REV
+    issn: "03638111"
+    eissn: "18734537"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: PUBLIC UNDERSTANDING OF SCIENCE
+    short: PUBLIC UNDERST SCI
+    issn: "09636625"
+    eissn: "13616609"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Qualitative Research
+    short: QUAL RES
+    issn: "14687941"
+    eissn: "17413109"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Qualitative Sociology
+    short: QUAL SOCIOL
+    issn: "01620436"
+    eissn: "15737837"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: QUARTERLY JOURNAL OF ECONOMICS
+    short: Q J ECON
+    issn: "00335533"
+    eissn: "15314650"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: QUARTERLY REVIEW OF ECONOMICS AND FINANCE
+    short: Q REV ECON FINANC
+    issn: "10629769"
+    eissn: "18784259"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: R & D MANAGEMENT
+    short: R&D MANAGE
+    issn: "00336807"
+    eissn: "14679310"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: RACE & CLASS
+    short: RACE CLASS
+    issn: "03063968"
+    eissn: "17413125"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: RAND JOURNAL OF ECONOMICS
+    short: RAND J ECON
+    issn: "07416261"
+    eissn: "17562171"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: REGIONAL SCIENCE AND URBAN ECONOMICS
+    short: REG SCI URBAN ECON
+    issn: "01660462"
+    eissn: "18792308"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: REGIONAL STUDIES
+    short: REG STUD
+    issn: "00343404"
+    eissn: "13600591"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Regulation & Governance
+    short: REGUL GOV
+    issn: "17485983"
+    eissn: "17485991"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Relaciones
+    short: RELACIONES-ARG
+    issn: "03252221"
+    eissn: "18521479"
+    site: ""
+    notes: WOS/JCR; SOC ARGENTINA ANTROPOLOGIA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Research in Transportation Economics
+    short: RES TRANSP ECON
+    issn: "07398859"
+    eissn: "18757979"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: RESEARCH POLICY
+    short: RES POLICY
+    issn: "00487333"
+    eissn: "18737625"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: RESOURCE AND ENERGY ECONOMICS
+    short: RESOUR ENERGY ECON
+    issn: "09287655"
+    eissn: "18730221"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of African Political Economy
+    short: REV AFR POLIT ECON
+    issn: "03056244"
+    eissn: "17401720"
+    site: ""
+    notes: WOS/JCR; ScienceOpen
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: REVIEW OF ECONOMIC STUDIES
+    short: REV ECON STUD
+    issn: "00346527"
+    eissn: 1467937X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: REVIEW OF ECONOMICS AND STATISTICS
+    short: REV ECON STAT
+    issn: "00346535"
+    eissn: "15309142"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of Environmental Economics and Policy
+    short: REV ENV ECON POLICY
+    issn: "17506816"
+    eissn: "17506824"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of Finance
+    short: REV FINANC
+    issn: "15723097"
+    eissn: 1573692X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: REVIEW OF FINANCIAL STUDIES
+    short: REV FINANC STUD
+    issn: "08939454"
+    eissn: "14657368"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of International Organizations
+    short: REV INT ORGAN
+    issn: "15597431"
+    eissn: 1559744X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: REVIEW OF INTERNATIONAL POLITICAL ECONOMY
+    short: REV INT POLIT ECON
+    issn: "09692290"
+    eissn: "14664526"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of Keynesian Economics
+    short: REV KEYNES ECON
+    issn: "20495323"
+    eissn: "20495331"
+    site: ""
+    notes: WOS/JCR; EDWARD ELGAR PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of Managerial Science
+    short: REV MANAG SCI
+    issn: "18636683"
+    eissn: "18636691"
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of Policy Research
+    short: REV POLICY RES
+    issn: 1541132X
+    eissn: "15411338"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Review of Public Personnel Administration
+    short: REV PUBLIC PERS ADM
+    issn: 0734371X
+    eissn: 1552759X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Reviews in Anthropology
+    short: REV ANTHR
+    issn: "00938157"
+    eissn: "15563014"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Revista de Antropologia Social
+    short: REV ANTROPOL SOC
+    issn: 1131558X
+    eissn: "19882831"
+    site: ""
+    notes: WOS/JCR; UNIV COMPLUTENSE MADRID, SERVICIO PUBLICACIONES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Revista Espanola de Antropologia Americana
+    short: REV ESP ANTROPOL AM
+    issn: "05566533"
+    eissn: "19882718"
+    site: ""
+    notes: WOS/JCR; UNIV COMPLUTENSE MADRID, SERVICIO PUBLICACIONES
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Romani Studies
+    short: ROMANI STUD
+    issn: "15280748"
+    eissn: "17572274"
+    site: ""
+    notes: WOS/JCR; LIVERPOOL UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Scandinavian Journal of Hospitality and Tourism
+    short: SCAND J HOSP TOUR
+    issn: "15022250"
+    eissn: "15022269"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SCIENCE COMMUNICATION
+    short: SCI COMMUN
+    issn: "10755470"
+    eissn: "15528545"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SERVICE INDUSTRIES JOURNAL
+    short: SERV IND J
+    issn: "02642069"
+    eissn: "17439507"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SEX ROLES
+    short: SEX ROLES
+    issn: "03600025"
+    eissn: "15732762"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SIGNS
+    short: SIGNS
+    issn: "00979740"
+    eissn: "15456943"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Signs and Society
+    short: SIGNS SOC
+    issn: "23264489"
+    eissn: "23264497"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Slovensky Narodopis-Slovak Ethnology
+    short: SLOVENSKY NARODOP
+    issn: "13351303"
+    eissn: "13399357"
+    site: ""
+    notes: WOS/JCR; SLOVAK ACAD SCIENCES, INST ETHNOLOGY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SMALL BUSINESS ECONOMICS
+    short: SMALL BUS ECON
+    issn: 0921898X
+    eissn: "15730913"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Social Analysis
+    short: SOC ANAL
+    issn: 0155977X
+    eissn: "15585727"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Social Anthropology
+    short: SOC ANTHROPOL
+    issn: "09640282"
+    eissn: "14698676"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIAL FORCES
+    short: SOC FORCES
+    issn: "00377732"
+    eissn: "15347605"
+    site: https://academic.oup.com/sf
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: https://openalex.org/S130611943
+    openalex_source_display_name: Social Forces
+  - name: SOCIAL INDICATORS RESEARCH
+    short: SOC INDIC RES
+    issn: "03038300"
+    eissn: "15730921"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Social Media + Society
+    short: SOC MEDIA SOC
+    issn: "20563051"
+    eissn: "20563051"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Social Movement Studies
+    short: SOC MOVEMENT STUD
+    issn: "14742837"
+    eissn: "14742829"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIAL NETWORKS
+    short: SOC NETWORKS
+    issn: "03788733"
+    eissn: "18792111"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIAL PROBLEMS
+    short: SOC PROBL
+    issn: "00377791"
+    eissn: "15338533"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIAL PSYCHOLOGY QUARTERLY
+    short: SOC PSYCHOL QUART
+    issn: "01902725"
+    eissn: "19398999"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIAL SCIENCE RESEARCH
+    short: SOC SCI RES
+    issn: 0049089X
+    eissn: "10960317"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Society and Mental Health
+    short: SOC MENT HEALTH
+    issn: "21568693"
+    eissn: "21568731"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIO-ECONOMIC PLANNING SCIENCES
+    short: SOCIO-ECON PLAN SCI
+    issn: "00380121"
+    eissn: "18736041"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Socio-Economic Review
+    short: SOCIO-ECON REV
+    issn: "14751461"
+    eissn: 1475147X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGIA RURALIS
+    short: SOCIOL RURALIS
+    issn: "00380199"
+    eissn: "14679523"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Sociological Methodology
+    short: SOCIOL METHODOL
+    issn: "00811750"
+    eissn: "14679531"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGICAL METHODS & RESEARCH
+    short: SOCIOL METHOD RES
+    issn: "00491241"
+    eissn: "15528294"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGICAL REVIEW
+    short: SOCIOL REV
+    issn: "00380261"
+    eissn: 1467954X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Sociological Science
+    short: SOCIOL SCI
+    issn: ""
+    eissn: "23306696"
+    site: ""
+    notes: WOS/JCR; SOC SOCIOLOGICAL SCIENCE
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGICAL THEORY
+    short: SOCIOL THEOR
+    issn: "07352751"
+    eissn: "14679558"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Sociology Compass
+    short: SOCIOL COMPASS
+    issn: "17519020"
+    eissn: "17519020"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Sociology Lens
+    short: SOCIOLOGY LENS
+    issn: "28325796"
+    eissn: 2832580X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGY OF EDUCATION
+    short: SOCIOL EDUC
+    issn: "00380407"
+    eissn: "19398573"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGY OF HEALTH & ILLNESS
+    short: SOCIOL HEALTH ILL
+    issn: "01419889"
+    eissn: "14679566"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Sociology of Race and Ethnicity
+    short: SOCIOL RACE ETHNIC
+    issn: "23326492"
+    eissn: "23326506"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGY OF SPORT JOURNAL
+    short: SOCIOL SPORT J
+    issn: "07411235"
+    eissn: "15432785"
+    site: ""
+    notes: WOS/JCR; HUMAN KINETICS PUBL INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SOCIOLOGY-THE JOURNAL OF THE BRITISH SOCIOLOGICAL ASSOCIATION
+    short: SOCIOLOGY
+    issn: "00380385"
+    eissn: "14698684"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Southeast European and Black Sea Studies
+    short: SE EUR BLACK SEA STU
+    issn: "14683857"
+    eissn: "17439639"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Strategic Entrepreneurship Journal
+    short: STRATEG ENTREP J
+    issn: "19324391"
+    eissn: 1932443X
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: STRATEGIC MANAGEMENT JOURNAL
+    short: STRATEGIC MANAGE J
+    issn: "01432095"
+    eissn: "10970266"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Structural Change and Economic Dynamics
+    short: STRUCT CHANGE ECON D
+    issn: 0954349X
+    eissn: "18736017"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Studia Ethnologica Croatica
+    short: STUD ETHNOL CROAT
+    issn: "13303627"
+    eissn: "18489532"
+    site: ""
+    notes: WOS/JCR; UNIV ZAGREB, FAC HUMANITIES & SOCIAL SCIENCES, DEPT ETHNOL &
+      CULT ANTHROPOL
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: STUDIES IN FAMILY PLANNING
+    short: STUD FAMILY PLANN
+    issn: "00393665"
+    eissn: "17284465"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: SUPPLY CHAIN MANAGEMENT-AN INTERNATIONAL JOURNAL
+    short: SUPPLY CHAIN MANAG
+    issn: "13598546"
+    eissn: "17586852"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Sustainability Accounting Management and Policy Journal
+    short: SUSTAIN ACCOUNT MANA
+    issn: "20408021"
+    eissn: 2040803X
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Sustainable Production and Consumption
+    short: SUSTAIN PROD CONSUMP
+    issn: "23525509"
+    eissn: "23525509"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TECHNICAL COMMUNICATION
+    short: TECH COMMUN-STC
+    issn: "00493155"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SOC TECHNICAL COMMUNICATION
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Technological and Economic Development of Economy
+    short: TECHNOL ECON DEV ECO
+    issn: "20294913"
+    eissn: "20294921"
+    site: ""
+    notes: WOS/JCR; VILNIUS GEDIMINAS TECH UNIV
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TECHNOVATION
+    short: TECHNOVATION
+    issn: "01664972"
+    eissn: "18792383"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TELECOMMUNICATIONS POLICY
+    short: TELECOMMUN POLICY
+    issn: "03085961"
+    eissn: "18793258"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Tomskii Zhurnal Lingvisticheskikh i Antropologicheskikh Issledovanii-Tomsk
+      Journal of Linguistics and Anthropology
+    short: TOMSK ZH LINGVIST AN
+    issn: "23076119"
+    eissn: "23076119"
+    site: ""
+    notes: WOS/JCR; TOMSK STATE PEDAGOGICAL UNIV
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TOTAL QUALITY MANAGEMENT & BUSINESS EXCELLENCE
+    short: TOTAL QUAL MANAG BUS
+    issn: "14783363"
+    eissn: "14783371"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Tourism Economics
+    short: TOURISM ECON
+    issn: "13548166"
+    eissn: "20440375"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Tourism Management
+    short: TOURISM MANAGE
+    issn: "02615177"
+    eissn: "18793193"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Tourism Management Perspectives
+    short: TOUR MANAG PERSPECT
+    issn: "22119736"
+    eissn: "22119744"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Trabajos de Prehistoria
+    short: TRABAJOS PREHIST
+    issn: "00825638"
+    eissn: "19883218"
+    site: ""
+    notes: WOS/JCR; CONSEJO SUPERIOR INVESTIGACIONES CIENTIFICAS-CSIC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Transcultural Psychiatry
+    short: TRANSCULT PSYCHIATRY
+    issn: "13634615"
+    eissn: "14617471"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Transfer-European Review of Labour and Research
+    short: TRANSFER-LONDON
+    issn: "10242589"
+    eissn: "19967284"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Transforming Anthropology
+    short: TRANSFORM ANTHROPOL
+    issn: "10510559"
+    eissn: "15487466"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Transport Policy
+    short: TRANSPORT POLICY
+    issn: 0967070X
+    eissn: 1879310X
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TRANSPORTATION RESEARCH PART A-POLICY AND PRACTICE
+    short: TRANSPORT RES A-POL
+    issn: "09658564"
+    eissn: "18792375"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TRANSPORTATION RESEARCH PART B-METHODOLOGICAL
+    short: TRANSPORT RES B-METH
+    issn: "01912615"
+    eissn: "18792367"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TRANSPORTATION RESEARCH PART D-TRANSPORT AND ENVIRONMENT
+    short: TRANSPORT RES D-TR E
+    issn: "13619209"
+    eissn: "18792340"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: TRANSPORTATION RESEARCH PART E-LOGISTICS AND TRANSPORTATION REVIEW
+    short: TRANSPORT RES E-LOG
+    issn: "13665545"
+    eissn: "18785794"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Turkish Studies
+    short: TURK STUD
+    issn: "14683849"
+    eissn: "17439663"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: URBAN FORESTRY & URBAN GREENING
+    short: URBAN FOR URBAN GREE
+    issn: "16188667"
+    eissn: "16108167"
+    site: ""
+    notes: WOS/JCR; ELSEVIER GMBH
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: URBAN STUDIES
+    short: URBAN STUD
+    issn: "00420980"
+    eissn: 1360063X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Urbanities-Journal of Urban Ethnography
+    short: URBANITIES
+    issn: "22395725"
+    eissn: "22395725"
+    site: ""
+    notes: WOS/JCR; IUAES, COMMISSION URBAN ANTHROPOLOGY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Utilities Policy
+    short: UTIL POLICY
+    issn: "09571787"
+    eissn: "18784356"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: VALUE IN HEALTH
+    short: VALUE HEALTH
+    issn: "10983015"
+    eissn: "15244733"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Visual Anthropology
+    short: VIS ANTHROPOL
+    issn: "08949468"
+    eissn: "15455920"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Visual Anthropology Review
+    short: VIS ANTHR REV
+    issn: "10587187"
+    eissn: "15487458"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Visual Ethnography
+    short: VIS ETHNOGR
+    issn: "22811605"
+    eissn: "22811605"
+    site: ""
+    notes: WOS/JCR; UNIV BASILICATA
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: Wiley Interdisciplinary Reviews-Climate Change
+    short: WIRES CLIM CHANGE
+    issn: "17577780"
+    eissn: "17577799"
+    site: ""
+    notes: WOS/JCR; WILEY
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: WOMENS HEALTH ISSUES
+    short: WOMEN HEALTH ISS
+    issn: "10493867"
+    eissn: "18784321"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: WOMENS STUDIES INTERNATIONAL FORUM
+    short: WOMEN STUD INT FORUM
+    issn: "02775395"
+    eissn: 1879243X
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: WORK AND OCCUPATIONS
+    short: WORK OCCUPATION
+    issn: "07308884"
+    eissn: "15528464"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: https://journals.sagepub.com/home/wes
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    openalex_source_id: https://openalex.org/S60510972
+    openalex_source_display_name: Work Employment and Society
+  - name: WORLD BANK RESEARCH OBSERVER
+    short: WORLD BANK RES OBSER
+    issn: "02573032"
+    eissn: "15646971"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: WORLD DEVELOPMENT
+    short: WORLD DEV
+    issn: 0305750X
+    eissn: "18735991"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    openalex_source_id: ""
+    openalex_source_display_name: ""
+  - name: ZEITSCHRIFT FUR ETHNOLOGIE - Journal of Social and Cultural Anthropology
+    short: Z ETHNOL
+    issn: "00442666"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; DIETRICH REIMER VERLAG
+    openalex_source_id: ""
+    openalex_source_display_name: ""

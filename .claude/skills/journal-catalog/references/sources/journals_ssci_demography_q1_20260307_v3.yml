@@ -1,0 +1,346 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Demography_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.238Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 29
+  count_unique_journals: 29
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: Asian and Pacific Migration Journal
+    short: ASIAN PAC MIGR J
+    issn: "01171968"
+    eissn: 2057049X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "1.1"
+    jci: "0.51"
+    oa_citable_pct: "15.48"
+    total_citations: "511"
+  - name: Asian Population Studies
+    short: ASIAN POPUL STUD
+    issn: "17441730"
+    eissn: "17441749"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.6"
+    jci: "0.79"
+    oa_citable_pct: "20"
+    total_citations: "541"
+  - name: Biodemography and Social Biology
+    short: BIODEMOGR SOC BIOL
+    issn: "19485565"
+    eissn: "19485573"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1"
+    jci: "0.48"
+    oa_citable_pct: "4.55"
+    total_citations: "324"
+  - name: Canadian Studies in Population
+    short: CAN STUD POPUL
+    issn: "03801489"
+    eissn: 1927629X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1"
+    jci: "0.54"
+    oa_citable_pct: "21.74"
+    total_citations: "208"
+  - name: Comparative Migration Studies
+    short: COMP MIGR STUD
+    issn: ""
+    eissn: 2214594X
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    quartile: Q1
+    jif: "3.7"
+    jci: "1.89"
+    oa_citable_pct: "100"
+    total_citations: "1631"
+  - name: Demographic Research
+    short: DEMOGR RES
+    issn: "14359871"
+    eissn: "23637064"
+    site: ""
+    notes: WOS/JCR; MAX PLANCK INST DEMOGRAPHIC RESEARCH
+    quartile: Q2
+    jif: "2"
+    jci: "1.05"
+    oa_citable_pct: "100"
+    total_citations: "3909"
+  - name: DEMOGRAPHY
+    short: DEMOGRAPHY
+    issn: "00703370"
+    eissn: "15337790"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+    quartile: Q1
+    jif: "3.6"
+    jci: "1.84"
+    oa_citable_pct: "94.42"
+    total_citations: "9329"
+  - name: EUROPEAN JOURNAL OF MIGRATION AND LAW
+    short: EUR J MIGR LAW
+    issn: 1388364X
+    eissn: "15718166"
+    site: ""
+    notes: WOS/JCR; BRILL
+    quartile: Q2
+    jif: "2"
+    jci: "1.36"
+    oa_citable_pct: "32.26"
+    total_citations: "499"
+  - name: European Journal of Population-Revue Europeenne de Demographie
+    short: EUR J POPUL
+    issn: "01686577"
+    eissn: "15729885"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.24"
+    oa_citable_pct: "92.52"
+    total_citations: "1794"
+  - name: INTERNATIONAL MIGRATION
+    short: INT MIGR
+    issn: "00207985"
+    eissn: "14682435"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "2.1"
+    jci: "0.81"
+    oa_citable_pct: "49.27"
+    total_citations: "3384"
+  - name: INTERNATIONAL MIGRATION REVIEW
+    short: INT MIGR REV
+    issn: "01979183"
+    eissn: "17477379"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "2.4"
+    jci: "1.19"
+    oa_citable_pct: "31.06"
+    total_citations: "4961"
+  - name: JOURNAL OF BIOSOCIAL SCIENCE
+    short: J BIOSOC SCI
+    issn: "00219320"
+    eissn: "14697599"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q3
+    jif: "1.2"
+    jci: "0.61"
+    oa_citable_pct: "43.54"
+    total_citations: "1801"
+  - name: Journal of Demographic Economics
+    short: J DEMOGR ECON
+    issn: "20540892"
+    eissn: "20540906"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q4
+    jif: "0.7"
+    jci: "0.46"
+    oa_citable_pct: "29.85"
+    total_citations: "278"
+  - name: JOURNAL OF ETHNIC AND MIGRATION STUDIES
+    short: J ETHN MIGR STUD
+    issn: 1369183X
+    eissn: "14699451"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.77"
+    oa_citable_pct: "40.18"
+    total_citations: "10838"
+  - name: Journal of Immigrant & Refugee Studies
+    short: J IMMIGR REFUG STUD
+    issn: "15562948"
+    eissn: "15562956"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.71"
+    oa_citable_pct: "28.92"
+    total_citations: "1113"
+  - name: JOURNAL OF POPULATION ECONOMICS
+    short: J POPUL ECON
+    issn: "09331433"
+    eissn: "14321475"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "3"
+    jci: "1.44"
+    oa_citable_pct: "47.37"
+    total_citations: "3324"
+  - name: Journal of Refugee Studies
+    short: J REFUG STUD
+    issn: "09516328"
+    eissn: "14716925"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q2
+    jif: "1.9"
+    jci: "1.11"
+    oa_citable_pct: "47.8"
+    total_citations: "3138"
+  - name: Journal of the Economics of Ageing
+    short: J ECON AGEING
+    issn: 2212828X
+    eissn: "22128298"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2"
+    jci: "0.74"
+    oa_citable_pct: "36.73"
+    total_citations: "707"
+  - name: Mathematical Population Studies
+    short: MATH POPUL STUD
+    issn: "08898480"
+    eissn: 1547724X
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "1.3"
+    jci: "0.56"
+    oa_citable_pct: "3.57"
+    total_citations: "263"
+  - name: Migration Studies
+    short: MIGR STUD
+    issn: "20495838"
+    eissn: "20495846"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q1
+    jif: "2.7"
+    jci: "1.1"
+    oa_citable_pct: "49.21"
+    total_citations: "1076"
+  - name: Papeles de Poblacion
+    short: PAPELES POBLAC
+    issn: "14057425"
+    eissn: "14057425"
+    site: ""
+    notes: WOS/JCR; UNIV AUTONOMA ESTADO MEXICO
+    quartile: Q4
+    jif: "0.2"
+    jci: "0.06"
+    oa_citable_pct: "65.28"
+    total_citations: "282"
+  - name: PERSPECTIVES ON SEXUAL AND REPRODUCTIVE HEALTH
+    short: PERSPECT SEX REPRO H
+    issn: "15386341"
+    eissn: "19312393"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.5"
+    jci: "1.88"
+    oa_citable_pct: "49.35"
+    total_citations: "1294"
+  - name: POPULATION
+    short: POPULATION-PARIS
+    issn: "00324663"
+    eissn: "19577966"
+    site: ""
+    notes: WOS/JCR; INST NATL D ETUDES DEMOGRAPHIQUES
+    quartile: Q2
+    jif: "1.5"
+    jci: "0.4"
+    oa_citable_pct: "26.32"
+    total_citations: "728"
+  - name: POPULATION AND DEVELOPMENT REVIEW
+    short: POPUL DEV REV
+    issn: "00987921"
+    eissn: "17284457"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "4.8"
+    jci: "2.19"
+    oa_citable_pct: "54.88"
+    total_citations: "6014"
+  - name: POPULATION AND ENVIRONMENT
+    short: POPUL ENVIRON
+    issn: "01990039"
+    eissn: "15737810"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q1
+    jif: "2.5"
+    jci: "1.03"
+    oa_citable_pct: "40.79"
+    total_citations: "1967"
+  - name: POPULATION RESEARCH AND POLICY REVIEW
+    short: POPUL RES POLICY REV
+    issn: "01675923"
+    eissn: "15737829"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "1.5"
+    jci: "1.03"
+    oa_citable_pct: "34.51"
+    total_citations: "2078"
+  - name: Population Space and Place
+    short: POPUL SPACE PLACE
+    issn: "15448444"
+    eissn: "15448452"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "2.6"
+    jci: "1.04"
+    oa_citable_pct: "54.58"
+    total_citations: "3516"
+  - name: POPULATION STUDIES-A JOURNAL OF DEMOGRAPHY
+    short: POP STUD-J DEMOG
+    issn: "00324728"
+    eissn: "14774747"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.2"
+    jci: "1.04"
+    oa_citable_pct: "53.33"
+    total_citations: "2082"
+  - name: STUDIES IN FAMILY PLANNING
+    short: STUD FAMILY PLANN
+    issn: "00393665"
+    eissn: "17284465"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "3.1"
+    jci: "1.02"
+    oa_citable_pct: "53.95"
+    total_citations: "1843"

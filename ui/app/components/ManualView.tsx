@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
 
 export interface ManualData {
@@ -25,6 +25,19 @@ export function ManualView({
   onSkillClick?: (skillId: string) => void;
 }) {
   const [openId, setOpenId] = useState<string | null>(null);
+  const [disciplinesOpen, setDisciplinesOpen] = useState(false);
+  const [disciplines, setDisciplines] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/journals-by-discipline")
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.disciplines) && d.disciplines.length > 0) {
+          setDisciplines(d.disciplines);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="manual-view space-y-6">
@@ -61,7 +74,31 @@ export function ManualView({
                       row.area
                     )}
                   </td>
-                  <td className="manual-table-td manual-table-td-desc">{row.description}</td>
+                  <td className="manual-table-td manual-table-td-desc">
+                    <span>{row.description}</span>
+                    {row.area === "期刊数据库" && disciplines.length > 0 && (
+                      <div className="mt-3 rounded-[var(--radius)] border border-[var(--border-soft)] bg-[var(--bg-page)] overflow-hidden">
+                        <button
+                          type="button"
+                          onClick={() => setDisciplinesOpen((o) => !o)}
+                          className="flex w-full items-center justify-between px-3 py-2 text-left text-[13px] font-medium text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+                          aria-expanded={disciplinesOpen}
+                        >
+                          <span>现有解析学科（{disciplines.length} 个）</span>
+                          <span className={`inline-block transition-transform ${disciplinesOpen ? "rotate-180" : ""}`} aria-hidden>▼</span>
+                        </button>
+                        {disciplinesOpen && (
+                          <div className="border-t border-[var(--border-soft)] px-3 py-2">
+                            <ul className="list-none space-y-1 text-[12px] text-[var(--text-muted)]">
+                              {[...disciplines].sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })).map((d) => (
+                                <li key={d}>{d}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

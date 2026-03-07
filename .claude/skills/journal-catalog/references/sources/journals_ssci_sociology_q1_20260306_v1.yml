@@ -1,0 +1,906 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Sociology
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+    category: SOCIOLOGY
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260218_Sociology_260306_normalized.csv
+  generated_at: 2026-03-06T07:21:29.758Z
+  date_tag: "20260306"
+  version: 1
+  count_filtered_rows: 147
+  count_unique_journals: 147
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: ACTA SOCIOLOGICA
+    short: ACTA SOCIOL
+    issn: "00016993"
+    eissn: "15023869"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: AGRICULTURE AND HUMAN VALUES
+    short: AGR HUM VALUES
+    issn: 0889048X
+    eissn: "15728366"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: American Journal of Cultural Sociology
+    short: AM J CULT SOCIOL
+    issn: "20497113"
+    eissn: "20497121"
+    site: ""
+    notes: WOS/JCR; PALGRAVE MACMILLAN LTD
+  - name: AMERICAN JOURNAL OF ECONOMICS AND SOCIOLOGY
+    short: AM J ECON SOCIOL
+    issn: "00029246"
+    eissn: "15367150"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: AMERICAN JOURNAL OF SOCIOLOGY
+    short: AM J SOCIOL
+    issn: "00029602"
+    eissn: "15375390"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: AMERICAN SOCIOLOGICAL REVIEW
+    short: AM SOCIOL REV
+    issn: "00031224"
+    eissn: "19398271"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: ANNALS OF TOURISM RESEARCH
+    short: ANN TOURISM RES
+    issn: "01607383"
+    eissn: "18737722"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: Annual Review of Law and Social Science
+    short: ANNU REV LAW SOC SCI
+    issn: "15503585"
+    eissn: "15503631"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: Annual Review of Sociology
+    short: ANNU REV SOCIOL
+    issn: "03600572"
+    eissn: "15452115"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+  - name: ANTHROZOOS
+    short: ANTHROZOOS
+    issn: "08927936"
+    eissn: "17530377"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: ARMED FORCES & SOCIETY
+    short: ARMED FORCES SOC
+    issn: 0095327X
+    eissn: "15560848"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: BERLINER JOURNAL FUR SOZIOLOGIE
+    short: BERL J SOZIOL
+    issn: "08631808"
+    eissn: "18622593"
+    site: ""
+    notes: WOS/JCR; VS VERLAG SOZIALWISSENSCHAFTEN-GWV FACHVERLAGE GMBH
+  - name: Biodemography and Social Biology
+    short: BIODEMOGR SOC BIOL
+    issn: "19485565"
+    eissn: "19485573"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Body & Society
+    short: BODY SOC
+    issn: 1357034X
+    eissn: "14603632"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: BRITISH JOURNAL OF SOCIOLOGY
+    short: BRIT J SOCIOL
+    issn: "00071315"
+    eissn: "14684446"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: BRITISH JOURNAL OF SOCIOLOGY OF EDUCATION
+    short: BRIT J SOCIOL EDUC
+    issn: "01425692"
+    eissn: "14653346"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Canadian Review of Sociology-Revue Canadienne de Sociologie
+    short: CAN REV SOCIOL
+    issn: "17556171"
+    eissn: 1755618X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Chinese Sociological Review
+    short: CHINESE SOCIOL REV
+    issn: "21620555"
+    eissn: "21620563"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: City & Community
+    short: CITY COMMUNITY
+    issn: "15356841"
+    eissn: "15406040"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: COMPARATIVE STUDIES IN SOCIETY AND HISTORY
+    short: COMP STUD SOC HIST
+    issn: "00104175"
+    eissn: "14752999"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: CONTEMPORARY SOCIOLOGY-A JOURNAL OF REVIEWS
+    short: CONTEMP SOCIOL
+    issn: "00943061"
+    eissn: "19398638"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: CONTRIBUTIONS TO INDIAN SOCIOLOGY
+    short: CONTRIB INDIAN SOC
+    issn: "00699659"
+    eissn: "09730648"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INDIA PVT LTD
+  - name: Convergencia-Revista de Ciencias Sociales
+    short: CONVERGENCIA
+    issn: "24485799"
+    eissn: "24485799"
+    site: ""
+    notes: WOS/JCR; UNIV AUTONOMA ESTADO MEXICO
+  - name: Cornell Hospitality Quarterly
+    short: CORNELL HOSP Q
+    issn: "19389655"
+    eissn: "19389663"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Crime Media Culture
+    short: CRIME MEDIA CULT
+    issn: "17416590"
+    eissn: "17416604"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Critical Sociology
+    short: CRIT SOCIOL
+    issn: "08969205"
+    eissn: "15691632"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Cultural Sociology
+    short: CULT SOCIOL-LONDON
+    issn: "17499755"
+    eissn: "17499763"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: CURRENT SOCIOLOGY
+    short: CURR SOCIOL
+    issn: "00113921"
+    eissn: "14617064"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Deviance et Societe
+    short: DEVIANCE SOC
+    issn: "03787931"
+    eissn: "03785807"
+    site: ""
+    notes: WOS/JCR; MEDECINE ET HYGIENE
+  - name: DEVIANT BEHAVIOR
+    short: DEVIANT BEHAV
+    issn: "01639625"
+    eissn: "15210456"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: DISCOURSE & SOCIETY
+    short: DISCOURSE SOC
+    issn: "09579265"
+    eissn: "14603624"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: DRUSTVENA ISTRAZIVANJA
+    short: DRUS ISTRAZ
+    issn: "13300288"
+    eissn: "18486096"
+    site: ""
+    notes: WOS/JCR; INST OF SOCIAL SCIENCES IVO PILAR
+  - name: Du Bois Review-Social Science Research on Race
+    short: DU BOIS REV
+    issn: 1742058X
+    eissn: "17420598"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: ECONOMIC AND SOCIAL REVIEW
+    short: ECON SOC REV
+    issn: "00129984"
+    eissn: "00129984"
+    site: ""
+    notes: WOS/JCR; ECONOMIC & SOCIAL STUDIES
+  - name: ECONOMY AND SOCIETY
+    short: ECON SOC
+    issn: "03085147"
+    eissn: "14695766"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: ETHNIC AND RACIAL STUDIES
+    short: ETHNIC RACIAL STUD
+    issn: "01419870"
+    eissn: "14664356"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Ethnography
+    short: ETHNOGRAPHY
+    issn: "14661381"
+    eissn: "17412714"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: European Journal of Social Theory
+    short: EUR J SOC THEORY
+    issn: "13684310"
+    eissn: "14617137"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: European Journal of Sociology-Archives Europeennes de Sociologie
+    short: EUR J SOCIOL
+    issn: "00039756"
+    eissn: "14740583"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: EUROPEAN SOCIETIES
+    short: EUR SOC
+    issn: "14616696"
+    eissn: "14698307"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+  - name: EUROPEAN SOCIOLOGICAL REVIEW
+    short: EUR SOCIOL REV
+    issn: "02667215"
+    eissn: "14682672"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: Filosofija-Sociologija
+    short: FILOS-SOCIOL
+    issn: "02357186"
+    eissn: "02357186"
+    site: ""
+    notes: WOS/JCR; LITHUANIAN ACAD SCIENCES
+  - name: Food Culture & Society
+    short: FOOD CULT SOC
+    issn: "15528014"
+    eissn: "17517443"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: GENDER & SOCIETY
+    short: GENDER SOC
+    issn: "08912432"
+    eissn: "15523977"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: GLOBAL NETWORKS-A JOURNAL OF TRANSNATIONAL AFFAIRS
+    short: GLOBAL NETW
+    issn: "14702266"
+    eissn: "14710374"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Health Sociology Review
+    short: HEALTH SOCIOL REV
+    issn: "14461242"
+    eissn: "18393551"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: HUMAN ECOLOGY
+    short: HUM ECOL
+    issn: "03007839"
+    eissn: "15729915"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+  - name: Human Ecology Review
+    short: HUM ECOL REV
+    issn: "10744827"
+    eissn: "22040919"
+    site: ""
+    notes: WOS/JCR; ANU PRESS
+  - name: HUMAN STUDIES
+    short: HUM STUD
+    issn: "01638548"
+    eissn: 1572851X
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Information Communication & Society
+    short: INFORM COMMUN SOC
+    issn: 1369118X
+    eissn: "14684462"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Innovation-The European Journal of Social Science Research
+    short: INNOVATION-ABINGDON
+    issn: "13511610"
+    eissn: "14698412"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: INTERNATIONAL JOURNAL OF COMPARATIVE SOCIOLOGY
+    short: INT J COMP SOCIOL
+    issn: "00207152"
+    eissn: "17452554"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: International Journal of Intercultural Relations
+    short: INT J INTERCULT REL
+    issn: "01471767"
+    eissn: "18737552"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+  - name: International Political Sociology
+    short: INT POLIT SOCIOL
+    issn: "17495679"
+    eissn: "17495687"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: International Review for the Sociology of Sport
+    short: INT REV SOCIOL SPORT
+    issn: "10126902"
+    eissn: "14617218"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: INTERNATIONAL SOCIOLOGY
+    short: INT SOCIOL
+    issn: "02685809"
+    eissn: "14617242"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: JOURNAL FOR THE SCIENTIFIC STUDY OF RELIGION
+    short: J SCI STUD RELIG
+    issn: "00218294"
+    eissn: "14685906"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Consumer Culture
+    short: J CONSUM CULT
+    issn: "14695405"
+    eissn: "17412900"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: JOURNAL OF CONTEMPORARY ETHNOGRAPHY
+    short: J CONTEMP ETHNOGR
+    issn: "08912416"
+    eissn: "15525414"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Journal of Cultural Economy
+    short: J CULT ECON-UK
+    issn: "17530350"
+    eissn: "17530369"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF HEALTH AND SOCIAL BEHAVIOR
+    short: J HEALTH SOC BEHAV
+    issn: "00221465"
+    eissn: "21506000"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF HISTORICAL SOCIOLOGY
+    short: J HIST SOCIOL
+    issn: "09521909"
+    eissn: "14676443"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Journal of Immigrant & Refugee Studies
+    short: J IMMIGR REFUG STUD
+    issn: "15562948"
+    eissn: "15562956"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF LAW AND SOCIETY
+    short: J LAW SOC
+    issn: 0263323X
+    eissn: "14676478"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF LEISURE RESEARCH
+    short: J LEISURE RES
+    issn: "00222216"
+    eissn: "21596417"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: JOURNAL OF MARRIAGE AND FAMILY
+    short: J MARRIAGE FAM
+    issn: "00222445"
+    eissn: "17413737"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: JOURNAL OF MATHEMATICAL SOCIOLOGY
+    short: J MATH SOCIOL
+    issn: 0022250X
+    eissn: "15455874"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: JOURNAL OF SOCIOLOGY
+    short: J SOCIOL
+    issn: "14407833"
+    eissn: "17412978"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: JOURNAL OF SPORT & SOCIAL ISSUES
+    short: J SPORT SOC ISSUES
+    issn: "01937235"
+    eissn: "15527638"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF THE HISTORY OF SEXUALITY
+    short: J HIST SEXUALITY
+    issn: "10434070"
+    eissn: "15353605"
+    site: ""
+    notes: WOS/JCR; UNIV TEXAS PRESS
+  - name: KOLNER ZEITSCHRIFT FUR SOZIOLOGIE UND SOZIALPSYCHOLOGIE
+    short: KOLNER Z SOZIOL SOZ
+    issn: "00232653"
+    eissn: 1861891X
+    site: ""
+    notes: WOS/JCR; SPRINGER VIEWEG-SPRINGER FACHMEDIEN WIESBADEN GMBH
+  - name: LANGUAGE IN SOCIETY
+    short: LANG SOC
+    issn: "00474045"
+    eissn: "14698013"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: LAW & SOCIETY REVIEW
+    short: LAW SOC REV
+    issn: "00239216"
+    eissn: "15405893"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: LEISURE SCIENCES
+    short: LEISURE SCI
+    issn: "01490400"
+    eissn: "15210588"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: MEDIA CULTURE & SOCIETY
+    short: MEDIA CULT SOC
+    issn: "01634437"
+    eissn: "14603675"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Men and Masculinities
+    short: MEN MASC
+    issn: 1097184X
+    eissn: "15526828"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Mobilization
+    short: MOBILIZATION
+    issn: 1086671X
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; SAN DIEGO STATE UNIV
+  - name: Nations and Nationalism
+    short: NATIONS NATL
+    issn: "13545078"
+    eissn: "14698129"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: New Directions for Child and Adolescent Development
+    short: NEW DIR CHILD ADOLES
+    issn: "15203247"
+    eissn: "15348687"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: POETICS
+    short: POETICS
+    issn: 0304422X
+    eissn: "18727514"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: Polish Sociological Review
+    short: POL SOCIOL REV
+    issn: "12311413"
+    eissn: "12311413"
+    site: ""
+    notes: WOS/JCR; POLSKIE TOWARZYSTWO SOCJOLOGICZNE-POLISH SOCIOLOGICAL ASSOC
+  - name: POLITICS & SOCIETY
+    short: POLIT SOC
+    issn: "00323292"
+    eissn: "15527514"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: POPULATION AND DEVELOPMENT REVIEW
+    short: POPUL DEV REV
+    issn: "00987921"
+    eissn: "17284457"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Qualitative Research
+    short: QUAL RES
+    issn: "14687941"
+    eissn: "17413109"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Qualitative Sociology
+    short: QUAL SOCIOL
+    issn: "01620436"
+    eissn: "15737837"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: RACE & CLASS
+    short: RACE CLASS
+    issn: "03063968"
+    eissn: "17413125"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Race and Social Problems
+    short: RACE SOC PROBL
+    issn: "18671748"
+    eissn: "18671756"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: RATIONALITY AND SOCIETY
+    short: RATION SOC
+    issn: "10434631"
+    eissn: "14617358"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Research in Social Stratification and Mobility
+    short: RES SOC STRAT MOBIL
+    issn: "02765624"
+    eissn: "18785654"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+  - name: REVIEW OF RELIGIOUS RESEARCH
+    short: REV RELIG RES
+    issn: 0034673X
+    eissn: "22114866"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Revista Espanola de Investigaciones Sociologicas
+    short: REV ESP INVESTIG SOC
+    issn: "02105233"
+    eissn: "19885903"
+    site: ""
+    notes: WOS/JCR; CENTRO INVESTIGACIONES SOCIOLOGICAS
+  - name: Revista Internacional de Sociologia
+    short: REV INT SOCIOL
+    issn: "00349712"
+    eissn: 1988429X
+    site: ""
+    notes: WOS/JCR; CONSEJO SUPERIOR INVESTIGACIONES CIENTIFICAS-CSIC
+  - name: REVUE FRANCAISE DE SOCIOLOGIE
+    short: REV FR SOCIOL
+    issn: "00352969"
+    eissn: "19585691"
+    site: ""
+    notes: WOS/JCR; PRESSES SCIENCES PO
+  - name: RURAL SOCIOLOGY
+    short: RURAL SOCIOL
+    issn: "00360112"
+    eissn: "15490831"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Scandinavian Journal of Hospitality and Tourism
+    short: SCAND J HOSP TOUR
+    issn: "15022250"
+    eissn: "15022269"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Sexualities
+    short: SEXUALITIES
+    issn: "13634607"
+    eissn: "14617382"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIAL COMPASS
+    short: SOC COMPASS
+    issn: "00377686"
+    eissn: "14617404"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: SOCIAL FORCES
+    short: SOC FORCES
+    issn: "00377732"
+    eissn: "15347605"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: SOCIAL INDICATORS RESEARCH
+    short: SOC INDIC RES
+    issn: "03038300"
+    eissn: "15730921"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Social Justice Research
+    short: SOC JUSTICE RES
+    issn: "08857466"
+    eissn: "15736725"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Social Movement Studies
+    short: SOC MOVEMENT STUD
+    issn: "14742837"
+    eissn: "14742829"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: SOCIAL NETWORKS
+    short: SOC NETWORKS
+    issn: "03788733"
+    eissn: "18792111"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+  - name: SOCIAL PROBLEMS
+    short: SOC PROBL
+    issn: "00377791"
+    eissn: "15338533"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: SOCIAL PSYCHOLOGY QUARTERLY
+    short: SOC PSYCHOL QUART
+    issn: "01902725"
+    eissn: "19398999"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIAL SCIENCE QUARTERLY
+    short: SOC SCI QUART
+    issn: "00384941"
+    eissn: "15406237"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: SOCIAL SCIENCE RESEARCH
+    short: SOC SCI RES
+    issn: 0049089X
+    eissn: "10960317"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+  - name: SOCIETY
+    short: SOCIETY
+    issn: "01472011"
+    eissn: "19364725"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: SOCIETY & ANIMALS
+    short: SOC ANIM
+    issn: "10631119"
+    eissn: "15685306"
+    site: ""
+    notes: WOS/JCR; BRILL
+  - name: SOCIETY & NATURAL RESOURCES
+    short: SOC NATUR RESOUR
+    issn: "08941920"
+    eissn: "15210723"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: Society and Mental Health
+    short: SOC MENT HEALTH
+    issn: "21568693"
+    eissn: "21568731"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Socio-Economic Review
+    short: SOCIO-ECON REV
+    issn: "14751461"
+    eissn: 1475147X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: SOCIOLOGIA
+    short: SOCIOLOGIA-BRATISLAV
+    issn: "00491225"
+    eissn: "13368613"
+    site: ""
+    notes: WOS/JCR; INST SOCIOLOGY SLOVAK ACAD SCIENCES
+  - name: SOCIOLOGIA RURALIS
+    short: SOCIOL RURALIS
+    issn: "00380199"
+    eissn: "14679523"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: SOCIOLOGICAL FORUM
+    short: SOCIOL FORUM
+    issn: "08848971"
+    eissn: "15737861"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: SOCIOLOGICAL INQUIRY
+    short: SOCIOL INQ
+    issn: "00380245"
+    eissn: 1475682X
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Sociological Methodology
+    short: SOCIOL METHODOL
+    issn: "00811750"
+    eissn: "14679531"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIOLOGICAL METHODS & RESEARCH
+    short: SOCIOL METHOD RES
+    issn: "00491241"
+    eissn: "15528294"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIOLOGICAL PERSPECTIVES
+    short: SOCIOL PERSPECT
+    issn: "07311214"
+    eissn: "15338673"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIOLOGICAL QUARTERLY
+    short: SOCIOL QUART
+    issn: "00380253"
+    eissn: "15338525"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: SOCIOLOGICAL RESEARCH ONLINE
+    short: SOCIOL RES ONLINE
+    issn: "13607804"
+    eissn: "13607804"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: SOCIOLOGICAL REVIEW
+    short: SOCIOL REV
+    issn: "00380261"
+    eissn: 1467954X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Sociological Science
+    short: SOCIOL SCI
+    issn: ""
+    eissn: "23306696"
+    site: ""
+    notes: WOS/JCR; SOC SOCIOLOGICAL SCIENCE
+  - name: SOCIOLOGICAL SPECTRUM
+    short: SOCIOL SPECTRUM
+    issn: "02732173"
+    eissn: "15210707"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+  - name: SOCIOLOGICAL THEORY
+    short: SOCIOL THEOR
+    issn: "07352751"
+    eissn: "14679558"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIOLOGICKY CASOPIS-CZECH SOCIOLOGICAL REVIEW
+    short: SOCIOL CAS
+    issn: ""
+    eissn: 2336128X
+    site: ""
+    notes: WOS/JCR; INST SOCIOLOGY, ACAD SCIENCES CZECH REPUBLIC
+  - name: SOCIOLOGIE DU TRAVAIL
+    short: SOCIOL TRAV
+    issn: "00380296"
+    eissn: "17775701"
+    site: ""
+    notes: WOS/JCR; REVUES ORG
+  - name: SOCIOLOGISK FORSKNING
+    short: SOCIOL FORSKNIN
+    issn: "00380342"
+    eissn: "00380342"
+    site: ""
+    notes: WOS/JCR; SOCIOLOGISK FORSKNING
+  - name: Sociology Compass
+    short: SOCIOL COMPASS
+    issn: "17519020"
+    eissn: "17519020"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: SOCIOLOGY OF EDUCATION
+    short: SOCIOL EDUC
+    issn: "00380407"
+    eissn: "19398573"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIOLOGY OF HEALTH & ILLNESS
+    short: SOCIOL HEALTH ILL
+    issn: "01419889"
+    eissn: "14679566"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: Sociology of Race and Ethnicity
+    short: SOCIOL RACE ETHNIC
+    issn: "23326492"
+    eissn: "23326506"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: SOCIOLOGY OF RELIGION
+    short: SOCIOL RELIG
+    issn: "10694404"
+    eissn: "17598818"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS INC
+  - name: SOCIOLOGY OF SPORT JOURNAL
+    short: SOCIOL SPORT J
+    issn: "07411235"
+    eissn: "15432785"
+    site: ""
+    notes: WOS/JCR; HUMAN KINETICS PUBL INC
+  - name: SOCIOLOGY-THE JOURNAL OF THE BRITISH SOCIOLOGICAL ASSOCIATION
+    short: SOCIOLOGY
+    issn: "00380385"
+    eissn: "14698684"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: SOTSIOLOGICHESKIE ISSLEDOVANIYA
+    short: SOTSIOL ISSLED+
+    issn: "01321625"
+    eissn: "01321625"
+    site: ""
+    notes: WOS/JCR; Russian Acad Sciences, State Acad Univ Humanities (GAUGN)
+  - name: SOZIALE WELT-ZEITSCHRIFT FUR SOZIALWISSENSCHAFTLICHE FORSCHUNG UND PRAXIS
+    short: SOZ WELT
+    issn: "00386073"
+    eissn: "00386073"
+    site: ""
+    notes: WOS/JCR; NOMOS VERLAGSGESELLSCHAFT MBH & CO KG
+  - name: Sport in Society
+    short: SPORT SOC
+    issn: "17430437"
+    eissn: "17430445"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: SYMBOLIC INTERACTION
+    short: SYMB INTERACT
+    issn: "01956086"
+    eissn: "15338665"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: TEACHING SOCIOLOGY
+    short: TEACH SOCIOL
+    issn: 0092055X
+    eissn: 1939862X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Telos
+    short: TELOS-US
+    issn: "00906514"
+    eissn: 1940459X
+    site: ""
+    notes: WOS/JCR; TELOS PRESS LTD
+  - name: Tempo Social
+    short: TEMPO SOC
+    issn: "01032070"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; UNIV SAO PAOLO, DEPT SOCIOLOGIA
+  - name: THEORY AND SOCIETY
+    short: THEOR SOC
+    issn: "03042421"
+    eissn: "15737853"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: WORK AND OCCUPATIONS
+    short: WORK OCCUPATION
+    issn: "07308884"
+    eissn: "15528464"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: WORK EMPLOYMENT AND SOCIETY
+    short: WORK EMPLOY SOC
+    issn: "09500170"
+    eissn: "14698722"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: Young
+    short: YOUNG
+    issn: "11033088"
+    eissn: "17413222"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: YOUTH & SOCIETY
+    short: YOUTH SOC
+    issn: 0044118X
+    eissn: "15528499"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: ZEITSCHRIFT FUR SOZIOLOGIE
+    short: Z SOZIOL
+    issn: "03401804"
+    eissn: "23660325"
+    site: ""
+    notes: WOS/JCR; WALTER DE GRUYTER GMBH

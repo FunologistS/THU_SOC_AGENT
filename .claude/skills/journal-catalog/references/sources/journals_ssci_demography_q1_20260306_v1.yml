@@ -1,0 +1,96 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Demography
+  filter:
+    edition: SSCI
+    quartile: Q1
+    category: DEMOGRAPHY
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Demography_260306_normalized.csv
+  generated_at: 2026-03-06T05:07:05.916Z
+  date_tag: "20260306"
+  version: 1
+  count_filtered_rows: 12
+  count_unique_journals: 12
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: Comparative Migration Studies
+    short: COMP MIGR STUD
+    issn: ""
+    eissn: 2214594X
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+  - name: DEMOGRAPHY
+    short: DEMOGRAPHY
+    issn: "00703370"
+    eissn: "15337790"
+    site: ""
+    notes: WOS/JCR; DUKE UNIV PRESS
+  - name: European Journal of Population-Revue Europeenne de Demographie
+    short: EUR J POPUL
+    issn: "01686577"
+    eissn: "15729885"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: INTERNATIONAL MIGRATION REVIEW
+    short: INT MIGR REV
+    issn: "01979183"
+    eissn: "17477379"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: JOURNAL OF ETHNIC AND MIGRATION STUDIES
+    short: J ETHN MIGR STUD
+    issn: 1369183X
+    eissn: "14699451"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF POPULATION ECONOMICS
+    short: J POPUL ECON
+    issn: "09331433"
+    eissn: "14321475"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Migration Studies
+    short: MIGR STUD
+    issn: "20495838"
+    eissn: "20495846"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+  - name: PERSPECTIVES ON SEXUAL AND REPRODUCTIVE HEALTH
+    short: PERSPECT SEX REPRO H
+    issn: "15386341"
+    eissn: "19312393"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: POPULATION AND DEVELOPMENT REVIEW
+    short: POPUL DEV REV
+    issn: "00987921"
+    eissn: "17284457"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: POPULATION AND ENVIRONMENT
+    short: POPUL ENVIRON
+    issn: "01990039"
+    eissn: "15737810"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+  - name: Population Space and Place
+    short: POPUL SPACE PLACE
+    issn: "15448444"
+    eissn: "15448452"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: STUDIES IN FAMILY PLANNING
+    short: STUD FAMILY PLANN
+    issn: "00393665"
+    eissn: "17284465"
+    site: ""
+    notes: WOS/JCR; WILEY

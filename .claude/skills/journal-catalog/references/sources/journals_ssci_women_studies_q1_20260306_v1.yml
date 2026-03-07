@@ -1,0 +1,114 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI Womens studies
+  filter:
+    edition: SSCI
+    quartile: Q1
+    category: WOMENS STUDIES
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Women_Studies_260306_normalized.csv
+  generated_at: 2026-03-06T05:07:16.684Z
+  date_tag: "20260306"
+  version: 1
+  count_filtered_rows: 15
+  count_unique_journals: 15
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+journals:
+  - name: FEMINISM & PSYCHOLOGY
+    short: FEM PSYCHOL
+    issn: "09593535"
+    eissn: "14617161"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: FEMINIST ECONOMICS
+    short: FEM ECON
+    issn: "13545701"
+    eissn: "14664372"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: FRONTIERS-A JOURNAL OF WOMEN STUDIES
+    short: FRONTIERS
+    issn: "01609009"
+    eissn: "15360334"
+    site: ""
+    notes: WOS/JCR; UNIV NEBRASKA PRESS
+  - name: GENDER & SOCIETY
+    short: GENDER SOC
+    issn: "08912432"
+    eissn: "15523977"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+  - name: Gender in Management
+    short: GEND MANAG
+    issn: "17542413"
+    eissn: "17542421"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+  - name: GENDER WORK AND ORGANIZATION
+    short: GENDER WORK ORGAN
+    issn: "09686673"
+    eissn: "14680432"
+    site: ""
+    notes: WOS/JCR; WILEY
+  - name: International Feminist Journal of Politics
+    short: INT FEM J POLIT
+    issn: "14616742"
+    eissn: "14684470"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: JOURNAL OF WOMENS HEALTH
+    short: J WOMENS HEALTH
+    issn: "15409996"
+    eissn: 1931843X
+    site: ""
+    notes: WOS/JCR; MARY ANN LIEBERT, INC
+  - name: LGBTQ Family-An Interdisciplinary Journal
+    short: LGBTQ FAM
+    issn: "27703371"
+    eissn: 2770338X
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+  - name: Politics & Gender
+    short: POLIT GENDER
+    issn: 1743923X
+    eissn: "17439248"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+  - name: PSYCHOLOGY OF WOMEN QUARTERLY
+    short: PSYCHOL WOMEN QUART
+    issn: "03616843"
+    eissn: "14716402"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+  - name: SEX ROLES
+    short: SEX ROLES
+    issn: "03600025"
+    eissn: "15732762"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+  - name: SIGNS
+    short: SIGNS
+    issn: "00979740"
+    eissn: "15456943"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+  - name: WOMENS HEALTH ISSUES
+    short: WOMEN HEALTH ISS
+    issn: "10493867"
+    eissn: "18784321"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+  - name: WOMENS STUDIES INTERNATIONAL FORUM
+    short: WOMEN STUD INT FORUM
+    issn: "02775395"
+    eissn: 1879243X
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD

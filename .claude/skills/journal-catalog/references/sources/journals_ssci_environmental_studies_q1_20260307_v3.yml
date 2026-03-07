@@ -1,0 +1,1436 @@
+meta:
+  source: WOS/JCR
+  dataset: SSCI
+  filter:
+    edition: SSCI
+    quartile: Q1-Q4
+  input: .claude/skills/journal-catalog/assets/02_normalize/WOS_JCR_260306_Environmental_Studies_260306_normalized.csv
+  generated_at: 2026-03-07T10:07:02.258Z
+  date_tag: "20260307"
+  version: 3
+  count_filtered_rows: 128
+  count_unique_journals: 128
+  detected_columns:
+    nameKey: journal_name
+    abbrevKey: jcr_abbrev
+    publisherKey: publisher
+    issnKey: issn_print
+    eissnKey: issn_e
+    quartileKey: quartile
+    editionKey: edition
+    categoryKey: category
+    yearKey: jcr_year
+    jifKey: jif
+    jciKey: jci
+    oaKey: oa_citable_pct
+    totalCitationsKey: total_citations
+journals:
+  - name: ANNALS OF REGIONAL SCIENCE
+    short: ANN REGIONAL SCI
+    issn: "05701864"
+    eissn: "14320592"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "2.1"
+    jci: "0.6"
+    oa_citable_pct: "41.36"
+    total_citations: "2558"
+  - name: Annual Review of Environment and Resources
+    short: ANNU REV ENV RESOUR
+    issn: "15435938"
+    eissn: "15452050"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "16"
+    jci: "1.55"
+    oa_citable_pct: "100"
+    total_citations: "8211"
+  - name: Annual Review of Resource Economics
+    short: ANNU REV RESOUR ECON
+    issn: "19411340"
+    eissn: "19411359"
+    site: ""
+    notes: WOS/JCR; ANNUAL REVIEWS
+    quartile: Q1
+    jif: "8.4"
+    jci: "1.3"
+    oa_citable_pct: "56.16"
+    total_citations: "2316"
+  - name: Anthropocene Review
+    short: ANTHROPOCENE REV
+    issn: "20530196"
+    eissn: 2053020X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "3.5"
+    jci: "0.69"
+    oa_citable_pct: "41.86"
+    total_citations: "1206"
+  - name: Applied Spatial Analysis and Policy
+    short: APPL SPAT ANAL POLIC
+    issn: 1874463X
+    eissn: "18744621"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.5"
+    oa_citable_pct: "28.82"
+    total_citations: "893"
+  - name: Australasian Journal of Environmental Management
+    short: AUSTRALAS J ENV MAN
+    issn: "14486563"
+    eissn: "21595356"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q4
+    jif: "1.5"
+    jci: "0.32"
+    oa_citable_pct: "26.76"
+    total_citations: "602"
+  - name: Business Strategy and the Environment
+    short: BUS STRATEG ENVIRON
+    issn: "09644733"
+    eissn: "10990836"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "13.3"
+    jci: "2.76"
+    oa_citable_pct: "41.48"
+    total_citations: "30263"
+  - name: Carbon Management
+    short: CARBON MANAG
+    issn: "17583004"
+    eissn: "17583012"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "3.2"
+    jci: "0.53"
+    oa_citable_pct: "100"
+    total_citations: "1958"
+  - name: Climate and Development
+    short: CLIM DEV
+    issn: "17565529"
+    eissn: "17565537"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "3.4"
+    jci: "0.75"
+    oa_citable_pct: "20.29"
+    total_citations: "3128"
+  - name: Climate Change Economics
+    short: CLIM CHANG ECON
+    issn: "20100078"
+    eissn: "20100086"
+    site: ""
+    notes: WOS/JCR; WORLD SCIENTIFIC PUBL CO PTE LTD
+    quartile: Q3
+    jif: "2.4"
+    jci: "0.89"
+    oa_citable_pct: "11.36"
+    total_citations: "606"
+  - name: CLIMATE POLICY
+    short: CLIM POLICY
+    issn: "14693062"
+    eissn: "17527457"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "5.2"
+    jci: "1.66"
+    oa_citable_pct: "34.74"
+    total_citations: "6353"
+  - name: Climate Risk Management
+    short: CLIM RISK MANAG
+    issn: "22120963"
+    eissn: "22120963"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "5"
+    jci: "1.09"
+    oa_citable_pct: "100"
+    total_citations: "3225"
+  - name: Climate Services
+    short: CLIM SERV
+    issn: "24058807"
+    eissn: "24058807"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "4.5"
+    jci: "0.91"
+    oa_citable_pct: "99.15"
+    total_citations: "1691"
+  - name: COASTAL MANAGEMENT
+    short: COAST MANAGE
+    issn: "08920753"
+    eissn: "15210421"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.32"
+    oa_citable_pct: "11.67"
+    total_citations: "1266"
+  - name: COMPUTERS ENVIRONMENT AND URBAN SYSTEMS
+    short: COMPUT ENVIRON URBAN
+    issn: "01989715"
+    eissn: "18737587"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "8.3"
+    jci: "1.64"
+    oa_citable_pct: "36.33"
+    total_citations: "8300"
+  - name: Conservation & Society
+    short: CONSERV SOC
+    issn: "09724923"
+    eissn: "09753133"
+    site: ""
+    notes: WOS/JCR; WOLTERS KLUWER MEDKNOW PUBLICATIONS
+    quartile: Q3
+    jif: "2.1"
+    jci: "0.4"
+    oa_citable_pct: "67.14"
+    total_citations: "1380"
+  - name: Corporate Social Responsibility and Environmental Management
+    short: CORP SOC RESP ENV MA
+    issn: "15353958"
+    eissn: "15353966"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "9.1"
+    jci: "1.98"
+    oa_citable_pct: "26.7"
+    total_citations: "15559"
+  - name: CULTURAL GEOGRAPHIES
+    short: CULT GEOGR
+    issn: "14744740"
+    eissn: "14770881"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q4
+    jif: "1.5"
+    jci: "0.53"
+    oa_citable_pct: "59.32"
+    total_citations: "1786"
+  - name: Disaster Prevention and Management
+    short: DISASTER PREV MANAG
+    issn: "09653562"
+    eissn: "17586100"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q3
+    jif: "2"
+    jci: "0.48"
+    oa_citable_pct: "13.82"
+    total_citations: "1682"
+  - name: DISASTERS
+    short: DISASTERS
+    issn: "03613666"
+    eissn: "14677717"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "2.6"
+    jci: "1.09"
+    oa_citable_pct: "59.75"
+    total_citations: "3142"
+  - name: ECOLOGICAL ECONOMICS
+    short: ECOL ECON
+    issn: "09218009"
+    eissn: "18736106"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "6.3"
+    jci: "1.57"
+    oa_citable_pct: "45.45"
+    total_citations: "35499"
+  - name: ECOLOGY AND SOCIETY
+    short: ECOL SOC
+    issn: "17083087"
+    eissn: ""
+    site: ""
+    notes: WOS/JCR; Resilience Alliance
+    quartile: Q2
+    jif: "3.2"
+    jci: "0.88"
+    oa_citable_pct: "98.87"
+    total_citations: "13977"
+  - name: ECOLOGY LAW QUARTERLY
+    short: ECOL LAW QUART
+    issn: "00461121"
+    eissn: "00461121"
+    site: ""
+    notes: WOS/JCR; UNIV CALIFORNIA, BERKELEY SCH LAW
+    quartile: Q4
+    jif: "0.3"
+    jci: "0.21"
+    oa_citable_pct: "0"
+    total_citations: "352"
+  - name: Economics of Energy & Environmental Policy
+    short: ECON ENERGY ENV POL
+    issn: "21605882"
+    eissn: "21605890"
+    site: ""
+    notes: WOS/JCR; INT ASSOC ENERGY ECONOMICS
+    quartile: Q4
+    jif: "1.2"
+    jci: "0.35"
+    oa_citable_pct: "10.91"
+    total_citations: "407"
+  - name: Ecosystem Services
+    short: ECOSYST SERV
+    issn: "22120416"
+    eissn: "22120416"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "6.6"
+    jci: "1.34"
+    oa_citable_pct: "45.58"
+    total_citations: "10896"
+  - name: Energy & Environment
+    short: ENERG ENVIRON-UK
+    issn: 0958305X
+    eissn: "20484070"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q1
+    jif: "4.8"
+    jci: "1.09"
+    oa_citable_pct: "3.05"
+    total_citations: "3967"
+  - name: Energy Efficiency
+    short: ENERG EFFIC
+    issn: 1570646X
+    eissn: "15706478"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "4"
+    jci: "0.64"
+    oa_citable_pct: "37.41"
+    total_citations: "2911"
+  - name: ENERGY JOURNAL
+    short: ENERG J
+    issn: "01956574"
+    eissn: "19449089"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "2.4"
+    jci: "0.66"
+    oa_citable_pct: "10.73"
+    total_citations: "3266"
+  - name: Energy Policy
+    short: ENERG POLICY
+    issn: "03014215"
+    eissn: "18736777"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "9.2"
+    jci: "2.09"
+    oa_citable_pct: "33.62"
+    total_citations: "68208"
+  - name: Energy Research & Social Science
+    short: ENERGY RES SOC SCI
+    issn: "22146296"
+    eissn: "22146326"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "7.4"
+    jci: "1.31"
+    oa_citable_pct: "59.85"
+    total_citations: "22343"
+  - name: ENVIRONMENT
+    short: ENVIRONMENT
+    issn: "00139157"
+    eissn: "19399154"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "3.9"
+    jci: "0.61"
+    oa_citable_pct: "31.91"
+    total_citations: "1562"
+  - name: ENVIRONMENT AND BEHAVIOR
+    short: ENVIRON BEHAV
+    issn: "00139165"
+    eissn: 1552390X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "4.6"
+    jci: "1.2"
+    oa_citable_pct: "40.68"
+    total_citations: "8819"
+  - name: ENVIRONMENT AND DEVELOPMENT ECONOMICS
+    short: ENVIRON DEV ECON
+    issn: 1355770X
+    eissn: "14694395"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q4
+    jif: "1.5"
+    jci: "0.55"
+    oa_citable_pct: "38.36"
+    total_citations: "1965"
+  - name: ENVIRONMENT AND HISTORY
+    short: ENVIRON HIST-UK
+    issn: "09673407"
+    eissn: "17527023"
+    site: ""
+    notes: WOS/JCR; WHITE HORSE PRESS
+    quartile: Q4
+    jif: "0.6"
+    jci: "1.35"
+    oa_citable_pct: "7.59"
+    total_citations: "482"
+  - name: Environment and Planning A-Economy and Space
+    short: ENVIRON PLANN A
+    issn: 0308518X
+    eissn: "14723409"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "4"
+    jci: "1.14"
+    oa_citable_pct: "49.66"
+    total_citations: "11477"
+  - name: Environment and Planning B-Urban Analytics and City Science
+    short: ENVIRON PLAN B-URBAN
+    issn: "23998083"
+    eissn: "23998091"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "3.1"
+    jci: "0.76"
+    oa_citable_pct: "28.54"
+    total_citations: "6639"
+  - name: Environment and Planning C-Politics and Space
+    short: ENVIRON PLAN C-POLIT
+    issn: "23996544"
+    eissn: "23996552"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "2.2"
+    jci: "0.62"
+    oa_citable_pct: "43.01"
+    total_citations: "3544"
+  - name: ENVIRONMENT AND PLANNING D-SOCIETY & SPACE
+    short: ENVIRON PLANN D
+    issn: "02637758"
+    eissn: "14723433"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "2.5"
+    jci: "0.77"
+    oa_citable_pct: "48.24"
+    total_citations: "5787"
+  - name: Environment and Planning E-Nature and Space
+    short: ENVIRON PLAN E-NAT
+    issn: "25148486"
+    eissn: "25148494"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q2
+    jif: "3.2"
+    jci: "1"
+    oa_citable_pct: "42.11"
+    total_citations: "2214"
+  - name: ENVIRONMENT AND URBANIZATION
+    short: ENVIRON URBAN
+    issn: "09562478"
+    eissn: "17460301"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "2.4"
+    jci: "0.58"
+    oa_citable_pct: "44.3"
+    total_citations: "2678"
+  - name: ENVIRONMENTAL & RESOURCE ECONOMICS
+    short: ENVIRON RESOUR ECON
+    issn: "09246460"
+    eissn: "15731502"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "3.4"
+    jci: "0.91"
+    oa_citable_pct: "51.74"
+    total_citations: "6498"
+  - name: Environmental Communication-A Journal of Nature and Culture
+    short: ENVIRON COMMUN
+    issn: "17524032"
+    eissn: "17524040"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "4.1"
+    jci: "1.11"
+    oa_citable_pct: "25.93"
+    total_citations: "2929"
+  - name: Environmental Education Research
+    short: ENVIRON EDUC RES
+    issn: "13504622"
+    eissn: "14695871"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "3.1"
+    jci: "1.03"
+    oa_citable_pct: "29.68"
+    total_citations: "6131"
+  - name: ENVIRONMENTAL ETHICS
+    short: ENVIRON ETHICS
+    issn: "01634275"
+    eissn: "21537895"
+    site: ""
+    notes: WOS/JCR; ENVIRONMENTAL PHILOSOPHY INC
+    quartile: Q4
+    jif: "1.1"
+    jci: "0.34"
+    oa_citable_pct: "0"
+    total_citations: "708"
+  - name: Environmental Hazards-Human and Policy Dimensions
+    short: ENVIRON HAZARDS-UK
+    issn: "17477891"
+    eissn: "18780059"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.7"
+    jci: "0.42"
+    oa_citable_pct: "18.18"
+    total_citations: "1198"
+  - name: ENVIRONMENTAL HISTORY
+    short: ENVIRON HIST-US
+    issn: "10845453"
+    eissn: "19308892"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q4
+    jif: "0.8"
+    jci: "1.13"
+    oa_citable_pct: "3.49"
+    total_citations: "895"
+  - name: Environmental Impact Assessment Review
+    short: ENVIRON IMPACT ASSES
+    issn: "01959255"
+    eissn: "18736432"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCIENCE INC
+    quartile: Q1
+    jif: "11.2"
+    jci: "2.42"
+    oa_citable_pct: "15.07"
+    total_citations: "13886"
+  - name: Environmental Innovation and Societal Transitions
+    short: ENVIRON INNOV SOC TR
+    issn: "22104224"
+    eissn: "22104232"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "6.1"
+    jci: "1.2"
+    oa_citable_pct: "75.17"
+    total_citations: "5965"
+  - name: Environmental Policy and Governance
+    short: ENVIRON POLICY GOV
+    issn: 1756932X
+    eissn: "17569338"
+    site: ""
+    notes: WOS/JCR; WILEY PERIODICALS, INC
+    quartile: Q2
+    jif: "3.9"
+    jci: "0.75"
+    oa_citable_pct: "68.67"
+    total_citations: "1804"
+  - name: ENVIRONMENTAL POLITICS
+    short: ENVIRON POLIT
+    issn: "09644016"
+    eissn: "17438934"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q1
+    jif: "5.9"
+    jci: "1.91"
+    oa_citable_pct: "44.89"
+    total_citations: "5424"
+  - name: ENVIRONMENTAL VALUES
+    short: ENVIRON VALUE
+    issn: "09632719"
+    eissn: "17527015"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q4
+    jif: "1.6"
+    jci: "0.74"
+    oa_citable_pct: "17.76"
+    total_citations: "1399"
+  - name: EUROPEAN PLANNING STUDIES
+    short: EUR PLAN STUD
+    issn: "09654313"
+    eissn: "14695944"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "3.2"
+    jci: "0.75"
+    oa_citable_pct: "37.92"
+    total_citations: "5819"
+  - name: EUROPEAN URBAN AND REGIONAL STUDIES
+    short: EUR URBAN REG STUD
+    issn: "09697764"
+    eissn: "14617145"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q3
+    jif: "2.6"
+    jci: "0.77"
+    oa_citable_pct: "40.26"
+    total_citations: "1655"
+  - name: Extractive Industries and Society
+    short: EXTRACT IND SOC
+    issn: 2214790X
+    eissn: "22147918"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q2
+    jif: "4.3"
+    jci: "0.93"
+    oa_citable_pct: "34.39"
+    total_citations: "4272"
+  - name: Forest Policy and Economics
+    short: FOREST POLICY ECON
+    issn: "13899341"
+    eissn: "18727050"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "3.8"
+    jci: "1.17"
+    oa_citable_pct: "37.24"
+    total_citations: "7125"
+  - name: GAIA-Ecological Perspectives for Science and Society
+    short: GAIA
+    issn: "09405550"
+    eissn: "26255413"
+    site: ""
+    notes: WOS/JCR; OEKOM VERLAG GMBH
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.33"
+    oa_citable_pct: "81.73"
+    total_citations: "1153"
+  - name: Geografisk Tidsskrift-Danish Journal of Geography
+    short: GEOGR TIDSSKR-DEN
+    issn: "00167223"
+    eissn: "19032471"
+    site: ""
+    notes: WOS/JCR; ROYAL DANISH GEOGRAPHICAL SOC
+    quartile: Q4
+    jif: "1.1"
+    jci: "0.28"
+    oa_citable_pct: "0"
+    total_citations: "361"
+  - name: GLOBAL ENVIRONMENTAL CHANGE-HUMAN AND POLICY DIMENSIONS
+    short: GLOBAL ENVIRON CHANG
+    issn: "09593780"
+    eissn: "18729495"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "9.1"
+    jci: "2.37"
+    oa_citable_pct: "61.47"
+    total_citations: "26254"
+  - name: Global Environmental Politics
+    short: GLOBAL ENVIRON POLIT
+    issn: "15263800"
+    eissn: "15360091"
+    site: ""
+    notes: WOS/JCR; MIT PRESS
+    quartile: Q2
+    jif: "4"
+    jci: "1.86"
+    oa_citable_pct: "30.3"
+    total_citations: "2243"
+  - name: HABITAT INTERNATIONAL
+    short: HABITAT INT
+    issn: "01973975"
+    eissn: "18735428"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "7"
+    jci: "1.71"
+    oa_citable_pct: "20.13"
+    total_citations: "12035"
+  - name: HARVARD ENVIRONMENTAL LAW REVIEW
+    short: HARVARD ENVIRON LAW
+    issn: "01478257"
+    eissn: "01478257"
+    site: ""
+    notes: WOS/JCR; HARVARD LAW SCHOOL
+    quartile: Q4
+    jif: "0.9"
+    jci: "0.28"
+    oa_citable_pct: "0"
+    total_citations: "346"
+  - name: HOUSING STUDIES
+    short: HOUSING STUD
+    issn: "02673037"
+    eissn: "14661810"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "2.9"
+    jci: "0.59"
+    oa_citable_pct: "37.17"
+    total_citations: "4544"
+  - name: Housing Theory & Society
+    short: HOUS THEORY SOC
+    issn: "14036096"
+    eissn: "16512278"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "2"
+    jci: "0.56"
+    oa_citable_pct: "46.46"
+    total_citations: "1431"
+  - name: HUMAN ECOLOGY
+    short: HUM ECOL
+    issn: "03007839"
+    eissn: "15729915"
+    site: ""
+    notes: WOS/JCR; SPRINGER/PLENUM PUBLISHERS
+    quartile: Q3
+    jif: "1.7"
+    jci: "0.82"
+    oa_citable_pct: "34.86"
+    total_citations: "3213"
+  - name: Human Ecology Review
+    short: HUM ECOL REV
+    issn: "10744827"
+    eissn: "22040919"
+    site: ""
+    notes: WOS/JCR; ANU PRESS
+    quartile: Q4
+    jif: "0.4"
+    jci: "0.18"
+    oa_citable_pct: "100"
+    total_citations: "920"
+  - name: Impact Assessment and Project Appraisal
+    short: IMPACT ASSESS PROJ A
+    issn: "14615517"
+    eissn: "14715465"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.43"
+    oa_citable_pct: "19.01"
+    total_citations: "1301"
+  - name: International Environmental Agreements-Politics Law and Economics
+    short: INT ENVIRON AGREEM-P
+    issn: "15679764"
+    eissn: "15731553"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q2
+    jif: "3.1"
+    jci: "1.64"
+    oa_citable_pct: "65.91"
+    total_citations: "1323"
+  - name: International Journal of Climate Change Strategies and Management
+    short: INT J CLIM CHANG STR
+    issn: "17568692"
+    eissn: "17568706"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q2
+    jif: "3.5"
+    jci: "0.78"
+    oa_citable_pct: "100"
+    total_citations: "1526"
+  - name: International Journal of Housing Policy
+    short: INT J HOUS POLICY
+    issn: "19491247"
+    eissn: "19491255"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "2.6"
+    jci: "0.53"
+    oa_citable_pct: "32.73"
+    total_citations: "999"
+  - name: International Journal of Sustainable Transportation
+    short: INT J SUSTAIN TRANSP
+    issn: "15568318"
+    eissn: "15568334"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q2
+    jif: "3.9"
+    jci: "0.62"
+    oa_citable_pct: "19.3"
+    total_citations: "3424"
+  - name: International Journal of the Commons
+    short: INT J COMMONS
+    issn: "18750281"
+    eissn: "18750281"
+    site: ""
+    notes: WOS/JCR; UBIQUITY PRESS LTD
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.44"
+    oa_citable_pct: "98"
+    total_citations: "1108"
+  - name: INTERNATIONAL JOURNAL OF URBAN SCIENCES
+    short: INT J URBAN SCI
+    issn: "12265934"
+    eissn: "21616779"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "3"
+    jci: "0.74"
+    oa_citable_pct: "8.2"
+    total_citations: "1104"
+  - name: INTERNATIONAL REGIONAL SCIENCE REVIEW
+    short: INT REGIONAL SCI REV
+    issn: "01600176"
+    eissn: "15526925"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "2.1"
+    jci: "0.48"
+    oa_citable_pct: "15.71"
+    total_citations: "1385"
+  - name: Journal of Agricultural Education & Extension
+    short: J AGRIC EDUC EXT
+    issn: 1389224X
+    eissn: "17508622"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "2.6"
+    jci: "0.9"
+    oa_citable_pct: "32.26"
+    total_citations: "1208"
+  - name: Journal of Energy & Natural Resources Law
+    short: J ENERGY NAT RESO LA
+    issn: "02646811"
+    eissn: "23764538"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "2.1"
+    jci: "1.19"
+    oa_citable_pct: "27.27"
+    total_citations: "498"
+  - name: Journal of Environment & Development
+    short: J ENVIRON DEV
+    issn: "10704965"
+    eissn: "15525465"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q3
+    jif: "2"
+    jci: "0.51"
+    oa_citable_pct: "15.56"
+    total_citations: "1022"
+  - name: JOURNAL OF ENVIRONMENTAL ECONOMICS AND MANAGEMENT
+    short: J ENVIRON ECON MANAG
+    issn: "00950696"
+    eissn: "10960449"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS INC ELSEVIER SCIENCE
+    quartile: Q1
+    jif: "5.9"
+    jci: "1.45"
+    oa_citable_pct: "38.79"
+    total_citations: "12038"
+  - name: JOURNAL OF ENVIRONMENTAL EDUCATION
+    short: J ENVIRON EDUC
+    issn: "00958964"
+    eissn: "19401892"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "2.4"
+    jci: "0.85"
+    oa_citable_pct: "18.89"
+    total_citations: "2424"
+  - name: JOURNAL OF ENVIRONMENTAL LAW
+    short: J ENVIRON LAW
+    issn: "09528873"
+    eissn: 1464374X
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q3
+    jif: "2.7"
+    jci: "1.2"
+    oa_citable_pct: "53.95"
+    total_citations: "935"
+  - name: JOURNAL OF ENVIRONMENTAL PSYCHOLOGY
+    short: J ENVIRON PSYCHOL
+    issn: "02724944"
+    eissn: "15229610"
+    site: ""
+    notes: WOS/JCR; ACADEMIC PRESS LTD- ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "7"
+    jci: "1.85"
+    oa_citable_pct: "43.97"
+    total_citations: "20719"
+  - name: Journal of Housing and the Built Environment
+    short: J HOUS BUILT ENVIRON
+    issn: "15664910"
+    eissn: "15737772"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "2.1"
+    jci: "0.51"
+    oa_citable_pct: "38.66"
+    total_citations: "2197"
+  - name: JOURNAL OF REGIONAL SCIENCE
+    short: J REGIONAL SCI
+    issn: "00224146"
+    eissn: "14679787"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "2.7"
+    jci: "0.7"
+    oa_citable_pct: "37.91"
+    total_citations: "3212"
+  - name: Journal of the Association of Environmental and Resource Economists
+    short: J ASSOC ENVIRON RESO
+    issn: "23335955"
+    eissn: "23335963"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q2
+    jif: "3.2"
+    jci: "0.95"
+    oa_citable_pct: "0.73"
+    total_citations: "1867"
+  - name: Land
+    short: LAND-BASEL
+    issn: ""
+    eissn: 2073445X
+    site: ""
+    notes: WOS/JCR; MDPI
+    quartile: Q2
+    jif: "3.2"
+    jci: "0.77"
+    oa_citable_pct: "99.97"
+    total_citations: "25153"
+  - name: LAND ECONOMICS
+    short: LAND ECON
+    issn: "00237639"
+    eissn: "15438325"
+    site: ""
+    notes: WOS/JCR; UNIV WISCONSIN PRESS
+    quartile: Q4
+    jif: "1.6"
+    jci: "0.42"
+    oa_citable_pct: "14.02"
+    total_citations: "2728"
+  - name: LAND USE POLICY
+    short: LAND USE POLICY
+    issn: "02648377"
+    eissn: "18735754"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "5.9"
+    jci: "1.41"
+    oa_citable_pct: "29.9"
+    total_citations: "35259"
+  - name: LANDSCAPE AND URBAN PLANNING
+    short: LANDSCAPE URBAN PLAN
+    issn: "01692046"
+    eissn: "18726062"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "9.2"
+    jci: "2.4"
+    oa_citable_pct: "40.92"
+    total_citations: "32710"
+  - name: Landscape Research
+    short: LANDSCAPE RES
+    issn: "01426397"
+    eissn: "14699710"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q4
+    jif: "1.5"
+    jci: "0.45"
+    oa_citable_pct: "32.7"
+    total_citations: "2201"
+  - name: Local Environment
+    short: LOCAL ENVIRON
+    issn: "13549839"
+    eissn: "14696711"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "2.8"
+    jci: "0.63"
+    oa_citable_pct: "27.24"
+    total_citations: "3645"
+  - name: Marine Policy
+    short: MAR POLICY
+    issn: 0308597X
+    eissn: "18729460"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q2
+    jif: "3.7"
+    jci: "1.45"
+    oa_citable_pct: "35.79"
+    total_citations: "17081"
+  - name: Marine Resource Economics
+    short: MAR RESOUR ECON
+    issn: "07381360"
+    eissn: "23345985"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q3
+    jif: "1.7"
+    jci: "0.57"
+    oa_citable_pct: "3.45"
+    total_citations: "821"
+  - name: Natural Hazards Review
+    short: NAT HAZARDS REV
+    issn: "15276988"
+    eissn: "15276996"
+    site: ""
+    notes: WOS/JCR; ASCE-AMER SOC CIVIL ENGINEERS
+    quartile: Q3
+    jif: "2.2"
+    jci: "0.5"
+    oa_citable_pct: "10.33"
+    total_citations: "2482"
+  - name: NATURAL RESOURCES FORUM
+    short: NAT RESOUR FORUM
+    issn: ""
+    eissn: "14778947"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q2
+    jif: "3.7"
+    jci: "0.84"
+    oa_citable_pct: "13.58"
+    total_citations: "2067"
+  - name: NATURAL RESOURCES JOURNAL
+    short: NAT RESOUR J
+    issn: "00280739"
+    eissn: "00280739"
+    site: ""
+    notes: WOS/JCR; UNIV NEW MEXICO, SCH LAW
+    quartile: Q4
+    jif: "0.9"
+    jci: "0.49"
+    oa_citable_pct: "0"
+    total_citations: "446"
+  - name: Nature + Culture
+    short: NAT CULT
+    issn: "15586073"
+    eissn: "15585468"
+    site: ""
+    notes: WOS/JCR; BERGHAHN JOURNALS
+    quartile: Q4
+    jif: "0.6"
+    jci: "0.14"
+    oa_citable_pct: "6.98"
+    total_citations: "484"
+  - name: Nature Climate Change
+    short: NAT CLIM CHANGE
+    issn: 1758678X
+    eissn: "17586798"
+    site: ""
+    notes: WOS/JCR; NATURE PORTFOLIO
+    quartile: Q1
+    jif: "27.1"
+    jci: "5.83"
+    oa_citable_pct: "29.52"
+    total_citations: "53557"
+  - name: Nature Sustainability
+    short: NAT SUSTAIN
+    issn: "23989629"
+    eissn: "23989629"
+    site: ""
+    notes: WOS/JCR; NATURE PORTFOLIO
+    quartile: Q1
+    jif: "27.1"
+    jci: "5.22"
+    oa_citable_pct: "22.81"
+    total_citations: "24660"
+  - name: npj Urban Sustainability
+    short: NPJ URBAN SUSTAIN
+    issn: ""
+    eissn: "26618001"
+    site: ""
+    notes: WOS/JCR; SPRINGERNATURE
+    quartile: Q1
+    jif: "8.8"
+    jci: "2.29"
+    oa_citable_pct: "100"
+    total_citations: "1371"
+  - name: One Earth
+    short: ONE EARTH
+    issn: "25903330"
+    eissn: "25903322"
+    site: ""
+    notes: WOS/JCR; CELL PRESS
+    quartile: Q1
+    jif: "15.3"
+    jci: "1.89"
+    oa_citable_pct: "40.25"
+    total_citations: "8018"
+  - name: Open House International-Sustainable & Smart Architecture and Urban Studies
+    short: OPEN HOUSE INT
+    issn: "01682601"
+    eissn: "26339838"
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q4
+    jif: "1.6"
+    jci: "1"
+    oa_citable_pct: "2.19"
+    total_citations: "607"
+  - name: ORGANIZATION & ENVIRONMENT
+    short: ORGAN ENVIRON
+    issn: "10860266"
+    eissn: "15527417"
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS INC
+    quartile: Q1
+    jif: "7.3"
+    jci: "1.19"
+    oa_citable_pct: "48.28"
+    total_citations: "3374"
+  - name: PAPERS IN REGIONAL SCIENCE
+    short: PAP REG SCI
+    issn: "10568190"
+    eissn: "14355957"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q3
+    jif: "2.3"
+    jci: "0.64"
+    oa_citable_pct: "70.77"
+    total_citations: "2881"
+  - name: POPULATION AND ENVIRONMENT
+    short: POPUL ENVIRON
+    issn: "01990039"
+    eissn: "15737810"
+    site: ""
+    notes: WOS/JCR; SPRINGER
+    quartile: Q3
+    jif: "2.5"
+    jci: "1.03"
+    oa_citable_pct: "40.79"
+    total_citations: "1967"
+  - name: Problemy Ekorozwoju
+    short: PROBL EKOROZW
+    issn: "18956912"
+    eissn: "20801971"
+    site: ""
+    notes: WOS/JCR; POLITECHNIKA LUBELSKA
+    quartile: Q4
+    jif: "1.1"
+    jci: "0.29"
+    oa_citable_pct: "80.65"
+    total_citations: "344"
+  - name: PROGRESS IN PLANNING
+    short: PROG PLANN
+    issn: "03059006"
+    eissn: "18734510"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "5.7"
+    jci: "1.3"
+    oa_citable_pct: "38.89"
+    total_citations: "1416"
+  - name: Regional Environmental Change
+    short: REG ENVIRON CHANGE
+    issn: "14363798"
+    eissn: 1436378X
+    site: ""
+    notes: WOS/JCR; SPRINGER HEIDELBERG
+    quartile: Q2
+    jif: "3.6"
+    jci: "0.78"
+    oa_citable_pct: "51.85"
+    total_citations: "8304"
+  - name: REGIONAL SCIENCE AND URBAN ECONOMICS
+    short: REG SCI URBAN ECON
+    issn: "01660462"
+    eissn: "18792308"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "2.9"
+    jci: "0.96"
+    oa_citable_pct: "22.93"
+    total_citations: "4813"
+  - name: REGIONAL STUDIES
+    short: REG STUD
+    issn: "00343404"
+    eissn: "13600591"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q2
+    jif: "4.2"
+    jci: "1.12"
+    oa_citable_pct: "29.37"
+    total_citations: "11305"
+  - name: RESOURCE AND ENERGY ECONOMICS
+    short: RESOUR ENERGY ECON
+    issn: "09287655"
+    eissn: "18730221"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q2
+    jif: "3.1"
+    jci: "0.66"
+    oa_citable_pct: "40.4"
+    total_citations: "2512"
+  - name: Review of Environmental Economics and Policy
+    short: REV ENV ECON POLICY
+    issn: "17506816"
+    eissn: "17506824"
+    site: ""
+    notes: WOS/JCR; UNIV CHICAGO PRESS
+    quartile: Q1
+    jif: "6.6"
+    jci: "1.89"
+    oa_citable_pct: "3.51"
+    total_citations: "2428"
+  - name: Review of European Comparative & International Environmental Law
+    short: REV EUR COMP INT ENV
+    issn: "20500386"
+    eissn: "20500394"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q3
+    jif: "2.3"
+    jci: "1.73"
+    oa_citable_pct: "64"
+    total_citations: "816"
+  - name: Science and Public Policy
+    short: SCI PUBL POLICY
+    issn: "03023427"
+    eissn: "14715430"
+    site: ""
+    notes: WOS/JCR; OXFORD UNIV PRESS
+    quartile: Q3
+    jif: "2.3"
+    jci: "0.74"
+    oa_citable_pct: "39.26"
+    total_citations: "3140"
+  - name: SOCIETY & NATURAL RESOURCES
+    short: SOC NATUR RESOUR
+    issn: "08941920"
+    eissn: "15210723"
+    site: ""
+    notes: WOS/JCR; TAYLOR & FRANCIS INC
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.63"
+    oa_citable_pct: "17.2"
+    total_citations: "4500"
+  - name: Sustainability
+    short: SUSTAINABILITY-BASEL
+    issn: ""
+    eissn: "20711050"
+    site: ""
+    notes: WOS/JCR; MDPI
+    quartile: Q2
+    jif: "3.3"
+    jci: "0.67"
+    oa_citable_pct: "99.99"
+    total_citations: "283527"
+  - name: Sustainability Accounting Management and Policy Journal
+    short: SUSTAIN ACCOUNT MANA
+    issn: "20408021"
+    eissn: 2040803X
+    site: ""
+    notes: WOS/JCR; EMERALD GROUP PUBLISHING LTD
+    quartile: Q1
+    jif: "7.2"
+    jci: "1.39"
+    oa_citable_pct: "14.59"
+    total_citations: "2906"
+  - name: Sustainable Production and Consumption
+    short: SUSTAIN PROD CONSUMP
+    issn: "23525509"
+    eissn: "23525509"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q1
+    jif: "9.6"
+    jci: "2.06"
+    oa_citable_pct: "38.52"
+    total_citations: "15572"
+  - name: Tourism Management
+    short: TOURISM MANAGE
+    issn: "02615177"
+    eissn: "18793193"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "12.4"
+    jci: "2.95"
+    oa_citable_pct: "21.66"
+    total_citations: "34184"
+  - name: Transnational Environmental Law
+    short: TRANSNATL ENVIRON LA
+    issn: "20471025"
+    eissn: "20471033"
+    site: ""
+    notes: WOS/JCR; CAMBRIDGE UNIV PRESS
+    quartile: Q2
+    jif: "3.3"
+    jci: "2.2"
+    oa_citable_pct: "72.73"
+    total_citations: "715"
+  - name: TRANSPORTATION RESEARCH PART D-TRANSPORT AND ENVIRONMENT
+    short: TRANSPORT RES D-TR E
+    issn: "13619209"
+    eissn: "18792340"
+    site: ""
+    notes: WOS/JCR; PERGAMON-ELSEVIER SCIENCE LTD
+    quartile: Q1
+    jif: "7.7"
+    jci: "1.69"
+    oa_citable_pct: "29.95"
+    total_citations: "25282"
+  - name: URBAN FORESTRY & URBAN GREENING
+    short: URBAN FOR URBAN GREE
+    issn: "16188667"
+    eissn: "16108167"
+    site: ""
+    notes: WOS/JCR; ELSEVIER GMBH
+    quartile: Q1
+    jif: "6.7"
+    jci: "1.88"
+    oa_citable_pct: "31.16"
+    total_citations: "20098"
+  - name: Urban Policy and Research
+    short: URBAN POLICY RES
+    issn: "08111146"
+    eissn: "14767244"
+    site: ""
+    notes: WOS/JCR; ROUTLEDGE JOURNALS, TAYLOR & FRANCIS LTD
+    quartile: Q3
+    jif: "1.7"
+    jci: "0.44"
+    oa_citable_pct: "32.53"
+    total_citations: "869"
+  - name: URBAN STUDIES
+    short: URBAN STUD
+    issn: "00420980"
+    eissn: 1360063X
+    site: ""
+    notes: WOS/JCR; SAGE PUBLICATIONS LTD
+    quartile: Q2
+    jif: "4.1"
+    jci: "1.05"
+    oa_citable_pct: "42.4"
+    total_citations: "16324"
+  - name: Utilities Policy
+    short: UTIL POLICY
+    issn: "09571787"
+    eissn: "18784356"
+    site: ""
+    notes: WOS/JCR; ELSEVIER SCI LTD
+    quartile: Q1
+    jif: "4.4"
+    jci: "0.97"
+    oa_citable_pct: "28.89"
+    total_citations: "3517"
+  - name: Water Alternatives-An Interdisciplinary Journal on Water Politics and
+      Development
+    short: WATER ALTERN
+    issn: "19650175"
+    eissn: "19650175"
+    site: ""
+    notes: WOS/JCR; WATER ALTERNATIVES ASSOC
+    quartile: Q2
+    jif: "3.6"
+    jci: "0.68"
+    oa_citable_pct: "0"
+    total_citations: "1479"
+  - name: Water Economics and Policy
+    short: WATER ECON POLICY
+    issn: 2382624X
+    eissn: "23826258"
+    site: ""
+    notes: WOS/JCR; WORLD SCIENTIFIC PUBL CO PTE LTD
+    quartile: Q4
+    jif: "1.3"
+    jci: "0.32"
+    oa_citable_pct: "3.75"
+    total_citations: "250"
+  - name: Water Resources and Economics
+    short: WATER RESOUR ECON
+    issn: "22124284"
+    eissn: "22124284"
+    site: ""
+    notes: WOS/JCR; ELSEVIER
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.54"
+    oa_citable_pct: "31.67"
+    total_citations: "463"
+  - name: Weather Climate and Society
+    short: WEATHER CLIM SOC
+    issn: "19488327"
+    eissn: "19488335"
+    site: ""
+    notes: WOS/JCR; AMER METEOROLOGICAL SOC
+    quartile: Q3
+    jif: "1.9"
+    jci: "0.45"
+    oa_citable_pct: "2.76"
+    total_citations: "1878"
+  - name: Wiley Interdisciplinary Reviews-Climate Change
+    short: WIRES CLIM CHANGE
+    issn: "17577780"
+    eissn: "17577799"
+    site: ""
+    notes: WOS/JCR; WILEY
+    quartile: Q1
+    jif: "10.3"
+    jci: "1.54"
+    oa_citable_pct: "76.03"
+    total_citations: "8692"
