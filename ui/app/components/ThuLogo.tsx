@@ -16,12 +16,14 @@ export function ThuLogo({
     <div
       className={`thu-logo-ring ${!animate ? "thu-logo-ring--static" : ""} ${className}`.trim()}
       aria-hidden
+      style={{ width: "3.5rem", height: "3.5rem", flexShrink: 0 }}
     >
       <div className="thu-logo-inner">
         <img
           src="/thu-soc-logo.png"
           alt="清华大学社会学系"
           className="h-full w-full object-contain"
+          style={{ maxWidth: "100%", maxHeight: "100%", display: "block" }}
         />
       </div>
     </div>

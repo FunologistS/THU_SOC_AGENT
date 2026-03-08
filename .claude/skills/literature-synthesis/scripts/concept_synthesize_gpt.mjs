@@ -403,6 +403,7 @@ ${context ? `\n背景信息：\n${context}\n` : ""}
 你必须输出严格的Markdown格式，并遵守以下层级与表格规范，便于读者把握逻辑：
 
 **层级规范（必须遵守）**：层级递进为 一、 → （一） → 1、 → （1）。即：每个主题下的小节标题用「（一）（二）（三）（四）（五）（六）」；每小节下的要点用「1、2、3、」编号；若还有下一层则用「（1）（2）（3）」开头。不要用无编号的 - 列表堆砌。
+**格式要求**：每个小节标题（**（一）…**）与下列要点之间必须空一行；每个要点 1、2、3、 与下一要点之间必须换行，不要写成一整行。
 **表格规范**：该主题的论文、附录论文卡片均用 Markdown 表格呈现；附录表使用「引用与标题」一列（可点击引用与标题同格，便于换行与自适应），该有表就画表。
 
 结构如下（小节标题仅写标题文字，不要输出括号内的字数/要点说明）：
@@ -642,15 +643,20 @@ briefingParts.push(`日期：${date}`);
 briefingParts.push(`输出文件：report_${date}_v*.md / report_latest.md`);
 briefingParts.push(``);
 
-// 主题总览表：整表用单块字符串、行间仅 \n，避免 UI 解析时因空行导致表格断裂
+// 主题总览表占位，在全部聚类生成后根据实际「一、」「二、」标题与聚类关键词重写
 const chineseNums = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
-const overviewRows = ["### 主题总览", "", "| 序号 | 主题（来自聚类标签） | 论文数 |", "|:---:|---|:---:|"];
-toProcess.forEach((d, idx) => {
-  const label = (d.theme || "").trim() || `Cluster ${d.cid}`;
-  overviewRows.push(`| ${idx + 1} | ${label} | ${d.papers.length} |`);
-});
-briefingParts.push(overviewRows.join("\n"));
+const overviewPlaceholder = "<!--OVERVIEW_TABLE-->";
+briefingParts.push(overviewPlaceholder);
 briefingParts.push(``);
+
+/** 小节标题（**（一）…**）与要点 1、2、 之间、要点与要点之间强制换行，避免 UI 连成一行 */
+function ensureSubsectionLineBreaks(content) {
+  if (!content || typeof content !== "string") return content;
+  let out = content
+    .replace(/）\*\*\s*/g, "）**\n\n")
+    .replace(/(\d)、\s+(?=\d、)/g, (m) => m.replace(/\s+/, "\n\n"));
+  return out;
+}
 
 function addHeadingNumber(content, idx) {
   const num = chineseNums[idx] || String(idx + 1);
@@ -666,53 +672,88 @@ function addHeadingNumber(content, idx) {
   return lines.join("\n");
 }
 
+function chunkArray(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+
 for (let i = 0; i < toProcess.length; i++) {
   const entry = toProcess[i];
   const cid = entry.cid;
   const papers = entry.papers;
-  const limited = papers.slice(0, maxPapersPerCluster);
 
-  const cards = limited.map((p, idx) => ({
-    id: p.paperId != null ? p.paperId : idx + 1,
-    title: p.title,
-    year: p.year,
-    journal: p.journal,
-    rq: p.rq,
-    data_material: p.data_material,
-    method: p.method,
-    findings: p.findings,
-    contribution: p.contribution,
-    abstract: p.abstract,
-    citation: p.citation,
-    inTextCitation: p.inTextCitation || (p.citation ? `(${p.citation})` : ""),
-  }));
-
-  if (cards.length === 0) {
+  if (papers.length === 0) {
     console.warn(`[concept_synthesis] Cluster ${cid}: 0 papers, skipping OpenAI call`);
     briefingParts.push(`## Cluster ${cid}\n\n（该聚类无论文）`);
+    if (i < toProcess.length - 1) briefingParts.push(``);
     continue;
   }
 
-  console.log(`[concept_synthesis] Cluster ${cid} (${cards.length} papers) -> OpenAI...`);
-  const { messages } = buildClusterPrompt({
-    topic,
-    clusterId: cid,
-    clusterSize: cards.length,
-    cards,
-    wantAppendix,
-    theme: entry.theme ?? "",
-    briefingSnippet: briefingText,
-  });
+  const batches = chunkArray(papers, maxPapersPerCluster);
+  const clusterParts = [];
 
-  const content = await openAIChat(messages, model);
-  if (content == null) {
-    console.error(`[concept_synthesis] Cluster ${cid} API 返回为空，已写入占位`);
+  for (let b = 0; b < batches.length; b++) {
+    const batch = batches[b];
+    const cards = batch.map((p, idx) => ({
+      id: p.paperId != null ? p.paperId : idx + 1,
+      title: p.title,
+      year: p.year,
+      journal: p.journal,
+      rq: p.rq,
+      data_material: p.data_material,
+      method: p.method,
+      findings: p.findings,
+      contribution: p.contribution,
+      abstract: p.abstract,
+      citation: p.citation,
+      inTextCitation: p.inTextCitation || (p.citation ? `(${p.citation})` : ""),
+    }));
+
+    console.log(`[concept_synthesis] Cluster ${cid} 第 ${b + 1}/${batches.length} 批 (${cards.length} papers) -> OpenAI...`);
+    const { messages } = buildClusterPrompt({
+      topic,
+      clusterId: cid,
+      clusterSize: cards.length,
+      cards,
+      wantAppendix: wantAppendix && b === batches.length - 1,
+      theme: entry.theme ?? "",
+      briefingSnippet: briefingText,
+    });
+
+    const content = await openAIChat(messages, model);
+    if (content == null) {
+      console.error(`[concept_synthesis] Cluster ${cid} 批 ${b + 1} API 返回为空`);
+      clusterParts.push(`（批 ${b + 1} 调用失败，请检查 API 或重试）`);
+    } else {
+      clusterParts.push(ensureSubsectionLineBreaks(content));
+    }
+  }
+
+  if (clusterParts.length === 0 || clusterParts.every((p) => /^（批.*失败/.test(p.trim()))) {
     briefingParts.push(`## Cluster ${cid}\n\n（调用失败，请检查 API 或重试）`);
   } else {
-    const numbered = addHeadingNumber(content, i);
+    const combined = clusterParts.filter((p) => !/^（批.*失败/.test(p.trim())).join("\n\n");
+    const numbered = addHeadingNumber(combined, i);
     briefingParts.push(numbered);
   }
   if (i < toProcess.length - 1) briefingParts.push(``);
+}
+
+// 用实际「一、」「二、」标题与聚类关键词重写主题总览表
+const overviewTableIndex = briefingParts.indexOf(overviewPlaceholder);
+if (overviewTableIndex !== -1) {
+  const overviewRows = ["### 主题总览", "", "| 序号 | 主题 | 论文数 |", "|:---:|---|:---:|"];
+  const sectionStartIndex = overviewTableIndex + 2;
+  toProcess.forEach((d, idx) => {
+    const part = briefingParts[sectionStartIndex + 2 * idx];
+    const m = part && String(part).match(/^##\s+([^\n]+)/m);
+    const sectionTitle = m ? m[1].trim() : (d.theme || "").trim() || `Cluster ${d.cid}`;
+    const keyword = (d.theme || "").trim();
+    const themeCell = keyword ? `${sectionTitle}（${keyword}）` : sectionTitle;
+    overviewRows.push(`| ${idx + 1} | ${themeCell} | ${d.papers.length} |`);
+  });
+  briefingParts[overviewTableIndex] = overviewRows.join("\n");
 }
 
 const version = v ?? nextVersion(outDir, "report", date);

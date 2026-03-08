@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * writing_under_style.mjs — 用 references/academic 的写作风格，将 report/chunks 改写成成段落的 review
+ * 3_writing_under_style.mjs — 用 references 的写作风格，将 report/chunks 改写成成段落的 review（风格化改写）
  *
  * ✅ 支持两种模式（自动选择）：
  *  1) Chunk 模式（优先）：若存在 outputs/<topic>/05_report/chunks/*.md，则逐 chunk 调 API，避免超时
@@ -18,13 +18,13 @@
  *  - 写出 review_latest.md（复制覆盖），方便下游使用
  *
  * Usage（保持兼容 + 新增）：
- *  - node writing_under_style.mjs
+ *  - node 3_writing_under_style.mjs
  *      => 默认 topic=artificial_intelligence，优先 chunks，否则 report_latest.md
- *  - node writing_under_style.mjs <topic>
+ *  - node 3_writing_under_style.mjs <topic>
  *      => 用指定 topic，优先 chunks
- *  - node writing_under_style.mjs <input.md> [style_files...]
+ *  - node 3_writing_under_style.mjs <input.md> [style_files...]
  *      => 强制单文件模式（按你传入文件处理），style_files 可覆盖默认风格
- *  - node writing_under_style.mjs <topic> --merge-only
+ *  - node 3_writing_under_style.mjs <topic> --merge-only
  *      => 仅从已有 06_review/chunks_styled/*.md 合并为最终综述
  *
  * 新增 flags：
@@ -45,7 +45,7 @@
  *  - OPENAI_MODEL（可选，默认 gpt-5.2）
  *  - OUTPUT_DIR（可选，默认 outputs/<topic>/06_review）
  *  - TZ（可选，默认 Asia/Shanghai，用于日期命名）
- *  - MAX_STYLE_CHARS（可选，默认 3000；风格样本总字数上限，按入选样例数 n 均分 3000/n 字）
+ *  - MAX_STYLE_CHARS（可选，默认 2000；风格样本总字数上限，按入选样例数 n 均分 2000/n 字）
  *  - CHUNK_MAX_CHARS（可选，默认 16000；每个 chunk 送入模型的最大字符数，超出截断）
  *  - CHUNK_MAX_TOKENS（可选，默认 1800；每个 chunk 输出 token 上限）
  *  - MERGE_MAX_TOKENS（可选，默认 6000；合并后的最终输出 token 上限）
@@ -111,7 +111,7 @@ if (PROVIDER === "glm") {
 }
 const MODEL_LABEL = PROVIDER === "glm" ? `智谱 ${MODEL}` : `OpenAI ${MODEL}`;
 
-const MAX_STYLE_CHARS = Number(process.env.MAX_STYLE_CHARS) || 3000;
+const MAX_STYLE_CHARS = Number(process.env.MAX_STYLE_CHARS) || 2000;
 const CHUNK_MAX_CHARS = Number(process.env.CHUNK_MAX_CHARS) || 16000;
 const CHUNK_MAX_TOKENS = Number(process.env.CHUNK_MAX_TOKENS) || 1800;
 const MERGE_MAX_TOKENS = Number(process.env.MERGE_MAX_TOKENS) || 6000;
@@ -1120,45 +1120,17 @@ async function main() {
         process.exit(1);
       }
       const mergedDraft = styledPieces.filter(Boolean).join("\n\n");
-      try {
-        await doMergeAndOptionalSmooth({
-          client,
-          styleSamples,
-          mergedDraft,
-          outputFile,
-          outputDir: OUTPUT_DIR,
-          projectRoot: PROJECT_ROOT,
-          topic,
-          styleLang,
-          coherencePass: hasCoherencePass,
-        });
-      } catch (mergeErr) {
-        if (isTransientError(mergeErr)) {
-          console.log("[writing_under_style] 合并阶段 504/520 或超时，自动以 MERGE_MAX_CHARS=12000 重试一次...");
-          try {
-            await doMergeAndOptionalSmooth({
-              client,
-              styleSamples,
-              mergedDraft,
-              outputFile,
-              outputDir: OUTPUT_DIR,
-              projectRoot: PROJECT_ROOT,
-              topic,
-              styleLang,
-              coherencePass: hasCoherencePass,
-              mergeMaxCharsOverride: 12000,
-            });
-          } catch (e2) {
-            const userMsg = getFailureUserMessage(e2);
-            writeFailureDocument(outputFile, OUTPUT_DIR, userMsg, e2);
-            console.error("[FAILURE_REASON] " + userMsg.replace(/\s+/g, " ").trim());
-            console.error("[writing_under_style] 重试仍失败，可手动 MERGE_MAX_CHARS=12000 node ... --merge-only");
-            process.exit(1);
-          }
-        } else {
-          throw mergeErr;
-        }
-      }
+      await doMergeAndOptionalSmooth({
+        client,
+        styleSamples,
+        mergedDraft,
+        outputFile,
+        outputDir: OUTPUT_DIR,
+        projectRoot: PROJECT_ROOT,
+        topic,
+        styleLang,
+        coherencePass: hasCoherencePass,
+      });
     } catch (e) {
       const userMsg = getFailureUserMessage(e);
       writeFailureDocument(outputFile, OUTPUT_DIR, userMsg, e);
@@ -1169,7 +1141,7 @@ async function main() {
         console.error(
           `[writing_under_style] 当前 API/网关服务异常（status=${status ?? "?"}, code=${code ?? "?"}）。可稍后重试，或设置 OPENAI_BASE_URL 换用其他接口。`
         );
-        console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node writing_under_style.mjs <topic> --merge-only");
+        console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node 3_writing_under_style.mjs <topic> --merge-only");
       } else {
         console.error("[writing_under_style]", (e?.message ?? String(e)).slice(0, 600));
       }
@@ -1295,7 +1267,7 @@ async function main() {
         console.error(
           `[writing_under_style] 当前 API/网关服务异常（status=${status ?? "?"}, code=${code ?? "?"}）。可稍后重试，或设置 OPENAI_BASE_URL 换用其他接口。`
         );
-        console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node writing_under_style.mjs <topic> --merge-only");
+        console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node 3_writing_under_style.mjs <topic> --merge-only");
       } else {
         console.error("[writing_under_style]", (e?.message ?? String(e)).slice(0, 600));
       }
@@ -1364,7 +1336,7 @@ async function main() {
         `[writing_under_style] 当前 API/网关服务异常（status=${status ?? "?"}, code=${code ?? "?"}）。` +
           `可稍后重试，或设置 OPENAI_BASE_URL 换用其他接口。`
       );
-      console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node writing_under_style.mjs <topic> --merge-only");
+      console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node 3_writing_under_style.mjs <topic> --merge-only");
     } else {
       console.error("[writing_under_style] API 或写入出错:", msg.slice(0, 600));
     }
@@ -1391,7 +1363,7 @@ main().catch((e) => {
       `[writing_under_style] 当前 API/网关服务异常（status=${status ?? "?"}, code=${code ?? "?"}）。` +
         `可稍后重试，或设置 OPENAI_BASE_URL 换用其他接口。`
     );
-    console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node writing_under_style.mjs <topic> --merge-only");
+    console.error("[writing_under_style] 若为合并阶段 504/520，可缩小请求后重试: MERGE_MAX_CHARS=12000 node 3_writing_under_style.mjs <topic> --merge-only");
   } else {
     console.error("[writing_under_style] 致命错误:", e?.stack || msg);
   }

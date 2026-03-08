@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * upload_then_writing.mjs — 用户上传写作样本后，按顺序执行：
- *   1) input_to_md.mjs  上传文件 → references/<style> 的 Markdown
- *   2) compact_report.mjs  05_report → chunks（供 writing_under_style 使用）
- *   3) writing_under_style.mjs  按 references/<style> 风格改写 → 06_review
- *   4) rag_from_chunks.mjs --index  可选：建 RAG 索引
+ * 5_upload_then_writing.mjs — 用户上传写作样本后，按顺序执行：
+ *   1) 1_input_to_md.mjs  上传文件 → references/<style> 的 Markdown
+ *   2) 2_compact_report.mjs  05_report → chunks（供 3_writing_under_style 使用）
+ *   3) 3_writing_under_style.mjs  按 references/<style> 风格改写 → 06_review
+ *   4) 4_rag_from_chunks.mjs --index  可选：建 RAG 索引
  *
  * 用法（从项目根）：
- *   node .claude/skills/paper-writing/scripts/upload_then_writing.mjs <topic> <style> <savedFileName> [providerOrModel]
+ *   node .claude/skills/paper-writing/scripts/5_upload_then_writing.mjs <topic> <style> <savedFileName> [providerOrModel]
  * 其中 style = academic | colloquial，savedFileName 为 assets/<style>/ 下的文件名（如 uuid-sample.docx）。
  * providerOrModel 可选：gpt（默认）| glm | glm-4.7-flash | glm-5；为智谱时传 --provider glm 与 --model。
  */
@@ -44,7 +44,7 @@ const provider = useZhipu ? "glm" : "gpt";
 const zhipuModel = useZhipu ? (providerOrModel === "glm" ? "glm-4.7-flash" : providerOrModel) : null;
 
 if (!topic || !savedFileName) {
-  console.error("用法: node upload_then_writing.mjs <topic> <academic|colloquial> <savedFileName>");
+  console.error("用法: node 5_upload_then_writing.mjs <topic> <academic|colloquial> <savedFileName>");
   process.exit(1);
 }
 
@@ -64,18 +64,18 @@ run(
   "input_to_md",
   "node",
   [
-    path.join(PAPER_WRITING, "scripts", "input_to_md.mjs"),
+    path.join(PAPER_WRITING, "scripts", "1_input_to_md.mjs"),
     `${style}/${savedFileName}`,
     outBasename,
   ]
 );
 
 run("compact_report", "node", [
-  path.join(PAPER_WRITING, "scripts", "compact_report.mjs"),
+  path.join(PAPER_WRITING, "scripts", "2_compact_report.mjs"),
   topic,
 ]);
 
-const writingArgs = [path.join(PAPER_WRITING, "scripts", "writing_under_style.mjs"), topic, "--provider", provider];
+const writingArgs = [path.join(PAPER_WRITING, "scripts", "3_writing_under_style.mjs"), topic, "--provider", provider];
 if (zhipuModel) writingArgs.push("--model", zhipuModel);
 run(
   "writing_under_style",
@@ -87,7 +87,7 @@ run(
 const ragResult = spawnSync(
   "node",
   [
-    path.join(PAPER_WRITING, "scripts", "rag_from_chunks.mjs"),
+    path.join(PAPER_WRITING, "scripts", "4_rag_from_chunks.mjs"),
     topic,
     "--index",
   ],

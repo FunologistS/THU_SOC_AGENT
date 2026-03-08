@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * transcribe_submit_then_writing.mjs — 用户上传的写作样本：转录到 references/submit/<style>，再执行综述
- *   1) input_to_md.mjs  assets/<style>/<savedFileName> → references/submit/<style>/<basename>.md
- *   2) compact_report.mjs  05_report → chunks
- *   3) writing_under_style.mjs  REFERENCE_STYLE=submit/<style>，--style <basename>.md
+ * 6_transcribe_submit_then_writing.mjs — 用户上传的写作样本：转录到 references/submit/<style>，再执行综述
+ *   1) 1_input_to_md.mjs  assets/<style>/<savedFileName> → references/submit/<style>/<basename>.md
+ *   2) 2_compact_report.mjs  05_report → chunks
+ *   3) 3_writing_under_style.mjs  REFERENCE_STYLE=submit/<style>，--style <basename>.md
  *
  * 用法（从项目根）：
- *   node .claude/skills/paper-writing/scripts/transcribe_submit_then_writing.mjs <topic> <style> <savedFileName> [providerOrModel]
+ *   node .claude/skills/paper-writing/scripts/6_transcribe_submit_then_writing.mjs <topic> <style> <savedFileName> [providerOrModel]
  * style = academic | colloquial；providerOrModel 同 upload_then_writing。
  */
 
@@ -42,7 +42,7 @@ const provider = useZhipu ? "glm" : "gpt";
 const zhipuModel = useZhipu ? (providerOrModel === "glm" ? "glm-4.7-flash" : providerOrModel) : null;
 
 if (!topic || !savedFileName) {
-  console.error("用法: node transcribe_submit_then_writing.mjs <topic> <academic|colloquial> <savedFileName> [providerOrModel]");
+  console.error("用法: node 6_transcribe_submit_then_writing.mjs <topic> <academic|colloquial> <savedFileName> [providerOrModel]");
   process.exit(1);
 }
 
@@ -61,18 +61,18 @@ const outBasename = path.basename(savedFileName, path.extname(savedFileName)) + 
 const outputPath = `submit/${style}/${outBasename}`;
 
 run("input_to_md", "node", [
-  path.join(PAPER_WRITING, "scripts", "input_to_md.mjs"),
+  path.join(PAPER_WRITING, "scripts", "1_input_to_md.mjs"),
   `${style}/${savedFileName}`,
   outputPath,
 ]);
 
 run("compact_report", "node", [
-  path.join(PAPER_WRITING, "scripts", "compact_report.mjs"),
+  path.join(PAPER_WRITING, "scripts", "2_compact_report.mjs"),
   topic,
 ]);
 
 const writingArgs = [
-  path.join(PAPER_WRITING, "scripts", "writing_under_style.mjs"),
+  path.join(PAPER_WRITING, "scripts", "3_writing_under_style.mjs"),
   topic,
   "--provider",
   provider,

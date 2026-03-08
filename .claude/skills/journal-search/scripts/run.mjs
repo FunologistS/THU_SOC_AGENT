@@ -1091,7 +1091,15 @@ async function main() {
   } else {
     md += `- 摘要补全：否\n`;
   }
-  md += `- 结果条数：${rows.length} 条\n\n`;
+  const missingAbstract = rows.filter((r) => {
+    const t = String(r.abstract ?? "").trim();
+    if (!t) return true;
+    if (/^(no usable abstract|n\/a|none|unknown|no abstract)\.?$/i.test(t)) return true;
+    if (/^see (the )?(abstract|link|url|paper)/i.test(t)) return true;
+    if (t.length < 25) return true;
+    return false;
+  }).length;
+  md += `- 本表共 ${rows.length} 篇，其中摘要空缺 ${missingAbstract} 篇。\n\n`;
 
   md += `| 期刊 | 年份 | 标题 | 作者 | DOI | OpenAlex | 摘要 |\n|---|---:|---|---|---|---|---|\n`;
 

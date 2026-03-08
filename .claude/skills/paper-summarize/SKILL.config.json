@@ -1,9 +1,9 @@
 {
   "id": "paper-summarize",
   "name": "论文摘要结构化生成",
-  "entry": ".claude/skills/paper-summarize/scripts/summarize.mjs",
+  "entry": ".claude/skills/paper-summarize/scripts/1_command.mjs",
   "version": "1.1.0",
-  "description": "将 journal-search / paper-filter 生成的论文表格（02_clean 优先，01_raw 兜底）转换为结构化摘要文档，并可选补抓缺失 abstract。",
+  "description": "将 journal-search / paper-filter 生成的论文表格（02_clean 优先，01_raw 兜底）转换为结构化摘要文档。补抓缺失摘要请在批量检索时勾选「摘要补全」。",
 
   "execution": {
     "type": "node",
@@ -54,7 +54,7 @@
       "required": false,
       "cliFlag": "--fillAbstract",
       "default": false,
-      "description": "若为 true，则尝试通过 DOI / OpenAlex / 出版社页面补抓缺失 abstract（可能受外部 API 配额或访问控制影响）"
+      "description": "（当前未实现）补摘要在批量检索时勾选「摘要补全」"
     },
     {
       "name": "sleepMs",
@@ -63,7 +63,7 @@
       "required": false,
       "cliFlag": "--sleepMs",
       "default": 500,
-      "description": "补抓摘要时的请求间隔，避免频率过高"
+      "description": "（与 fillAbstract 配套，当前未使用）"
     },
     {
       "name": "json",

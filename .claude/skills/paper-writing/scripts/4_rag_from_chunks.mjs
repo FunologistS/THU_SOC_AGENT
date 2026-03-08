@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * rag_from_chunks.mjs — 基于 outputs/<topic>/06_review/chunks_styled 做 RAG：
+ * 4_rag_from_chunks.mjs — 基于 outputs/<topic>/06_review/chunks_styled 做 RAG（检索/生成段落）：
  *   - 中文友好 BM25（无依赖）
  *   - 向量索引持久化 + 增量更新（可选）
  *   - Hybrid 检索（BM25 + cosine）
@@ -9,22 +9,22 @@
  *
  * 用法示例：
  *   # 仅检索（BM25，离线）
- *   node rag_from_chunks.mjs artificial_intelligence --query "算法治理" --top 5
+ *   node 4_rag_from_chunks.mjs artificial_intelligence --query "算法治理" --top 5
  *
  *   # 建/更新向量索引（需要 OPENAI_API_KEY）
- *   node rag_from_chunks.mjs artificial_intelligence --index
+ *   node 4_rag_from_chunks.mjs artificial_intelligence --index
  *
  *   # Hybrid 检索（BM25 + 向量；需要索引）
- *   node rag_from_chunks.mjs artificial_intelligence --query "LLM 与社会科学" --top 8 --mode hybrid
+ *   node 4_rag_from_chunks.mjs artificial_intelligence --query "LLM 与社会科学" --top 8 --mode hybrid
  *
  *   # 检索 + 生成（默认用 gpt-5.2；强制引用 tag）
- *   node rag_from_chunks.mjs artificial_intelligence --query "算法治理" --top 8 --mode hybrid --generate --out outputs/artificial_intelligence/06_review/paragraph.md
+ *   node 4_rag_from_chunks.mjs artificial_intelligence --query "算法治理" --top 8 --mode hybrid --generate --out outputs/artificial_intelligence/06_review/paragraph.md
  *
  *   # 过滤（依赖 frontmatter 元数据）
- *   node rag_from_chunks.mjs artificial_intelligence --query "职业分化" --filter "year>=2020;cluster=2" --top 8 --mode hybrid
+ *   node 4_rag_from_chunks.mjs artificial_intelligence --query "职业分化" --filter "year>=2020;cluster=2" --top 8 --mode hybrid
  *
  *   # 可选：LLM rerank（对 topN 重排，更准但要花 token）
- *   node rag_from_chunks.mjs artificial_intelligence --query "模型决定论" --top 12 --mode hybrid --rerank --rerank-top 30
+ *   node 4_rag_from_chunks.mjs artificial_intelligence --query "模型决定论" --top 12 --mode hybrid --rerank --rerank-top 30
  *
  * 环境变量：
  *   OPENAI_API_KEY        必填（用向量/生成/rerank 时需要）
@@ -716,7 +716,7 @@ async function main() {
 
   if (!args.query) {
     console.log("用法:");
-    console.log('  node rag_from_chunks.mjs [topic] --query "主题或问题" [--top N] [--mode auto|keyword|embed|hybrid] [--generate] [--out out.md]');
+    console.log('  node 4_rag_from_chunks.mjs [topic] --query "主题或问题" [--top N] [--mode auto|keyword|embed|hybrid] [--generate] [--out out.md]');
     console.log("目录:", dir);
     console.log("chunk 数量:", allChunks.length, "| 过滤后:", chunks.length);
     console.log("向量索引:", fs.existsSync(idxPath) ? idxPath : "(不存在，可用 --index 构建)");

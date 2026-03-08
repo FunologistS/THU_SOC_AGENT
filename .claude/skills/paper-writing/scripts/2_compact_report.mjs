@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * compact_report.mjs
+ * 2_compact_report.mjs — 报告切块（05_report → chunks）
  *
  * Purpose:
  *   Preprocess a long report to avoid API timeout:
@@ -14,9 +14,9 @@
  *
  * Usage:
  *   From project root:
- *     node .claude/skills/paper-writing/scripts/compact_report.mjs <topic> [--in ...] [--out ...] [--chunkDir ...] [--keepAppendix] [--debug]
+ *     node .claude/skills/paper-writing/scripts/2_compact_report.mjs <topic> [--in ...] [--out ...] [--chunkDir ...] [--keepAppendix] [--debug]
  *   From paper-writing/scripts:
- *     node compact_report.mjs <topic> [--in ...] [--out ...] [--chunkDir ...] [--keepAppendix] [--debug]
+ *     node 2_compact_report.mjs <topic> [--in ...] [--out ...] [--chunkDir ...] [--keepAppendix] [--debug]
  *
  * Notes:
  *   - Deterministic: yes
@@ -50,7 +50,7 @@ function hasFlag(flag) {
 const topic = process.argv[2];
 if (!topic || topic.startsWith("--")) {
   console.error(
-    "Usage: node .claude/skills/paper-writing/scripts/compact_report.mjs <topic> [--in ...] [--out ...] [--chunkDir ...] [--keepAppendix] [--debug]"
+    "Usage: node .claude/skills/paper-writing/scripts/2_compact_report.mjs <topic> [--in ...] [--out ...] [--chunkDir ...] [--keepAppendix] [--debug]"
   );
   process.exit(1);
 }

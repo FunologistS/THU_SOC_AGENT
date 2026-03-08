@@ -49,6 +49,9 @@ const EXTRA_RUNNING_LABELS: Record<string, string> = {
 const DEFAULT_OPENAI_MODELS = ["gpt-5.2"];
 const DEFAULT_ZHIPU_MODELS = ["glm-5", "glm-4.7-flash"];
 
+/** 智谱模型 UI 展示顺序：GLM-5 在最上，其次 GLM-4.7、GLM-4.7-Flash（env 可写小写 id） */
+const ZHIPU_DISPLAY_ORDER = ["glm-5", "glm-4.7", "glm-4.7-flash"];
+
 /** 解析 env 的逗号分隔模型列表，与默认合并：用户追加的排最前（新模型在上），再接默认且不重复 */
 function parseModelList(raw: string | undefined, defaults: string[]): string[] {
   const fromEnv = !raw || !String(raw).trim()
@@ -57,19 +60,37 @@ function parseModelList(raw: string | undefined, defaults: string[]): string[] {
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean);
-  const defaultSet = new Set(defaults);
-  const extra = fromEnv.filter((id) => !defaultSet.has(id));
+  const defaultSet = new Set(defaults.map((d) => d.toLowerCase()));
+  const extra = fromEnv.filter((id) => !defaultSet.has(id.toLowerCase()));
   return [...extra, ...defaults];
 }
 
-/** 模型 id → 展示名（未知的用「智谱/OpenAI + id」，智谱 id 首段大写为 GLM） */
+/** 智谱模型列表按展示顺序排序：GLM-5 → GLM-4.7 → GLM-4.7-Flash → 其它 */
+function sortZhipuModels(list: string[]): string[] {
+  return [...list].sort((a, b) => {
+    const ia = ZHIPU_DISPLAY_ORDER.indexOf(a.toLowerCase());
+    const ib = ZHIPU_DISPLAY_ORDER.indexOf(b.toLowerCase());
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.localeCompare(b);
+  });
+}
+
+/** 模型 id → 展示名（env 可写小写；UI 统一显示 GLM-5 / GLM-4.7 / GLM-4.7-Flash） */
 function modelDisplayName(id: string, kind: "openai" | "zhipu"): string {
   const known: Record<string, string> =
     kind === "openai"
       ? { "gpt-5.2": "OpenAI GPT-5.2", gpt: "OpenAI GPT" }
-      : { "glm-4.7-flash": "智谱 GLM-4.7-Flash", "glm-5": "智谱 GLM-5" };
-  if (known[id]) return known[id];
-  return kind === "openai" ? `OpenAI ${id}` : `智谱 ${id.replace(/^glm/, "GLM")}`;
+      : {
+          "glm-4.7-flash": "智谱 GLM-4.7-Flash",
+          "glm-5": "智谱 GLM-5",
+          "glm-4.7": "智谱 GLM-4.7",
+        };
+  const key = kind === "zhipu" ? id.toLowerCase() : id;
+  if (known[key]) return known[key];
+  if (kind === "openai") return `OpenAI ${id}`;
+  return `智谱 ${id.replace(/^glm/i, "GLM").replace(/-flash$/i, "-Flash")}`;
 }
 
 /** 各技能预估耗时（秒），仅作进度条参考；实际用时以「已用 X 秒」为准 */
@@ -116,6 +137,8 @@ export function SkillPanel({
   journalSearchEstimatedSec = 180,
   onAbortJournalSearch,
   onDismissJournalSearchLog,
+  /** 荟萃分析前若存在摘要空缺，用户选「去手动补录空缺摘要」时调用，用于展开并定位到当前主题的手动补录区 */
+  onRequestFocusManualAbstract,
 }: {
   topic: string;
   availableTopics?: { topic: string; label: string }[];
@@ -206,10 +229,13 @@ export function SkillPanel({
   const [synthesizeModalOpen, setSynthesizeModalOpen] = useState(false);
   /** 荟萃分析：选具体文档（04_meta / 03_summaries 下文件名） */
   const [conceptMetaClusters, setConceptMetaClusters] = useState("");
+  const [conceptMaxPapersPerCluster, setConceptMaxPapersPerCluster] = useState<number>(40);
   const [conceptBriefing, setConceptBriefing] = useState("");
   const [conceptSummaries, setConceptSummaries] = useState("");
   /** 一键综述：05_report 下输入文件名 */
   const [writingReportFile, setWritingReportFile] = useState("");
+  /** 一键综述：合并后是否做段落衔接优化（可选） */
+  const [writingCoherencePass, setWritingCoherencePass] = useState(false);
   /** 一键综述模型：初始无选中；传 API 时未选则用列表第一项或 glm-4.7-flash */
   const [writingModel, setWritingModel] = useState<string>("");
   /** 荟萃分析：运行前弹窗，在弹窗内选择模型与文档 */
@@ -234,6 +260,8 @@ export function SkillPanel({
   /** 用于暂停运行：runOne 收到 jobId 后立即写入，避免 state 未更新时点击取消拿不到 id */
   const latestJobIdRef = useRef<string | null>(null);
   const { confirm: thuConfirm, confirmThree: thuConfirmThree } = useThUAlertConfirm();
+  /** 荟萃分析前若存在摘要空缺，用户选「去手动补录空缺摘要」时调用 */
+  const onFocusManual = onRequestFocusManualAbstract;
 
   /** 拉取设置中的可选模型列表（OPENAI_MODELS / ZHIPU_MODELS），供荟萃分析、一键综述选择 */
   useEffect(() => {
@@ -241,7 +269,7 @@ export function SkillPanel({
       .then((r) => r.json())
       .then((d) => {
         if (d?.env && typeof d.env === "object") {
-          const zhipu = parseModelList(d.env.ZHIPU_MODELS, DEFAULT_ZHIPU_MODELS);
+          const zhipu = sortZhipuModels(parseModelList(d.env.ZHIPU_MODELS, DEFAULT_ZHIPU_MODELS));
           const openai = parseModelList(d.env.OPENAI_MODELS, DEFAULT_OPENAI_MODELS);
           setZhipuModelsList(zhipu);
           setOpenaiModelsList(openai);
@@ -399,9 +427,11 @@ export function SkillPanel({
       synthesizeK?: string;
       synthesizeInPath?: string;
       conceptMetaClusters?: string;
+      conceptMaxPapersPerCluster?: number;
       conceptBriefing?: string;
       conceptSummaries?: string;
       writingReportFile?: string;
+      writingCoherencePass?: boolean;
     }
   ): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -417,9 +447,11 @@ export function SkillPanel({
         synthesizeK?: string;
         synthesizeInPath?: string;
         conceptMetaClusters?: string;
+        conceptMaxPapersPerCluster?: number;
         conceptBriefing?: string;
         conceptSummaries?: string;
         writingReportFile?: string;
+        writingCoherencePass?: boolean;
       } = { jobType, topic };
       if (Array.isArray(extraArgs) && extraArgs.length > 0) body.args = extraArgs;
       if (jobType === "synthesize" && options?.synthesizeK) body.synthesizeK = options.synthesizeK;
@@ -428,6 +460,7 @@ export function SkillPanel({
         body.conceptSynthesizeModel = options.conceptSynthesizeModel;
       if (jobType === "concept_synthesize" && options?.qualityOnly === true) body.qualityOnly = true;
       if (jobType === "concept_synthesize" && options?.conceptMetaClusters) body.conceptMetaClusters = options.conceptMetaClusters;
+      if (jobType === "concept_synthesize" && options?.conceptMaxPapersPerCluster != null) body.conceptMaxPapersPerCluster = options.conceptMaxPapersPerCluster;
       if (jobType === "concept_synthesize" && options?.conceptBriefing) body.conceptBriefing = options.conceptBriefing;
       if (jobType === "concept_synthesize" && options?.conceptSummaries) body.conceptSummaries = options.conceptSummaries;
       if (
@@ -438,6 +471,7 @@ export function SkillPanel({
       if (jobType === "writing_under_style" && options?.writingStyle) body.writingStyle = options.writingStyle;
       if (jobType === "writing_under_style" && options?.writingPrompt != null) body.writingPrompt = options.writingPrompt;
       if (jobType === "writing_under_style" && options?.writingReportFile) body.writingReportFile = options.writingReportFile;
+      if (jobType === "writing_under_style" && options?.writingCoherencePass === true) body.writingCoherencePass = true;
       fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -523,10 +557,20 @@ export function SkillPanel({
         const data = await res.json();
         const missing = data?.missing;
         if (Array.isArray(missing) && missing.length > 0) {
-          const go = await thuConfirm(
-            "当前摘要中存在空缺条目，建议先完成「手动补录空缺摘要」再继续。\n\n是否仍要继续？"
+          const choice = await thuConfirmThree(
+            "当前摘要中存在空缺条目，建议先完成「手动补录空缺摘要」再继续。\n\n请选择：",
+            {
+              cancelLabel: "取消",
+              runAllLabel: "仍要继续",
+              confirmLabel: "去手动补录空缺摘要",
+            }
           );
-          if (!go) return;
+          if (choice === "cancel") return;
+          if (choice === "confirm") {
+            onFocusManual?.();
+            return;
+          }
+          // run_all：继续打开荟萃分析弹窗
         }
       } catch {
         // 忽略缺失摘要接口失败，允许继续
@@ -675,6 +719,7 @@ export function SkillPanel({
       writingStyle: styleChoice,
       writingPrompt: promptToUse ?? undefined,
       writingReportFile: writingReportFile || undefined,
+      writingCoherencePass: writingCoherencePass || undefined,
     })
       .then(() => {
         setLastCompletedSkillIdForLog("writing_under_style");
@@ -1044,6 +1089,17 @@ export function SkillPanel({
                   {(topicMeta?.stages?.find((s) => s.id === "03_summaries")?.files ?? []).map((f) => (<option key={f.path} value={f.name}>{f.name}</option>))}
                 </select>
               </div>
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">每聚类最多使用篇数</label>
+                <select value={conceptMaxPapersPerCluster} onChange={(e) => setConceptMaxPapersPerCluster(Number(e.target.value))} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                  <option value={20}>20</option>
+                  <option value={30}>30</option>
+                  <option value={40}>40（默认）</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+                <p className="mt-0.5 text-[10px] text-[var(--text-muted)]">单聚类论文过多时限制送进模型的篇数，避免超时；超出的会分批调用再合并。</p>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               <button type="button" onClick={() => setConceptSynthesizeModalOpen(false)} className="thu-modal-btn-secondary rounded-lg px-3 py-2 text-sm font-medium">取消</button>
@@ -1065,6 +1121,7 @@ export function SkillPanel({
                     conceptSynthesizeModel,
                     qualityOnly: conceptSynthesizePendingQualityOnly,
                     conceptMetaClusters: conceptMetaClusters || undefined,
+                    conceptMaxPapersPerCluster,
                     conceptBriefing: conceptBriefing || undefined,
                     conceptSummaries: conceptSummaries || undefined,
                   });
@@ -1685,6 +1742,15 @@ export function SkillPanel({
                     </div>
                   )}
                 </dl>
+                <label className="mb-3 flex cursor-pointer items-start gap-2 text-xs text-[var(--text)]">
+                  <input
+                    type="checkbox"
+                    checked={writingCoherencePass}
+                    onChange={(e) => setWritingCoherencePass(e.target.checked)}
+                    className="mt-0.5 rounded border-[var(--border-soft)]"
+                  />
+                  <span>一键综述后做段落衔接优化（改善块与块之间的过渡与术语统一，可选，多一次 API 调用）。主题数 ≥ 8 时建议勾选。</span>
+                </label>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={() => setWritingReviewStep(pendingWritingStyle === "none" ? "no_style_options" : "default_style")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回修改</button>
                   <button

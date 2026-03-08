@@ -334,6 +334,13 @@ body {
   color: var(--text-muted);
 }
 
+/* 文献简报/一键综述 · 右侧目录随正文一起滚动，不钉在顶部 */
+.report-toc {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+}
+
 /* 我的产出 · 表格：随屏宽自适应、横向滑动、abstract 列更宽且可内滚、点击展开 */
 .prose-table-wrap {
   width: 100%;
@@ -369,14 +376,29 @@ body {
   word-break: break-word;
   overflow-wrap: break-word;
 }
-/* 附录论文卡片等：各列可换行，并保证「问题」「方法」列有合理最小宽 */
+/* 论文表格：期刊名、作者列给足最小宽以便完整显示（OpenAlex 列已在展示层移除） */
+.prose-output-table th:nth-child(1),
+.prose-output-table td:nth-child(1) {
+  min-width: 10em;
+}
 .prose-output-table th:nth-child(2),
 .prose-output-table td:nth-child(2) {
-  min-width: 8em;
+  min-width: 5em;
 }
 .prose-output-table th:nth-child(3),
 .prose-output-table td:nth-child(3) {
-  min-width: 8em;
+  min-width: 10em;
+}
+.prose-output-table th:nth-child(4),
+.prose-output-table td:nth-child(4) {
+  min-width: 10em;
+}
+/* DOI 列：保证最小宽，长 URL 可断行 */
+.prose-output-table th:nth-child(5),
+.prose-output-table td:nth-child(5) {
+  min-width: 6rem;
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 .prose-output-table td {
   padding: 0.5rem 0.75rem;
@@ -488,6 +510,11 @@ body {
   padding: 3px;
   width: 3.5rem;
   height: 3.5rem;
+  max-width: 3.5rem;
+  max-height: 3.5rem;
+  min-width: 3.5rem;
+  min-height: 3.5rem;
+  box-sizing: border-box;
   background: conic-gradient(
     from 0deg,
     var(--thu-purple),

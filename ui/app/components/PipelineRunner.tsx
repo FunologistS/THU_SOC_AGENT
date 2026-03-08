@@ -28,18 +28,34 @@ const JOB_ESTIMATED_SEC: Record<JobType, number> = {
 /** 稳定默认：始终保留；顺序为新模型在前，用户追加的排最前 */
 const DEFAULT_ZHIPU = ["glm-5", "glm-4.7-flash"];
 const DEFAULT_OPENAI = ["gpt-5.2"];
+const ZHIPU_DISPLAY_ORDER = ["glm-5", "glm-4.7", "glm-4.7-flash"];
 function parseModelList(raw: string | undefined, defaults: string[]): string[] {
   const fromEnv = !raw || !String(raw).trim() ? [] : String(raw).split(",").map((s) => s.trim()).filter(Boolean);
-  const defaultSet = new Set(defaults);
-  const extra = fromEnv.filter((id) => !defaultSet.has(id));
+  const defaultSet = new Set(defaults.map((d) => d.toLowerCase()));
+  const extra = fromEnv.filter((id) => !defaultSet.has(id.toLowerCase()));
   return [...extra, ...defaults];
+}
+function sortZhipuModels(list: string[]): string[] {
+  return [...list].sort((a, b) => {
+    const ia = ZHIPU_DISPLAY_ORDER.indexOf(a.toLowerCase());
+    const ib = ZHIPU_DISPLAY_ORDER.indexOf(b.toLowerCase());
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.localeCompare(b);
+  });
 }
 function modelDisplayName(id: string, kind: "openai" | "zhipu"): string {
   const known: Record<string, string> = kind === "openai"
     ? { "gpt-5.2": "OpenAI GPT-5.2", gpt: "OpenAI GPT" }
-    : { "glm-4.7-flash": "智谱 GLM-4.7-Flash", "glm-5": "智谱 GLM-5" };
-  if (known[id]) return known[id];
-  return kind === "openai" ? `OpenAI ${id}` : `智谱 ${id.replace(/^glm/, "GLM")}`;
+    : {
+        "glm-4.7-flash": "智谱 GLM-4.7-Flash",
+        "glm-5": "智谱 GLM-5",
+        "glm-4.7": "智谱 GLM-4.7",
+      };
+  const key = kind === "zhipu" ? id.toLowerCase() : id;
+  if (known[key]) return known[key];
+  return kind === "openai" ? `OpenAI ${id}` : `智谱 ${id.replace(/^glm/i, "GLM").replace(/-flash$/i, "-Flash")}`;
 }
 
 export function PipelineRunner({
@@ -70,7 +86,7 @@ export function PipelineRunner({
       .then((r) => r.json())
       .then((d) => {
         if (d?.env && typeof d.env === "object") {
-          setZhipuModelsList(parseModelList(d.env.ZHIPU_MODELS, DEFAULT_ZHIPU));
+          setZhipuModelsList(sortZhipuModels(parseModelList(d.env.ZHIPU_MODELS, DEFAULT_ZHIPU)));
           setOpenaiModelsList(parseModelList(d.env.OPENAI_MODELS, DEFAULT_OPENAI));
         }
       })

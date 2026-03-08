@@ -1,6 +1,6 @@
 ---
 name: paper-writing
-description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（academic/colloquial），或将 outputs/<topic>/05_report 下的报告（优先 chunks）按指定学术写作风格改写成成段落综述（review）时使用。包含脚本 input_to_md.mjs（转录）与 writing_under_style.mjs（仿写改写、断点续跑、merge-only）。
+description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（academic/colloquial），或将 outputs/<topic>/05_report 下的报告（优先 chunks）按指定学术写作风格改写成成段落综述（review）时使用。包含脚本：1_input_to_md（转录）、2_compact_report（报告切块）、3_writing_under_style（仿写改写、断点续跑、merge-only、可选段落衔接优化）、4_rag_from_chunks（RAG 检索/生成）、5_upload_then_writing / 6_transcribe_submit_then_writing（编排）。从 UI 点「一键综述」时，若存在 report 且 chunks 不存在或为空，会先自动执行 2_compact_report（P0），再执行 3_writing_under_style。
 ---
 
 # Paper Writing（写作管线：转录 → 风格化改写）
@@ -21,8 +21,12 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
     .claude/skills/paper-writing/
     ├── SKILL.md
     ├── scripts/
-    │   ├── input_to_md.mjs
-    │   └── writing_under_style.mjs
+    │   ├── 1_input_to_md.mjs        # PDF/Word → Markdown（转录入库）
+    │   ├── 2_compact_report.mjs     # 05_report 按 ## 切块 → chunks/
+    │   ├── 3_writing_under_style.mjs # report/chunks → 06_review（风格化改写）
+    │   ├── 4_rag_from_chunks.mjs    # chunks_styled 上 RAG 检索/生成
+    │   ├── 5_upload_then_writing.mjs   # 编排：上传→默认风格改写
+    │   └── 6_transcribe_submit_then_writing.mjs  # 编排：上传→submit 风格改写
     ├── assets/
     │   ├── academic/        # 学术写作样本原始输入（pdf/docx）
     │   └── colloquial/      # 口语/社交写作样本原始输入（pdf/docx）
@@ -43,25 +47,25 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
   - `outputs/<topic>/06_review/review_latest.md`（自动更新，指向最新版本）
   - `outputs/<topic>/06_review/chunks_styled/*.md`（chunk 模式的中间产物，用于断点续跑/merge-only）
 
-> 注：`writing_under_style.mjs` 会按日期生成版本号（vN），并同时维护 `review_latest.md`。
+> 注：`3_writing_under_style.mjs` 会按日期生成版本号（vN），并同时维护 `review_latest.md`。
 
 ---
 
 ## 2）快速开始（两条命令搞定）
 
-### 2.1 转录：PDF/Word → Markdown（input_to_md.mjs）
+### 2.1 转录：PDF/Word → Markdown（1_input_to_md.mjs）
 
 #### 情况 A：终端在项目根目录 THU_SOC_AGENT/
 
-    node .claude/skills/paper-writing/scripts/input_to_md.mjs <输入> <输出.md>
+    node .claude/skills/paper-writing/scripts/1_input_to_md.mjs <输入> <输出.md>
 
 #### 情况 B：终端在 paper-writing/scripts 下
 
-    node input_to_md.mjs <输入> <输出.md>
+    node 1_input_to_md.mjs <输入> <输出.md>
 
 ---
 
-## 3）input_to_md.mjs：路径规则（非常关键）
+## 3）1_input_to_md.mjs：路径规则（非常关键）
 
 ### 3.1 输入/输出参数解析规则
 
@@ -83,19 +87,19 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 1）把 `assets/academic` 下的 docx 转成 `references/academic` 的 md（推荐）
 
-    node .claude/skills/paper-writing/scripts/input_to_md.mjs academic/academic-2a-tsyzm.docx academic-2a-tsyzm.md
+    node .claude/skills/paper-writing/scripts/1_input_to_md.mjs academic/academic-2a-tsyzm.docx academic-2a-tsyzm.md
 
 2）把 `assets/colloquial` 下的 docx 转成 `references/colloquial` 的 md
 
-    node .claude/skills/paper-writing/scripts/input_to_md.mjs colloquial/wechat-style.docx wechat-style.md
+    node .claude/skills/paper-writing/scripts/1_input_to_md.mjs colloquial/wechat-style.docx wechat-style.md
 
 3）绝对路径输入（若绝对路径不含 academic/colloquial 关键词，则不会触发自动归档）
 
-    node .claude/skills/paper-writing/scripts/input_to_md.mjs "/Users/you/Desktop/sample.docx" "./sample.md"
+    node .claude/skills/paper-writing/scripts/1_input_to_md.mjs "/Users/you/Desktop/sample.docx" "./sample.md"
 
 ---
 
-## 4）风格化改写：05_report → 段落综述 review（writing_under_style.mjs）
+## 4）风格化改写：05_report → 段落综述 review（3_writing_under_style.mjs）
 
 ### 4.1 两种模式（自动选择）
 
@@ -110,13 +114,15 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 > 规则：只要你显式传了 `<input.md>`，就**强制 single-doc**（避免“惊讶地走 chunk”）。
 
+**P0 自动切块**：从 UI 点「一键综述」时，若存在 `05_report/report_latest.md`（或所选 report 文件）且 `05_report/chunks/` 不存在或为空，后端会**先执行** `2_compact_report.mjs <topic>` 再调用 `3_writing_under_style.mjs`，从而稳定走 chunk 模式，用户无感。
+
 ---
 
 ### 4.2 默认运行（不传参）
 
 默认 topic 为 `artificial_intelligence`；优先 chunks，否则读 `report_latest.md`。
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs
 
 输出到：
 
@@ -127,8 +133,8 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 ### 4.3 选择模型（OpenAI / 智谱 GLM）
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --provider gpt
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --provider glm
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic> --provider gpt
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic> --provider glm
 
 - **gpt**（默认）：使用 `OPENAI_API_KEY`、`OPENAI_MODEL`（默认 gpt-5.2）
 - **glm**：使用 `ZHIPU_API_KEY`、`ZHIPU_MODEL`（默认 glm-4.7-flash），适合节省 OpenAI 用量或偏好中文表现
@@ -139,17 +145,17 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 ### 4.4 指定 topic（推荐做法）
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic>
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic>
 
 例如：
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs artificial_intelligence
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs artificial_intelligence
 
 ---
 
 ### 4.5 强制 single-doc：指定输入报告路径
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs outputs/<topic>/05_report/report_latest.md
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs outputs/<topic>/05_report/report_latest.md
 
 也可用绝对路径或 `./ ../` 相对路径（按脚本规则解析）。
 
@@ -159,11 +165,11 @@ description: 当用户需要将 PDF/Word 转为 Markdown、管理写作样本（
 
 **旧兼容**（位置参数追加风格文件名）：
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> academic-2a-tsyzm.md academic-2b-qnyj.md
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic> academic-2a-tsyzm.md academic-2b-qnyj.md
 
 **新推荐**（显式 flag，避免误把其他参数当 style file）：
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --style academic-2a-tsyzm.md,academic-2b-qnyj.md
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic> --style academic-2a-tsyzm.md,academic-2b-qnyj.md
 
 说明：
 
@@ -184,7 +190,7 @@ chunk 模式会将每个改写后的 chunk 写入：
 
 强制重跑所有 chunks：
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --force
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic> --force
 
 ---
 
@@ -197,11 +203,26 @@ chunk 模式会将每个改写后的 chunk 写入：
 
 命令：
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --merge-only
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic> --merge-only
 
 如果 `chunks_styled` 不在默认位置（例如你改了 OUTPUT_DIR），可指定：
 
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs <topic> --merge-only --styled-dir outputs/<topic>/06_review/chunks_styled
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs <topic> --merge-only --styled-dir outputs/<topic>/06_review/chunks_styled
+
+---
+
+### 4.9 报告切块（2_compact_report.mjs）与可选段落衔接优化
+
+**2_compact_report.mjs**  
+将 `05_report/report_latest.md` 按 `## ` 标题切分为多个 chunk，写入 `05_report/chunks/*.md`，供 3_writing_under_style 的 chunk 模式使用。  
+- 手动运行（项目根目录）：`node .claude/skills/paper-writing/scripts/2_compact_report.mjs <topic> [--in ...] [--out ...] [--chunkDir ...]`  
+- 从 UI 运行一键综述时，若 report 存在且 chunks 缺失，会**自动**先执行本脚本（P0），无需用户操作。
+
+**--coherence-pass（可选）**  
+合并完成后，可再做一次「段落衔接与术语统一」优化：仅改善块与块之间的过渡与用语一致，不改变实质内容。  
+- 命令行：`node ... 3_writing_under_style.mjs <topic> ... --coherence-pass`  
+- UI：在「一键综述」确认步骤中勾选「一键综述后做段落衔接优化」。  
+多一次 API 调用，适合希望跨块更连贯时使用。
 
 ---
 
@@ -221,7 +242,7 @@ chunk 模式会将每个改写后的 chunk 写入：
 最小可运行示例：
 
     export OPENAI_API_KEY="你的key"
-    node .claude/skills/paper-writing/scripts/writing_under_style.mjs artificial_intelligence
+    node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs artificial_intelligence
 
 ### 5.3 稳定性/质量调参（建议保留默认，出问题再调）
 
@@ -236,6 +257,7 @@ chunk 模式会将每个改写后的 chunk 写入：
 可选：
 
 - `FINAL_SMOOTH=1`：合并后再做一次轻量全局统一润色（额外一次调用）
+- `--coherence-pass`（或 UI 勾选「段落衔接优化」）：合并后再做一次段落衔接与术语统一优化（额外一次调用）
 - `CHUNK_TEMPERATURE`（默认 0.35）
 - `MERGE_TEMPERATURE`（默认 0.25）
 - `SMOOTH_TEMPERATURE`（默认 0.20）
@@ -247,7 +269,7 @@ chunk 模式会将每个改写后的 chunk 写入：
 1）准备写作样本（一次性沉淀）
 - 把要模仿的文章/论文（PDF/DOCX）放入：
   - `.claude/skills/paper-writing/assets/academic/`
-- 用 `input_to_md.mjs` 转成 Markdown，沉淀到：
+- 用 `1_input_to_md.mjs` 转成 Markdown，沉淀到：
   - `.claude/skills/paper-writing/references/academic/`
 
 2）上游生成 report/chunks（由其他 skill 负责）
@@ -255,9 +277,10 @@ chunk 模式会将每个改写后的 chunk 写入：
   - `outputs/<topic>/05_report/chunks/*.md`
 - 若没有 chunks，也至少要有：
   - `outputs/<topic>/05_report/report_latest.md`
+- 使用 UI「一键综述」时：若仅有 report 无 chunks，会**自动先跑 2_compact_report** 再改写（P0）。
 
 3）风格化改写（优先 chunk）
-- 运行 `writing_under_style.mjs <topic>`
+- 运行 `3_writing_under_style.mjs <topic>`
 - 在 `outputs/<topic>/06_review/` 取得：
   - `review_YYYYMMDD_vN.md` + `review_latest.md`
 
@@ -271,8 +294,8 @@ chunk 模式会将每个改写后的 chunk 写入：
 
 ### 7.1 “找不到脚本 / Cannot find module …”
 - 如果你已经 `cd .claude/skills/paper-writing/scripts`：
-  - ✅ 正确：`node writing_under_style.mjs ...`
-  - ❌ 错误：`node .claude/skills/paper-writing/scripts/writing_under_style.mjs ...`
+  - ✅ 正确：`node 3_writing_under_style.mjs ...`
+  - ❌ 错误：`node .claude/skills/paper-writing/scripts/3_writing_under_style.mjs ...`
   因为路径会重复。
 
 ### 7.2 review 日期不对（跨日/变成明天）
@@ -298,7 +321,7 @@ chunk 模式会将每个改写后的 chunk 写入：
 
 ---
 
-## 8）RAG：用 chunks 检索并生成文献段落（rag_from_chunks.mjs）
+## 8）RAG：用 chunks 检索并生成文献段落（4_rag_from_chunks.mjs）
 
 在已有 `06_review/chunks_styled/*.md` 的前提下，可以用这些 chunk 做 **RAG**：按主题/问题检索相关段落，并可选地让模型**仅依据检索结果**生成新的综述段落，减少幻觉。
 
@@ -307,24 +330,24 @@ chunk 模式会将每个改写后的 chunk 写入：
 - **关键词检索**（默认，无需 API）  
   按查询词在 chunk 中的出现情况排序，取 top-k：
 
-      node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "算法治理" --top 3
+      node .claude/skills/paper-writing/scripts/4_rag_from_chunks.mjs artificial_intelligence --query "算法治理" --top 3
 
 - **向量检索**（需 `OPENAI_API_KEY`，使用 embedding 模型）  
   语义相似度排序，适合“意思相近但用词不同”的查询：
 
-      node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "LLM 与社会科学方法论" --top 3 --embed
+      node .claude/skills/paper-writing/scripts/4_rag_from_chunks.mjs artificial_intelligence --query "LLM 与社会科学方法论" --top 3 --embed
 
 ### 8.2 检索 + 生成文献段落
 
 在检索结果基础上，让模型**只根据**这些 chunk 写一段连贯综述（不编造文献）：
 
-    node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "自动化与劳动" --top 3 --generate
+    node .claude/skills/paper-writing/scripts/4_rag_from_chunks.mjs artificial_intelligence --query "自动化与劳动" --top 3 --generate
 
 将生成段落写入文件：
 
-    node .claude/skills/paper-writing/scripts/rag_from_chunks.mjs artificial_intelligence --query "自动化与劳动" --top 3 --generate --out outputs/artificial_intelligence/06_review/rag_paragraph.md
+    node .claude/skills/paper-writing/scripts/4_rag_from_chunks.mjs artificial_intelligence --query "自动化与劳动" --top 3 --generate --out outputs/artificial_intelligence/06_review/rag_paragraph.md
 
-环境变量与 `writing_under_style.mjs` 一致（`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`）；向量检索/生成会用到 API。未传 `--query` 时仅打印用法与当前 chunk 数量。
+环境变量与 `3_writing_under_style.mjs` 一致（`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`）；向量检索/生成会用到 API。未传 `--query` 时仅打印用法与当前 chunk 数量。
 
 ---
 
@@ -338,11 +361,12 @@ chunk 模式会将每个改写后的 chunk 写入：
 - “不要列表，要成段落、像论文综述那样写”
 - “我 merge 阶段 520 了，别重跑 chunks，帮我 merge-only”
 - “用我现有的 chunks 做 RAG 生成一段文献” / “按主题从 chunks 里检索并生成段落”
+- “一键综述后做段落衔接优化” / “合并后改善块与块之间的过渡”（对应 UI 勾选或 `--coherence-pass`）
 
 ---
 
 ## 10）可选扩展（不影响当前使用）
 
 - 增加 `references/academic/index.yml`：把“风格组合”命名（如 `qnyj_combo: [a.md,b.md]`），并在脚本中按 `--style-set qnyj_combo` 读取
-- 为 `input_to_md.mjs` 扩展：支持 `.md` 直接入库、`.txt` 清洗入库
-- 对 `writing_under_style.mjs` 增加 `--concurrency N`（并发改写 chunks，限制 2/3 防止网关爆）
+- 为 `1_input_to_md.mjs` 扩展：支持 `.md` 直接入库、`.txt` 清洗入库
+- 对 `3_writing_under_style.mjs` 增加 `--concurrency N`（并发改写 chunks，限制 2/3 防止网关爆）

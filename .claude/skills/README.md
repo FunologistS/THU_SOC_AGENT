@@ -50,7 +50,7 @@ paper-writing           写作管线
 | 目录 | 主要产出 | 负责 Skill |
 |------|----------|------------|
 | `01_raw/` | papers_YYYYMMDD_vN.md | journal-search |
-| `02_clean/` | 过滤/清洗后的论文表（可选） | paper-summarize/filter |
+| `02_clean/` | 清洗规整后的论文表 | paper-summarize (2_clean) |
 | `03_summaries/` | summaries_*.md, summaries_latest.md | paper-summarize |
 | `04_meta/` | meta_*, briefing_*, *_cluster_*.csv | literature-synthesis (synthesize.mjs) |
 | `05_report/` | report_*.md, chunks/*.md, concept_appendix_*.md | literature-synthesis (concept_synthesize_*) |
@@ -71,7 +71,7 @@ paper-writing           写作管线
 
 1. 维护期刊表：`journal-catalog`（按需）
 2. 抓取论文：`journal-search <topicSlug>`
-3. 摘要：`paper-summarize`（可选先 filter）
+3. 摘要：`paper-summarize`（1_command：先 2_clean 再 3_summarize）
 4. 聚类与概念报告：`literature-synthesis`（synthesize → concept_synthesize）
 5. 风格化综述：`paper-writing`（writing_under_style）
 

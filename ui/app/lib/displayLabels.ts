@@ -39,7 +39,10 @@ const FILE_LABELS: Record<string, string> = {
   meta_clusters_latest: "聚类结果（最新）",
   meta_table_latest: "元数据表（最新）",
   qa_report_latest: "质量报告（最新）",
+  /** 文献简报（最新）：完整版 report，含主题总览表与各节详述 */
   report_latest: "文献简报（最新）",
+  /** 文献简报·紧凑版：由 compact_report 生成的精简版，供一键综述作为输入使用 */
+  report_compact_latest: "文献简报·紧凑版（最新）",
   review_latest: "一键综述（最新）",
   concept_appendix_latest: "概念附录（最新）",
   concept_briefing_latest: "概念简报（最新）",
@@ -60,6 +63,7 @@ const VERSIONED_PREFIX_LABELS: Record<string, string> = {
   meta_table: "元数据表",
   qa_report: "质量报告",
   report: "文献简报",
+  report_compact: "文献简报·紧凑版",
   review: "一键综述",
   concept_appendix: "概念附录",
   concept_briefing: "概念简报",

@@ -1,0 +1,57 @@
+journals:
+  - name: American Sociological Review
+    short: ASR
+    issn: 0003-1224
+    eissn: 1939-8271
+    site: https://journals.sagepub.com/home/asr
+    notes: SAGE
+    openalex_source_id: https://openalex.org/S157620343
+    openalex_source_display_name: American Sociological Review
+  - name: American Journal of Sociology
+    short: AJS
+    issn: 0002-9602
+    eissn: 1537-5390
+    site: https://www.journals.uchicago.edu/toc/ajs/current
+    notes: UChicago Press
+    openalex_source_id: https://openalex.org/S122471516
+    openalex_source_display_name: American Journal of Sociology
+  - name: British Journal of Sociology
+    short: BJS
+    issn: 0007-1315
+    eissn: 1468-4446
+    site: https://onlinelibrary.wiley.com/journal/14684446
+    notes: Wiley
+    openalex_source_id: https://openalex.org/S173252385
+    openalex_source_display_name: British Journal of Sociology
+  - name: Work, Employment and Society
+    short: WES
+    issn: 0950-0170
+    eissn: 1469-8722
+    site: https://journals.sagepub.com/home/wes
+    notes: SAGE
+    openalex_source_id: https://openalex.org/S60510972
+    openalex_source_display_name: Work Employment and Society
+  - name: Chinese Sociological Review
+    short: CSR
+    issn: 2162-0555
+    eissn: 2162-0563
+    site: https://www.tandfonline.com/journals/mcsa20
+    notes: Taylor & Francis
+    openalex_source_id: https://openalex.org/S2764722375
+    openalex_source_display_name: Chinese Sociological Review
+  - name: Social Forces
+    short: SF
+    issn: 0037-7732
+    eissn: 1534-7605
+    site: https://academic.oup.com/sf
+    notes: OUP
+    openalex_source_id: https://openalex.org/S130611943
+    openalex_source_display_name: Social Forces
+  - name: Annual Review of Sociology
+    short: ARS
+    issn: 0360-0572
+    eissn: 1545-2115
+    site: https://www.annualreviews.org/content/journals/soc
+    notes: Annual Reviews
+    openalex_source_id: https://openalex.org/S61274580
+    openalex_source_display_name: Annual Review of Sociology

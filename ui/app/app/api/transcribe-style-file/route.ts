@@ -7,7 +7,7 @@ import { getRepoRoot } from "@/lib/pathSafety";
 const REPO_ROOT = getRepoRoot();
 const SCRIPT = path.join(
   REPO_ROOT,
-  ".claude/skills/paper-writing/scripts/input_to_md.mjs"
+  ".claude/skills/paper-writing/scripts/1_input_to_md.mjs"
 );
 const ASSETS_BASE = path.join(
   REPO_ROOT,

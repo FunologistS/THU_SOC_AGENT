@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, Suspense } from "rea
 import { useSearchParams } from "next/navigation";
 import { SkillPanel } from "@/components/SkillPanel";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
+import { ReportWithTOC } from "@/components/ReportWithTOC";
+import { ReferencesBlock } from "@/components/ReferencesBlock";
 import { JournalCatalog } from "@/components/JournalCatalog";
 import { LiteratureSearchPanel, type LiteratureSearchPanelHandle } from "@/components/LiteratureSearchPanel";
 import { ManualAbstractPanel } from "@/components/ManualAbstractPanel";
@@ -11,6 +13,7 @@ import { WritingSamplesPanel } from "@/components/WritingSamplesPanel";
 import { ThuLogo } from "@/components/ThuLogo";
 import { ManualView } from "@/components/ManualView";
 import { SettingsModal } from "@/components/SettingsModal";
+import { TroubleshootingModal } from "@/components/TroubleshootingModal";
 import { SessionLogPanel } from "@/components/SessionLogPanel";
 import { useThUAlertConfirm } from "@/components/ThUAlertConfirm";
 import {
@@ -195,6 +198,7 @@ function HomeContent() {
   const [renameError, setRenameError] = useState<string | null>(null);
   const [journalDataSourceLabel, setJournalDataSourceLabel] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [troubleshootingOpen, setTroubleshootingOpen] = useState(false);
   const [theme, setThemeState] = useState<"light" | "dark">("light");
   const [lastCommitIso, setLastCommitIso] = useState<string | null>(null);
   /** 技能工作台是否有任务正在运行（用于返回启动页前确认） */
@@ -252,6 +256,8 @@ function HomeContent() {
   });
   /** 点击「检索新主题」后触发「新增检索」标题高亮淡出，每次点击递增以重播动画 */
   const [journalHighlightTrigger, setJournalHighlightTrigger] = useState(0);
+  /** 荟萃分析摘要空缺时点「去手动补录空缺摘要」后递增，用于定位到当前主题下首个需补摘要处 */
+  const [focusManualFirstMissingTrigger, setFocusManualFirstMissingTrigger] = useState(0);
   const { alert: thuAlert, confirm: thuConfirm } = useThUAlertConfirm();
   const toggleSidebarSection = useCallback((key: keyof SidebarSections) => {
     setSidebarOpen((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -281,6 +287,16 @@ function HomeContent() {
     }, 120);
   }, []);
 
+  /** 荟萃分析前若存在摘要空缺且用户选「去手动补录空缺摘要」：展开手动补录区、滚动到该区、并触发定位到首个缺摘要条目 */
+  const handleRequestFocusManualAbstract = useCallback(() => {
+    setSidebarOpen((prev) => ({ ...prev, manual: true }));
+    setFocusManualFirstMissingTrigger((t) => t + 1);
+    setTimeout(() => {
+      const el = asideRef.current?.querySelector('[data-sidebar-section="manual"]');
+      (el as HTMLElement)?.scrollIntoView({ block: "start", behavior: "smooth" });
+    }, 120);
+  }, []);
+
   /** 说明书「技能工作台详情」中点击某一技能时：点击「期刊数据库」则展开侧栏「期刊数据库」板块，其他技能展开「技能工作台」并高亮该卡片 */
   const handleSkillClick = useCallback((skillId: string) => {
     if (skillId === "journal-catalog") {
@@ -302,6 +318,7 @@ function HomeContent() {
   const [isResizing, setIsResizing] = useState(false);
   const resizeStartRef = useRef({ x: 0, width: SIDEBAR_WIDTH_DEFAULT });
   const mainRef = useRef<HTMLElement>(null);
+  const [mainScrollEl, setMainScrollEl] = useState<HTMLElement | null>(null);
   const asideRef = useRef<HTMLElement>(null);
   const literatureSearchRef = useRef<LiteratureSearchPanelHandle | null>(null);
 
@@ -740,6 +757,17 @@ function HomeContent() {
           </button>
           <button
             type="button"
+            onClick={() => setTroubleshootingOpen(true)}
+            className="flex-shrink-0 inline-flex items-center justify-center rounded-[10px] p-2 text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors"
+            aria-label="常见错误与处理"
+            title="常见错误与处理"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+          <button
+            type="button"
             onClick={() => setSettingsOpen(true)}
             className="flex-shrink-0 inline-flex items-center justify-center rounded-[10px] p-2 text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors"
             aria-label="设置"
@@ -784,6 +812,7 @@ function HomeContent() {
         </div>
       </header>
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} onGitSaveSuccess={refreshGitInfo} />
+      <TroubleshootingModal open={troubleshootingOpen} onClose={() => setTroubleshootingOpen(false)} />
 
       <div className="flex flex-1 min-h-0">
         <div className="flex flex-shrink-0" style={{ width: sidebarWidth }}>
@@ -859,49 +888,48 @@ function HomeContent() {
               )}
               <IconChevron open={sidebarOpen.skills} />
             </button>
-            {sidebarOpen.skills && (
-              <div className="p-4 pt-0">
-                <SkillPanel
-                  topic={topic}
-                  availableTopics={availableTopicsForPanel}
-                  onTopicChange={changeTopic}
-                  onJumpToOutputs={jumpToOutputsPreview}
-                  onJobComplete={handleJobComplete}
-                  onJobFinished={handleJobFinished}
-                  highlightedCardIds={highlightedCardIds}
-                  topicMeta={meta}
-                  journalDataSourceLabel={journalDataSourceLabel}
-                  onFocusLiteratureSearch={() => {
-                    setSidebarOpen((prev) => ({ ...prev, journal: true }));
-                    setJournalHighlightTrigger((t) => t + 1);
-                  }}
-                  getJournalSearchDefaults={() => literatureSearchRef.current?.getCurrentParams() ?? null}
-                  onRunJournalSearch={(params) => {
-                    runJournalSearch(params);
-                    setSidebarOpen((prev) => ({ ...prev, skills: true }));
-                    setTimeout(() => {
-                      asideRef.current?.querySelector('[data-run-log-skill="journal_search"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-                    }, 150);
-                  }}
-                  onRunStarted={(skillId) => {
-                    setSidebarOpen((prev) => ({ ...prev, skills: true }));
-                    setTimeout(() => {
-                      asideRef.current?.querySelector(`[data-run-log-skill="${skillId}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-                    }, 150);
-                  }}
-                  onRunningChange={setSkillRunning}
-                  journalSearchJobId={journalSearchJobId}
-                  journalSearchLog={journalSearchLog}
-                  journalSearchDone={journalSearchDone}
-                  journalSearchExitCode={journalSearchExitCode}
-                  journalSearchProgress={journalSearchProgress}
-                  journalSearchElapsedSec={journalSearchElapsedSec}
-                  journalSearchEstimatedSec={JOURNAL_SEARCH_ESTIMATED_SEC}
-                  onAbortJournalSearch={openJournalSearchAbortConfirm}
-                  onDismissJournalSearchLog={() => setJournalSearchJobId(null)}
-                />
-              </div>
-            )}
+            <div className={`p-4 pt-0 ${sidebarOpen.skills ? "" : "hidden"}`} aria-hidden={!sidebarOpen.skills}>
+              <SkillPanel
+                topic={topic}
+                availableTopics={availableTopicsForPanel}
+                onTopicChange={changeTopic}
+                onJumpToOutputs={jumpToOutputsPreview}
+                onJobComplete={handleJobComplete}
+                onJobFinished={handleJobFinished}
+                highlightedCardIds={highlightedCardIds}
+                topicMeta={meta}
+                journalDataSourceLabel={journalDataSourceLabel}
+                onFocusLiteratureSearch={() => {
+                  setSidebarOpen((prev) => ({ ...prev, journal: true }));
+                  setJournalHighlightTrigger((t) => t + 1);
+                }}
+                getJournalSearchDefaults={() => literatureSearchRef.current?.getCurrentParams() ?? null}
+                onRunJournalSearch={(params) => {
+                  runJournalSearch(params);
+                  setSidebarOpen((prev) => ({ ...prev, skills: true }));
+                  setTimeout(() => {
+                    asideRef.current?.querySelector('[data-run-log-skill="journal_search"]')?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                  }, 150);
+                }}
+                onRunStarted={(skillId) => {
+                  setSidebarOpen((prev) => ({ ...prev, skills: true }));
+                  setTimeout(() => {
+                    asideRef.current?.querySelector(`[data-run-log-skill="${skillId}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                  }, 150);
+                }}
+                onRunningChange={setSkillRunning}
+                journalSearchJobId={journalSearchJobId}
+                journalSearchLog={journalSearchLog}
+                journalSearchDone={journalSearchDone}
+                journalSearchExitCode={journalSearchExitCode}
+                journalSearchProgress={journalSearchProgress}
+                journalSearchElapsedSec={journalSearchElapsedSec}
+                journalSearchEstimatedSec={JOURNAL_SEARCH_ESTIMATED_SEC}
+                onAbortJournalSearch={openJournalSearchAbortConfirm}
+                onDismissJournalSearchLog={() => setJournalSearchJobId(null)}
+                onRequestFocusManualAbstract={handleRequestFocusManualAbstract}
+              />
+            </div>
           </section>
           {source === "outputs" && topic && (
             <section data-sidebar-section="manual" className="thu-panel-left flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]">
@@ -924,6 +952,7 @@ function HomeContent() {
                     availableTopics={availableTopicsForPanel}
                     onTopicChange={changeTopic}
                     onSaved={() => setMetaRefreshKey((k) => k + 1)}
+                    focusFirstMissingTrigger={focusManualFirstMissingTrigger}
                     onRequestFocusPaperSummarize={() => {
                       setSidebarOpen((prev) => ({ ...prev, skills: true }));
                       setHoveredManualSkillId("paper-summarize");
@@ -1219,8 +1248,17 @@ function HomeContent() {
           </div>
         )}
 
-        <main ref={mainRef} className="flex-1 min-w-0 overflow-auto bg-[var(--bg-page)]">
-          <div className="sticky top-0 z-10 border-b border-[var(--border-soft)] bg-[var(--bg-card)]/90 px-6 py-3 shadow-thu-soft backdrop-blur-md min-h-[3.25rem] flex items-center">
+        <main
+          ref={(el) => {
+            (mainRef as React.MutableRefObject<HTMLElement | null>).current = el;
+            setMainScrollEl(el);
+          }}
+          className="flex-1 min-w-0 overflow-auto bg-[var(--bg-page)]"
+        >
+          {/* 文献简报/一键综述时右侧有固定目录，顶栏预留空间避免「导出文档」被遮挡 */}
+          <div
+            className={`sticky top-0 z-10 border-b border-[var(--border-soft)] bg-[var(--bg-card)]/90 px-6 py-3 shadow-thu-soft backdrop-blur-md min-h-[3.25rem] flex items-center ${file && source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review")) ? "lg:pr-[12rem]" : ""}`}
+          >
             <div className="absolute inset-x-0 bottom-0 h-px gradient-thu-line" aria-hidden />
             <div className="flex w-full items-center justify-between gap-4">
               <div className="text-sm text-[var(--text-muted)] min-w-0">
@@ -1307,25 +1345,42 @@ function HomeContent() {
               )}
             </div>
           </div>
-          <div className="p-6 min-w-0 overflow-x-hidden flex-1">
-            <div className="mx-auto max-w-3xl min-w-0 w-full">
+          <div
+            className={`min-w-0 overflow-x-hidden flex-1 ${file && source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review")) ? "pl-6 pr-0 pt-6 pb-6" : "p-6"}`}
+          >
+            <div
+              className={
+                !loading && file && source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review"))
+                  ? "min-w-0 w-full"
+                  : "mx-auto max-w-3xl min-w-0 w-full"
+              }
+            >
               {loading && (
                 <p className="text-sm text-[var(--text-muted)]">加载中…</p>
               )}
               {!loading && file && (
-                <MarkdownPreview
-                  content={content}
-                  citationLinkTopic={
-                    source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review"))
-                      ? topic
-                      : undefined
-                  }
-                  emptyPlaceholder={
-                    source === "outputs"
-                      ? "该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
-                      : undefined
-                  }
-                />
+                source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review")) ? (
+                  <ReportWithTOC
+                    content={content}
+                    citationLinkTopic={topic}
+                    topic={topic}
+                    scrollContainerRef={mainRef}
+                    scrollContainer={mainScrollEl}
+                    emptyPlaceholder="该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
+                  />
+                ) : (
+                  <>
+                    <MarkdownPreview
+                      content={content}
+                      citationLinkTopic={undefined}
+                      emptyPlaceholder={
+                        source === "outputs"
+                          ? "该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
+                          : undefined
+                      }
+                    />
+                  </>
+                )
               )}
               {!loading && !file && (
                 manualData ? (

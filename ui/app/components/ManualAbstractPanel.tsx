@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const DRAFT_KEY_PREFIX = "manual_abstracts_draft_";
 
@@ -85,6 +85,7 @@ export function ManualAbstractPanel({
   onSaved,
   onRequestFocusPaperSummarize,
   hideTitle,
+  focusFirstMissingTrigger = 0,
 }: {
   topic: string;
   /** 当前主题的展示名 */
@@ -99,7 +100,10 @@ export function ManualAbstractPanel({
   onRequestFocusPaperSummarize?: () => void;
   /** 为侧栏折叠时由父级统一渲染标题，隐藏组件内标题 */
   hideTitle?: boolean;
+  /** 父级递增此值时会滚动并聚焦到当前主题下首个缺摘要条目（用于荟萃分析前「去手动补录空缺摘要」） */
+  focusFirstMissingTrigger?: number;
 }) {
+  const firstMissingTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<ApiResponse | null>(null);
@@ -264,6 +268,18 @@ export function ManualAbstractPanel({
   const hasFilled = filled.length > 0;
   const hasData = data !== null && !("error" in data);
 
+  /** 荟萃分析前点「去手动补录空缺摘要」后：定位到当前主题下首个需补摘要处 */
+  useEffect(() => {
+    if (focusFirstMissingTrigger <= 0 || !missing.length) return;
+    const el = firstMissingTextareaRef.current;
+    if (!el) return;
+    const t = setTimeout(() => {
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      el.focus();
+    }, 150);
+    return () => clearTimeout(t);
+  }, [focusFirstMissingTrigger, missing.length]);
+
   const isViewingLatest = selectedVersion === "summaries_latest.md";
   const sourceFile = data && "sourceFile" in data ? data.sourceFile : null;
   const lastModified = data && "lastModified" in data ? data.lastModified : null;
@@ -398,7 +414,7 @@ export function ManualAbstractPanel({
             <>
               <p className="mb-2 text-xs font-medium text-[var(--text)]">缺摘要（{missing.length} 条）</p>
               <ul className="max-h-48 overflow-y-auto space-y-3 rounded-[var(--radius-lg)] border border-[var(--border-soft)] bg-[var(--bg-card)] p-3 shadow-thu-soft">
-                {missing.map((m) => (
+                {missing.map((m, i) => (
                   <li key={m.idx} className="space-y-1">
                     <div className="text-xs font-medium text-[var(--text)]">
                       {m.idx}. {m.title}
@@ -407,6 +423,7 @@ export function ManualAbstractPanel({
                     </div>
 
                     <textarea
+                      ref={i === 0 ? firstMissingTextareaRef : undefined}
                       readOnly={!isViewingLatest}
                       className="w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-2 py-1.5 text-xs text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--thu-purple)] focus:outline-none disabled:cursor-not-allowed disabled:opacity-80"
                       rows={3}

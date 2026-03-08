@@ -1,15 +1,19 @@
 #!/usr/bin/env node
 /**
- * summarize.mjs
+ * 3_summarize.mjs — 生成结构化摘要（表格 → 03_summaries）
  *
- * Input: a Markdown table file (papers_*.md or papers_clean_*.md)
+ * 将论文表格（02_clean 或 01_raw）转为每篇一篇的结构化摘要块，供下游荟萃分析使用。
+ *
+ * Input:  papers_*.md 或 papers_clean_*.md
  * Output: outputs/<topic>/03_summaries/summaries_YYYYMMDD_vN.md + summaries_latest.md
  *
  * Usage:
- *   node .claude/skills/paper-summarize/scripts/summarize.mjs <topic> --in <md_table>
+ *   node 3_summarize.mjs <topic> --in <md_table>
  *
  * Optional:
  *   --max-abstract-chars <N>   (default: 0 = no truncation)
+ *
+ * 注：本脚本不补抓缺失摘要；缺摘要时输出 "No usable abstract."，补摘要在批量检索时勾选「摘要补全」。
  */
 
 import fs from "node:fs";
@@ -260,7 +264,7 @@ function main() {
 
   const inPath = args["in"];
   if (!topicRaw || !inPath) {
-    console.error("Usage: node summarize.mjs <topic> --in <md_table> [--max-abstract-chars N]");
+    console.error("Usage: node 3_summarize.mjs <topic> --in <md_table> [--max-abstract-chars N]");
     process.exit(1);
   }
 

@@ -4,14 +4,20 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-/** 若整段内容被包在 ```markdown ... ``` 中，则取出内部 Markdown 以便正确渲染 */
+/**
+ * 若内容以围栏代码块开头（``` 任意语言或无语言），则取出第一块内部文字并按段落渲染，
+ * 避免整段被渲染成 <pre> 导致不能换行、难以复制。也支持 ```markdown/```md 整段包裹。
+ */
 function unwrapMarkdownCodeBlock(raw: string): string {
   const t = raw.trim();
-  if (!t.startsWith("```markdown") && !t.startsWith("```md")) return raw;
-  const end = t.indexOf("```", 10);
-  if (end === -1) return raw;
-  const inner = t.slice(t.indexOf("\n", 10) + 1, end).trim();
-  return inner || raw;
+  if (!t.startsWith("```")) return raw;
+  const firstLineEnd = t.indexOf("\n");
+  const rest = firstLineEnd === -1 ? "" : t.slice(firstLineEnd + 1);
+  const closeIdx = rest.indexOf("```");
+  if (closeIdx === -1) return raw;
+  const inner = rest.slice(0, closeIdx).trim();
+  const after = rest.slice(closeIdx + 3).trim();
+  return after ? `${inner}\n\n${after}` : inner || raw;
 }
 
 /** 去掉链接外的多余括号，避免“（[(Padovani & Pavan, 2016)](#paper-1)）”这种双层括号，只保留链接本身 */
@@ -20,6 +26,11 @@ function stripOuterParensAroundLinks(content: string): string {
     /[（(]\s*(\[[^\]]+\]\(#paper-\d+\))\s*[）)]/g,
     (_, link) => link
   );
+}
+
+/** 使「（一）该主题的主要内容 1、」中「1、」另起一行显示：括号后若紧跟数字+、则前插换行 */
+function ensureLineBreakBeforeNumberedItem(content: string): string {
+  return content.replace(/）\s*(\d+)、/g, "）\n\n$1、");
 }
 
 /** 去掉小标题/表头后残留的提示语（如 2-4句话、必须覆盖所有论文 等），展示更简洁。适用于文献简报(05_report)、一键综述(06_review)及所有经本组件渲染的 Markdown。 */
@@ -34,7 +45,68 @@ function stripHeadingHintParens(content: string): string {
     .replace(/（基于卡片中的[^）]+2-4个要点）/g, "");
 }
 
-/** 将正文中尚未成链接的纯文字引用 (Author, Year) 转为 [(Author, Year)](#paper-id)，以便点击查看 */
+/** 从 Markdown 表格中移除 OpenAlex 列，节省空间给期刊名和作者；表头含 OpenAlex 时生效。 */
+function removeOpenAlexColumnFromTables(content: string): string {
+  const lines = content.split(/\r?\n/);
+  const out: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i]!;
+    if (!line.trim().startsWith("|")) {
+      out.push(line);
+      i++;
+      continue;
+    }
+    const tableStart = i;
+    const tableLines: string[] = [];
+    while (i < lines.length && lines[i]!.trim().startsWith("|")) {
+      tableLines.push(lines[i]!);
+      i++;
+    }
+    if (tableLines.length < 2) {
+      out.push(...tableLines);
+      continue;
+    }
+    const parseRow = (row: string): string[] => {
+      const parts = row.split("|").map((s) => s.trim());
+      if (parts[0] === "" && parts.length > 1) return parts.slice(1, -1);
+      return parts.filter((_, idx) => idx > 0 || parts[0] !== "");
+    };
+    const headerCells = parseRow(tableLines[0]!);
+    const openAlexIdx = headerCells.findIndex((c) => /openalex/i.test(c));
+    if (openAlexIdx === -1) {
+      out.push(...tableLines);
+      continue;
+    }
+    const writeRow = (cells: string[]): string => "| " + cells.join(" | ") + " |";
+    for (const row of tableLines) {
+      const cells = parseRow(row);
+      if (cells.length > openAlexIdx) {
+        const removed = cells.slice(0, openAlexIdx).concat(cells.slice(openAlexIdx + 1));
+        out.push(writeRow(removed));
+      } else {
+        out.push(row);
+      }
+    }
+  }
+  return out.join("\n");
+}
+
+/** 从 React 子节点递归取出纯文本，用于主题总览表单元格解析 */
+function getTextContent(node: React.ReactNode): string {
+  if (node == null) return "";
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) return node.map(getTextContent).join("");
+  if (typeof node === "object" && "props" in node && node.props && typeof node.props === "object" && "children" in node.props)
+    return getTextContent((node.props as { children?: React.ReactNode }).children);
+  return "";
+}
+
+/**
+ * 将正文中尚未成链接的纯文字引用转为 [(Author, Year)](#paper-id)，以便点击查看。
+ * API 返回的 inTextCitation 带括号，如 (Pinchevski, 2022)；正文可能写为 Pinchevski, 2022，需两种都匹配。
+ * 替换后链接文字统一带括号，符合文中注规范。
+ */
 function linkifyPlainCitations(
   content: string,
   citations: { id: number; inTextCitation: string }[]
@@ -43,10 +115,20 @@ function linkifyPlainCitations(
   const sorted = [...citations].sort((a, b) => b.inTextCitation.length - a.inTextCitation.length);
   let out = content;
   for (const { id, inTextCitation } of sorted) {
-    const escaped = inTextCitation.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const linkForm = `[${inTextCitation}](#paper-${id})`;
-    const re = new RegExp(`(^|[^\\[])(${escaped})`, "g");
-    out = out.replace(re, (_, before) => (before === "" ? linkForm : `${before}${linkForm}`));
+    const withParens = inTextCitation;
+    const linkForm = `[${withParens}](#paper-${id})`;
+    const escapedWith = withParens.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const reWith = new RegExp(`(^|[^\\[])(${escapedWith})`, "g");
+    out = out.replace(reWith, (_, before) => (before === "" ? linkForm : `${before}${linkForm}`));
+    const withoutParens =
+      withParens.startsWith("(") && withParens.endsWith(")")
+        ? withParens.slice(1, -1).trim()
+        : "";
+    if (withoutParens) {
+      const escapedNo = withoutParens.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const reNo = new RegExp(`(^|[^\\[（(])(${escapedNo})`, "g");
+      out = out.replace(reNo, (_, before) => (before === "" ? linkForm : `${before}${linkForm}`));
+    }
   }
   return out;
 }
@@ -70,12 +152,16 @@ export function MarkdownPreview({
   content,
   emptyPlaceholder = "暂无内容",
   citationLinkTopic,
+  themeOverviewCellStyle = false,
 }: {
   content: string;
   emptyPlaceholder?: string;
   /** 当为 05_report 等展示报告时传入 topic，则 #paper-<id> 链接会变为可点击并弹出论文详情 */
   citationLinkTopic?: string;
+  /** 主题总览表「主题」列：括号内关键词另起一行、灰色小字 */
+  themeOverviewCellStyle?: boolean;
 }) {
+  const safeContent = typeof content === "string" ? content : "";
   const [citationPaper, setCitationPaper] = useState<PaperDetail | null>(null);
   const [citationLoading, setCitationLoading] = useState(false);
   const [papersCitations, setPapersCitations] = useState<{ id: number; inTextCitation: string }[]>([]);
@@ -118,13 +204,35 @@ export function MarkdownPreview({
           </table>
         </div>
       ),
-      td: ({ children, ...props }: React.ComponentPropsWithoutRef<"td">) => (
-        <td {...props}>
-          <div className="prose-cell-scroll">
-            {children}
-          </div>
-        </td>
-      ),
+      td: ({ children, ...props }: React.ComponentPropsWithoutRef<"td">) => {
+        if (themeOverviewCellStyle) {
+          const text = getTextContent(children).trim();
+          const lastOpen = text.lastIndexOf("（");
+          const lastClose = text.lastIndexOf("）");
+          if (lastOpen !== -1 && lastClose > lastOpen) {
+            const title = text.slice(0, lastOpen).trim();
+            const keywords = text.slice(lastOpen + 1, lastClose).trim();
+            if (title && keywords) {
+              return (
+                <td {...props}>
+                  <div className="prose-cell-scroll">
+                    <span>{title}</span>
+                    <br />
+                    <span className="text-[11px] text-[var(--text-muted)]">{keywords}</span>
+                  </div>
+                </td>
+              );
+            }
+          }
+        }
+        return (
+          <td {...props}>
+            <div className="prose-cell-scroll">
+              {children}
+            </div>
+          </td>
+        );
+      },
       a: ({ href, children, ...props }: React.ComponentPropsWithoutRef<"a">) => {
         const isPaperAnchor = typeof href === "string" && /^#paper-\d+$/.test(href);
         if (citationLinkTopic && isPaperAnchor && href) {
@@ -147,17 +255,19 @@ export function MarkdownPreview({
         );
       },
     }),
-    [citationLinkTopic, handleCitationClick]
+    [citationLinkTopic, handleCitationClick, themeOverviewCellStyle]
   );
 
-  if (!content.trim()) {
+  if (!safeContent.trim()) {
     return (
       <p className="text-[var(--text-muted)] text-sm">{emptyPlaceholder}</p>
     );
   }
-  const unwrapped = unwrapMarkdownCodeBlock(content);
+  const unwrapped = unwrapMarkdownCodeBlock(safeContent);
   const noHint = stripHeadingHintParens(unwrapped);
-  const cleaned = stripOuterParensAroundLinks(noHint);
+  const withBreak = ensureLineBreakBeforeNumberedItem(noHint);
+  const withoutOpenAlex = removeOpenAlexColumnFromTables(withBreak);
+  const cleaned = stripOuterParensAroundLinks(withoutOpenAlex);
   const toRender =
     citationLinkTopic && papersCitations.length > 0
       ? linkifyPlainCitations(cleaned, papersCitations)

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * input_to_md.mjs — 将 PDF 或 Word 转为 Markdown
+ * 1_input_to_md.mjs — 将 PDF 或 Word 转为 Markdown（转录入库）
  *
  * 重要：当前目录决定如何写命令
  *   - 若终端在 paper-writing/scripts 下（提示符带 scripts）：
- *       用 node input_to_md.mjs <输入> <输出>   （不要写 .claude/... 否则会报错找不到脚本）
+ *       用 node 1_input_to_md.mjs <输入> <输出>   （不要写 .claude/... 否则会报错找不到脚本）
  *   - 若终端在项目根 THU_SOC_AGENT 下：
- *       用 node .claude/skills/paper-writing/scripts/input_to_md.mjs <输入> <输出>
+ *       用 node .claude/skills/paper-writing/scripts/1_input_to_md.mjs <输入> <输出>
  *
  * 输入/输出路径：以 . 或 .. 开头或为绝对路径时相对 cwd；否则相对 paper-writing 的 assets / references。
  * 自动落入：来自 assets/academic 的转录 → references/academic/；来自 assets/colloquial → references/colloquial/。
@@ -120,7 +120,7 @@ const filePath = process.argv[2];
 const outputPath = process.argv[3];
 
 if (!filePath || !outputPath) {
-  console.error("用法: node input_to_md.mjs <输入文件.pdf|.docx> <输出.md>");
+  console.error("用法: node 1_input_to_md.mjs <输入文件.pdf|.docx> <输出.md>");
   process.exit(1);
 }
 

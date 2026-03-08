@@ -29,13 +29,13 @@ const JOB_WHITELIST: Record<
     ],
   },
   filter: {
-    script: path.join(REPO_ROOT, ".claude/skills/paper-summarize/scripts/filter.mjs"),
-    args: (topic) => [topic, "--no-interactive"],
+    script: path.join(REPO_ROOT, ".claude/skills/paper-summarize/scripts/2_clean.mjs"),
+    args: (topic) => [topic, "--no-interactive", "--no-relevance-gate"],
   },
   paper_summarize: {
     script: path.join(
       REPO_ROOT,
-      ".claude/skills/paper-summarize/scripts/filter_then_summarize.mjs"
+      ".claude/skills/paper-summarize/scripts/1_command.mjs"
     ),
     args: (topic) => [topic],
   },
@@ -60,7 +60,7 @@ const JOB_WHITELIST: Record<
   upload_and_writing: {
     script: path.join(
       REPO_ROOT,
-      ".claude/skills/paper-writing/scripts/upload_then_writing.mjs"
+      ".claude/skills/paper-writing/scripts/5_upload_then_writing.mjs"
     ),
     args: (topic, extra) => [
       topic,
@@ -72,7 +72,7 @@ const JOB_WHITELIST: Record<
   transcribe_submit_and_writing: {
     script: path.join(
       REPO_ROOT,
-      ".claude/skills/paper-writing/scripts/transcribe_submit_then_writing.mjs"
+      ".claude/skills/paper-writing/scripts/6_transcribe_submit_then_writing.mjs"
     ),
     args: (topic, extra) => [
       topic,
@@ -84,7 +84,7 @@ const JOB_WHITELIST: Record<
   writing_under_style: {
     script: path.join(
       REPO_ROOT,
-      ".claude/skills/paper-writing/scripts/writing_under_style.mjs"
+      ".claude/skills/paper-writing/scripts/3_writing_under_style.mjs"
     ),
     args: (topic, extra) =>
       extra?.[0] ? [topic, "--user-prompt", String(extra[0])] : [topic],
@@ -121,7 +121,7 @@ async function resolveOpenAlexSourceByIssn(issnHyphen: string): Promise<{ id: st
  * 一键综述「使用默认写作样例」时的风格文件列表：
  * - 学术型(zh/en)：references/academic 下的默认样例 + references/submit/academic 下全部 .md
  * - 通俗型：references/colloquial 下默认样例 + references/submit/colloquial 下全部 .md
- * 脚本 writing_under_style.mjs 会按此列表依次在 references/<style> 与 references/submit/<style> 中解析文件。
+ * 脚本 3_writing_under_style.mjs 会按此列表依次在 references/<style> 与 references/submit/<style> 中解析文件。
  */
 const DEFAULT_ZH = "academic-2a-tsyzm.md,academic-2b-qnyj.md";
 const DEFAULT_EN = "academic-1a-IR.md,academic-1b-CSR.md";
@@ -185,8 +185,12 @@ export async function POST(request: Request) {
     conceptMetaClusters?: string;
     conceptBriefing?: string;
     conceptSummaries?: string;
+    /** 文献简报：每聚类最多使用论文篇数，不传则默认 40，避免单次请求过大超时 */
+    conceptMaxPapersPerCluster?: number;
     /** 一键综述：05_report 下输入文件名，如 report_latest.md */
     writingReportFile?: string;
+    /** 一键综述：是否在合并后做段落衔接优化（可选，默认 false） */
+    writingCoherencePass?: boolean;
   };
   try {
     body = await request.json();
@@ -216,7 +220,9 @@ export async function POST(request: Request) {
     conceptMetaClusters,
     conceptBriefing,
     conceptSummaries,
+    conceptMaxPapersPerCluster,
     writingReportFile,
+    writingCoherencePass,
   } = body;
   const conceptSynthesizeModel = conceptSynthesizeModelRaw === "glm" ? "glm-4.7-flash" : conceptSynthesizeModelRaw;
   const writingModel = writingModelRaw === "glm" ? "glm-4.7-flash" : writingModelRaw;
@@ -265,6 +271,12 @@ export async function POST(request: Request) {
   if (jobType === "concept_synthesize" && conceptSummaries && safeFileName(conceptSummaries)) {
     extraArgs = [...(extraArgs ?? []), "--summaries", path.join(REPO_ROOT, "outputs", topic, "03_summaries", conceptSummaries.trim())];
   }
+  if (jobType === "concept_synthesize") {
+    const n = conceptMaxPapersPerCluster != null && Number.isInteger(conceptMaxPapersPerCluster) && conceptMaxPapersPerCluster >= 1
+      ? Math.min(999, conceptMaxPapersPerCluster)
+      : 40;
+    extraArgs = [...(extraArgs ?? []), "--max-papers-per-cluster", String(n)];
+  }
   if (jobType === "upload_and_writing" && writingModel) {
     extraArgs = extraArgs ?? [];
     if (extraArgs.length < 3) extraArgs.push(writingModel);
@@ -310,6 +322,60 @@ export async function POST(request: Request) {
       { error: `Script not found: ${scriptToRun}` },
       { status: 500 }
     );
+  }
+
+  /** P0: 一键综述前若存在 report 且 chunks 不存在或为空，先执行 compact_report */
+  if (jobType === "writing_under_style") {
+    const reportDir = path.join(REPO_ROOT, "outputs", topic, "05_report");
+    const reportFileName =
+      writingReportFile && safeFileName(writingReportFile) ? writingReportFile.trim() : "report_latest.md";
+    const reportPath = path.join(reportDir, reportFileName);
+    const chunksDir = path.join(reportDir, "chunks");
+    const reportExists =
+      fs.existsSync(reportPath) && fs.statSync(reportPath).isFile();
+    let chunksMissingOrEmpty = true;
+    try {
+      if (fs.existsSync(chunksDir) && fs.statSync(chunksDir).isDirectory()) {
+        chunksMissingOrEmpty = !fs.readdirSync(chunksDir).some((f: string) => f.endsWith(".md"));
+      }
+    } catch {
+      // leave true
+    }
+    if (reportExists && chunksMissingOrEmpty) {
+      const compactScript = path.join(
+        REPO_ROOT,
+        ".claude/skills/paper-writing/scripts/2_compact_report.mjs"
+      );
+      if (!fs.existsSync(compactScript)) {
+        return NextResponse.json(
+          { error: "2_compact_report.mjs not found (P0 pre-step)" },
+          { status: 500 }
+        );
+      }
+      try {
+        await new Promise<void>((resolve, reject) => {
+          const compact = spawn("node", [compactScript, topic, "--in", reportPath], {
+            cwd: REPO_ROOT,
+            stdio: ["ignore", "pipe", "pipe"],
+          });
+          let errLog = "";
+          compact.stderr?.on("data", (d: Buffer) => {
+            errLog += d.toString();
+          });
+          compact.on("close", (code) => {
+            if (code === 0) resolve();
+            else reject(new Error(`compact_report exited ${code}: ${errLog.slice(0, 500)}`));
+          });
+          compact.on("error", reject);
+        });
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        return NextResponse.json(
+          { error: `一键综述前切块失败: ${msg}` },
+          { status: 500 }
+        );
+      }
+    }
   }
 
   if (jobType === "upload_and_writing") {
@@ -445,6 +511,9 @@ export async function POST(request: Request) {
   }
   if (jobType === "writing_under_style" && writingReportFile && safeFileName(writingReportFile)) {
     args.push("--report-file", writingReportFile.trim());
+  }
+  if (jobType === "writing_under_style" && writingCoherencePass === true) {
+    args.push("--coherence-pass");
   }
 
   const spawnEnv =

@@ -1,16 +1,19 @@
 #!/usr/bin/env node
 /**
- * filter.mjs
- * Interactive filter for journal-search outputs.
+ * 2_clean.mjs — 清洗论文表（01_raw → 02_clean）
+ *
+ * 规整表格格式，可选按年份过滤；可选按主题/强关键词做相关性过滤。
+ * 管线入口（1_command）会传入 --no-relevance-gate，仅做格式规整、不做关键词过滤。
  *
  * Input:  outputs/<topic>/01_raw/papers_<YYYYMMDD>_vN.md
  * Output: outputs/<topic>/02_clean/papers_clean_<YYYYMMDD>_vN.md + papers_clean_latest.md
  *
  * Usage:
- *   node filter.mjs artificial_intelligence
- *   node filter.mjs artificial_intelligence --in outputs/<topic>/01_raw/papers_20260221_v3.md
- *   node filter.mjs artificial_intelligence --no-interactive   # 无交互，用于管线：仅做主题/关键词相关性过滤，写 02_clean
- *   node filter.mjs artificial_intelligence --no-interactive --year-from 2023 --year-to 2025 --strong-keywords "digital labor"
+ *   node 2_clean.mjs <topic>
+ *   node 2_clean.mjs <topic> --in outputs/<topic>/01_raw/papers_20260221_v3.md
+ *   node 2_clean.mjs <topic> --no-interactive   # 无交互，仅格式规整 + 可选年份
+ *   node 2_clean.mjs <topic> --no-interactive --no-relevance-gate   # 管线用：仅格式规整
+ *   node 2_clean.mjs <topic> --no-interactive --year-from 2023 --year-to 2025 --strong-keywords "a, b"
  *
  * Fixes / improvements in this version:
  * 1) Robust table row splitting:
@@ -54,6 +57,7 @@ function parseArgs(argv) {
     topic: null,
     inPath: null,
     noInteractive: false,
+    noRelevanceGate: false,
     yearFrom: null,
     yearTo: null,
     strongKeywords: [],
@@ -73,6 +77,10 @@ function parseArgs(argv) {
     }
     if (a === "--no-interactive" || a === "--batch") {
       args.noInteractive = true;
+      continue;
+    }
+    if (a === "--no-relevance-gate") {
+      args.noRelevanceGate = true;
       continue;
     }
     if (a === "--year-from") {
@@ -392,6 +400,7 @@ function runFilterLogic({
   y2,
   weakKeys,
   strongKeys,
+  noRelevanceGate,
   table,
   expectedCols,
   cleanDir,
@@ -408,7 +417,12 @@ function runFilterLogic({
   const titleIdx = headerCells.findIndex((h) => h === "title" || h.includes("title"));
   const abstractIdx = headerCells.findIndex((h) => h === "abstract" || h.includes("abstract"));
 
-  if (titleIdx >= 0 && abstractIdx >= 0 && (weakKeys?.length || strongKeys?.length)) {
+  if (
+    !noRelevanceGate &&
+    titleIdx >= 0 &&
+    abstractIdx >= 0 &&
+    (weakKeys?.length || strongKeys?.length)
+  ) {
     const kwRes = applyKeywordFilter(
       keptRows,
       weakKeys || [],
@@ -441,6 +455,8 @@ function runFilterLogic({
       ? `年份 > ${y1}`
       : mode === "between"
       ? `年份 ${y1}–${y2}`
+      : noRelevanceGate
+      ? "仅格式规整（未做关键词过滤）"
       : "主题 + 强关键词相关性";
 
   const { abstractCompletion, abstractCompletionCount } = parseUpstreamAbstractCompletion(table.pre);
@@ -481,7 +497,7 @@ async function main() {
   if (args.noInteractive) {
     const topic = args.topic?.trim();
     if (!topic) {
-      console.error("ERROR: topic is required (e.g. filter.mjs <topic> --no-interactive).");
+      console.error("ERROR: topic is required (e.g. 2_clean.mjs <topic> --no-interactive).");
       process.exit(1);
     }
 
@@ -530,14 +546,20 @@ async function main() {
     const strongKeys = args.strongKeywords || [];
 
     if (mode === "none") {
-      // No year filter: keep all rows, apply only relevance (topic + strong keywords)
+      // No year filter: keep all rows; apply relevance only when not --no-relevance-gate
       const allRows = table.rows.map((r) => joinRow(splitRow(r, expectedCols)));
       const headerCells = splitRow(table.header, expectedCols).map((c) => c.toLowerCase());
       const titleIdx = headerCells.findIndex((h) => h === "title" || h.includes("title"));
       const abstractIdx = headerCells.findIndex((h) => h === "abstract" || h.includes("abstract"));
       let keptRows = allRows;
       let droppedTotal = 0;
-      if (titleIdx >= 0 && abstractIdx >= 0 && (weakKeys.length || strongKeys.length)) {
+      const skipRelevance = args.noRelevanceGate;
+      if (
+        !skipRelevance &&
+        titleIdx >= 0 &&
+        abstractIdx >= 0 &&
+        (weakKeys.length || strongKeys.length)
+      ) {
         const kwRes = applyKeywordFilter(
           keptRows,
           weakKeys,
@@ -557,7 +579,7 @@ async function main() {
       const headerNote = buildFilterHeaderChinese({
         topic,
         sourceRelative: path.relative(process.cwd(), inPath),
-        filterDescChinese: "主题 + 强关键词相关性",
+        filterDescChinese: skipRelevance ? "仅格式规整（未做关键词过滤）" : "主题 + 强关键词相关性",
         kept: keptRows.length,
         dropped: droppedTotal,
         generatedIso: new Date().toISOString(),
@@ -588,6 +610,7 @@ async function main() {
       y2,
       weakKeys,
       strongKeys,
+      noRelevanceGate: args.noRelevanceGate,
       table,
       expectedCols,
       cleanDir,
@@ -734,6 +757,7 @@ async function main() {
       y2: y2 ?? y1,
       weakKeys,
       strongKeys,
+      noRelevanceGate: false,
       table,
       expectedCols,
       cleanDir,
