@@ -44,12 +44,15 @@ export async function GET(request: Request) {
     }
   }
 
-  // outputs 无 index.json 时：扫描 topic 目录下的 stage 文件夹与 *_latest.md
-  if (source !== "outputs" || !fs.existsSync(topicDir)) {
+  // outputs 无 index.json 时：扫描 topic 目录下的 stage 文件夹与 *_latest.md；目录不存在则返回空 stages（避免 404，方便新用户/错误 URL）
+  if (source !== "outputs") {
     return NextResponse.json(
       { error: "Topic index not found (no index.json)" },
       { status: 404 }
     );
+  }
+  if (!fs.existsSync(topicDir)) {
+    return NextResponse.json({ topic, label: topic, stages: [] });
   }
 
   const stages: { id: StageId; label: string; files: { name: string; path: string }[] }[] = [];

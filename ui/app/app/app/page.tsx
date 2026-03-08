@@ -207,6 +207,9 @@ function HomeContent() {
   const journalSearchRunStartTimeRef = useRef<number | null>(null);
   /** 文档预览区域右上角导出菜单开关 */
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  /** 正在创建主题目录（outputs/<topic>/） */
+  const [topicCreating, setTopicCreating] = useState(false);
+  const [topicCreateError, setTopicCreateError] = useState<string | null>(null);
 
   const skillCompleteToast = useSkillCompleteToast();
   // 重新检索结束时显示右上角完成通知
@@ -556,6 +559,33 @@ function HomeContent() {
       .then((d) => (d?.ok && d?.lastCommitIso ? setLastCommitIso(d.lastCommitIso) : null))
       .catch(() => {});
   }, []);
+
+  const createTopicDir = useCallback(async () => {
+    if (!topic || topicCreating) return;
+    setTopicCreateError(null);
+    setTopicCreating(true);
+    try {
+      const res = await fetch("/api/topic-create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (data?.ok) {
+        setMetaRefreshKey((k) => k + 1);
+        fetch(`/api/topics?source=${source}`)
+          .then((r) => r.json())
+          .then((d) => setTopics((prev) => (d?.topics ? (d.topics as { topic: string; label: string }[]).filter((t) => t.topic !== "system") : prev)))
+          .catch(() => {});
+      } else {
+        setTopicCreateError(data?.error ?? "创建失败");
+      }
+    } catch (e) {
+      setTopicCreateError(e instanceof Error ? e.message : "请求失败");
+    } finally {
+      setTopicCreating(false);
+    }
+  }, [topic, source, topicCreating]);
 
   const changeTopic = useCallback(
     (newTopic: string) => {
@@ -999,6 +1029,20 @@ function HomeContent() {
                   <p className="mb-2 text-xs text-[var(--text-muted)]">
                     当前主题：<span className="font-medium text-[var(--text)]">{availableTopicsForPanel.find((t) => t.topic === topic)?.label ?? topic.replace(/_/g, " ")}</span>
                   </p>
+                )}
+                {source === "outputs" && topic && meta && meta.stages.length === 0 && (
+                  <div className="mb-3 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] p-2">
+                    <p className="text-[11px] text-[var(--text-muted)] mb-2">该主题在 outputs 下尚无目录，新增主题检索需先创建。</p>
+                    <button
+                      type="button"
+                      onClick={createTopicDir}
+                      disabled={topicCreating}
+                      className="thu-btn-primary w-full rounded-lg px-3 py-2 text-xs disabled:opacity-60"
+                    >
+                      {topicCreating ? "创建中…" : "创建主题目录"}
+                    </button>
+                    {topicCreateError && <p className="mt-1.5 text-[11px] text-[var(--accent)]">{topicCreateError}</p>}
+                  </div>
                 )}
                 <p className="mb-1 text-xs text-[var(--text-muted)]">主题</p>
                 <p className="mb-2 text-[11px] text-[var(--text-muted)] opacity-90">
