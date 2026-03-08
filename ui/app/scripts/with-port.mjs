@@ -108,10 +108,12 @@ async function handleOccupiedPort(port, info) {
  * 启动 Next.js dev/server
  */
 function startNextDev() {
+  const isWin = process.platform === "win32";
   const child = spawn("npx", ["next", cmd, "-p", port], {
     stdio: "inherit",
     env: { ...process.env, PORT: port },
     cwd: appDir,
+    shell: isWin,
   });
   child.on("exit", (code) => process.exit(code ?? 0));
 }
