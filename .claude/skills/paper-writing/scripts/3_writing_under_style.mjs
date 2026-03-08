@@ -657,6 +657,9 @@ function isTransientError(err) {
   // message patterns (proxy/html)
   if (/520|504|503|429|Gateway|time-out|timeout|ETIMEDOUT|ECONNRESET|<!DOCTYPE/i.test(msg)) return true;
 
+  // 空内容可能是临时性（限流/内容过滤），允许重试
+  if (/API 返回内容为空/i.test(msg)) return true;
+
   return false;
 }
 
@@ -676,8 +679,13 @@ async function chatComplete({ client, system, user, maxTokens, temperature }) {
     temperature,
   });
 
-  const content = response.choices?.[0]?.message?.content?.trim();
-  if (!content) throw new Error("API 返回内容为空");
+  const first = response.choices?.[0];
+  const content = (first?.message?.content ?? "").trim();
+  if (!content) {
+    const finishReason = first?.finish_reason ?? response.choices?.[0]?.finish_reason ?? "unknown";
+    const detail = finishReason !== "unknown" ? ` (finish_reason: ${finishReason})` : "";
+    throw new Error("API 返回内容为空" + detail);
+  }
   return content;
 }
 
@@ -739,11 +747,19 @@ function getFailureUserMessage(err) {
   if (status && status >= 500) {
     return "接口或网关暂时异常（" + status + "），请稍后重试或更换接口地址（OPENAI_BASE_URL）。";
   }
+  if (status === 405 || /405|Not Allowed/i.test(msg)) {
+    return (
+      "请求方法不被允许（405）。若使用智谱 GLM，请确认 ZHIPU_BASE_URL 为 https://open.bigmodel.cn/api/paas/v4，且未经过只允许 GET 的代理；若使用 OpenAI 兼容代理，请确认 OPENAI_BASE_URL 支持 POST /chat/completions。"
+    );
+  }
   if (code && /ETIMEDOUT|ECONNRESET|EAI_AGAIN/i.test(code)) {
     return "网络超时或连接中断，请检查网络后重试。";
   }
   if (/timeout|time-out|Gateway/i.test(msg)) {
     return "请求超时或网关异常，请稍后重试或减小单次请求篇幅。";
+  }
+  if (/API 返回内容为空/i.test(msg)) {
+    return "接口返回了空内容（可能触发内容过滤或限流）。建议稍后重试，或换用 --provider gpt / 其他模型。";
   }
   return "生成过程中发生错误，请查看下方技术细节或稍后重试。";
 }

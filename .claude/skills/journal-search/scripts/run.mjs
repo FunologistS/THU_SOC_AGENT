@@ -31,6 +31,7 @@ import fs from "node:fs";
 import path from "node:path";
 import YAML from "yaml";
 import * as cheerio from "cheerio";
+import { stemmer } from "stemmer";
 
 console.log("[script]", new URL(import.meta.url).pathname);
 
@@ -542,15 +543,95 @@ async function fetchAbstractWithFirecrawl(url) {
 }
 
 /* ===============================
-   Strict / Relaxed match (title, abstract, keywords)
+   Word-level match: stem, plural/singular, light typo
 ================================= */
 
-/** 文本是否包含检索词（大小写不敏感、归一化空格） */
-function textContains(text, query) {
+/** 将检索词拆成单词（空白分隔，保留顺序） */
+function tokenizeToWords(term) {
+  return normalizeWhitespace(String(term || ""))
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+/** 简单复数 → 单数（英文常见规则） */
+function toSingular(word) {
+  const w = String(word || "").toLowerCase().trim();
+  if (w.length < 3) return w;
+  if (w.endsWith("ies") && w.length > 4) return w.slice(0, -3) + "y";
+  if (w.endsWith("es") && !w.endsWith("sses") && w.length > 3) return w.slice(0, -2);
+  if (w.endsWith("s") && !w.endsWith("ss") && w.length > 2) return w.slice(0, -1);
+  return w;
+}
+
+/** 简单单数 → 复数 */
+function toPlural(word) {
+  const w = String(word || "").toLowerCase().trim();
+  if (w.length < 2) return w;
+  const last = w.slice(-1);
+  const last2 = w.slice(-2);
+  if (/[^aeiou]y$/.test(w)) return w.slice(0, -1) + "ies";
+  if (last === "s" || last === "x" || last === "z" || last2 === "ch" || last2 === "sh") return w + "es";
+  if (last === "e") return w + "s";
+  return w + "s";
+}
+
+/** 词干 + 单复数变形，去重后返回用于匹配的变体集合 */
+function getWordVariants(word) {
+  const w = String(word || "").toLowerCase().trim();
+  if (!w) return new Set();
+  const out = new Set();
+  out.add(w);
+  try {
+    out.add(stemmer(w));
+    out.add(toSingular(w));
+    out.add(toPlural(w));
+    out.add(stemmer(toSingular(w)));
+    out.add(stemmer(toPlural(w)));
+  } catch (_) {
+    // stemmer may throw on odd input
+  }
+  return out;
+}
+
+/** Levenshtein 编辑距离（用于轻量纠错） */
+function levenshtein(a, b) {
+  const m = a.length;
+  const n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, i) => i);
+  for (let i = 1; i <= m; i++) {
+    const curr = [i];
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+    }
+    prev = curr;
+  }
+  return prev[n];
+}
+
+/** 文本中是否包含该词的任一变体（子串），或与变体编辑距离≤1的整词（仅对较长词做纠错） */
+function textMatchesWord(text, word) {
   const t = normalizeWhitespace(String(text || "")).toLowerCase();
-  const q = normalizeWhitespace(String(query || "")).toLowerCase();
-  if (!q) return true;
-  return t.includes(q);
+  if (!t) return false;
+  const variants = getWordVariants(word);
+  for (const v of variants) {
+    if (!v) continue;
+    if (t.includes(v)) return true;
+  }
+  const wordsInText = (t.match(/\b[a-z0-9']+\b/g) || []).filter((x) => x.length >= 4);
+  const minLen = 4;
+  for (const tw of wordsInText) {
+    for (const v of variants) {
+      if (!v || v.length < minLen) continue;
+      const maxEdit = tw.length >= 7 && v.length >= 6 ? 2 : 1;
+      if (Math.abs(tw.length - v.length) > maxEdit) continue;
+      if (levenshtein(tw, v) <= maxEdit) return true;
+    }
+  }
+  return false;
 }
 
 /** 从 work 取摘要全文（与后续使用的逻辑一致） */
@@ -562,25 +643,38 @@ function workAbstractText(w) {
   );
 }
 
-/** work 的 keywords 中是否至少有一个包含 query（display_name 或 keyword.display_name） */
-function workKeywordsContain(w, query) {
+/** work 的 keywords 拼接成一段文本（用于按词匹配） */
+function workKeywordsText(w) {
   const list = w?.keywords;
-  if (!Array.isArray(list) || list.length === 0) return false;
+  if (!Array.isArray(list) || list.length === 0) return "";
+  return list
+    .map((item) =>
+      item?.keyword?.display_name ?? item?.display_name ?? (typeof item === "string" ? item : "")
+    )
+    .filter(Boolean)
+    .join(" ");
+}
+
+/** 文本是否包含检索词（大小写不敏感、归一化空格）— 保留用于兼容/短语快速路径 */
+function textContains(text, query) {
+  const t = normalizeWhitespace(String(text || "")).toLowerCase();
   const q = normalizeWhitespace(String(query || "")).toLowerCase();
   if (!q) return true;
-  for (const item of list) {
-    const name =
-      item?.keyword?.display_name ??
-      item?.display_name ??
-      (typeof item === "string" ? item : "");
-    if (textContains(name, query)) return true;
-  }
-  return false;
+  return t.includes(q);
+}
+
+/** work 的 keywords 中是否至少有一个包含对 query 的匹配（含词干/单复数/轻量纠错） */
+function workKeywordsMatchWord(w, word) {
+  const list = w?.keywords;
+  if (!Array.isArray(list) || list.length === 0) return false;
+  const kwText = workKeywordsText(w);
+  return textMatchesWord(kwText, word);
 }
 
 /**
  * 严格检索：摘要与关键词都包含检索词才通过。
  * 宽松检索：标题、摘要、关键词任一包含即可。
+ * 匹配规则：按词拆分；每词可用同根（stem）、单复数变形、以及编辑距离≤1 的整词匹配。
  * 多词时：logics 为数组且长度 = terms.length - 1 则按链式从左到右求值（term0 logic[0] term1 logic[1] term2...）；
  * 否则若为单 logic 则全词同一逻辑（且/或）。
  */
@@ -590,14 +684,21 @@ function workMatchesTopic(w, queryOrTerms, strictMode, logicOrLogics = "or") {
     : [String(queryOrTerms || "").trim()].filter(Boolean);
   if (terms.length === 0) return true;
 
+  const title = w?.title ?? "";
+  const abs = workAbstractText(w);
+  const kwText = workKeywordsText(w);
+
+  /** 单个检索词 q（可能为短语）是否在 title/abstract/keywords 上满足“按词匹配” */
   const singleMatch = (q) => {
-    const title = w?.title ?? "";
-    const abs = workAbstractText(w);
-    const inTitle = textContains(title, q);
-    const inAbstract = textContains(abs, q);
-    const inKeywords = workKeywordsContain(w, q);
-    if (strictMode) return inAbstract && inKeywords;
-    return inTitle || inAbstract || inKeywords;
+    const words = tokenizeToWords(q);
+    if (words.length === 0) return true;
+    const everyWordMatches = (fn) => words.every((word) => fn(word));
+    if (strictMode) {
+      return everyWordMatches((word) => textMatchesWord(abs, word)) && everyWordMatches((word) => workKeywordsMatchWord(w, word));
+    }
+    return words.every(
+      (word) => textMatchesWord(title, word) || textMatchesWord(abs, word) || workKeywordsMatchWord(w, word)
+    );
   };
 
   if (terms.length === 1) return singleMatch(terms[0]);
