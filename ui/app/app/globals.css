@@ -334,13 +334,6 @@ body {
   color: var(--text-muted);
 }
 
-/* 文献简报/一键综述 · 右侧目录随正文一起滚动，不钉在顶部 */
-.report-toc {
-  position: relative !important;
-  top: auto !important;
-  right: auto !important;
-}
-
 /* 我的产出 · 表格：随屏宽自适应、横向滑动、abstract 列更宽且可内滚、点击展开 */
 .prose-table-wrap {
   width: 100%;

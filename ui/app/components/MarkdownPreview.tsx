@@ -28,9 +28,11 @@ function stripOuterParensAroundLinks(content: string): string {
   );
 }
 
-/** 使「（一）该主题的主要内容 1、」中「1、」另起一行显示：括号后若紧跟数字+、则前插换行 */
+/** 使「（一）该主题的主要内容 1、」中「1、」另起一行显示：括号后若紧跟数字+、则前插换行；并保证「**（三）研究方法**」与「1、」之间有空行（避免 Markdown 单换行被合并成一段） */
 function ensureLineBreakBeforeNumberedItem(content: string): string {
-  return content.replace(/）\s*(\d+)、/g, "）\n\n$1、");
+  let out = content.replace(/）\s*(\d+)、/g, "）\n\n$1、");
+  out = out.replace(/(\*\*|）)\n(\d+)、/g, "$1\n\n$2、");
+  return out;
 }
 
 /** 去掉小标题/表头后残留的提示语（如 2-4句话、必须覆盖所有论文 等），展示更简洁。适用于文献简报(05_report)、一键综述(06_review)及所有经本组件渲染的 Markdown。 */

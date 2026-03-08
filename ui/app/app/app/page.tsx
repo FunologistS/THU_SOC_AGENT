@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { SkillPanel } from "@/components/SkillPanel";
 import { MarkdownPreview } from "@/components/MarkdownPreview";
 import { ReportWithTOC } from "@/components/ReportWithTOC";
-import { ReferencesBlock } from "@/components/ReferencesBlock";
 import { JournalCatalog } from "@/components/JournalCatalog";
 import { LiteratureSearchPanel, type LiteratureSearchPanelHandle } from "@/components/LiteratureSearchPanel";
 import { ManualAbstractPanel } from "@/components/ManualAbstractPanel";
@@ -318,7 +317,7 @@ function HomeContent() {
   const [isResizing, setIsResizing] = useState(false);
   const resizeStartRef = useRef({ x: 0, width: SIDEBAR_WIDTH_DEFAULT });
   const mainRef = useRef<HTMLElement>(null);
-  const [mainScrollEl, setMainScrollEl] = useState<HTMLElement | null>(null);
+  const mainElementRef = useRef<HTMLElement>(null);
   const asideRef = useRef<HTMLElement>(null);
   const literatureSearchRef = useRef<LiteratureSearchPanelHandle | null>(null);
 
@@ -1250,15 +1249,12 @@ function HomeContent() {
 
         <main
           ref={(el) => {
+            mainElementRef.current = el;
             (mainRef as React.MutableRefObject<HTMLElement | null>).current = el;
-            setMainScrollEl(el);
           }}
-          className="flex-1 min-w-0 overflow-auto bg-[var(--bg-page)]"
+          className="flex-1 min-w-0 flex flex-col bg-[var(--bg-page)] overflow-auto"
         >
-          {/* 文献简报/一键综述时右侧有固定目录，顶栏预留空间避免「导出文档」被遮挡 */}
-          <div
-            className={`sticky top-0 z-10 border-b border-[var(--border-soft)] bg-[var(--bg-card)]/90 px-6 py-3 shadow-thu-soft backdrop-blur-md min-h-[3.25rem] flex items-center ${file && source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review")) ? "lg:pr-[12rem]" : ""}`}
-          >
+          <div className="sticky top-0 z-10 flex-shrink-0 border-b border-[var(--border-soft)] bg-[var(--bg-card)]/90 px-6 py-3 shadow-thu-soft backdrop-blur-md min-h-[3.25rem] flex items-center">
             <div className="absolute inset-x-0 bottom-0 h-px gradient-thu-line" aria-hidden />
             <div className="flex w-full items-center justify-between gap-4">
               <div className="text-sm text-[var(--text-muted)] min-w-0">
@@ -1345,16 +1341,8 @@ function HomeContent() {
               )}
             </div>
           </div>
-          <div
-            className={`min-w-0 overflow-x-hidden flex-1 ${file && source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review")) ? "pl-6 pr-0 pt-6 pb-6" : "p-6"}`}
-          >
-            <div
-              className={
-                !loading && file && source === "outputs" && topic && (file.includes("05_report") || file.includes("06_review"))
-                  ? "min-w-0 w-full"
-                  : "mx-auto max-w-3xl min-w-0 w-full"
-              }
-            >
+          <div className="min-w-0 flex-1 overflow-x-hidden overflow-auto p-6">
+            <div className="mx-auto max-w-3xl min-w-0 w-full">
               {loading && (
                 <p className="text-sm text-[var(--text-muted)]">加载中…</p>
               )}
@@ -1364,22 +1352,19 @@ function HomeContent() {
                     content={content}
                     citationLinkTopic={topic}
                     topic={topic}
-                    scrollContainerRef={mainRef}
-                    scrollContainer={mainScrollEl}
+                    scrollContainerRef={mainRef as React.MutableRefObject<HTMLElement | null>}
                     emptyPlaceholder="该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
                   />
                 ) : (
-                  <>
-                    <MarkdownPreview
-                      content={content}
-                      citationLinkTopic={undefined}
-                      emptyPlaceholder={
-                        source === "outputs"
-                          ? "该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
-                          : undefined
-                      }
-                    />
-                  </>
+                  <MarkdownPreview
+                    content={content}
+                    citationLinkTopic={source === "outputs" && topic ? topic : undefined}
+                    emptyPlaceholder={
+                      source === "outputs"
+                        ? "该文件尚未生成或已被删除；请从左侧选择其他阶段文件，或先运行对应管线步骤。"
+                        : undefined
+                    }
+                  />
                 )
               )}
               {!loading && !file && (

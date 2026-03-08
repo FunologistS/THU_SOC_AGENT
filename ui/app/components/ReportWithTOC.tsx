@@ -52,6 +52,29 @@ function hasReportSectionHeadings(content: string): boolean {
   return /\n##\s+[一二三四五六七八九十]+、/m.test(content);
 }
 
+/** 二级标题：**（一）...** **（二）...** **（三）研究方法**，用于拆分为可折叠块（标题末尾可有可无第二个括号） */
+const SUB_SECTION_HEADING_RE = /^\*\*（[一二三四五六七八九十]+）[^*]*\*\*$/;
+
+function parseSubSections(body: string): { title: string; body: string }[] {
+  const trimmed = body.trim();
+  if (!trimmed) return [];
+  const parts = trimmed.split(/\n(?=\*\*（[一二三四五六七八九十]+）)/);
+  const result: { title: string; body: string }[] = [];
+  for (const part of parts) {
+    const lineEnd = part.indexOf("\n");
+    const firstLine = lineEnd === -1 ? part : part.slice(0, lineEnd);
+    const rest = lineEnd === -1 ? "" : part.slice(lineEnd + 1).trim();
+    const isSubHeading = SUB_SECTION_HEADING_RE.test(firstLine);
+    if (isSubHeading) {
+      const title = firstLine.replace(/\*\*/g, "").trim();
+      result.push({ title, body: rest });
+    } else if (part.trim()) {
+      result.push({ title: firstLine.replace(/\*\*/g, "").trim(), body: rest });
+    }
+  }
+  return result;
+}
+
 /**
  * 将 intro 中「主题总览」表格的「主题」列从纯关键词改为「一、章节标题（关键词）」，
  * 以便 themeOverviewCellStyle 将括号内关键词单独一行、小字显示。
@@ -130,6 +153,7 @@ function ReviewSummaryBlock({ summaryText }: { summaryText: string }) {
   );
 }
 
+/** 文献简报/一键综述正文渲染（无右侧目录）。保留摘要块、主题总览、章节、参考文献。 */
 export function ReportWithTOC({
   content,
   citationLinkTopic,
@@ -142,99 +166,26 @@ export function ReportWithTOC({
   citationLinkTopic?: string;
   topic: string;
   scrollContainerRef: React.RefObject<HTMLElement | null>;
-  /** 滚动容器 DOM，由父组件通过 ref 回调传入，确保挂载后能正确绑定 scroll 监听 */
   scrollContainer?: HTMLElement | null;
   emptyPlaceholder?: string;
 }) {
-  const [activeId, setActiveId] = useState<string | null>(null);
   const [showBackTop, setShowBackTop] = useState(false);
-  const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
-  const TOC_WIDTH_MIN = 120;
-  const TOC_WIDTH_MAX = 420;
-  const TOC_WIDTH_DEFAULT = 152;
-  const [tocWidth, setTocWidth] = useState(TOC_WIDTH_DEFAULT);
-  const [isDraggingToc, setIsDraggingToc] = useState(false);
 
-  const [isLg, setIsLg] = useState(false);
-  useEffect(() => {
-    const mql = window.matchMedia("(min-width: 1024px)");
-    const fn = () => setIsLg(mql.matches);
-    fn();
-    mql.addEventListener("change", fn);
-    return () => mql.removeEventListener("change", fn);
-  }, []);
-
-  useEffect(() => {
-    if (!isDraggingToc) return;
-    const onMove = (e: MouseEvent) => {
-      const w = window.innerWidth - e.clientX;
-      setTocWidth(Math.min(TOC_WIDTH_MAX, Math.max(TOC_WIDTH_MIN, w)));
-    };
-    const onUp = () => setIsDraggingToc(false);
-    document.addEventListener("mousemove", onMove);
-    document.addEventListener("mouseup", onUp);
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
-    return () => {
-      document.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseup", onUp);
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-    };
-  }, [isDraggingToc]);
-
-  const { intro, sections } = parseReportSections(content);
-  const visibleSectionsForToc = sections.filter((sec) => sec.body.trim().length > 0);
-
-  const setSectionRef = useCallback((id: string, el: HTMLElement | null) => {
-    if (el) sectionRefs.current.set(id, el);
-    else sectionRefs.current.delete(id);
-  }, []);
-
-  const updateActiveIdFromScroll = useCallback(() => {
+  const updateShowBackTop = useCallback(() => {
     const el = scrollContainer ?? scrollContainerRef.current;
     if (!el) return;
     setShowBackTop(el.scrollTop > 400);
-    const scrollTop = el.scrollTop;
-    const viewOffset = 100;
-    const containerRect = el.getBoundingClientRect();
-    const entries = Array.from(sectionRefs.current.entries());
-    let current: string | null = entries.length ? entries[0]![0] : null;
-    for (let i = 0; i < entries.length; i++) {
-      const [id, sectionEl] = entries[i]!;
-      const sectionTop =
-        scrollTop + sectionEl.getBoundingClientRect().top - containerRect.top;
-      if (sectionTop <= scrollTop + viewOffset) current = id;
-    }
-    setActiveId(current);
-  }, [scrollContainer]);
+  }, [scrollContainer, scrollContainerRef]);
 
   useEffect(() => {
     const el = scrollContainer ?? scrollContainerRef.current;
-    if (!el || visibleSectionsForToc.length === 0) return;
-    const onScroll = () => {
-      requestAnimationFrame(updateActiveIdFromScroll);
-    };
+    if (!el) return;
+    const onScroll = () => requestAnimationFrame(updateShowBackTop);
     el.addEventListener("scroll", onScroll, { passive: true });
-    requestAnimationFrame(updateActiveIdFromScroll);
+    requestAnimationFrame(updateShowBackTop);
     return () => el.removeEventListener("scroll", onScroll);
-  }, [scrollContainer, updateActiveIdFromScroll, visibleSectionsForToc.length]);
-
-  const scrollToSection = useCallback(
-    (id: string) => {
-      const sectionEl = sectionRefs.current.get(id);
-      const container = scrollContainerRef.current;
-      if (sectionEl && container) {
-        const sectionTop =
-          container.scrollTop +
-          sectionEl.getBoundingClientRect().top -
-          container.getBoundingClientRect().top;
-        container.scrollTo({ top: Math.max(0, sectionTop - 8), behavior: "smooth" });
-      }
-    },
-    [scrollContainerRef]
-  );
+  }, [scrollContainer, scrollContainerRef, updateShowBackTop]);
 
   const scrollToTop = useCallback(() => {
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
@@ -292,6 +243,7 @@ export function ReportWithTOC({
     );
   }
 
+  const { intro, sections } = parseReportSections(content);
   const extractedIntro = intro ? extractFirstCodeBlockAsSummary(intro) : null;
   const visibleSections = sections.filter((sec) => sec.body.trim().length > 0);
   const introForDisplay = transformThemeOverviewTable(
@@ -302,8 +254,8 @@ export function ReportWithTOC({
   const introAfterTransformed = extractedIntro && extractedIntro.introAfter ? transformThemeOverviewTable(extractedIntro.introAfter, sections) : "";
 
   return (
-    <div className="flex gap-0">
-      <div className="min-w-0 flex-1">
+    <>
+      <div className="min-w-0">
         {extractedIntro ? (
           <>
             {extractedIntro.introBefore ? (
@@ -342,7 +294,6 @@ export function ReportWithTOC({
           <section
             key={sec.id}
             id={sec.id}
-            ref={(el) => setSectionRef(sec.id, el)}
             className="report-section border-b border-[var(--border-soft)] last:border-b-0 last:pb-0 pb-6 mb-6 last:mb-0"
           >
             <button
@@ -364,62 +315,51 @@ export function ReportWithTOC({
             </button>
             {!collapsed[sec.id] && (
               <div className="report-section-body mt-2 pl-6">
-                <MarkdownPreview content={sec.body} citationLinkTopic={citationLinkTopic} emptyPlaceholder="" />
+                {(() => {
+                  const hasSubHeadings = /\*\*（[一二三四五六七八九十]+）/.test(sec.body);
+                  if (!hasSubHeadings) {
+                    return <MarkdownPreview content={sec.body} citationLinkTopic={citationLinkTopic} emptyPlaceholder="" />;
+                  }
+                  const subs = parseSubSections(sec.body);
+                  if (subs.length === 0) {
+                    return <MarkdownPreview content={sec.body} citationLinkTopic={citationLinkTopic} emptyPlaceholder="" />;
+                  }
+                  return subs.map((sub, i) => {
+                    const subId = `${sec.id}-sub-${i}`;
+                    return (
+                      <div key={subId} className="report-subsection mb-4 last:mb-0">
+                        <button
+                          type="button"
+                          onClick={() => toggleCollapse(subId)}
+                          className="report-section-heading flex w-full items-center gap-2 rounded-lg py-1.5 pr-2 -ml-1 text-left text-sm font-semibold text-[var(--text)] hover:bg-[var(--thu-purple-subtle)] transition-colors"
+                          aria-expanded={!collapsed[subId]}
+                        >
+                          <span
+                            className="shrink-0 transition-transform"
+                            style={{ transform: collapsed[subId] ? "rotate(-90deg)" : "rotate(0deg)" }}
+                            aria-hidden
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                          </span>
+                          <span className="min-w-0 truncate">{sub.title}</span>
+                        </button>
+                        {!collapsed[subId] && sub.body ? (
+                          <div className="report-subsection-body mt-1 pl-5 text-sm">
+                            <MarkdownPreview content={sub.body} citationLinkTopic={citationLinkTopic} emptyPlaceholder="" />
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             )}
           </section>
         ))}
         <ReferencesBlock topic={topic} />
       </div>
-      <aside
-        className="report-toc hidden flex-col overflow-y-auto overflow-x-hidden border-l border-[var(--border-soft)] bg-[var(--bg-card)]/95 backdrop-blur-sm py-3 lg:flex flex-shrink-0 relative"
-        aria-label="目录"
-        style={{
-          width: tocWidth,
-          minWidth: tocWidth,
-          maxHeight: "calc(100vh - 5rem)",
-          position: "relative",
-        }}
-      >
-        <button
-          type="button"
-          aria-label="拖动调整目录宽度"
-          className="absolute left-0 top-0 bottom-0 w-1.5 cursor-col-resize hover:bg-[var(--thu-purple)]/20 active:bg-[var(--thu-purple)]/30 transition-colors z-10"
-          style={{ transform: "translateX(-50%)" }}
-          onMouseDown={(e) => { e.preventDefault(); setIsDraggingToc(true); }}
-        />
-        <div className="pl-4 pr-3 pt-0 pb-0">
-        <p className="mb-2 text-xs font-medium text-[var(--text-muted)]">目录</p>
-        <nav className="space-y-0.5">
-          {visibleSections.map((sec) => (
-            <button
-              key={sec.id}
-              type="button"
-              onClick={() => scrollToSection(sec.id)}
-              className={`block w-full rounded px-2 py-1.5 text-left text-xs transition-colors break-words min-w-0 ${
-                activeId === sec.id
-                  ? "bg-[var(--thu-purple-subtle)] text-[var(--thu-purple)] font-medium"
-                  : "text-[var(--text-muted)] hover:bg-[var(--border-soft)] hover:text-[var(--text)]"
-              }`}
-            >
-              {sec.title}
-            </button>
-          ))}
-        </nav>
-        <div className="mt-4 pt-4 border-t border-[var(--border-soft)]">
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--thu-purple)] transition-colors"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <polyline points="18 15 12 9 6 15" />
-            </svg>
-            回到顶部
-          </button>
-        </div>
-        </div>
-      </aside>
       {showBackTop && (
         <button
           type="button"
@@ -432,6 +372,6 @@ export function ReportWithTOC({
           </svg>
         </button>
       )}
-    </div>
+    </>
   );
 }

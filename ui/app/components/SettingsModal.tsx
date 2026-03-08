@@ -80,6 +80,8 @@ export function SettingsModal({
   const [gitSaveError, setGitSaveError] = useState<string | null>(null);
   const [gitSaving, setGitSaving] = useState(false);
   const [gitSavePinRequired, setGitSavePinRequired] = useState(false);
+  const [gitPushing, setGitPushing] = useState(false);
+  const [gitPushError, setGitPushError] = useState<string | null>(null);
   const [versionName, setVersionName] = useState("");
   const [versionNaming, setVersionNaming] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -242,6 +244,25 @@ export function SettingsModal({
       setGitSaveError(null);
     } else {
       runGitSave();
+    }
+  };
+
+  const handleGitPush = async () => {
+    setGitPushError(null);
+    setGitPushing(true);
+    try {
+      const res = await fetch("/api/git-push", { method: "POST" });
+      const data = await res.json().catch(() => ({}));
+      if (data?.ok) {
+        await thuAlert(data.message ?? "已推送到远程。");
+      } else {
+        const msg = [data?.error, data?.hint, data?.detail].filter(Boolean).join("\n");
+        setGitPushError(msg || "推送失败");
+      }
+    } catch (e) {
+      setGitPushError(e instanceof Error ? e.message : "推送请求失败");
+    } finally {
+      setGitPushing(false);
     }
   };
 
@@ -451,27 +472,44 @@ export function SettingsModal({
           </>
         )}
 
-        {/* 开发者：一键 Git 保存 */}
+        {/* 开发者：一键 Git 保存 / 推送到远程 */}
         <div className="mt-6 border-t border-[var(--border-soft)] pt-4">
           <p className="mb-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
             开发者
           </p>
-          {!gitSavePrompt ? (
+          <div className="flex flex-wrap items-center gap-2">
+            {!gitSavePrompt ? (
+              <button
+                type="button"
+                onClick={handleGitSaveClick}
+                disabled={gitSaving}
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors disabled:opacity-60"
+                title={gitSavePinRequired ? "对当前仓库执行 git add + commit（不 push），需输入 6 位密码确认" : "对当前仓库执行 git add + commit（不 push）"}
+              >
+                <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M5 12h14" />
+                  <path d="M12 5v14" />
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                </svg>
+                {gitSaving ? "Git 保存中…" : "一键 Git 保存"}
+              </button>
+            ) : null}
             <button
               type="button"
-              onClick={handleGitSaveClick}
-              disabled={gitSaving}
+              onClick={handleGitPush}
+              disabled={gitPushing}
               className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-page)] px-3 py-2 text-sm text-[var(--text-muted)] hover:bg-[var(--thu-purple-subtle)] hover:text-[var(--text)] transition-colors disabled:opacity-60"
-              title={gitSavePinRequired ? "对当前仓库执行 git add + commit（不 push），需输入 6 位密码确认" : "对当前仓库执行 git add + commit（不 push）"}
+              title="将当前分支推送到远程（若未设置 upstream 会自动设置）"
             >
               <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M5 12h14" />
-                <path d="M12 5v14" />
-                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M22 2L11 13" />
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" />
               </svg>
-              {gitSaving ? "Git 保存中…" : "一键 Git 保存"}
+              {gitPushing ? "推送中…" : "推送到远程"}
             </button>
-          ) : (
+          </div>
+          {gitPushError && <p className="mt-1.5 text-xs text-[var(--accent)] whitespace-pre-wrap">{gitPushError}</p>}
+          {!gitSavePrompt ? null : (
             <div className="rounded-lg border border-[var(--border-soft)] bg-[var(--bg-sidebar)] p-3">
               <p className="text-xs text-[var(--text-muted)] mb-2">请输入 6 位数字密码以确认</p>
               <input
