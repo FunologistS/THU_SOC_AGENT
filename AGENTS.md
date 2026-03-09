@@ -98,7 +98,7 @@ Project pipeline: The five project skills (journal-catalog → journal-search �
 
 <skill>
 <name>template</name>
-<description>Replace with description of the skill and when Claude should use it.</description>
+<description>Placeholder skill template for creating new skills. Replace or remove when defining a real skill.</description>
 <location>global</location>
 </skill>
 
@@ -135,7 +135,7 @@ and exporting versioned Markdown tables of the journal set.
 Use when updating journal metadata or generating a journal overview.
 Trigger when the user asks to update journals.yml, add/remove journals, resolve OpenAlex source IDs, or export a journal table.
 </description>
-<location>global</location>
+<location>project</location>
 </skill>
 
 <skill>
@@ -145,7 +145,7 @@ Search OpenAlex works using the configured journal catalog.
 Trigger when the user asks to scan journals, retrieve papers by topic, 
 update literature, fetch recent articles, or perform journal-based literature search.
 </description>
-<location>global</location>
+<location>project</location>
 </skill>
 
 <skill>
@@ -155,7 +155,7 @@ Generate structured summaries from versioned paper lists.
 Reads papers_*.md and produces summaries_*.md using standardized prompts. 
 Use when synthesizing retrieved literature into readable summaries.
 </description>
-<location>global</location>
+<location>project</location>
 </skill>
 
 <skill>
@@ -165,7 +165,7 @@ Literature synthesis via clustering and concept extraction for sociology.
 Produces structured reports and briefings from summaries; outputs go to 04_meta and 05_report. 
 Trigger when user wants theme clustering, concept reports, or synthesis from summaries.
 </description>
-<location>global</location>
+<location>project</location>
 </skill>
 
 <skill>
@@ -174,7 +174,7 @@ Trigger when user wants theme clustering, concept reports, or synthesis from sum
 Transcribe PDF/DOCX to Markdown; rewrite outputs/&lt;topic&gt;/05_report (prefer chunks) into paragraph review under academic style samples. 
 Use for input_to_md (transcription) or writing_under_style (styled review → 06_review).
 </description>
-<location>global</location>
+<location>project</location>
 </skill>
 
 </available_skills>
