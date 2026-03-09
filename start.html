@@ -345,15 +345,29 @@
   </main>
 
   <script>
+    // ---------- Windows 用户：在导师电脑上使用时，请把下面改为项目目录（使用反斜杠 \）----------
+    // 例如：var WINDOWS_PATH = 'C:\\Users\\导师用户名\\THU_SOC_AGENT';
+    var WINDOWS_PATH = '';
+    // -----------------------------------------------------------------------------------------
+
     (function() {
-      var path = (location.pathname || '').replace(/\/[^/]*$/, '');
-      try {
-        if (path && path.length > 2) path = decodeURIComponent(path);
-      } catch (e) {}
-      var appDir = path ? path + '/ui/app' : '';
+      var appDir = '';
+      var pathSep = '/';
+      if (typeof WINDOWS_PATH === 'string' && WINDOWS_PATH.length > 0) {
+        appDir = WINDOWS_PATH.replace(/\/$|\\$/, '') + '\\ui\\app';
+        pathSep = '\\';
+      } else {
+        var path = (location.pathname || '').replace(/\/[^/]*$/, '');
+        try {
+          if (path && path.length > 2) path = decodeURIComponent(path);
+        } catch (e) {}
+        appDir = path ? path + '/ui/app' : '';
+      }
       var cmd = appDir
         ? 'cd "' + appDir + '" && npm install && npm run dev'
-        : 'cd "<您的 THU_SOC_AGENT 仓库路径>/ui/app" && npm install && npm run dev';
+        : (pathSep === '\\'
+          ? 'cd "<您的 THU_SOC_AGENT 仓库路径>\\ui\\app" && npm install && npm run dev'
+          : 'cd "<您的 THU_SOC_AGENT 仓库路径>/ui/app" && npm install && npm run dev');
       var el = document.getElementById('cmd');
       el.textContent = cmd;
 

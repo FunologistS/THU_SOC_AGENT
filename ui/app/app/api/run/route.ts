@@ -191,6 +191,8 @@ export async function POST(request: Request) {
     writingReportFile?: string;
     /** 一键综述：是否在合并后做段落衔接优化（可选，默认 false） */
     writingCoherencePass?: boolean;
+    /** 一键综述：合并阶段总 prompt 字符上限，如 12000/8000；不传则脚本默认 22000。遇 504/超时/exit 1 可改小 */
+    writingMergeMaxChars?: number;
   };
   try {
     body = await request.json();
@@ -223,6 +225,7 @@ export async function POST(request: Request) {
     conceptMaxPapersPerCluster,
     writingReportFile,
     writingCoherencePass,
+    writingMergeMaxChars,
   } = body;
   const conceptSynthesizeModel = conceptSynthesizeModelRaw === "glm" ? "glm-4.7-flash" : conceptSynthesizeModelRaw;
   const writingModel = writingModelRaw === "glm" ? "glm-4.7-flash" : writingModelRaw;
@@ -274,7 +277,7 @@ export async function POST(request: Request) {
   if (jobType === "concept_synthesize") {
     const n = conceptMaxPapersPerCluster != null && Number.isInteger(conceptMaxPapersPerCluster) && conceptMaxPapersPerCluster >= 1
       ? Math.min(999, conceptMaxPapersPerCluster)
-      : 40;
+      : 12;
     extraArgs = [...(extraArgs ?? []), "--max-papers-per-cluster", String(n)];
   }
   if (jobType === "upload_and_writing" && writingModel) {
@@ -516,12 +519,15 @@ export async function POST(request: Request) {
     args.push("--coherence-pass");
   }
 
-  const spawnEnv =
-    jobType === "writing_under_style" && (writingStyle === "zh" || writingStyle === "en")
-      ? { ...process.env, REFERENCE_STYLE: "academic" }
-      : jobType === "writing_under_style" && writingStyle === "colloquial"
-        ? { ...process.env, REFERENCE_STYLE: "colloquial" }
-        : undefined;
+  let spawnEnv: NodeJS.ProcessEnv | undefined;
+  if (jobType === "writing_under_style") {
+    spawnEnv = { ...process.env };
+    if (writingStyle === "zh" || writingStyle === "en") spawnEnv.REFERENCE_STYLE = "academic";
+    else if (writingStyle === "colloquial") spawnEnv.REFERENCE_STYLE = "colloquial";
+    if (writingMergeMaxChars != null && Number.isFinite(writingMergeMaxChars) && writingMergeMaxChars >= 500) {
+      spawnEnv.MERGE_MAX_CHARS = String(Math.min(99999, Math.floor(writingMergeMaxChars)));
+    }
+  }
 
   const child = spawn("node", [scriptToRun, ...args], {
     cwd: REPO_ROOT,

@@ -229,13 +229,15 @@ export function SkillPanel({
   const [synthesizeModalOpen, setSynthesizeModalOpen] = useState(false);
   /** 荟萃分析：选具体文档（04_meta / 03_summaries 下文件名） */
   const [conceptMetaClusters, setConceptMetaClusters] = useState("");
-  const [conceptMaxPapersPerCluster, setConceptMaxPapersPerCluster] = useState<number>(40);
+  const [conceptMaxPapersPerCluster, setConceptMaxPapersPerCluster] = useState<number>(12);
   const [conceptBriefing, setConceptBriefing] = useState("");
   const [conceptSummaries, setConceptSummaries] = useState("");
   /** 一键综述：05_report 下输入文件名 */
   const [writingReportFile, setWritingReportFile] = useState("");
   /** 一键综述：合并后是否做段落衔接优化（可选） */
   const [writingCoherencePass, setWritingCoherencePass] = useState(false);
+  /** 一键综述：合并阶段 prompt 字符上限，0=默认(22000)，遇 504/超时/exit 1 可改为 12000 或 8000 */
+  const [writingMergeMaxChars, setWritingMergeMaxChars] = useState<number>(0);
   /** 一键综述模型：初始无选中；传 API 时未选则用列表第一项或 glm-4.7-flash */
   const [writingModel, setWritingModel] = useState<string>("");
   /** 荟萃分析：运行前弹窗，在弹窗内选择模型与文档 */
@@ -432,6 +434,7 @@ export function SkillPanel({
       conceptSummaries?: string;
       writingReportFile?: string;
       writingCoherencePass?: boolean;
+      writingMergeMaxChars?: number;
     }
   ): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -452,6 +455,7 @@ export function SkillPanel({
         conceptSummaries?: string;
         writingReportFile?: string;
         writingCoherencePass?: boolean;
+        writingMergeMaxChars?: number;
       } = { jobType, topic };
       if (Array.isArray(extraArgs) && extraArgs.length > 0) body.args = extraArgs;
       if (jobType === "synthesize" && options?.synthesizeK) body.synthesizeK = options.synthesizeK;
@@ -472,6 +476,7 @@ export function SkillPanel({
       if (jobType === "writing_under_style" && options?.writingPrompt != null) body.writingPrompt = options.writingPrompt;
       if (jobType === "writing_under_style" && options?.writingReportFile) body.writingReportFile = options.writingReportFile;
       if (jobType === "writing_under_style" && options?.writingCoherencePass === true) body.writingCoherencePass = true;
+      if (jobType === "writing_under_style" && options?.writingMergeMaxChars != null && options.writingMergeMaxChars >= 500) body.writingMergeMaxChars = options.writingMergeMaxChars;
       fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -720,6 +725,7 @@ export function SkillPanel({
       writingPrompt: promptToUse ?? undefined,
       writingReportFile: writingReportFile || undefined,
       writingCoherencePass: writingCoherencePass || undefined,
+      writingMergeMaxChars: writingMergeMaxChars >= 500 ? writingMergeMaxChars : undefined,
     })
       .then(() => {
         setLastCompletedSkillIdForLog("writing_under_style");
@@ -1092,13 +1098,16 @@ export function SkillPanel({
               <div>
                 <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">每聚类最多使用篇数</label>
                 <select value={conceptMaxPapersPerCluster} onChange={(e) => setConceptMaxPapersPerCluster(Number(e.target.value))} className="thu-input w-full rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-sm text-[var(--text)]">
+                  <option value={10}>10</option>
+                  <option value={12}>12（默认）</option>
+                  <option value={15}>15</option>
                   <option value={20}>20</option>
                   <option value={30}>30</option>
-                  <option value={40}>40（默认）</option>
+                  <option value={40}>40</option>
                   <option value={50}>50</option>
                   <option value={100}>100</option>
                 </select>
-                <p className="mt-0.5 text-[10px] text-[var(--text-muted)]">单聚类论文过多时限制送进模型的篇数，避免超时；超出的会分批调用再合并。</p>
+                <p className="mt-0.5 text-[10px] text-[var(--text-muted)]">单聚类论文过多时按此数量分批送进模型，再合并。某聚类「返回为空」多为单批篇数过多超出模型上下文，可改小此值（如 12）后重跑。</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -1754,6 +1763,15 @@ export function SkillPanel({
                   />
                   <span>一键综述后做段落衔接优化（改善块与块之间的过渡与术语统一，可选，多一次 API 调用）。主题数 ≥ 8 时建议勾选。</span>
                 </label>
+                <div className="mb-3">
+                  <label className="mb-1 block text-[11px] font-medium text-[var(--text-muted)]">合并阶段字符上限</label>
+                  <select value={writingMergeMaxChars} onChange={(e) => setWritingMergeMaxChars(Number(e.target.value))} className="thu-input rounded border border-[var(--border-soft)] bg-[var(--bg-card)] px-2 py-1.5 text-xs text-[var(--text)]">
+                    <option value={0}>默认（22000）</option>
+                    <option value={12000}>12000（遇 504/超时 可试）</option>
+                    <option value={8000}>8000（仍失败时再改小）</option>
+                  </select>
+                  <p className="mt-0.5 text-[10px] text-[var(--text-muted)]">出现 merge_max_chars=12000 且 exit code=1 时，选 8000 后重跑。</p>
+                </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={() => setWritingReviewStep(pendingWritingStyle === "none" ? "no_style_options" : "default_style")} className="thu-modal-btn-secondary rounded-lg px-3 py-1.5 text-xs">返回修改</button>
                   <button
