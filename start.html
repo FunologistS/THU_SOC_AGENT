@@ -346,13 +346,14 @@
 
   <script>
     (function() {
-      var appDir = '/Users/bryson_sun/Library/Mobile Documents/com~apple~CloudDocs/Desktop/孙百承/THU_SOC_AGENT/ui/app';
+      var path = (location.pathname || '').replace(/\/[^/]*$/, '');
       try {
-        var path = (location.pathname || '').replace(/\/[^/]*$/, '');
-        if (path && path.length > 10) path = decodeURIComponent(path);
-        if (path && path.indexOf('/') === 0) appDir = path + '/ui/app';
+        if (path && path.length > 2) path = decodeURIComponent(path);
       } catch (e) {}
-      var cmd = 'cd "' + appDir + '" && npm install && npm run dev';
+      var appDir = path ? path + '/ui/app' : '';
+      var cmd = appDir
+        ? 'cd "' + appDir + '" && npm install && npm run dev'
+        : 'cd "<您的 THU_SOC_AGENT 仓库路径>/ui/app" && npm install && npm run dev';
       var el = document.getElementById('cmd');
       el.textContent = cmd;
 

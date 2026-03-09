@@ -377,7 +377,10 @@ export const LiteratureSearchPanel = forwardRef<
           )}
         </label>
         <label className="block">
-          <span className="text-[11px] text-[var(--text-muted)]">添加检索词</span>
+          <span className="text-[11px] text-[var(--text-muted)]">添加检索词（副检索词）</span>
+          <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">
+            可填缩写、同义词等，如AI、EVs等；选「或」可扩大命中，选「且」则需同时包含。
+          </p>
           <div className="mt-1 flex flex-wrap items-center gap-1.5">
             <input
               type="text"
@@ -393,7 +396,7 @@ export const LiteratureSearchPanel = forwardRef<
                   }
                 }
               }}
-              placeholder="输入后选逻辑并添加"
+              placeholder="如AI、EVs等"
               className="thu-input min-w-0 flex-1 rounded-lg px-2.5 py-1.5 text-sm"
             />
             <select

@@ -1182,6 +1182,9 @@ async function main() {
   const quartiles = [...new Set(journals.map((j) => j.quartile).filter(Boolean))].sort();
   const partitionDisplay = quartiles.length > 0 ? quartiles.join("、") : "未标注";
   md += `- 检索的分区：${partitionDisplay}\n`;
+  if (quartiles.length > 1) {
+    md += `  - 说明：部分期刊归属多个 WOS 学科，各学科分区不同，上列为本次参与检索期刊在数据源中出现的分区并集；筛选条件若为某学科 Q1，则仅包含该学科下 Q1 的刊。\n`;
+  }
   md += `- 检索类型：${searchTypeLabel}\n`;
   if (yearRangeLabel) md += `- 年份范围：${yearRangeLabel}\n`;
   if (instruction) md += `- 提示词：${mdEscape(instruction)}\n`;

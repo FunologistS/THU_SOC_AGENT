@@ -1304,10 +1304,13 @@ export function SkillPanel({
                 <div className="mt-1 w-full rounded-lg border border-[var(--border-soft)] bg-[var(--bg-muted)] px-3 py-2 text-sm text-[var(--text)]">
                   {availableTopics.find((t) => t.topic === modalPipelineTopic)?.label ?? modalPipelineTopic.replace(/_/g, " ")}
                 </div>
-                <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">与上方选定的主题一致，不可修改；可仅通过下方「添加检索词」追加条件。</p>
+                <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">与上方选定的主题一致，不可修改；可仅通过下方「添加检索词（副检索词）」追加条件。</p>
               </div>
               <label className="block">
-                <span className="text-[11px] text-[var(--text-muted)]">添加检索词</span>
+                <span className="text-[11px] text-[var(--text-muted)]">添加检索词（副检索词）</span>
+                <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">
+                  可填缩写、同义词等，如AI、EVs等；选「或」可扩大命中，选「且」则需同时包含。
+                </p>
                 <div className="mt-1 flex flex-wrap items-center gap-1.5">
                   <input
                     type="text"
@@ -1323,7 +1326,7 @@ export function SkillPanel({
                         }
                       }
                     }}
-                    placeholder="输入后选逻辑并添加"
+                    placeholder="如AI、EVs等"
                     className="thu-input min-w-0 flex-1 rounded-lg px-2.5 py-1.5 text-sm"
                   />
                   <select

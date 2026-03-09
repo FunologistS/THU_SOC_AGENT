@@ -155,11 +155,14 @@
   </main>
   <script>
     (function() {
-      var appDir = '/Users/bryson_sun/Library/Mobile Documents/com~apple~CloudDocs/Desktop/孙百承/THU_SOC_AGENT/ui/app';
-      var cmd = 'cd "' + appDir + '" && npm install && npm run dev';
+      var cmd = '';
       var el = document.getElementById('cmd');
-      el.textContent = cmd;
+      function setCmd(text) {
+        cmd = text;
+        el.textContent = cmd || '正在获取命令…';
+      }
       function copy() {
+        if (!cmd) return;
         navigator.clipboard.writeText(cmd).then(function() {
           var btn = document.getElementById('copyBtn');
           btn.textContent = '已复制';
@@ -169,6 +172,23 @@
       document.getElementById('copyBtn').onclick = copy;
       el.onclick = copy;
       el.onkeydown = function(e) { if (e.key === 'Enter') copy(); };
+
+      (function loadCommand() {
+        if (typeof fetch !== 'undefined' && location.origin && location.origin.indexOf('localhost') !== -1) {
+          fetch('/api/start-command').then(function(r) { return r.ok ? r.json() : Promise.reject(); }).then(function(data) {
+            setCmd(data.command || '');
+          }).catch(function() { setCmd(fallbackCommand()); });
+        } else {
+          setCmd(fallbackCommand());
+        }
+      })();
+      function fallbackCommand() {
+        var path = (location.pathname || '').replace(/\/[^/]*$/, '');
+        if (path && path.length > 2) path = decodeURIComponent(path);
+        var appDir = path ? path + '/ui/app' : '';
+        if (!appDir) return 'cd "<您的 THU_SOC_AGENT 仓库路径>/ui/app" && npm install && npm run dev';
+        return 'cd "' + appDir + '" && npm install && npm run dev';
+      }
       var btn = document.getElementById('themeBtn');
       var appLink = document.getElementById('appLink');
       var footerLink = document.getElementById('footerAppLink');
